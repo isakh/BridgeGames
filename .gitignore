@@ -1,0 +1,24 @@
+#Android Studio
+*.iml 
+.idea
+/.idea/libraries
+/.idea/workspace.xml
+.gradle
+/build
+
+#Local configuration files 
+/local.properties 
+
+#OSX files 
+.DS_Store 
+
+/captures
+.externalNativeBuild
+
+#built application files
+*.apk
+*.ap_
+
+#files for the dex VM
+*.dex
+
