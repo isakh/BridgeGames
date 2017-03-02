@@ -35,7 +35,7 @@ public class MemGameData {
         setGameDifficulty();
         setGameDuration();
         setNumTurnsTaken();
-        initTurnDurations();
+        initTurnDurationsArray();
     }
 
     private void setGameDifficulty () {
@@ -74,9 +74,9 @@ public class MemGameData {
     }
 
 
-    private void initTurnDurations () {
+    private void initTurnDurationsArray () {
         Log.d (TAG, "method initTurnDurations array list");
-        private ArrayList <Long> turnDurations = new ArrayList<Long>();
+        turnDurations = new ArrayList<Long>();
     }
 
     private void addDurationToTurnDurations (long durToAdd) {
