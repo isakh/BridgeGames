@@ -34,6 +34,7 @@ public class UserData {
     }
 
     public void createMemGameDataList () {
+        Log.d (TAG, "method createMemGameDataList");
         memGameDataList = new ArrayList();
     }
 
@@ -46,6 +47,6 @@ public class UserData {
      * Method queryMemGameData returns a GameData object at position in the list gameDataRecord
      */
     public MemGameData queryMemGameDataList (int gameDataRecord) {
-        return (MemGameData) memGameDataList.get(gameDataRecord);
+        return memGameDataList.get(gameDataRecord);
     }
 }

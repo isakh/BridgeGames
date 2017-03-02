@@ -1,6 +1,5 @@
 package ws.isak.memgamev.engine;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -16,7 +15,6 @@ import android.os.Handler;
 import android.widget.ImageView;
 import android.util.Log;
 import android.widget.Toast;
-import android.net.Uri;
 
 import ws.isak.memgamev.R;
 
@@ -276,7 +274,7 @@ public class Engine extends EventObserverAdapter {
 					GameState gameState = new GameState();
 					mPlayingGame.gameState = gameState;
 					// remained seconds
-					gameState.remainedSeconds = totalTime - passedSeconds;
+					gameState.remainingTimeInSeconds = totalTime - passedSeconds;
 
 					// calculate stars and score from the amount of time that has elapsed as a ratio
 					// of total time allotted for the game.  When calculating this we still have...
@@ -286,7 +284,7 @@ public class Engine extends EventObserverAdapter {
 					else if (passedSeconds < totalTime) {gameState.achievedStars = 1; }
 					else {gameState.achievedStars = 0;}
 					// calculate the score
-					gameState.achievedScore = mPlayingGame.boardConfiguration.difficulty * gameState.remainedSeconds * mPlayingGame.theme.themeID;
+					gameState.achievedScore = mPlayingGame.boardConfiguration.difficulty * gameState.remainingTimeInSeconds * mPlayingGame.theme.themeID;
 					// save to memory
 					Memory.save(mPlayingGame.theme.themeID, mPlayingGame.boardConfiguration.difficulty, gameState.achievedStars);
 					//trigger the GameWonEvent
