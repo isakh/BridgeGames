@@ -22,6 +22,7 @@ import ws.isak.memgamev.common.Memory;
 import ws.isak.memgamev.common.Music;
 import ws.isak.memgamev.common.Shared;
 import ws.isak.memgamev.common.CardData;
+import ws.isak.memgamev.common.UserData;        //TODO setup
 
 import ws.isak.memgamev.engine.ScreenController.Screen;
 import ws.isak.memgamev.events.engine.PlayCardAudioEvent;
@@ -43,6 +44,7 @@ import ws.isak.memgamev.model.BoardArrangement;
 import ws.isak.memgamev.model.BoardConfiguration;
 import ws.isak.memgamev.model.Game;
 import ws.isak.memgamev.model.GameState;
+import ws.isak.memgamev.model.MemGameData;
 
 import ws.isak.memgamev.themes.Theme;
 import ws.isak.memgamev.themes.Themes;
@@ -61,6 +63,7 @@ public class Engine extends EventObserverAdapter {
 	private final String TAG = "Class: Engine";		//a string used for logging
 	private static Engine mInstance = null;			//instance of Engine for current use of app
 	private Game mPlayingGame = null;				//instance of Game for current game being played
+    private MemGameData currentGameData;
 	private int mFlippedId = -1;					//id of the tile (? or event?) with the card being flipped
 	private int mToFlip = -1;
 	private ScreenController mScreenController;
@@ -134,6 +137,7 @@ public class Engine extends EventObserverAdapter {
 
 	@Override
 	public void onEvent(StartEvent event) {
+        Log.d (TAG, "override onEvent for StartEvent");
 		mScreenController.openScreen(Screen.THEME_SELECT);
 	}
 
@@ -192,9 +196,24 @@ public class Engine extends EventObserverAdapter {
 		// arrange board
 		arrangeBoard();
 
-		// start the screen
+		//TODO Verify if this is a good place for instantiating the currentGameData object
+        currentGameData = new MemGameData(mPlayingGame);
+        //TODO currentGameData.setGameDurationAllocated();   //need a number returned from arrangeBoard
+        Log.d (TAG, "event DifficultySelectedEvent: currentGameData.getGameDifficulty: " + currentGameData.getGameDifficulty());
+        Log.d (TAG, "                             : currentGameData.getNumTurnsTaken: " + currentGameData.getNumTurnsTaken());
+
+
+		// start the screen - This call to screen controller causes the screen controller to select
+        // a new GameFragment from the screen controller.  Opening the new GameFragment leads to a
+        // call to buildBoard() a private method in the Game Fragment. buildBoard calls setBoard in
+        // the BoardView ui class. setBoard in BoardView propagates through a local buildBoard method
+        // and eventually calls addTile for each of the tiles on the board to be built.   This leads
+        // to a thread for each tile which calls getTileBitmap...
 		mScreenController.openScreen(Screen.GAME);
-	}
+        //TODO how shall we also process the audio duration associated with each selected tile ?????
+        currentGameData.setGameDurationAllocated(mPlayingGame.boardConfiguration.time); //TODO HOW DOES THIS GET A ARRANGEMENT SPECIFIC ALLOCATED TIME?
+        Log.d (TAG, "                             : currentGameData.getGameDurationAllocated: " + currentGameData.getGameDurationAllocated());
+    }
 
 	private void arrangeBoard() {
 		BoardConfiguration boardConfiguration = mPlayingGame.boardConfiguration;

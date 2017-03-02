@@ -151,7 +151,7 @@ public class BoardView extends LinearLayout {
 
 			@Override
 			protected Bitmap doInBackground(Void... params) {
-				//Log.d (TAG, "method: addTile: new AsyncTask: override doInBackground: calling getTileBitmap: curTileOnBoard is: " + curTileOnBoard + " mSize is: " + mSize);
+				//Log.d (TAG, "*** method: addTile: new AsyncTask: override doInBackground: calling getTileBitmap: curTileOnBoard is: " + curTileOnBoard + " mSize is: " + mSize);
 				return mBoardArrangement.getTileBitmap(curTileOnBoard, mSize);  //this gets one of two bitmaps depending on flags
 			}
 			

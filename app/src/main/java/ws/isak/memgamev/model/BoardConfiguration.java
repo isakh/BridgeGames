@@ -1,5 +1,9 @@
 package ws.isak.memgamev.model;
 
+import ws.isak.memgamev.R;
+import ws.isak.memgamev.common.Shared;
+import ws.isak.memgamev.common.Music;
+
 /**
  * Class BoardConfiguration provides a switch for the three difficulty levels and the corresponding
  * number of tiles that are displayed for each.
@@ -17,10 +21,11 @@ public class BoardConfiguration {
 	public final int numTiles;
 	public final int numTilesInRow;
 	public final int numRows;
-	public final int time;					//TODO should this be the baseline time for the board difficulty or already include sample duration variables
+	public final long time;					//TODO this will include sample duration variables so will be in millis
 
 	/*
-	 * Constructor BoardConfiguration sets up a board with a given difficulty
+	 * Constructor BoardConfiguration sets up a board with a given difficulty.  For the time being
+	 * (and maybe as a permanent solution) TODO redefine the time variable to incorporate the samples as well
 	 */
 	public BoardConfiguration(int difficulty) {
 		this.difficulty = difficulty;
@@ -29,23 +34,31 @@ public class BoardConfiguration {
 			numTiles = _12;
 			numTilesInRow = 4;
 			numRows = 3;
-			time = 60; //TODO adjust and make a function of audio durations
+			time = CalculateGameDuration (numTiles, Shared.context.getResources().getInteger(R.integer.baseline_time_difficulty_easy)));
 			break;
 		case 2:
 			numTiles = _16;
 			numTilesInRow = 4;
 			numRows = 4;
-			time = 90; //TODO adjust and make a function of audio durations
+            time = CalculateGameDuration (numTiles, Shared.context.getResources().getInteger(R.integer.baseline_time_difficulty_medium)));
 			break;
 		case 3:
 			numTiles = _18;
 			numTilesInRow = 6;
 			numRows = 3;
-			time = 120; //TODO adjust and make a function of audio durations
+            time = CalculateGameDuration (numTiles, Shared.context.getResources().getInteger(R.integer.baseline_time_difficulty_hard)));
 			break;
 
 		default:
 			throw new IllegalArgumentException("Select one of predefined sizes");
 		}
 	}
+
+    private long CalculateGameDuration (int numTiles, int difficultyBaseline) {
+        long cumulativeTime = (long) difficultyBaseline;
+        for (int i = 0; i < numTiles/2; i++) {
+            cumulativeTime = cumulativeTime + (2 * Music.getAudioDuration(TODO));   //TODO how do we get the duration of audio resources directly from here?
+        }
+        return  cumulativeTime;
+    }
 }

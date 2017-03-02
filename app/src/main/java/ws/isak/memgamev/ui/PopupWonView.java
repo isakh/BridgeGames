@@ -68,8 +68,8 @@ public class PopupWonView extends RelativeLayout {
 	}
 
 	public void setGameState(final GameState gameState) {
-		int min = gameState.remainedSeconds / 60;
-		int sec = gameState.remainedSeconds - min * 60;
+		int min = gameState.remainingTimeInSeconds / 60;
+		int sec = gameState.remainingTimeInSeconds - min * 60;
 		mTime.setText(" " + String.format("%02d", min) + ":" + String.format("%02d", sec));
 		mScore.setText("" + 0);
 		
@@ -77,7 +77,7 @@ public class PopupWonView extends RelativeLayout {
 
 			@Override
 			public void run() {
-				animateScoreAndTime(gameState.remainedSeconds, gameState.achievedScore);
+				animateScoreAndTime(gameState.remainingTimeInSeconds, gameState.achievedScore);
 				animateStars(gameState.achievedStars);
 			}
 		}, 500);
@@ -143,7 +143,7 @@ public class PopupWonView extends RelativeLayout {
 		}, delay);
 	}
 
-	private void animateScoreAndTime(final int remainedSeconds, final int achievedScore) {
+	private void animateScoreAndTime(final int remainingTimeInSeconds, final int achievedScore) {
 		final int totalAnimation = 1200;
 
 		Clock.getInstance().startTimer(totalAnimation, 35, new OnTimerCount() {
@@ -152,7 +152,7 @@ public class PopupWonView extends RelativeLayout {
 			public void onTick(long millisUntilFinished) {
 				float factor = millisUntilFinished / (totalAnimation * 1f); // 0.1
 				int scoreToShow = achievedScore - (int) (achievedScore * factor);
-				int timeToShow = (int) (remainedSeconds * factor);
+				int timeToShow = (int) (remainingTimeInSeconds * factor);
 				int min = timeToShow / 60;
 				int sec = timeToShow - min * 60;
 				mTime.setText(" " + String.format("%02d", min) + ":" + String.format("%02d", sec));

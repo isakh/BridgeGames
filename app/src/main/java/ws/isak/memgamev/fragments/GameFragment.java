@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+//TODO REMOVE import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import ws.isak.memgamev.R;
@@ -27,7 +27,7 @@ public class GameFragment extends BaseFragment {
 	private BoardView mBoardView;
 	private TextView mTime;
 	private ImageView mTimeImage;
-	private LinearLayout ads;
+	//TODO REMOVE private LinearLayout ads;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

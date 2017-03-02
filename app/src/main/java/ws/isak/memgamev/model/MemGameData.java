@@ -33,43 +33,44 @@ public class MemGameData {
         Log.d (TAG, "Constructor: initializing game data fields");
         mPlayingGame = currentGame;
         setGameDifficulty();
-        setGameDuration();
+        setGameDurationAllocated();
         setNumTurnsTaken();
         initTurnDurationsArray();
     }
 
+    //TODO decide if class methods are public or private
     private void setGameDifficulty () {
-        Log.d (TAG, "method setGameDifficulty");
+        //Log.d (TAG, "method setGameDifficulty");
         difficulty = mPlayingGame.boardConfiguration.difficulty;
     }
 
-    private int getGameDifficulty () {
-        Log.d (TAG, "method getGameDifficulty: difficulty: " + difficulty);
+    public int getGameDifficulty () {
+        //Log.d (TAG, "method getGameDifficulty: difficulty: " + difficulty);
         return difficulty;
     }
 
-    private void setGameDuration () {
+    public void setGameDurationAllocated () {
         //TODO figure our how to pass in the total time for the current game to last
     }
 
-    private long getGameDuration () {
-        Log.d (TAG, "method getGameDuration: this returns the total duration ")
+    public long getGameDurationAllocated () {
+        //Log.d (TAG, "method getGameDuration: this returns the total duration ");
         return gameDurationAllocated;
     }
 
     private void setNumTurnsTaken () {
-        Log.d (TAG, "method setNumTurnsTaken: This is called once on init and is 0");
+        //Log.d (TAG, "method setNumTurnsTaken: This is called once on init and is 0");
         numTurnsTakenInGame = 0;
     }
 
-    private void incrementNumTurnsTaken (int numTurnsTaken) {
-        Log.d (TAG, "method incrementNumTurnsTaken: prior to increment: " + numTurnsTakenInGame)
+    public void incrementNumTurnsTaken (int numTurnsTaken) {
+        //Log.d (TAG, "method incrementNumTurnsTaken: prior to increment: " + numTurnsTakenInGame);
         numTurnsTakenInGame = numTurnsTaken++;
         Log.d (TAG, "                             : post increment is: " + numTurnsTakenInGame);
     }
 
-    private int getNumTurnsTaken () {
-        Log.d (TAG, "method getNumTurnsTaken");
+    public int getNumTurnsTaken () {
+        //Log.d (TAG, "method getNumTurnsTaken");
         return numTurnsTakenInGame;
     }
 
@@ -79,12 +80,12 @@ public class MemGameData {
         turnDurations = new ArrayList<Long>();
     }
 
-    private void addDurationToTurnDurations (long durToAdd) {
+    public void addDurationToTurnDurations (long durToAdd) {
         Log.d (TAG, "method addDurationToTurnDurations");
         turnDurations.add(durToAdd);
     }
 
-    private long queryTurnDurationsArray (int locToQuery) {
+    public long queryTurnDurationsArray (int locToQuery) {
         Log.d (TAG, "method queryTurnDurationArray: location to query: " + locToQuery);
         return turnDurations.get(locToQuery);
     }
