@@ -23,9 +23,10 @@ public class MemGameData {
 
     private Game mPlayingGame;
     private int difficulty;
-    private long gameDuration;
-    private int numTurnsTakenInGame = 0;
-    private ArrayList <Long> turnDurations = new ArrayList<Long>();
+    private long gameDurationAllocated;     //This is the time allocated for playing the game
+    private long gamePlayDuration;          //Time the player spent on the game (sum of turnDurations) (TODO can it be greater than allocated?)
+    private int numTurnsTakenInGame;        //Initialize number of turns in game to 0 and increment on each click.
+    private ArrayList <Long> turnDurations;
 
     //constructor method
     public MemGameData (Game currentGame) {
@@ -38,10 +39,12 @@ public class MemGameData {
     }
 
     private void setGameDifficulty () {
+        Log.d (TAG, "method setGameDifficulty");
         difficulty = mPlayingGame.boardConfiguration.difficulty;
     }
 
     private int getGameDifficulty () {
+        Log.d (TAG, "method getGameDifficulty: difficulty: " + difficulty);
         return difficulty;
     }
 
@@ -50,10 +53,39 @@ public class MemGameData {
     }
 
     private long getGameDuration () {
-        return gameDuration;
+        Log.d (TAG, "method getGameDuration: this returns the total duration ")
+        return gameDurationAllocated;
     }
 
-    private void setNumTurnsTaken () {}
+    private void setNumTurnsTaken () {
+        Log.d (TAG, "method setNumTurnsTaken: This is called once on init and is 0");
+        numTurnsTakenInGame = 0;
+    }
 
-    private void initTurnDurations () {}
+    private void incrementNumTurnsTaken (int numTurnsTaken) {
+        Log.d (TAG, "method incrementNumTurnsTaken: prior to increment: " + numTurnsTakenInGame)
+        numTurnsTakenInGame = numTurnsTaken++;
+        Log.d (TAG, "                             : post increment is: " + numTurnsTakenInGame);
+    }
+
+    private int getNumTurnsTaken () {
+        Log.d (TAG, "method getNumTurnsTaken");
+        return numTurnsTakenInGame;
+    }
+
+
+    private void initTurnDurations () {
+        Log.d (TAG, "method initTurnDurations array list");
+        private ArrayList <Long> turnDurations = new ArrayList<Long>();
+    }
+
+    private void addDurationToTurnDurations (long durToAdd) {
+        Log.d (TAG, "method addDurationToTurnDurations");
+        turnDurations.add(durToAdd);
+    }
+
+    private long queryTurnDurationsArray (int locToQuery) {
+        Log.d (TAG, "method queryTurnDurationArray: location to query: " + locToQuery);
+        return turnDurations.get(locToQuery);
+    }
 }
