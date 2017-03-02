@@ -19,6 +19,9 @@ public class BoardConfiguration {
 	public final int numRows;
 	public final int time;					//TODO should this be the baseline time for the board difficulty or already include sample duration variables
 
+	/*
+	 * Constructor BoardConfiguration sets up a board with a given difficulty
+	 */
 	public BoardConfiguration(int difficulty) {
 		this.difficulty = difficulty;
 		switch (difficulty) {
