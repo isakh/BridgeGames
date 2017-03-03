@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- board sizes in tiles for varying difficulty levels -->
+    <integer name="board_size_easy">12</integer>
+    <integer name="board_size_intermediate">16</integer>
+    <integer name="board_size_hard">18</integer>
+</resources>
