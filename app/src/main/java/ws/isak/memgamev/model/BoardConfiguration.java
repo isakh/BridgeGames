@@ -29,7 +29,9 @@ public class BoardConfiguration {
 
 	/*
 	 * Constructor BoardConfiguration sets up a board with a given difficulty.  For the time being
-	 * (and maybe as a permanent solution) TODO redefine the time variable to incorporate the samples as well
+	 * this includes a call to CalculateGameDuration which queries the number of tiles on the board
+	 * and determines how many pairs of cards are place and the duration of the samples associated
+	 * with those cards.
 	 */
 	public BoardConfiguration(int difficulty, Theme theme) {
 		this.difficulty = difficulty;

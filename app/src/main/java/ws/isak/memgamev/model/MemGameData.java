@@ -28,14 +28,14 @@ public class MemGameData {
     private long gamePlayDuration;          //Time the player spent on the game (sum of turnDurations) (TODO can it be greater than allocated time?)
     private int numTurnsTakenInGame;        //Initialize number of turns in game to 0 and increment on each click.
     private ArrayList <Long> turnDurations;             //a list of durations of each turn
-    private ArrayList <CardData> cardSelectedOrder;     //a list of cardData objects selected on each turn
+    //private ArrayList <CardData> cardSelectedOrder;     //a list of cardData objects selected on each turn //TODO!!!
 
     //constructor method describes the information that is stored about each game played
     public MemGameData (Game currentGame) {
         Log.d (TAG, "Constructor: initializing game data fields");
         mPlayingGame = currentGame;
         setGameDifficulty();
-        setGameStartTimestamp();
+        //TODO setGameStartTimestamp();     need to pass in the start time from the Clock
         setGameDurationAllocated(mPlayingGame.boardConfiguration.time);
         setNumTurnsTaken();
         initTurnDurationsArray();
@@ -94,14 +94,14 @@ public class MemGameData {
         return turnDurations.get(locToQuery);
     }
 
-    public void setGameStartTimestamp () {
-        //TODO figure out how to access the game start timestamp using clock
-        //TODO return the timestamp
+    public void setGameStartTimestamp (long gameStartTime) {
+        Log.d (TAG, "method setGameStartTimestamp");
+        gameStartTimestamp = gameStartTime;
     }
 
     public long getGameStartTimestamp () {
-        //TODO
-        return gameStartTimestamp;  //FIXME!!! This is currently not initialized
+        Log.d (TAG, "method getGameStartTimestamp");
+        return gameStartTimestamp;
     }
 
     public void setGamePlayDuration (long gamePlayStartTime) {            //TODO FIX THIS METHOD

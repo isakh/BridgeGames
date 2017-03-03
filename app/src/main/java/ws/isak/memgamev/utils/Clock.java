@@ -35,11 +35,14 @@ import android.util.Log;
  * @author isak
  * 
  */
+
+
 public class Clock {
 	public final String TAG = "Class: Clock";
 
 	private static PauseTimer mPauseTimer = null;
 	private static Clock mInstance = null;
+    public static long gameStartTimestamp;      //this needs to be set not when Clock is instantiated but when game play starts
 
 	//constructor method
 	private Clock() {
@@ -48,10 +51,18 @@ public class Clock {
 		//TODO of the game?
 	}
 
-	public static class PauseTimer extends CountDownClock {
+	/*
+	 * Class PauseTimer keeps track of game play time when the game is paused
+	 */
+
+    public static class PauseTimer extends CountDownClock {
 		private OnTimerCount mOnTimerCount = null;
 
-		public PauseTimer(long millisOnTimer, long countDownInterval, boolean runAtStart, OnTimerCount onTimerCount) {
+		/*
+		 * Method PauseTimer is an overloaded constructor inheriting from the constructor for the CountDownClock
+		 * class with additional input of on OnTimerCount object.
+		 */
+        public PauseTimer(long millisOnTimer, long countDownInterval, boolean runAtStart, OnTimerCount onTimerCount) {
 			super(millisOnTimer, countDownInterval, runAtStart);
 			mOnTimerCount = onTimerCount;
 		}

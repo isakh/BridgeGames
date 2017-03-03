@@ -198,10 +198,8 @@ public class Engine extends EventObserverAdapter {
 
 		//TODO Verify if this is a good place for instantiating the currentGameData object
         currentGameData = new MemGameData(mPlayingGame);
-        //TODO currentGameData.setGameDurationAllocated();   //need a number returned from arrangeBoard
         Log.d (TAG, "event DifficultySelectedEvent: currentGameData.getGameDifficulty: " + currentGameData.getGameDifficulty());
         Log.d (TAG, "                             : currentGameData.getNumTurnsTaken: " + currentGameData.getNumTurnsTaken());
-
 
 		// start the screen - This call to screen controller causes the screen controller to select
         // a new GameFragment from the screen controller.  Opening the new GameFragment leads to a
@@ -210,7 +208,6 @@ public class Engine extends EventObserverAdapter {
         // and eventually calls addTile for each of the tiles on the board to be built.   This leads
         // to a thread for each tile which calls getTileBitmap...
 		mScreenController.openScreen(Screen.GAME);
-        //TODO how shall we also process the audio duration associated with each selected tile ?????
         currentGameData.setGameDurationAllocated(mPlayingGame.boardConfiguration.time);
         Log.d (TAG, "                             : currentGameData.getGameDurationAllocated: " + currentGameData.getGameDurationAllocated());
     }
