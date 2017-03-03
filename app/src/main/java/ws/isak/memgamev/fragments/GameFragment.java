@@ -6,8 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-//TODO REMOVE import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.Locale;
 
 import ws.isak.memgamev.R;
 import ws.isak.memgamev.common.Shared;
@@ -27,7 +28,6 @@ public class GameFragment extends BaseFragment {
 	private BoardView mBoardView;
 	private TextView mTime;
 	private ImageView mTimeImage;
-	//TODO REMOVE private LinearLayout ads;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -61,20 +61,22 @@ public class GameFragment extends BaseFragment {
 
 	private void buildBoard() {
 		Game game = Shared.engine.getActiveGame();
-		int time = game.boardConfiguration.time;
+		long time = game.boardConfiguration.time;
 		setTime(time);
 		mBoardView.setBoard(game);
 		
 		startClock(time);
 	}
 	
-	private void setTime(int time) {
-		int min = time / 60;
-		int sec = time - min*60;
-		mTime.setText(" " + String.format("%02d", min) + ":" + String.format("%02d", sec));
+	private void setTime(long time) {
+		int timeInSeconds = (int) Math.ceil ((double) time / 1000);
+		int min = timeInSeconds / 60;
+		int sec = timeInSeconds - min*60;
+		mTime.setText(" " + String.format(Locale.ENGLISH, "%02d", min) + ":" + String.format(Locale.ENGLISH, "%02d", sec));
 	}
 
-	private void startClock(int sec) {
+	private void startClock(long time) {
+		int sec = (int) Math.ceil ((double) time / 1000);
 		Clock clock = Clock.getInstance();
 		clock.startTimer(sec*1000, 1000, new OnTimerCount() {
 			

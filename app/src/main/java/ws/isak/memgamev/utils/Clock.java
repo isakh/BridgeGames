@@ -41,8 +41,11 @@ public class Clock {
 	private static PauseTimer mPauseTimer = null;
 	private static Clock mInstance = null;
 
+	//constructor method
 	private Clock() {
 		Log.d("TAG", "constructor Clock() creates new instance ");
+		//TODO does it make sense to start a listener that will return the timestamp of the start
+		//TODO of the game?
 	}
 
 	public static class PauseTimer extends CountDownClock {

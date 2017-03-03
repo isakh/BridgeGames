@@ -189,8 +189,8 @@ public class Engine extends EventObserverAdapter {
 	public void onEvent(DifficultySelectedEvent event) {
 		mFlippedId = -1;
 		mPlayingGame = new Game();
-		mPlayingGame.boardConfiguration = new BoardConfiguration(event.difficulty);
-		mPlayingGame.theme = mSelectedTheme;
+        mPlayingGame.theme = mSelectedTheme;
+		mPlayingGame.boardConfiguration = new BoardConfiguration(event.difficulty, mSelectedTheme);
 		mToFlip = mPlayingGame.boardConfiguration.numTiles;
 
 		// arrange board
@@ -211,7 +211,7 @@ public class Engine extends EventObserverAdapter {
         // to a thread for each tile which calls getTileBitmap...
 		mScreenController.openScreen(Screen.GAME);
         //TODO how shall we also process the audio duration associated with each selected tile ?????
-        currentGameData.setGameDurationAllocated(mPlayingGame.boardConfiguration.time); //TODO HOW DOES THIS GET A ARRANGEMENT SPECIFIC ALLOCATED TIME?
+        currentGameData.setGameDurationAllocated(mPlayingGame.boardConfiguration.time);
         Log.d (TAG, "                             : currentGameData.getGameDurationAllocated: " + currentGameData.getGameDurationAllocated());
     }
 
@@ -289,15 +289,16 @@ public class Engine extends EventObserverAdapter {
 				if (mToFlip == 0) {		//when this gets to 0, we have flipped all pairs and can compute the score
 					int passedSeconds = (int) (Clock.getInstance().getPassedTime() / 1000);
 					Clock.getInstance().pause();
-					int totalTime = mPlayingGame.boardConfiguration.time;
+					long totalTimeInMillis = mPlayingGame.boardConfiguration.time;
+                    int totalTime = (int) Math.ceil((double) totalTimeInMillis / 1000); //TODO is this enough or should we convert all to long ms
 					GameState gameState = new GameState();
 					mPlayingGame.gameState = gameState;
 					// remained seconds
 					gameState.remainingTimeInSeconds = totalTime - passedSeconds;
 
 					// calculate stars and score from the amount of time that has elapsed as a ratio
-					// of total time allotted for the game.  When calculating this we still have...
-					// TODO solve time for audio playback and add it in
+					// of total time allotted for the game.  When calculating this we still have incorporated
+                    // the time based on the difficulty as well as the time to play back the samples
 					if (passedSeconds <= totalTime / 2) {gameState.achievedStars = 3; }
 					else if (passedSeconds <= totalTime - totalTime / 5) {gameState.achievedStars = 2; }
 					else if (passedSeconds < totalTime) {gameState.achievedStars = 1; }

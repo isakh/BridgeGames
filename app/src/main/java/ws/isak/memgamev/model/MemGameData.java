@@ -4,8 +4,8 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-import ws.isak.memgamev.model.Game;
-import ws.isak.memgamev.model.BoardConfiguration;
+import ws.isak.memgamev.common.CardData;
+
 
 /*
  * The NenGameData class contains information about each specific game played by the user including
@@ -22,18 +22,21 @@ public class MemGameData {
     private final String TAG = "Class: GameData";
 
     private Game mPlayingGame;
-    private int difficulty;
+    private int difficulty;                 //difficulty level for the current game
     private long gameDurationAllocated;     //This is the time allocated for playing the game
-    private long gamePlayDuration;          //Time the player spent on the game (sum of turnDurations) (TODO can it be greater than allocated?)
+    private long gameStartTimestamp;        //keep track of the timestamp for the start of the game
+    private long gamePlayDuration;          //Time the player spent on the game (sum of turnDurations) (TODO can it be greater than allocated time?)
     private int numTurnsTakenInGame;        //Initialize number of turns in game to 0 and increment on each click.
-    private ArrayList <Long> turnDurations;
+    private ArrayList <Long> turnDurations;             //a list of durations of each turn
+    private ArrayList <CardData> cardSelectedOrder;     //a list of cardData objects selected on each turn
 
-    //constructor method
+    //constructor method describes the information that is stored about each game played
     public MemGameData (Game currentGame) {
         Log.d (TAG, "Constructor: initializing game data fields");
         mPlayingGame = currentGame;
         setGameDifficulty();
-        setGameDurationAllocated();
+        setGameStartTimestamp();
+        setGameDurationAllocated(mPlayingGame.boardConfiguration.time);
         setNumTurnsTaken();
         initTurnDurationsArray();
     }
@@ -49,8 +52,9 @@ public class MemGameData {
         return difficulty;
     }
 
-    public void setGameDurationAllocated () {
-        //TODO figure our how to pass in the total time for the current game to last
+    public void setGameDurationAllocated (long gameDuration) {
+        //Log.d (TAG, "method setGameDurationAllocated");
+        gameDurationAllocated = gameDuration;
     }
 
     public long getGameDurationAllocated () {
@@ -88,5 +92,25 @@ public class MemGameData {
     public long queryTurnDurationsArray (int locToQuery) {
         Log.d (TAG, "method queryTurnDurationArray: location to query: " + locToQuery);
         return turnDurations.get(locToQuery);
+    }
+
+    public void setGameStartTimestamp () {
+        //TODO figure out how to access the game start timestamp using clock
+        //TODO return the timestamp
+    }
+
+    public long getGameStartTimestamp () {
+        //TODO
+        return gameStartTimestamp;  //FIXME!!! This is currently not initialized
+    }
+
+    public void setGamePlayDuration (long gamePlayStartTime) {            //TODO FIX THIS METHOD
+        Log.d (TAG, "method setGamePlayDuration: initialize to 0ms");
+        gamePlayDuration = gamePlayStartTime;   //TODO WE NEED ACCESS TO START TIME OF GAME FROM CLOCK
+    }
+
+    public long getGamePlayDuration () {
+        //
+        return gamePlayDuration;
     }
 }
