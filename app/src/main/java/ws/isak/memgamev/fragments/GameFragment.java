@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.util.Log;
 
 import java.util.Locale;
 
@@ -24,6 +25,8 @@ import ws.isak.memgamev.utils.FontLoader;
 import ws.isak.memgamev.utils.FontLoader.Font;
 
 public class GameFragment extends BaseFragment {
+
+    public final String TAG = "Class: Game Fragment";
 
 	private BoardView mBoardView;
 	private TextView mTime;
@@ -67,8 +70,13 @@ public class GameFragment extends BaseFragment {
 		
 		startClock(time);
 	}
-	
+
+    /*
+     * Method setTime converts the gameplay time in millis to minutes and seconds in order to set
+     * the countdown clock on the screen //TODO CHECK THIS IS TRUE?!
+     */
 	private void setTime(long time) {
+        Log.d (TAG, "method setTime: input time (ms): " + time);
 		int timeInSeconds = (int) Math.ceil ((double) time / 1000);
 		int min = timeInSeconds / 60;
 		int sec = timeInSeconds - min*60;
@@ -76,17 +84,21 @@ public class GameFragment extends BaseFragment {
 	}
 
 	private void startClock(long time) {
-		int sec = (int) Math.ceil ((double) time / 1000);
+        Log.d (TAG, "method startClock: intput time(ms): " + time);
+		//TODO remove int sec = (int) Math.ceil ((double) time / 1000);
 		Clock clock = Clock.getInstance();
-		clock.startTimer(sec*1000, 1000, new OnTimerCount() {
-			
-			@Override
+		//TODO remove clock.startTimer(sec*1000, 1000, new OnTimerCount() {
+        clock.startTimer(time, 1000, new OnTimerCount() {
+
+            @Override
 			public void onTick(long millisUntilFinished) {
+                Log.d (TAG, "method startClock: overriding onTick: input millisUntilFinished: " + millisUntilFinished);
 				setTime((int) (millisUntilFinished/1000));
 			}
 			
 			@Override
 			public void onFinish() {
+                Log.d (TAG, "method startClock: overriding onFinish");
 				setTime(0);
 			}
 		});
@@ -94,6 +106,7 @@ public class GameFragment extends BaseFragment {
 
 	@Override
 	public void onEvent(GameWonEvent event) {
+        //Log.d (TAG, "overriding method onEvent (GameWonEvent)");
 		mTime.setVisibility(View.GONE);
 		mTimeImage.setVisibility(View.GONE);
 		PopupManager.showPopupWon(event.gameState);
@@ -101,11 +114,13 @@ public class GameFragment extends BaseFragment {
 
 	@Override
 	public void onEvent(FlipDownCardsEvent event) {
+        //Log.d (TAG, "overriding method onEvent (FlipDownCardsEvent)");
 		mBoardView.flipDownAll();
 	}
 
 	@Override
 	public void onEvent(HidePairCardsEvent event) {
+        //Log.d (TAG, "overriding method onEvent (HidePairCardsEvent)");
 		mBoardView.hideCards(event.id1, event.id2);
 	}
 

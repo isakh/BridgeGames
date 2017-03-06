@@ -38,7 +38,7 @@ import android.util.Log;
 
 
 public class Clock {
-	public final String TAG = "Class: Clock";
+	public static final String TAG = "Class: Clock";
 
 	private static PauseTimer mPauseTimer = null;
 	private static Clock mInstance = null;
@@ -46,7 +46,7 @@ public class Clock {
 
 	//constructor method
 	private Clock() {
-		Log.d("TAG", "constructor Clock() creates new instance ");
+		Log.d(TAG, "constructor Clock() creates new instance ");
 		//TODO does it make sense to start a listener that will return the timestamp of the start
 		//TODO of the game?
 	}
@@ -56,6 +56,8 @@ public class Clock {
 	 */
 
     public static class PauseTimer extends CountDownClock {
+
+        public static final String TAG2 = "Class: PauseTimer";
 		private OnTimerCount mOnTimerCount = null;
 
 		/*
@@ -65,10 +67,12 @@ public class Clock {
         public PauseTimer(long millisOnTimer, long countDownInterval, boolean runAtStart, OnTimerCount onTimerCount) {
 			super(millisOnTimer, countDownInterval, runAtStart);
 			mOnTimerCount = onTimerCount;
-		}
+            Log.d (TAG2, "constructor PauseTimer: millisOnTimer: " + millisOnTimer + " | countDownInterval: " + countDownInterval + " | runAtStart: " + runAtStart + " | onTimerCount: " + onTimerCount);
+        }
 
 		@Override
 		public void onTick(long millisUntilFinished) {
+            Log.d (TAG2, "overriding onTick from CountDownClock");
 			if (mOnTimerCount != null) {
 				mOnTimerCount.onTick(millisUntilFinished);
 			}
@@ -76,13 +80,17 @@ public class Clock {
 
 		@Override
 		public void onFinish() {
+            Log.d (TAG2, "overriding onFinish from CountDownClock");
 			if (mOnTimerCount != null) {
 				mOnTimerCount.onFinish();
 			}
 		}
 	}
 
+    //************Back to top level class*************************
+
 	public static Clock getInstance() {
+        Log.d (TAG, "method getInstance returns Clock object");
 		if (mInstance == null) {
 			mInstance = new Clock();
 		}

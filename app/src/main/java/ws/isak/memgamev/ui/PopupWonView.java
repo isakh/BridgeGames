@@ -2,12 +2,17 @@ package ws.isak.memgamev.ui;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+
 import android.content.Context;
 import android.os.Handler;
+
 import android.util.AttributeSet;
+import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
+
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,6 +30,8 @@ import ws.isak.memgamev.utils.FontLoader.Font;
 
 public class PopupWonView extends RelativeLayout {
 
+	public static final String TAG = "Class: PopupWonView";
+
 	private TextView mTime;
 	private TextView mScore;
 	private ImageView mStar1;
@@ -40,6 +47,7 @@ public class PopupWonView extends RelativeLayout {
 
 	public PopupWonView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		Log.d (TAG, "constructor PopupWonView");
 		LayoutInflater.from(context).inflate(R.layout.popup_won_view, this, true);
 		mTime = (TextView) findViewById(R.id.time_bar_text);
 		mScore = (TextView) findViewById(R.id.score_bar_text);
@@ -68,6 +76,7 @@ public class PopupWonView extends RelativeLayout {
 	}
 
 	public void setGameState(final GameState gameState) {
+		Log.d (TAG, "method setGameState");
 		int min = gameState.remainingTimeInSeconds / 60;
 		int sec = gameState.remainingTimeInSeconds - min * 60;
 		mTime.setText(" " + String.format("%02d", min) + ":" + String.format("%02d", sec));
@@ -77,6 +86,7 @@ public class PopupWonView extends RelativeLayout {
 
 			@Override
 			public void run() {
+				Log.d (TAG, "method setGameState: overriding run()");
 				animateScoreAndTime(gameState.remainingTimeInSeconds, gameState.achievedScore);
 				animateStars(gameState.achievedStars);
 			}
@@ -84,6 +94,7 @@ public class PopupWonView extends RelativeLayout {
 	}
 
 	private void animateStars(int start) {
+		Log.d (TAG, "method animateStars");
 		switch (start) {
 		case 0:
 			mStar1.setVisibility(View.GONE);
@@ -122,6 +133,7 @@ public class PopupWonView extends RelativeLayout {
 	}
 	
 	private void animateStar(final View view, int delay) {
+		Log.d (TAG, "method animateStar");
 		ObjectAnimator alpha = ObjectAnimator.ofFloat(view, "alpha", 0, 1f);
 		alpha.setDuration(100);
 		ObjectAnimator scaleX = ObjectAnimator.ofFloat(view, "scaleX", 0, 1f);
@@ -138,18 +150,22 @@ public class PopupWonView extends RelativeLayout {
 			
 			@Override
 			public void run() {
+				Log.d (TAG, "method animateStar: overriding run()");
 				Music.showStar();
 			}
 		}, delay);
 	}
 
 	private void animateScoreAndTime(final int remainingTimeInSeconds, final int achievedScore) {
-		final int totalAnimation = 1200;
+		Log.d (TAG, "method animateScoreAndTime");
+		final int totalAnimation = 1200;        //TODO change this to a variable?
 
-		Clock.getInstance().startTimer(totalAnimation, 35, new OnTimerCount() {
+        Log.d (TAG, "method animateScoreAndTime: calling Clock.getInstance().startTimer");
+		Clock.getInstance().startTimer(totalAnimation, 35, new OnTimerCount() {     //TODO what is 35 doing here?
 
 			@Override
 			public void onTick(long millisUntilFinished) {
+                Log.d (TAG, "method animateScoreAndTime: overriding onTick: millisUntilFinished: " + millisUntilFinished);
 				float factor = millisUntilFinished / (totalAnimation * 1f); // 0.1
 				int scoreToShow = achievedScore - (int) (achievedScore * factor);
 				int timeToShow = (int) (remainingTimeInSeconds * factor);
@@ -161,11 +177,10 @@ public class PopupWonView extends RelativeLayout {
 
 			@Override
 			public void onFinish() {
+                Log.d (TAG, "method animateScoreAndTime: overriding onFinish");
 				mTime.setText(" " + String.format("%02d", 0) + ":" + String.format("%02d", 0));
 				mScore.setText("" + achievedScore);
 			}
 		});
-
 	}
-
 }
