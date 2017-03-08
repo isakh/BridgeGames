@@ -3,6 +3,8 @@ package ws.isak.memgamev.engine;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,14 +16,18 @@ import ws.isak.memgamev.fragments.DifficultySelectFragment;
 import ws.isak.memgamev.fragments.GameFragment;
 import ws.isak.memgamev.fragments.MenuFragment;
 import ws.isak.memgamev.fragments.ThemeSelectFragment;
+import ws.isak.memgamev.fragments.UserSetupFragment;
 
 public class ScreenController {
+
+    public static final String TAG = "Class: ScreenController";
 
 	private static ScreenController mInstance = null;
 	private static List<Screen> openedScreens = new ArrayList<Screen>();
 	private FragmentManager mFragmentManager;
 
 	private ScreenController() {
+        Log.d (TAG, "constructor does nothing");
 	}
 
 	public static ScreenController getInstance() {
@@ -35,10 +41,13 @@ public class ScreenController {
 		MENU,
 		GAME,
 		DIFFICULTY,
-		THEME_SELECT
+		THEME_SELECT,
+        USER_SETUP
+        //TODO add GAME_SELECT SCREEN
 	}
 	
 	public static Screen getLastScreen() {
+        Log.d (TAG, "method getLastScreen");
 		return openedScreens.get(openedScreens.size() - 1);
 	}
 
@@ -79,16 +88,21 @@ public class ScreenController {
 
 	private Fragment getFragment(Screen screen) {
 		switch (screen) {
-		case MENU:
-			return new MenuFragment();
-		case DIFFICULTY:
-			return new DifficultySelectFragment();
-		case GAME:
-			return new GameFragment();
-		case THEME_SELECT:
-			return new ThemeSelectFragment();
-		default:
-			break;
+		    case MENU:
+			    return new MenuFragment();
+		    case DIFFICULTY:
+			    return new DifficultySelectFragment();
+    		case GAME:
+	    		return new GameFragment();
+    		case THEME_SELECT:
+	    		return new ThemeSelectFragment();
+            case USER_SETUP:
+                return new UserSetupFragment();
+            //TODO case GAME_SELECT
+            //TODO      return new GameSelectFragment();
+
+		    default:
+			    break;
 		}
 		return null;
 	}

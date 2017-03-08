@@ -4,27 +4,62 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/user_setup_screen_margin"
-    android:paddingRight="@dimen/user_setup_screen_margin">
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp">
 
     <TextView
         android:id="@+id/user_setup_title"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/user_setup_title"
         android:textSize="16pt"/>   <!-- TODO set in values -->
 
-    <EditText
-        android:id="@+id/user_name_input"
+    <RelativeLayout
+        android:id="@+id/user_setup_new_user"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hint="@string/user_setup_name_hint"
-        android:inputType="textPersonName" />
+        android:layout_weight="1">
 
-    <Button
-        android:id="@+id/user_name_register_button"
+        <EditText
+            android:id="@+id/user_new_name_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/user_setup_name_hint"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/user_new_register_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/user_new_name_input"
+            android:onClick="submitNewUser"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="15dp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/user_setup_login_existing_user"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:onClick="submitUserSetup"/>
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
 
+        <EditText
+            android:id="@+id/user_old_name_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/user_setup_login_hint"
+            android:inputType="textPersonName"/>
+
+        <Button
+            android:id="@+id/user_preexisting_login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/user_old_name_input"
+            android:onClick="submitUserLogin"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="15dp"/>
+
+    </RelativeLayout>
 </LinearLayout>

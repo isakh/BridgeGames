@@ -14,6 +14,12 @@ import ws.isak.memgamev.events.ui.BackGameEvent;
 import ws.isak.memgamev.ui.PopupManager;
 import ws.isak.memgamev.utils.Utils;
 
+/*
+ * THe main activity class of the app.  This instantiates the shared context, engine
+ * and eventBus that guide the flow of the games.  On creation, the screen will open
+ * with the Menu screen (TODO should we ∆ this to USER_SETUP screen?, should USER_SETUP be Setup or Login??
+ */
+
 public class  MainActivity extends FragmentActivity {
 
 	private ImageView mBackgroundImage;
@@ -36,8 +42,11 @@ public class  MainActivity extends FragmentActivity {
 		// set background
 		setBackgroundImage();
 
-		// set menu
-		ScreenController.getInstance().openScreen(Screen.MENU);
+		// TODO figure out if we need this or can open to User setup screen
+		//ScreenController.getInstance().openScreen(Screen.MENU);
+
+        // open to User setup screen
+        ScreenController.getInstance().openScreen(Screen.USER_SETUP);
 	}
 
 	@Override

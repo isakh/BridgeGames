@@ -22,7 +22,7 @@ import ws.isak.memgamev.common.Memory;
 import ws.isak.memgamev.common.Music;
 import ws.isak.memgamev.common.Shared;
 import ws.isak.memgamev.common.CardData;
-import ws.isak.memgamev.common.UserData;        //TODO setup
+import ws.isak.memgamev.common.UserData;
 
 import ws.isak.memgamev.engine.ScreenController.Screen;
 import ws.isak.memgamev.events.engine.PlayCardAudioEvent;

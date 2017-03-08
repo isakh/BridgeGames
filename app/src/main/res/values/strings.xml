@@ -4,6 +4,7 @@
     <string name="birds_theme_name">Birds</string>
     <string name="spectrograms_theme_name">Spectrograms</string>
     <string name="user_setup_title">Create A New User</string>
-    <string name="user_setup_name_hint">Your Name Here</string>
+    <string name="user_setup_name_hint">New User Setup</string>
+    <string name="user_setup_login_hint">Existing User Login</string>
     <string name="user_setup_register">Continue</string>
 </resources>
