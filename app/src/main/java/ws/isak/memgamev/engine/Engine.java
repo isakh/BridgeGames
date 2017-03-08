@@ -352,12 +352,15 @@ public class Engine extends EventObserverAdapter {
             curTileAudio.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 					@Override
 					public void onCompletion(MediaPlayer curTileAudio) {
+						Log.d (TAG, "method playTileAudio: overriding onCompletion");
+						Music.setIsAudioPlaying(false);
 						curTileAudio.reset();
 						curTileAudio.release();
 						curTileAudio = null;
 					}
             });
             curTileAudio.start();
+			Music.setIsAudioPlaying (true);
             long sampleDuration = Music.getAudioDuration (audioResourceId);
             Log.d (TAG, "                    : sampleDuration: " + sampleDuration);
 

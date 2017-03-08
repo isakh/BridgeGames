@@ -29,8 +29,10 @@ import ws.isak.memgamev.R;
  */
 
 public class Music {
+
 	public static final String TAG = "Class: Music";
 	public static boolean OFF = false;
+    public static boolean isPlaying;
 
 	public static void playCorrect() {
 		if (!OFF) {
@@ -105,4 +107,19 @@ public class Music {
 		audioMetaData.release();
 		return dur;
 	}
+
+	/*
+	 * Method isAudioPlaying is a boolean set to true while a tile's audio is being played and reset
+	 * to false upon completion - this ensures that only one tile's audio is played at a time
+	 */
+    public static void setIsAudioPlaying (boolean playbackOn) {
+        Log.d (TAG, "method setIsAudioPlaying: current state: " + playbackOn);
+        isPlaying = playbackOn;
+    }
+
+    public static boolean getIsAudioPlaying () {
+        Log.d (TAG, "method getIsAudioPlaying: returns isPlaying: " + isPlaying);
+        return isPlaying;
+    }
+
 }

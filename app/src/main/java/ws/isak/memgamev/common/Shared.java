@@ -13,4 +13,6 @@ public class Shared {
 	public static Engine engine;
 	public static EventBus eventBus;
 
+	//TODO add anything else here??
+
 }
