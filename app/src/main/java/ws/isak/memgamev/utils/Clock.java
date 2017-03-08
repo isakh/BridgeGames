@@ -46,7 +46,7 @@ public class Clock {
 
 	//constructor method
 	private Clock() {
-		Log.d(TAG, "constructor Clock() creates new instance ");
+		Log.d(TAG, "constructor Clock() creates new instance of Clock");
 		//TODO does it make sense to start a listener that will return the timestamp of the start
 		//TODO of the game?
 	}
@@ -87,7 +87,7 @@ public class Clock {
 		}
 	}
 
-    //************Back to top level class*************************
+    //************ Back to top level class *************************
 
 	public static Clock getInstance() {
         Log.d (TAG, "method getInstance returns Clock object");

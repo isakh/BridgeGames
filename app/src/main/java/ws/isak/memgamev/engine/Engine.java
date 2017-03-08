@@ -200,6 +200,7 @@ public class Engine extends EventObserverAdapter {
         currentGameData = new MemGameData(mPlayingGame);
         Log.d (TAG, "event DifficultySelectedEvent: currentGameData.getGameDifficulty: " + currentGameData.getGameDifficulty());
         Log.d (TAG, "                             : currentGameData.getNumTurnsTaken: " + currentGameData.getNumTurnsTaken());
+        Log.d (TAG, "                             : currentGameData.isGameStarted: " + currentGameData.isGameStarted());
 
 		// start the screen - This call to screen controller causes the screen controller to select
         // a new GameFragment from the screen controller.  Opening the new GameFragment leads to a

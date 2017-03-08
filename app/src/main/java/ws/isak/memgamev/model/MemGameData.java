@@ -24,21 +24,24 @@ public class MemGameData {
     private Game mPlayingGame;
     private int difficulty;                 //difficulty level for the current game
     private long gameDurationAllocated;     //This is the time allocated for playing the game
+    private boolean gameStarted;            //Set to Boolean false, becomes true when first card is clicked - triggers gameStarTimeStamp
     private long gameStartTimestamp;        //keep track of the timestamp for the start of the game
-    private long gamePlayDuration;          //Time the player spent on the game (sum of turnDurations) (TODO can it be greater than allocated time?)
-    private int numTurnsTakenInGame;        //Initialize number of turns in game to 0 and increment on each click.
     private ArrayList <Long> turnDurations;             //a list of durations of each turn
-    //private ArrayList <CardData> cardSelectedOrder;     //a list of cardData objects selected on each turn //TODO!!!
+    private long gamePlayDuration;          //Time the player spent on the game (sum of turnDurations) (TODO can it be greater than allocated time?)
+    private ArrayList <CardData> cardSelectedOrder;   //a list of cardData objects selected on each turn //TODO!!! should type be CardData, or (int) CardData.cardID
+    private int numTurnsTakenInGame;        //Initialize number of turns in game to 0 and increment on each click.
 
     //constructor method describes the information that is stored about each game played
     public MemGameData (Game currentGame) {
         Log.d (TAG, "Constructor: initializing game data fields");
         mPlayingGame = currentGame;
         setGameDifficulty();
-        //TODO setGameStartTimestamp();     need to pass in the start time from the Clock
         setGameDurationAllocated(mPlayingGame.boardConfiguration.time);
+        setGameStarted(false);      //initialize to false on setup
+        //TODO setGameStartTimestamp(); should this be done in the constructor or based on the first card flip event
         setNumTurnsTaken();
         initTurnDurationsArray();
+        initCardSelectedOrderArray();
     }
 
     //TODO decide if class methods are public or private
@@ -62,22 +65,25 @@ public class MemGameData {
         return gameDurationAllocated;
     }
 
-    private void setNumTurnsTaken () {
-        //Log.d (TAG, "method setNumTurnsTaken: This is called once on init and is 0");
-        numTurnsTakenInGame = 0;
+    public void setGameStarted (boolean startedYet) {
+        //Log.d (TAG, "method setGameStarted");
+        gameStarted = startedYet;
     }
 
-    public void incrementNumTurnsTaken (int numTurnsTaken) {
-        //Log.d (TAG, "method incrementNumTurnsTaken: prior to increment: " + numTurnsTakenInGame);
-        numTurnsTakenInGame = numTurnsTaken++;
-        Log.d (TAG, "                             : post increment is: " + numTurnsTakenInGame);
+    public boolean isGameStarted () {
+        //Log.d (TAG, "method isGameStarted");
+        return gameStarted;
     }
 
-    public int getNumTurnsTaken () {
-        //Log.d (TAG, "method getNumTurnsTaken");
-        return numTurnsTakenInGame;
+    public void setGameStartTimestamp (long gameStartTime) {
+        Log.d (TAG, "method setGameStartTimestamp");
+        gameStartTimestamp = gameStartTime;
     }
 
+    public long getGameStartTimestamp () {
+        Log.d (TAG, "method getGameStartTimestamp");
+        return gameStartTimestamp;
+    }
 
     private void initTurnDurationsArray () {
         Log.d (TAG, "method initTurnDurations array list");
@@ -94,16 +100,6 @@ public class MemGameData {
         return turnDurations.get(locToQuery);
     }
 
-    public void setGameStartTimestamp (long gameStartTime) {
-        Log.d (TAG, "method setGameStartTimestamp");
-        gameStartTimestamp = gameStartTime;
-    }
-
-    public long getGameStartTimestamp () {
-        Log.d (TAG, "method getGameStartTimestamp");
-        return gameStartTimestamp;
-    }
-
     public void setGamePlayDuration (long gamePlayStartTime) {            //TODO FIX THIS METHOD
         Log.d (TAG, "method setGamePlayDuration: initialize to 0ms");
         gamePlayDuration = gamePlayStartTime;   //TODO WE NEED ACCESS TO START TIME OF GAME FROM CLOCK
@@ -112,5 +108,26 @@ public class MemGameData {
     public long getGamePlayDuration () {
         //
         return gamePlayDuration;
+    }
+
+    private void initCardSelectedOrderArray () {
+        //Log.d (TAG, "method initCardsSelectedOrderArray");
+        cardSelectedOrder = new ArrayList<CardData>();
+    }
+
+    private void setNumTurnsTaken () {
+        //Log.d (TAG, "method setNumTurnsTaken: This is called on init as 0");
+        numTurnsTakenInGame = 0;
+    }
+
+    public void incrementNumTurnsTaken (int numTurnsTaken) {
+        Log.d (TAG, "method incrementNumTurnsTaken: prior to increment: " + numTurnsTakenInGame);
+        numTurnsTakenInGame = numTurnsTaken++;
+        Log.d (TAG, "                             : post increment is: " + numTurnsTakenInGame);
+    }
+
+    public int getNumTurnsTaken () {
+        //Log.d (TAG, "method getNumTurnsTaken");
+        return numTurnsTakenInGame;
     }
 }

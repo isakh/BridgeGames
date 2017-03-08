@@ -17,9 +17,9 @@ public class BoardConfiguration {
 
     private static final String TAG = "Class: BoardConfig";
 
-    private static final int _12 = R.integer.board_size_easy;
-	private static final int _16 = R.integer.board_size_intermediate;
-	private static final int _18 = R.integer.board_size_hard;
+    private static final int easy = Shared.context.getResources().getInteger(R.integer.board_size_easy);
+	private static final int medium = Shared.context.getResources().getInteger(R.integer.board_size_intermediate);
+	private static final int hard = Shared.context.getResources().getInteger(R.integer.board_size_hard);
 
 	public final int difficulty;
 	public final int numTiles;
@@ -34,22 +34,23 @@ public class BoardConfiguration {
 	 * with those cards.
 	 */
 	public BoardConfiguration(int difficulty, Theme theme) {
+        Log.d (TAG, "constructor: difficulty: " + difficulty + " | theme.name: " + theme.name);
 		this.difficulty = difficulty;
 		switch (difficulty) {
 		case 1:
-			numTiles = _12;
+			numTiles = easy;
 			numTilesInRow = 4;
 			numRows = 3;
 			time = CalculateGameDuration (numTiles, Shared.context.getResources().getInteger(R.integer.baseline_time_difficulty_easy), theme);
 			break;
 		case 2:
-			numTiles = _16;
+			numTiles = medium;
 			numTilesInRow = 4;
 			numRows = 4;
             time = CalculateGameDuration (numTiles, Shared.context.getResources().getInteger(R.integer.baseline_time_difficulty_medium), theme);
 			break;
 		case 3:
-			numTiles = _18;
+			numTiles = hard;
 			numTilesInRow = 6;
 			numRows = 3;
             time = CalculateGameDuration (numTiles, Shared.context.getResources().getInteger(R.integer.baseline_time_difficulty_hard), theme);
@@ -61,10 +62,14 @@ public class BoardConfiguration {
 	}
 
     private long CalculateGameDuration (int numTiles, int difficultyBaseline, Theme theme) {
+        Log.d (TAG, "method CalculateGameDuration: numTiles: " + numTiles + " | difficultyBaseLine: " + difficultyBaseline + " | theme.name: " + theme.name);
         long cumulativeTime = (long) difficultyBaseline;
         for (int i = 0; i < numTiles/2; i++) {
+            //Log.d (TAG, "method CalculateGameDuration: theme.cardObjs.get(i).getCardId(): " + theme.cardObjs.get(i).getCardID());
             long curCardDur = theme.cardObjs.get(i).getSampleDuration();
+            Log.d (TAG, "                            : theme.cardObjs.get(i).getSampleDuration(): " + theme.cardObjs.get(i).getSampleDuration());
             cumulativeTime = cumulativeTime + (2 * curCardDur);
+            Log.d (TAG, "                            : cumulativeTime: " + cumulativeTime);
         }
         Log.d (TAG, "method CalculateGameDuration: totalGameTime: " + cumulativeTime);
         return  cumulativeTime;

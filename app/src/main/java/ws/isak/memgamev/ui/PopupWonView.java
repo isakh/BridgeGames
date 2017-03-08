@@ -157,7 +157,7 @@ public class PopupWonView extends RelativeLayout {
 	}
 
 	private void animateScoreAndTime(final int remainingTimeInSeconds, final int achievedScore) {
-		Log.d (TAG, "method animateScoreAndTime");
+		Log.d (TAG, "method animateScoreAndTime: remainingTimeInSeconds: " + remainingTimeInSeconds + " | achievedScore: " + achievedScore);
 		final int totalAnimation = 1200;        //TODO change this to a variable?
 
         Log.d (TAG, "method animateScoreAndTime: calling Clock.getInstance().startTimer");

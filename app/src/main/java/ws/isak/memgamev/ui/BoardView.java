@@ -10,12 +10,15 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 
+import android.os.SystemClock;
+import android.os.AsyncTask;
+
+import android.util.Log;
+import android.util.AttributeSet;
+
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.util.AttributeSet;
 import android.widget.LinearLayout;
-import android.util.Log;
 
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -174,6 +177,15 @@ public class BoardView extends LinearLayout {
 					Log.d (TAG, " 			   : curCardOnTile.getPairedImageDiffer is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getPairedImageDiffer());
 					Log.d (TAG, " 			   : curCardOnTile.getFirstImageUsed is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getFirstImageUsed());
 					Log.d (TAG, " 			   : curCardOnTile.getImageURI2 is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getImageURI2());
+
+					//TODO If this is the first tile being clicked, we need to change the state of MemGameData.isGameStarted()
+					//TODO 		- if this is the first tile we need to set the MemGameData.setGameStartTimeStamp()
+					//TODO If this is not the first tile, we need to record that click has been made, it's time, and update accordingly
+					//TODO should this be coded here, or sent as a new event (i.e. SaveTurnDataEvent)
+
+					Log.d (TAG, "***** Update MemGameData with current timing information *****");
+					Log.d (TAG, "Current SystemClock.elapsedReadTime(): " + SystemClock.elapsedRealtime());
+
 					tileView.flipUp();
 					//Log.d (TAG, " *** method addTile: onClick: called tileView.flipUp() *** ");
 					flippedUp.add(curTileOnBoard);

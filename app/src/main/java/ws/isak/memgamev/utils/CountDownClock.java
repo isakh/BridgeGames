@@ -14,7 +14,7 @@ public abstract class CountDownClock {
     public final String TAG = "Class: CountDownClock";
 
     private long mStopTimeInFuture;		    //Milliseconds since boot when alarm should stop.
-	private long mMillisOnTimer;           //Real time remaining until timer completes
+	private long mMillisOnTimer;            //Real time remaining until timer completes
 	private final long mTotalCountdown;     //Total time on timer at start
 	private final long mCountdownInterval;  //The interval in millis that the user receives callbacks
 	private long mPauseTimeRemaining;       //Time remaining on the timer when it was paused, if currently paused, otherwise 0.
@@ -85,7 +85,8 @@ public abstract class CountDownClock {
 		if (isPaused()) {
             Log.d (TAG, "             : set millisOnTimer to pauseTimeRemaining: " + mPauseTimeRemaining);
 			mMillisOnTimer = mPauseTimeRemaining;
-            Log.d (TAG, "             : set stopTimeInFuture to SystemClock.elapsedReadTime() + millisOnTimer: " + SystemClock.elapsedRealtime() + mMillisOnTimer);
+            Log.d (TAG, "             : SystemClock.elapsedRealTime(): " + SystemClock.elapsedRealtime());
+            Log.d (TAG, "             : set stopTimeInFuture to SystemClock.elapsedRealTime() + millisOnTimer: " + SystemClock.elapsedRealtime() + mMillisOnTimer);
 			mStopTimeInFuture = SystemClock.elapsedRealtime() + mMillisOnTimer;
             Log.d (TAG, "             : ***CHECK*** system call delay reflects difference with stopTimeInFuture: " + mStopTimeInFuture);
 			mHandler.sendMessage(mHandler.obtainMessage(MSG));

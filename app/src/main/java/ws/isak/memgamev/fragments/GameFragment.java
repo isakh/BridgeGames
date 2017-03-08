@@ -78,8 +78,11 @@ public class GameFragment extends BaseFragment {
 	private void setTime(long time) {
         Log.d (TAG, "method setTime: input time (ms): " + time);
 		int timeInSeconds = (int) Math.ceil ((double) time / 1000);
+        Log.d (TAG, "              : timeInSeconds: " + timeInSeconds);
 		int min = timeInSeconds / 60;
+        Log.d (TAG, "              : min: " + min);
 		int sec = timeInSeconds - min*60;
+        Log.d (TAG, "              : sec: " + sec + " | calling mTime.setText");
 		mTime.setText(" " + String.format(Locale.ENGLISH, "%02d", min) + ":" + String.format(Locale.ENGLISH, "%02d", sec));
 	}
 

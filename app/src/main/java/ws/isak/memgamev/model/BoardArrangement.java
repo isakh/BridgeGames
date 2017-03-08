@@ -3,11 +3,9 @@ package ws.isak.memgamev.model;
 import java.util.Map;
 
 import android.graphics.Bitmap;
-import android.media.MediaPlayer;
 import android.util.Log;
 
 import ws.isak.memgamev.common.Shared;
-//import ws.isak.memgamev.themes.Theme;	//TODO remove if unecessary
 import ws.isak.memgamev.themes.Themes;
 import ws.isak.memgamev.utils.Utils;
 import ws.isak.memgamev.common.CardData;

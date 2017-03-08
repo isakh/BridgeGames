@@ -20,7 +20,7 @@ public class UserData {
 
     private String userName;
     private ArrayList <MemGameData> memGameDataList = new ArrayList<MemGameData>();
-    //TODO private ArrayList swapGameDataList>SwapGameData>;   this will cover when the user plays the tile swapping game
+    //TODO private ArrayList swapGameDataList<SwapGameData>;   this will cover when the user plays the tile swapping game
 
     public void setUserName (String user) {
         //TODO method CheckUserNameUnique (user, )
