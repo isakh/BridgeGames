@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">MemGameV</string>
-    <string name="time_bar_text">00:60</string>
+    <string name="time_bar_text">00:60</string>     <!-- TODO fix this and make dynamic -->
     <string name="birds_theme_name">Birds</string>
     <string name="spectrograms_theme_name">Spectrograms</string>
+    <string name="user_setup_title">Create A New User</string>
+    <string name="user_setup_name_hint">Your Name Here</string>
+    <string name="user_setup_register">Continue</string>
 </resources>

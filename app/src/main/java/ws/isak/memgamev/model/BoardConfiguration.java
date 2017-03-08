@@ -62,16 +62,16 @@ public class BoardConfiguration {
 	}
 
     private long CalculateGameDuration (int numTiles, int difficultyBaseline, Theme theme) {
-        Log.d (TAG, "method CalculateGameDuration: numTiles: " + numTiles + " | difficultyBaseLine: " + difficultyBaseline + " | theme.name: " + theme.name);
+        Log.d (TAG, "method CalculateGameDuration: numTiles: " + numTiles + " | difficultyBaseLine: " + difficultyBaseline + "ms | theme.name: " + theme.name);
         long cumulativeTime = (long) difficultyBaseline;
         for (int i = 0; i < numTiles/2; i++) {
             //Log.d (TAG, "method CalculateGameDuration: theme.cardObjs.get(i).getCardId(): " + theme.cardObjs.get(i).getCardID());
             long curCardDur = theme.cardObjs.get(i).getSampleDuration();
-            Log.d (TAG, "                            : theme.cardObjs.get(i).getSampleDuration(): " + theme.cardObjs.get(i).getSampleDuration());
+            //Log.d (TAG, "                            : theme.cardObjs.get(i).getSampleDuration(): " + theme.cardObjs.get(i).getSampleDuration());
             cumulativeTime = cumulativeTime + (2 * curCardDur);
-            Log.d (TAG, "                            : cumulativeTime: " + cumulativeTime);
+            //Log.d (TAG, "                            : cumulativeTime: " + cumulativeTime);
         }
-        Log.d (TAG, "method CalculateGameDuration: totalGameTime: " + cumulativeTime);
+        Log.d (TAG, "method CalculateGameDuration: totalGameTime: " + cumulativeTime + "ms");
         return  cumulativeTime;
     }
 }

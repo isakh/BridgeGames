@@ -6,7 +6,7 @@
     <dimen name="title_width">400dp</dimen>
     <dimen name="title_height">120dp</dimen>
     <dimen name="title_margin_top">50dp</dimen>
-    
+
     <!-- menu buttons -->
     <dimen name="start_game_button">100dp</dimen>
     <dimen name="start_game_button_margin">20dp</dimen>
@@ -18,7 +18,10 @@
     <dimen name="tooltip_height">80dp</dimen>
     <dimen name="tooltip_margin_left">120dp</dimen>
     <dimen name="tooltip_margin_bottom">105dp</dimen>
-    
+
+    <!-- user setup screen dimensions-->        <!--TODO rework dimensions to better fit screen -->
+    <dimen name="user_setup_screen_margin">50dp</dimen>
+
     <!-- theme -->
     <dimen name="theme_padding">40dp</dimen>
     <dimen name="theme_margin">20dp</dimen>
@@ -63,4 +66,6 @@
     <dimen name="popup_settings_sound_text_size">40dp</dimen> <!-- TODO Check size -->
     <dimen name="popup_settings_padding_top">55dp</dimen>
     <dimen name="popup_settings_padding_left">20dp</dimen>
+
+
 </resources>

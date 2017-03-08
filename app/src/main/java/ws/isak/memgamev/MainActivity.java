@@ -14,7 +14,7 @@ import ws.isak.memgamev.events.ui.BackGameEvent;
 import ws.isak.memgamev.ui.PopupManager;
 import ws.isak.memgamev.utils.Utils;
 
-public class MainActivity extends FragmentActivity {
+public class  MainActivity extends FragmentActivity {
 
 	private ImageView mBackgroundImage;
 

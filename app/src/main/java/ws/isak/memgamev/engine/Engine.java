@@ -126,11 +126,9 @@ public class Engine extends EventObserverAdapter {
 					Bitmap bitmap = Utils.scaleDown(R.drawable.background, Utils.screenWidth(), Utils.screenHeight());
 					return bitmap;
 				}
-
 				protected void onPostExecute(Bitmap bitmap) {
 					mBackgroundImage.setImageBitmap(bitmap);
 				};
-
 			}.execute();
 		}
 	}
@@ -138,6 +136,13 @@ public class Engine extends EventObserverAdapter {
 	@Override
 	public void onEvent(StartEvent event) {
         Log.d (TAG, "override onEvent for StartEvent");
+
+		//TODO Verify if this is a good place for instantiating the currentGameData object was in DifficultySelectEvent
+		currentGameData = new MemGameData(mPlayingGame);
+		Log.d (TAG, "event StartEvent: create currentGameData: currentGameData.getGameDifficulty: " + currentGameData.getGameDifficulty());
+		Log.d (TAG, "                             			 : currentGameData.getNumTurnsTaken: " + currentGameData.getNumTurnsTaken());
+		Log.d (TAG, "                             			 : currentGameData.isGameStarted: " + currentGameData.isGameStarted());
+
 		mScreenController.openScreen(Screen.THEME_SELECT);
 	}
 
@@ -196,12 +201,6 @@ public class Engine extends EventObserverAdapter {
 		// arrange board
 		arrangeBoard();
 
-		//TODO Verify if this is a good place for instantiating the currentGameData object
-        currentGameData = new MemGameData(mPlayingGame);
-        Log.d (TAG, "event DifficultySelectedEvent: currentGameData.getGameDifficulty: " + currentGameData.getGameDifficulty());
-        Log.d (TAG, "                             : currentGameData.getNumTurnsTaken: " + currentGameData.getNumTurnsTaken());
-        Log.d (TAG, "                             : currentGameData.isGameStarted: " + currentGameData.isGameStarted());
-
 		// start the screen - This call to screen controller causes the screen controller to select
         // a new GameFragment from the screen controller.  Opening the new GameFragment leads to a
         // call to buildBoard() a private method in the Game Fragment. buildBoard calls setBoard in
@@ -210,7 +209,7 @@ public class Engine extends EventObserverAdapter {
         // to a thread for each tile which calls getTileBitmap...
 		mScreenController.openScreen(Screen.GAME);
         currentGameData.setGameDurationAllocated(mPlayingGame.boardConfiguration.time);
-        Log.d (TAG, "                             : currentGameData.getGameDurationAllocated: " + currentGameData.getGameDurationAllocated());
+        Log.d (TAG, "                             : currentGameData.getGameDurationAllocated: " + currentGameData.getGameDurationAllocated() + "ms");
     }
 
 	private void arrangeBoard() {

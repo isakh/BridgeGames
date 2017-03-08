@@ -38,10 +38,11 @@ public class MemGameData {
         setGameDifficulty();
         setGameDurationAllocated(mPlayingGame.boardConfiguration.time);
         setGameStarted(false);      //initialize to false on setup
-        //TODO setGameStartTimestamp(); should this be done in the constructor or based on the first card flip event
+        //initialize to 0 or null as necessary
+        setGameStartTimestamp(0);
         setNumTurnsTaken();
         initTurnDurationsArray();
-        initCardSelectedOrderArray();
+        initCardsSelectedArray();
     }
 
     //TODO decide if class methods are public or private
@@ -110,9 +111,19 @@ public class MemGameData {
         return gamePlayDuration;
     }
 
-    private void initCardSelectedOrderArray () {
-        //Log.d (TAG, "method initCardsSelectedOrderArray");
+    private void initCardsSelectedArray () {
+        Log.d (TAG, "method initCardsSelectedOrderArray array list");
         cardSelectedOrder = new ArrayList<CardData>();
+    }
+
+    public void addCardToCardsSelected (CardData cardToAdd) {
+        Log.d (TAG, "method addCardToCardsSelectedArray");
+        cardSelectedOrder.add(cardToAdd);
+    }
+
+    public CardData queryCardsSelectedArray (int locToQuery) {
+        Log.d (TAG, "method queryCardsSelectedArray");
+        return cardSelectedOrder.get(locToQuery);
     }
 
     private void setNumTurnsTaken () {

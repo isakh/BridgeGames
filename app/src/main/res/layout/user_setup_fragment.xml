@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/user_setup_screen_margin"
+    android:paddingRight="@dimen/user_setup_screen_margin">
+
+    <TextView
+        android:id="@+id/user_setup_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/user_setup_title"
+        android:textSize="16pt"/>   <!-- TODO set in values -->
+
+    <EditText
+        android:id="@+id/user_name_input"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:hint="@string/user_setup_name_hint"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/user_name_register_button"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="submitUserSetup"/>
+
+</LinearLayout>

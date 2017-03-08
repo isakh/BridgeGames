@@ -180,7 +180,7 @@ public class BoardView extends LinearLayout {
 					Log.d (TAG, " 			   : curCardOnTile.getImageURI2 is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getImageURI2());
 
 					//TODO If this is the first tile being clicked, we need to change the state of MemGameData.isGameStarted()
-					//TODO 		- if this is the first tile we need to set the MemGameData.setGameStartTimeStamp()
+			  		//TODO 		- if this is the first tile we need to set the MemGameData.setGameStartTimeStamp()
 					//TODO If this is not the first tile, we need to record that click has been made, it's time, and update accordingly
 					//TODO should this be coded here, or sent as a new event (i.e. SaveTurnDataEvent)
 
