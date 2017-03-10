@@ -38,10 +38,12 @@ public class TileView extends FrameLayout {
 
 	public TileView(Context context) {
 		this(context, null);
+        Log.d (TAG, "constructor");
 	}
 
 	public TileView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+        Log.d (TAG, "overloaded constructor");
 	}
 
 	public static TileView fromXml(Context context, ViewGroup parent) {
@@ -56,6 +58,7 @@ public class TileView extends FrameLayout {
 	}
 
 	public void setTileImage(Bitmap bitmap) {
+        Log.d (TAG, "method setTileImage");
 		mTileImage.setImageBitmap(bitmap);
 	}
 
@@ -83,6 +86,8 @@ public class TileView extends FrameLayout {
 		return mFlippedDown;
 	}
 
+
+    // **************************************************************************************
 
 	public class FlipAnimation extends Animation {
 		private Camera camera;

@@ -1,17 +1,14 @@
 package ws.isak.memgamev.ui;
 
-import java.util.Locale;
 import android.util.Log;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import ws.isak.memgamev.R;
-import ws.isak.memgamev.common.Shared;
 
 /*
  *

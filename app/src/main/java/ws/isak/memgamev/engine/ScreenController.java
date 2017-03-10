@@ -18,6 +18,13 @@ import ws.isak.memgamev.fragments.MenuFragment;
 import ws.isak.memgamev.fragments.ThemeSelectFragment;
 import ws.isak.memgamev.fragments.UserSetupFragment;
 
+/*
+ * Class ScreenController instantiates a list of currently openedScreens and a fragmentManager
+ * ... //TODO
+ *
+ * @author isak
+ */
+
 public class ScreenController {
 
     public static final String TAG = "Class: ScreenController";
@@ -31,19 +38,20 @@ public class ScreenController {
 	}
 
 	public static ScreenController getInstance() {
+        Log.d (TAG, "method getInstance of ScreenController");
 		if (mInstance == null) {
 			mInstance = new ScreenController();
 		}
 		return mInstance;
 	}
 
-	public static enum Screen {
+	public enum Screen {        //FIXME? was: public static enum Screen
 		MENU,
 		GAME,
 		DIFFICULTY,
 		THEME_SELECT,
         USER_SETUP
-        //TODO add GAME_SELECT SCREEN
+        //TODO add GAME_SELECT SCREEN & USER_SURVEY (the latter being a one off survey about a new user)
 	}
 	
 	public static Screen getLastScreen() {
@@ -51,7 +59,8 @@ public class ScreenController {
 		return openedScreens.get(openedScreens.size() - 1);
 	}
 
-	public void openScreen(Screen screen) {
+	public void openScreen(Screen screen) {     //FIXME!! this was void, but need to know fragment for clickable
+        Log.d (TAG, "Method openScreen: creating mFragmentManager");
 		mFragmentManager = Shared.activity.getSupportFragmentManager();
 		
 		if (screen == Screen.GAME && openedScreens.get(openedScreens.size() - 1) == Screen.GAME) {
@@ -65,6 +74,7 @@ public class ScreenController {
 		fragmentTransaction.replace(R.id.fragment_container, fragment);
 		fragmentTransaction.commit();
 		openedScreens.add(screen);
+        //return fragment;  //FIXME do we need to pass the fragment back to activity? or elsewhere??
 	}
 
 	public boolean onBack() {

@@ -16,11 +16,29 @@ import ws.isak.memgamev.model.MemGameData;
 
 public class UserData {
 
-    private final String TAG = "Class: UserData";
+    private static final String TAG = "Class: UserData";
 
+    private static UserData mInstance = null;
     private String userName;
+    //TODO data from USER_SURVEY as well?
     private ArrayList <MemGameData> memGameDataList = new ArrayList<MemGameData>();
     //TODO private ArrayList swapGameDataList<SwapGameData>;   this will cover when the user plays the tile swapping game
+
+
+    //Constructor
+    private UserData () {
+        //TODO what do we need on construct?
+        Log.d (TAG, "***** CONSTRUCTOR *****");
+        Log.d (TAG, "*** WHAT GOES HERE? ***");
+    }
+
+    public static UserData getInstance() {
+        Log.d (TAG, "method getInstance");
+        if (mInstance == null) {
+            mInstance = new UserData();
+        }
+        return mInstance;
+    }
 
     public void setUserName (String user) {
         //TODO method CheckUserNameUnique (user, )

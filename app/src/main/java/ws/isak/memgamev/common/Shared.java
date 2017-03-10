@@ -12,6 +12,7 @@ public class Shared {
 	public static FragmentActivity activity; // TODO: move to weak reference
 	public static Engine engine;
 	public static EventBus eventBus;
+    public static UserData userData;        //TODO does this make sense?
 
 	//TODO add anything else here??
 

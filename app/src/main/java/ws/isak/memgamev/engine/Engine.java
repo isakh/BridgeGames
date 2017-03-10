@@ -60,7 +60,7 @@ import ws.isak.memgamev.utils.Utils;
 
 public class Engine extends EventObserverAdapter {
 
-	private final String TAG = "Class: Engine";		//a string used for logging
+	private static final String TAG = "Class: Engine";
 	private static Engine mInstance = null;			//instance of Engine for current use of app
 	private Game mPlayingGame = null;				//instance of Game for current game being played
     private MemGameData currentGameData;
@@ -72,11 +72,14 @@ public class Engine extends EventObserverAdapter {
 	private Handler mHandler;
 
 	private Engine() {
+        Log.d (TAG, "***** Constructor *****");
+        Log.d (TAG, "calling ScreenController.getInstance");
 		mScreenController = ScreenController.getInstance();
 		mHandler = new Handler();
 	}
 
 	public static Engine getInstance() {
+        Log.d (TAG, "method getInstance called for Engine");
 		if (mInstance == null) {
 			mInstance = new Engine();
 		}
