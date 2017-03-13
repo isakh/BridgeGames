@@ -17,6 +17,7 @@ import ws.isak.memgamev.fragments.GameFragment;
 import ws.isak.memgamev.fragments.MenuFragment;
 import ws.isak.memgamev.fragments.ThemeSelectFragment;
 import ws.isak.memgamev.fragments.UserSetupFragment;
+import ws.isak.memgamev.fragments.PreSurveyFragment;
 
 /*
  * Class ScreenController instantiates a list of currently openedScreens and a fragmentManager
@@ -46,26 +47,31 @@ public class ScreenController {
 	}
 
 	public enum Screen {        //FIXME? was: public static enum Screen
-		MENU,
-		GAME,
-		DIFFICULTY,
-		THEME_SELECT,
-        USER_SETUP
-        //TODO add GAME_SELECT SCREEN & USER_SURVEY (the latter being a one off survey about a new user)
-	}
+        USER_SETUP,
+        PRE_SURVEY,
+        SELECT_GAME,            //choose between memory game and swap game
+		MENU_MEM,               //menu allows choices of audio playback
+        MENU_SWAP,              //TODO - audio playback? required??
+        THEME_SELECT,           //theme is only relevant to memory game
+        DIFFICULTY_MEM,         //three levels of difficulty available
+        DIFFICULTY_SWAP,        //TODO - start with two levels
+        GAME_MEM,
+        GAME_SWAP,               //TODO
+        POST_SURVEY              //TODO should we have different ones for each game? and/or one for all?
+    }
 	
 	public static Screen getLastScreen() {
         Log.d (TAG, "method getLastScreen");
 		return openedScreens.get(openedScreens.size() - 1);
 	}
 
-	public void openScreen(Screen screen) {     //FIXME!! this was void, but need to know fragment for clickable
+	public void openScreen(Screen screen) {
         Log.d (TAG, "Method openScreen: creating mFragmentManager");
 		mFragmentManager = Shared.activity.getSupportFragmentManager();
 		
-		if (screen == Screen.GAME && openedScreens.get(openedScreens.size() - 1) == Screen.GAME) {
+		if (screen == Screen.GAME_MEM && openedScreens.get(openedScreens.size() - 1) == Screen.GAME_MEM) {
 			openedScreens.remove(openedScreens.size() - 1);
-		} else if (screen == Screen.DIFFICULTY && openedScreens.get(openedScreens.size() - 1) == Screen.GAME) {
+		} else if (screen == Screen.DIFFICULTY_MEM && openedScreens.get(openedScreens.size() - 1) == Screen.GAME_MEM) {
 			openedScreens.remove(openedScreens.size() - 1);
 			openedScreens.remove(openedScreens.size() - 1);
 		}
@@ -74,10 +80,9 @@ public class ScreenController {
 		fragmentTransaction.replace(R.id.fragment_container, fragment);
 		fragmentTransaction.commit();
 		openedScreens.add(screen);
-        //return fragment;  //FIXME do we need to pass the fragment back to activity? or elsewhere??
 	}
 
-	public boolean onBack() {
+	public boolean onBack() {               //FIXME lots of new options for how far back to go with added screens
 		if (openedScreens.size() > 0) {
 			Screen screenToRemove = openedScreens.get(openedScreens.size() - 1);
 			openedScreens.remove(openedScreens.size() - 1);
@@ -87,8 +92,8 @@ public class ScreenController {
 			Screen screen = openedScreens.get(openedScreens.size() - 1);
 			openedScreens.remove(openedScreens.size() - 1);
 			openScreen(screen);
-			if ((screen == Screen.THEME_SELECT || screen == Screen.MENU) && 
-					(screenToRemove == Screen.DIFFICULTY || screenToRemove == Screen.GAME)) {
+			if ((screen == Screen.THEME_SELECT || screen == Screen.MENU_MEM) &&
+					(screenToRemove == Screen.DIFFICULTY_MEM || screenToRemove == Screen.GAME_MEM)) {
 				Shared.eventBus.notify(new ResetBackgroundEvent());
 			}
 			return false;
@@ -98,19 +103,28 @@ public class ScreenController {
 
 	private Fragment getFragment(Screen screen) {
 		switch (screen) {
-		    case MENU:
-			    return new MenuFragment();
-		    case DIFFICULTY:
-			    return new DifficultySelectFragment();
-    		case GAME:
-	    		return new GameFragment();
-    		case THEME_SELECT:
-	    		return new ThemeSelectFragment();
             case USER_SETUP:
                 return new UserSetupFragment();
-            //TODO case GAME_SELECT
-            //TODO      return new GameSelectFragment();
-
+            case PRE_SURVEY:
+                return new PreSurveyFragment();
+            //case SELECT_GAME:
+            //    return new SelectGameFragment();
+		    case MENU_MEM:
+			    return new MenuFragment();
+            //case MENU_SWAP:
+            //    return new SwapMenuFragment();
+            case THEME_SELECT:
+                return new ThemeSelectFragment();
+            case DIFFICULTY_MEM:
+			    return new DifficultySelectFragment();
+            //case DIFFICULTY_SWAP:
+            //    return new SwapDifficultyFragment();
+            case GAME_MEM:
+	    		return new GameFragment();
+            //case GAME_SWAP:
+            //    return new SwapGameFragment();
+            //case POST_SURVEY:
+            //    return new PostSurveyFragment();
 		    default:
 			    break;
 		}

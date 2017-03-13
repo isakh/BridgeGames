@@ -71,7 +71,7 @@ public class  MainActivity extends FragmentActivity {
         Log.d (TAG, "overriding method onBackPressed: produces various events based on game state");
 		if (PopupManager.isShown()) {
 			PopupManager.closePopup();
-			if (ScreenController.getLastScreen() == Screen.GAME) {
+			if (ScreenController.getLastScreen() == Screen.GAME_MEM) {
 				Shared.eventBus.notify(new BackGameEvent());
 			}
 		} else if (ScreenController.getInstance().onBack()) {

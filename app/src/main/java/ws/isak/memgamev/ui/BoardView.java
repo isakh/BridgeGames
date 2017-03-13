@@ -62,6 +62,7 @@ public class BoardView extends LinearLayout {
 
 	public BoardView(Context context) {
 		this(context, null);
+        Log.d (TAG, "constructor BoardView");
 	}
 
 	public BoardView(Context context, AttributeSet attributeSet) {
@@ -169,8 +170,7 @@ public class BoardView extends LinearLayout {
 
 			@Override
 			public void onClick(View v) {
-				//if (!mLocked && tileView.isFlippedDown()) {		//TODO remove if don't allow click until audio has played
-				if (!mLocked && tileView.isFlippedDown() && !Music.getIsAudioPlaying()) {		//TODO don't allow click until audio has playedLog.d (TAG, "method addTile: tileView.setOnClickListener: Overriding onClick: calling tileView.flipUp");
+				if (!mLocked && tileView.isFlippedDown() && !Music.getIsAudioPlaying()) {
 					Log.d (TAG, "			   : curTileOnBoard is: " + curTileOnBoard);
 					Log.d (TAG, "			   : curCardOnTile is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getCardID());
 					Log.d (TAG, " 			   : curCardOnTile.getAudioURI is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getAudioURI());

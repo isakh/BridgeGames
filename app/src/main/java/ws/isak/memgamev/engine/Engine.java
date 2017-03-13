@@ -156,13 +156,13 @@ public class Engine extends EventObserverAdapter {
 	@Override
 	public void onEvent(BackGameEvent event) {
 		PopupManager.closePopup();
-		mScreenController.openScreen(Screen.DIFFICULTY);
+		mScreenController.openScreen(Screen.DIFFICULTY_MEM);
 	}
 
 	@Override
 	public void onEvent(ThemeSelectedEvent event) {
 		mSelectedTheme = event.theme;
-		mScreenController.openScreen(Screen.DIFFICULTY);
+		mScreenController.openScreen(Screen.DIFFICULTY_MEM);
 		AsyncTask<Void, Void, TransitionDrawable> task = new AsyncTask<Void, Void, TransitionDrawable>() {
 
 			@Override
@@ -210,7 +210,7 @@ public class Engine extends EventObserverAdapter {
         // the BoardView ui class. setBoard in BoardView propagates through a local buildBoard method
         // and eventually calls addTile for each of the tiles on the board to be built.   This leads
         // to a thread for each tile which calls getTileBitmap...
-		mScreenController.openScreen(Screen.GAME);
+		mScreenController.openScreen(Screen.GAME_MEM);
         currentGameData.setGameDurationAllocated(mPlayingGame.boardConfiguration.time);
         Log.d (TAG, "                             : currentGameData.getGameDurationAllocated: " + currentGameData.getGameDurationAllocated() + "ms");
     }

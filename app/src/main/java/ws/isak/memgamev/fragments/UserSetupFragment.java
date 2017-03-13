@@ -68,14 +68,14 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
         newUserName = getLoginName();
         if (CheckUserUnique(newUserName)) {
             //TODO UserData instantiateUser = new UserData();
-            ScreenController.getInstance().openScreen(Screen.MENU); //FIXME -> survey screen?
+            ScreenController.getInstance().openScreen(Screen.PRE_SURVEY);
         } else {
             Toast.makeText(Shared.context, "Please choose a name that is not already registered", Toast.LENGTH_LONG).show();
         }
     }
 
     /*
-     * Method loginExistingUser takesthe current View, uses that information to call a method which
+     * Method loginExistingUser takes the current View, uses that information to call a method which
      * extracts the name field typed by the user, checks whether said name is already in the list of
      * registered users, and if so, sets that UserData object to 'live' and triggers loading of the
      * next screen.
@@ -88,7 +88,7 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
             Log.d(TAG, "method onCreateView: overriding onClick: unique userName: instantiating new UserData");
             //TODO deal with checking user exists and load current UserData
             //load screen for next step
-            ScreenController.getInstance().openScreen(Screen.MENU);
+            //TODO Reintroduce ScreenController.getInstance().openScreen(Screen.MENU_MEM);
         } else {
             //TODO error - get user to re-enter name
             Toast.makeText(Shared.context, "The User Name you have entered is not registered", Toast.LENGTH_LONG).show();

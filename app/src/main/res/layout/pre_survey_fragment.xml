@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alpha="1"> <!-- TODO set in values: alpha sets the opacity of the background image -->
+
+    <!-- TITLE -->
+
+    <TextView
+        android:id="@+id/pre_survey_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pre_survey_title"
+        android:textSize="16pt"
+        android:textColor="#0e0e0e"
+        android:layout_marginBottom="20dp"/>   <!-- TODO set in values -->
+
+    <!-- [1] Age Query Spinner -->
+
+    <TextView
+        android:id="@+id/pre_survey_age_query_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pre_survey_age_query_text"
+        android:textSize="13pt"
+        android:textColor="#0e0e0e"
+        android:layout_marginBottom="2dp"/>
+
+    <Spinner
+        android:id="@+id/pre_survey_age_query_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        android:background="#0e0e0e"
+        android:popupBackground="#353333"
+        android:textColor="#d9dcf2"
+        android:entries="@array/pre_survey_age_query_list"
+        android:prompt="@string/pre_survey_age_query_text"
+        android:layout_marginBottom="5dp"/>
+
+    <!-- [2] Time Twitching Spinner -->
+
+    <TextView
+        android:id="@+id/pre_survey_years_twitching_query_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pre_survey_years_twitching_query_text"
+        android:textSize="13pt"
+        android:textColor="#0e0e0e"
+        android:layout_marginBottom="2dp"/>
+
+    <Spinner
+        android:id="@+id/pre_survey_years_twitching_query_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        android:background="#0e0e0e"
+        android:popupBackground="#353333"
+        android:textColor="#d9dcf2"
+        android:entries="@array/pre_survey_years_twitching_query_list"
+        android:prompt="@string/pre_survey_years_twitching_query_text"
+        android:layout_marginBottom="5dp"/>
+
+    <!-- [3] Number of Species Known Spinner -->
+    <!-- TODO can we figure out a way, if the user answered fewer than 25, to give this again in post? -->
+
+    <TextView
+        android:id="@+id/pre_survey_species_known_query_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pre_survey_species_known_query_text"
+        android:textSize="13pt"
+        android:textColor="#0e0e0e"
+        android:layout_marginBottom="2dp"/>
+
+    <Spinner
+        android:id="@+id/pre_survey_species_known_query_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        android:background="#0e0e0e"
+        android:popupBackground="#353333"
+        android:textColor="#d9dcf2"
+        android:entries="@array/pre_survey_species_known_query_list"
+        android:prompt="@string/pre_survey_species_known_query_text"
+        android:layout_marginBottom="5dp"/>
+
+    <!-- TODO rest of survey questions -->
+
+    <!-- Submit PreGame Survey Button -->
+
+    <Button
+        android:id="@+id/pre_survey_submit_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pre_survey_submit_button"
+        android:textColor="#0e0e0e"
+        android:background="#a9b1ef"
+        android:onClick="submitPreSurvey"
+        android:layout_marginBottom="5dp"/>        <!-- TODO change all colors and standardize -->
+
+</LinearLayout>

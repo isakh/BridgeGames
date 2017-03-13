@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- string-array for pre survey question [1] -->
+
+    <string-array name="pre_survey_age_query_list">
+        <item>@string/pre_survey_age_default</item>
+        <item>@string/pre_survey_age_0_10</item>
+        <item>@string/pre_survey_age_10_20</item>
+        <item>@string/pre_survey_age_20_30</item>
+        <item>@string/pre_survey_age_30_40</item>
+        <item>@string/pre_survey_age_40_50</item>
+        <item>@string/pre_survey_age_50_60</item>
+        <item>@string/pre_survey_age_60_plus</item>
+    </string-array>
+
+    <!-- string-array for pre survey question [2] -->
+    <string-array name="pre_survey_years_twitching_query_list">
+        <item>@string/pre_survey_years_twitching_default</item>
+        <item>@string/pre_survey_years_twitching_0</item>
+        <item>@string/pre_survey_years_twitching_0_3</item>
+        <item>@string/pre_survey_years_twitching_3_5</item>
+        <item>@string/pre_survey_years_twitching_5_10</item>
+        <item>@string/pre_survey_years_twitching_10_20</item>
+        <item>@string/pre_survey_years_twitching_20_40</item>
+        <item>@string/pre_survey_years_twitching_40_plus</item>
+    </string-array>
+
+    <!-- string-array for pre survey question [3] -->
+    <string-array name="pre_survey_species_known_query_list">
+        <item>@string/pre_survey_species_known_default</item>
+        <item>@string/pre_survey_species_known_0</item>
+        <item>@string/pre_survey_species_known_1_10</item>
+        <item>@string/pre_survey_species_known_10_25</item>
+        <item>@string/pre_survey_species_known_25_50</item>
+        <item>@string/pre_survey_species_known_50_100</item>
+        <item>@string/pre_survey_species_known_100_250</item>
+        <item>@string/pre_survey_species_known_250_plus</item>
+    </string-array>
+
+
+</resources>

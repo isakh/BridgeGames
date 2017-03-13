@@ -13,4 +13,47 @@
     <string name="user_setup_register_hint">New User Name</string>
     <string name="user_setup_register_button">Create New User</string>
 
+    <!-- Pre Survey Form Fragment -->
+    <!-- -->
+    <string name="pre_survey_title">Tell Us About Yourself</string>
+    <!-- [1] What is your age? [NUMBER] -->
+    <string name="pre_survey_age_query_text">Please select your age?</string>
+    <string name="pre_survey_age_default"> --- ??? --- </string>
+    <string name="pre_survey_age_0_10">Under 10 Years Old</string>
+    <string name="pre_survey_age_10_20">Between 10 and 20 Years Old</string>
+    <string name="pre_survey_age_20_30">Between 20 and 30 Years Old</string>
+    <string name="pre_survey_age_30_40">Between 30 and 40 Years Old</string>
+    <string name="pre_survey_age_40_50">Between 40 and 50 Years Old</string>
+    <string name="pre_survey_age_50_60">Between 50 and 60 Years Old</string>
+    <string name="pre_survey_age_60_plus">Over 60 Years Old</string>
+    <!-- [2] How many years have you been a bird watcher? [NUMBER] -->
+    <string name="pre_survey_years_twitching_query_text">How many years have you been a bird watcher?</string>
+    <string name="pre_survey_years_twitching_default"> --- ??? --- </string>
+    <string name="pre_survey_years_twitching_0">I am not a bird watcher</string>
+    <string name="pre_survey_years_twitching_0_3">Under 3 years</string>
+    <string name="pre_survey_years_twitching_3_5">Between 3 and 5 years</string>
+    <string name="pre_survey_years_twitching_5_10">Between 5 and 10 years</string>
+    <string name="pre_survey_years_twitching_10_20">Between 10 and 20 years</string>
+    <string name="pre_survey_years_twitching_20_40">Between 20 and 40</string>
+    <string name="pre_survey_years_twitching_40_plus">More than 40 years </string>
+    <!-- [3] Estimate the number of bird species that you know by sight: [NUMBER] -->
+    <!-- TODO should we just say identify? how to separate visual and audio identification?? -->
+    <string name="pre_survey_species_known_query_text">How many species of bird can you identify?</string>
+    <string name="pre_survey_species_known_default"> --- ??? --- </string>
+    <string name="pre_survey_species_known_0">I can't identify any</string>
+    <string name="pre_survey_species_known_1_10">Between 1 and 10 species</string>
+    <string name="pre_survey_species_known_10_25">Between 20 and 25 species</string>
+    <string name="pre_survey_species_known_25_50">Between 25 and 50 species</string>
+    <string name="pre_survey_species_known_50_100">Between 50 and 100 species</string>
+    <string name="pre_survey_species_known_100_250">Between 100 and 250 species</string>
+    <string name="pre_survey_species_known_250_plus">More than 250 species</string>
+    <!-- [4] Do you consider listening to a bird to be equivalent to seeing it? [BOOLEAN] -->
+    <!-- [5] Estimated the number of bird species that you known by their calls/songs: [NUMBER] -->
+    <!-- [6] Do you have experience with touch screen tablets or telephones (Y/N), -->
+    <!-- [6a]   if so for how many years: [BOOLEAN & NUMBER] TODO 10+ is upper bound? -->
+
+    <string name="pre_survey_submit_button">Submit Survey And Continue To Games</string>
+
+    <!-- -->
+
 </resources>

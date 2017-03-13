@@ -22,12 +22,18 @@ public class DifficultyView extends LinearLayout {
 
     public static final String TAG = "Class: DifficultyView";
 	private ImageView mTitle;
-	
+
+    /*
+     * Constructor DifficultyView sets context
+     */
 	public DifficultyView(Context context) {
 		this(context, null);
         Log.d (TAG, "constructor");
 	}
-	
+
+    /*
+     * Overloaded constructor sets context and attributes
+     */
 	public DifficultyView(Context context, AttributeSet attrs) {
 		super(context, attrs);
         Log.d (TAG, "overloaded constructor, includes AttributeSet");
@@ -35,7 +41,10 @@ public class DifficultyView extends LinearLayout {
 		setOrientation(LinearLayout.VERTICAL);
 		mTitle = (ImageView) findViewById(R.id.title);
 	}
-	
+
+    /*
+     * Method setDifficulty
+     */
 	public void setDifficulty(int difficulty, int stars) {
         Log.d (TAG, "method setDifficulty");
 		String titleResource = String.format(Locale.US, "button_difficulty_%d_star_%d", difficulty, stars);
