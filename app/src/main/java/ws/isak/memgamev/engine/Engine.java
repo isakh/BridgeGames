@@ -138,13 +138,7 @@ public class Engine extends EventObserverAdapter {
 
 	@Override
 	public void onEvent(StartEvent event) {
-        Log.d (TAG, "override onEvent for StartEvent");
-
-		//TODO Verify if this is a good place for instantiating the currentGameData object was in DifficultySelectEvent
-		currentGameData = new MemGameData(mPlayingGame);
-		Log.d (TAG, "event StartEvent: create currentGameData: currentGameData.getGameDifficulty: " + currentGameData.getGameDifficulty());
-		Log.d (TAG, "                             			 : currentGameData.getNumTurnsTaken: " + currentGameData.getNumTurnsTaken());
-		Log.d (TAG, "                             			 : currentGameData.isGameStarted: " + currentGameData.isGameStarted());
+        Log.d (TAG, "override onEvent for StartEvent: calling screen controller to open THEME_SELECT screen");
 
 		mScreenController.openScreen(Screen.THEME_SELECT);
 	}
@@ -204,7 +198,13 @@ public class Engine extends EventObserverAdapter {
 		// arrange board
 		arrangeBoard();
 
-		// start the screen - This call to screen controller causes the screen controller to select
+        //TODO Verify if this is a good place for instantiating the currentGameData object was in StartEvent
+        currentGameData = new MemGameData(mPlayingGame);
+        Log.d (TAG, "event StartEvent: create currentGameData: currentGameData.getGameDifficulty: " + currentGameData.getGameDifficulty());
+        Log.d (TAG, "                             			 : currentGameData.getNumTurnsTaken: " + currentGameData.getNumTurnsTaken());
+        Log.d (TAG, "                             			 : currentGameData.isGameStarted: " + currentGameData.isGameStarted());
+
+        // start the screen - This call to screen controller causes the screen controller to select
         // a new GameFragment from the screen controller.  Opening the new GameFragment leads to a
         // call to buildBoard() a private method in the Game Fragment. buildBoard calls setBoard in
         // the BoardView ui class. setBoard in BoardView propagates through a local buildBoard method

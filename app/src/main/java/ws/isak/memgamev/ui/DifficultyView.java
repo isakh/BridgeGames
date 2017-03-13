@@ -12,6 +12,12 @@ import android.widget.LinearLayout;
 import ws.isak.memgamev.R;
 import ws.isak.memgamev.common.Shared;
 
+/*
+ * Class DifficultyView
+ *
+ * @author isak
+ */
+
 public class DifficultyView extends LinearLayout {
 
     public static final String TAG = "Class: DifficultyView";

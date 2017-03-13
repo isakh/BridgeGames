@@ -19,7 +19,7 @@ import ws.isak.memgamev.common.CardData;
 
 public class MemGameData {
 
-    private final String TAG = "Class: GameData";
+    private final String TAG = "Class: MemGameData";
 
     private Game mPlayingGame;
     private int difficulty;                 //difficulty level for the current game
