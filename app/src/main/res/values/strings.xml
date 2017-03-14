@@ -4,7 +4,8 @@
     <string name="birds_theme_name">Birds</string>
     <string name="spectrograms_theme_name">Spectrograms</string>
 
-   <!-- User Login/Setup Fragment -->
+    <!-- User Login/Setup Fragment -->
+    <!-- ************************* -->
     <string name="user_setup_title">Welcome: Please Login or Sign Up</string>
     <string name="user_setup_login_text">Login Here</string>
     <string name="user_setup_login_hint">Login Name</string>
@@ -14,7 +15,7 @@
     <string name="user_setup_register_button">Create New User</string>
 
     <!-- Pre Survey Form Fragment -->
-    <!-- -->
+    <!-- ************************ -->
     <string name="pre_survey_title">Tell Us About Yourself</string>
     <!-- [1] What is your age? [NUMBER] -->
     <string name="pre_survey_age_query_text">Please select your age?</string>
@@ -40,20 +41,60 @@
     <!-- TODO should we just say identify? how to separate visual and audio identification?? -->
     <string name="pre_survey_species_known_query_text">How many species of bird can you identify?</string>
     <string name="pre_survey_species_known_default"> --- ??? --- </string>
-    <string name="pre_survey_species_known_0">I can't identify any</string>
+    <string name="pre_survey_species_known_0">I cannot identify any</string>
     <string name="pre_survey_species_known_1_10">Between 1 and 10 species</string>
-    <string name="pre_survey_species_known_10_25">Between 20 and 25 species</string>
+    <string name="pre_survey_species_known_10_25">Between 10 and 25 species</string>
     <string name="pre_survey_species_known_25_50">Between 25 and 50 species</string>
     <string name="pre_survey_species_known_50_100">Between 50 and 100 species</string>
     <string name="pre_survey_species_known_100_250">Between 100 and 250 species</string>
     <string name="pre_survey_species_known_250_plus">More than 250 species</string>
-    <!-- [4] Do you consider listening to a bird to be equivalent to seeing it? [BOOLEAN] -->
-    <!-- [5] Estimated the number of bird species that you known by their calls/songs: [NUMBER] -->
+    <!-- [4] Estimated the number of bird species that you known by their calls/songs: [NUMBER] -->
+    <string name="pre_survey_audible_identification_query_text">How many bird songs can you identify?</string>
+    <string name="pre_survey_audible_identification_default"> --- ??? --- </string>
+    <string name="pre_survey_audible_identification_0">I cannot identify any</string>
+    <string name="pre_survey_audible_identification_1_10">Between 1 and 10</string>
+    <string name="pre_survey_audible_identification_10_20">Between 10 and 20</string>
+    <string name="pre_survey_audible_identification_20_30">Between 20 and 30</string>
+    <string name="pre_survey_audible_identification_30_50">Between 30 and 50</string>
+    <string name="pre_survey_audible_identification_50_100">Between 50 and 100</string>
+    <string name="pre_survey_audible_identification_100_plus">More than 100</string>
+    <!-- [5] Do you consider listening to a bird to be equivalent to seeing it? [BOOLEAN] -->
+    <string name="pre_survey_listening_equivalent_query_text">Is listening equivalent to seeing for identification? </string>
+    <string name="pre_survey_listening_equivalent_button_no">NO</string>
+    <string name="pre_survey_listening_equivalent_button_yes">YES</string>
     <!-- [6] Do you have experience with touch screen tablets or telephones (Y/N), -->
-    <!-- [6a]   if so for how many years: [BOOLEAN & NUMBER] TODO 10+ is upper bound? -->
-
+    <string name="pre_survey_interface_experience_query_text">Do you have experience with touch screen interfaces (phones / tablets)?</string>
+    <string name="pre_survey_interface_experience_button_no">NO</string>
+    <string name="pre_survey_interface_experience_button_yes">YES</string>
+    <!-- [6a]   if so for how many years: [BOOLEAN & NUMBER] TODO 11+ is upper bound? -->
+    <string name="pre_survey_experience_duration_query_text">How many years have you used a touch screen?</string>
+    <string name="pre_survey_experience_duration_default"> --- ??? --- </string>
+    <string name="pre_survey_experience_duration_0_1">Less than 1 year</string>
+    <string name="pre_survey_experience_duration_1_3">Between 1 and 3 years</string>
+    <string name="pre_survey_experience_duration_3_5">Between 3 and 5 years</string>
+    <string name="pre_survey_experience_duration_5_7">Between 5 and 7 years</string>
+    <string name="pre_survey_experience_duration_7_9">Between 7 and 9 years</string>
+    <string name="pre_survey_experience_duration_9_11">Between 9 and 11 years</string>
+    <string name="pre_survey_experience_duration_11_plus">More than 11 years</string>
     <string name="pre_survey_submit_button">Submit Survey And Continue To Games</string>
 
-    <!-- -->
-
+    <!-- Post Survey Form Fragment -->
+    <!-- ************************* -->
+    <!-- [7] Prior to today's exposure were you familiar with spectrograms as used to
+    visually depict sounds?  [LIKERT] //TODO should this question be asked in both pre and post?-->
+    <string name="post_survey_prior_spectrogram_familiarity_query_text">TODO</string>
+    <!-- [8] How comfortable were you that each subsequent turn in the game was getting
+    closer to the solution? [LIKERT] rarely - sometimes not - half the time - sometimes yes - frequently)
+    //TODO only applicable to swap game? -->
+    <string name="post_survey_solution_progress_query_text">TODO</string>
+    <!-- [9]  Whilst playing the game, could you hear a song by observing its shape? LIKERT] -->
+    <string name="post_survey_hearing_equals_seeing_query_text">TODO</string>
+    <!-- [10] After playing the game, could you predict the shape of the song when listening to it? [LIKERT/ Boolean?] -->
+    <string name="post_survey_hearing_equals_predicting_query_text">TODO</string>
+    <!-- [11] What part of the interface caused you the most confusion? [TEXT] -->
+    <string name="post_survey_cause_of_most_confusion_query_text">TODO</string>
+    <!-- [12] How motivated were you to find the visual representation that best fit the song you had initially heard?
+    [LIKERT] unmotivated - gradually lost interest - neutral - interested throughout the process - highly motivated)
+    TODO only applicable to swap game? (phrasing)-->
+    <string name="post_survey_success_motivation_query_text">TODO</string>
 </resources>

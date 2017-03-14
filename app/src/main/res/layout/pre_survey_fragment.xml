@@ -4,6 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f3e7d8d9"
     android:alpha="1"> <!-- TODO set in values: alpha sets the opacity of the background image -->
 
     <!-- TITLE -->
@@ -13,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/pre_survey_title"
-        android:textSize="16pt"
+        android:textSize="12pt"
         android:textColor="#0e0e0e"
         android:layout_marginBottom="20dp"/>   <!-- TODO set in values -->
 
@@ -24,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/pre_survey_age_query_text"
-        android:textSize="13pt"
+        android:textSize="8pt"
         android:textColor="#0e0e0e"
         android:layout_marginBottom="2dp"/>
 
@@ -47,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/pre_survey_years_twitching_query_text"
-        android:textSize="13pt"
+        android:textSize="8pt"
         android:textColor="#0e0e0e"
         android:layout_marginBottom="2dp"/>
 
@@ -71,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/pre_survey_species_known_query_text"
-        android:textSize="13pt"
+        android:textSize="8pt"
         android:textColor="#0e0e0e"
         android:layout_marginBottom="2dp"/>
 
@@ -87,7 +88,121 @@
         android:prompt="@string/pre_survey_species_known_query_text"
         android:layout_marginBottom="5dp"/>
 
-    <!-- TODO rest of survey questions -->
+    <!-- [4] Estimated the number of bird species that you known by their calls/songs: [NUMBER] -->
+
+    <TextView
+        android:id="@+id/pre_survey_audible_identification_query_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pre_survey_audible_identification_query_text"
+        android:textSize="8pt"
+        android:textColor="#0e0e0e"
+        android:layout_marginBottom="2dp"/>
+
+    <Spinner
+        android:id="@+id/pre_survey_audible_identification_query_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        android:background="#0e0e0e"
+        android:popupBackground="#353333"
+        android:textColor="#d9dcf2"
+        android:entries="@array/pre_survey_audible_identification_query_list"
+        android:prompt="@string/pre_survey_audible_identification_query_text"
+        android:layout_marginBottom="5dp"/>
+
+    <!-- [5] Do you consider listening to a bird to be equivalent to seeing it? [BOOLEAN] -->
+
+    <TextView
+        android:id="@+id/pre_survey_listening_equivalent_query_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pre_survey_listening_equivalent_query_text"
+        android:textSize="8pt"
+        android:textColor="#0e0e0e"
+        android:layout_marginBottom="2dp"/>
+
+    <RadioGroup
+        android:id="@+id/pre_survey_listening_equivalent_button_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/pre_survey_listening_equivalent_button_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pre_survey_listening_equivalent_button_no"
+            android:textColor="#0e0e0e"
+            android:theme="@style/RadioButtonStyle"/>
+
+        <RadioButton
+            android:id="@+id/pre_survey_listening_equivalent_button_yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pre_survey_listening_equivalent_button_yes"
+            android:textColor="#0e0e0e"
+            android:theme="@style/RadioButtonStyle"/>
+
+    </RadioGroup>
+
+    <!-- [6] Do you have experience with touch screen tablets or telephones [BOOLEAN], -->
+
+    <TextView
+        android:id="@+id/pre_survey_interface_experience_query_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pre_survey_interface_experience_query_text"
+        android:textSize="8pt"
+        android:textColor="#0e0e0e"
+        android:layout_marginBottom="2dp"/>
+
+    <RadioGroup
+        android:id="@+id/pre_survey_interface_experience_button_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/pre_survey_interface_experience_button_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pre_survey_interface_experience_button_no"
+            android:textColor="#0e0e0e"
+            android:theme="@style/RadioButtonStyle"/>
+
+        <RadioButton
+            android:id="@+id/pre_survey_interface_experience_button_yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pre_survey_interface_experience_button_yes"
+            android:textColor="#0e0e0e"
+            android:theme="@style/RadioButtonStyle"/>
+
+    </RadioGroup>
+
+    <!-- [6a]   if so for how many years: [ NUMBER] TODO 10+ is upper bound? -->
+
+    <TextView
+        android:id="@+id/pre_survey_experience_duration_query_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/pre_survey_experience_duration_query_text"
+        android:textSize="8pt"
+        android:textColor="#0e0e0e"
+        android:layout_marginBottom="2dp"/>
+
+    <Spinner
+        android:id="@+id/pre_survey_experience_duration_query_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:spinnerMode="dropdown"
+        android:background="#0e0e0e"
+        android:popupBackground="#353333"
+        android:textColor="#d9dcf2"
+        android:entries="@array/pre_survey_experience_duration_query_list"
+        android:prompt="@string/pre_survey_experience_duration_query_text"
+        android:layout_marginBottom="5dp"/>
 
     <!-- Submit PreGame Survey Button -->
 

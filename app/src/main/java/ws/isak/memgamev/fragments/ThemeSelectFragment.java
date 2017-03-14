@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.util.Log;
 
 import ws.isak.memgamev.R;
 import ws.isak.memgamev.common.Memory;
@@ -21,9 +22,12 @@ import ws.isak.memgamev.themes.Themes;
 
 public class ThemeSelectFragment extends Fragment {
 
+    public static final String TAG="Class: ThemeSelectFrag";
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = LayoutInflater.from(Shared.context).inflate(R.layout.theme_select_fragment, container, false);
+		Log.d (TAG, "overriding method onCreateView");
+        View view = LayoutInflater.from(Shared.context).inflate(R.layout.theme_select_fragment, container, false);
 		View birds = view.findViewById(R.id.theme_birds_container);
 		View spectrograms = view.findViewById(R.id.theme_spectrograms_container);
 

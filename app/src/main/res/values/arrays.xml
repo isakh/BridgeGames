@@ -38,5 +38,28 @@
         <item>@string/pre_survey_species_known_250_plus</item>
     </string-array>
 
+    <!-- string-array for pre survey question [4] -->
+    <string-array name="pre_survey_audible_identification_query_list">
+        <item>@string/pre_survey_audible_identification_default</item>
+        <item>@string/pre_survey_audible_identification_0</item>
+        <item>@string/pre_survey_audible_identification_1_10</item>
+        <item>@string/pre_survey_audible_identification_10_20</item>
+        <item>@string/pre_survey_audible_identification_20_30</item>
+        <item>@string/pre_survey_audible_identification_30_50</item>
+        <item>@string/pre_survey_audible_identification_50_100</item>
+        <item>@string/pre_survey_audible_identification_100_plus</item>
+    </string-array>
+
+    <!-- string array for pre survey question [6a] -->
+    <string-array name="pre_survey_experience_duration_query_list">
+        <item>@string/pre_survey_experience_duration_default</item>
+        <item>@string/pre_survey_experience_duration_0_1</item>
+        <item>@string/pre_survey_experience_duration_1_3</item>
+        <item>@string/pre_survey_experience_duration_3_5</item>
+        <item>@string/pre_survey_experience_duration_5_7</item>
+        <item>@string/pre_survey_experience_duration_7_9</item>
+        <item>@string/pre_survey_experience_duration_9_11</item>
+        <item>@string/pre_survey_experience_duration_11_plus</item>
+    </string-array>
 
 </resources>

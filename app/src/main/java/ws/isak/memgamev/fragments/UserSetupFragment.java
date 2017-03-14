@@ -97,7 +97,7 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
 
     private String getNewUserName() {
         final EditText nameField = (EditText) getActivity().findViewById(R.id.user_setup_register_input);
-        Log.d(TAG, "method getNewUserName: address of nameField: " + nameField);
+        //Log.d(TAG, "method getNewUserName: address of nameField: " + nameField);
         String name = nameField.getText().toString();
         Log.d(TAG, "method getNewUserName: name: " + name);
         return name;

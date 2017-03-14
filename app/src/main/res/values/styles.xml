@@ -33,4 +33,9 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="RadioButtonStyle" parent="Theme.AppCompat.Light">
+        <item name="colorAccent">@android:color/holo_purple</item>
+        <item name="android:textColorSecondary">@android:color/holo_blue_dark</item>
+    </style>
+
 </resources>
