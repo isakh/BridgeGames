@@ -27,17 +27,23 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
 
     public static final String TAG = "Class: UserSetupFrag";
     public static String newUserName;
-    public static String preexistingUserName;
+    public static String loginName;
+
+    private Button registerNewUser;
+    private Button loginExistingUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "overriding onCreateView");
         View view = LayoutInflater.from(Shared.context).inflate(R.layout.user_setup_fragment, container, false);
-        //Log.d (TAG, "             address of: view: " + view);
-        Button registerNewUser = (Button) view.findViewById(R.id.user_setup_register_button);
-        //Log.d (TAG, "             address of: registerNewUser: " + registerNewUser);
-        Button loginExistingUser = (Button) view.findViewById(R.id.user_setup_login_button);
-        //Log.d (TAG, "             address of: loginExistingUser: " + loginExistingUser);
+
+        //create buttons for registration and login
+        Log.d (TAG, "                       : create buttons for registration and login");
+        registerNewUser = (Button) view.findViewById(R.id.user_setup_register_button);
+        loginExistingUser = (Button) view.findViewById(R.id.user_setup_login_button);
+
+        //prepare listeners on buttons
+        Log.d (TAG, "                       : prepare listeners on buttons");
         registerNewUser.setOnClickListener(this);
         loginExistingUser.setOnClickListener(this);
         return view;
@@ -49,11 +55,13 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
         Log.d(TAG, "overriding onClick");
         switch (v.getId()) {
             case R.id.user_setup_register_button:
-                //Log.d (TAG, "       :register button");
+                Log.d (TAG, "       :register button selected");
                 registerNewUser(v);
+                break;
             case R.id.user_setup_login_button:
-                //Log.d (TAG, "       : login button");
+                Log.d (TAG, "       : login button selected");
                 loginExistingUser(v);
+                break;
         }
     }
 
@@ -64,12 +72,15 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
      * FIXME - should this return the UserData??
      */
     public void registerNewUser(View v) {
-        Log.d(TAG, "method createNewUser");
-        newUserName = getLoginName();
+        Log.d(TAG, "method registerNewUser");
+        newUserName = getNewUserName();
         if (CheckUserUnique(newUserName)) {
+            Log.d(TAG, "                    : unique userName: instantiating new UserData and appending to UserData list");
             //TODO UserData instantiateUser = new UserData();
+            Log.d (TAG, "                   : next screen is PRE_SURVEY to populate new curUserData");
             ScreenController.getInstance().openScreen(Screen.PRE_SURVEY);
         } else {
+            Log.d (TAG, "                   : userName not unique: ***** ");
             Toast.makeText(Shared.context, "Please choose a name that is not already registered", Toast.LENGTH_LONG).show();
         }
     }
@@ -83,12 +94,13 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
     public void loginExistingUser(View v) {
         Log.d(TAG, "method loginExistingUser");
         //TODO deal with checking for name uniqueness and set up new UserData in memory
-        preexistingUserName = getNewUserName();
-        if (CheckUserExists(preexistingUserName)) {
-            Log.d(TAG, "method onCreateView: overriding onClick: unique userName: instantiating new UserData");
+        loginName = getLoginName();
+        if (CheckUserExists(loginName)) {
+            Log.d (TAG, "                   : preexistingUserName is true, setting current UserData to user's UserData");
             //TODO deal with checking user exists and load current UserData
             //load screen for next step
-            //TODO Reintroduce ScreenController.getInstance().openScreen(Screen.MENU_MEM);
+            Log.d (TAG, "                   : existing user: next screen is SELECT_GAME");
+            ScreenController.getInstance().openScreen(Screen.SELECT_GAME);
         } else {
             //TODO error - get user to re-enter name
             Toast.makeText(Shared.context, "The User Name you have entered is not registered", Toast.LENGTH_LONG).show();

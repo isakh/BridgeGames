@@ -107,14 +107,19 @@ public class PreSurveyFragment extends Fragment implements  View.OnClickListener
         switch (parent.getId()) {
             case R.id.pre_survey_age_query_spinner:
                 //TODO Toast.makeText(parent.getContext(), "OnItemSelectedListener : " + parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
+                break;
             case R.id.pre_survey_years_twitching_query_spinner:
                 //TODO
+                break;
             case R.id.pre_survey_species_known_query_spinner:
                 //TODO
+                break;
             case R.id.pre_survey_audible_identification_query_spinner:
                 //TODO
+                break;
             case R.id.pre_survey_experience_duration_query_spinner:
                 //TODO
+                break;
         }
     }
 
@@ -147,6 +152,7 @@ public class PreSurveyFragment extends Fragment implements  View.OnClickListener
                 //Log.d (TAG, "       : surveySubmitButton");
                 submitPreSurvey();
                 //TODO case R.id. any other buttons
+                break;
         }
     }
 
@@ -170,7 +176,7 @@ public class PreSurveyFragment extends Fragment implements  View.OnClickListener
         Log.d (TAG, "                       : audibleRecognizedRange: " + audibleRecognizedRange);
         //[5] Are listening and seeing equivalent?
         RadioButton rb1 = (RadioButton) listeningEquivalentBtns.findViewById(listeningEquivalentBtns.getCheckedRadioButtonId());
-        if (rb1.getText() == "NO") {
+        if (rb1.getText() == "NO" || rb1.getText() == null) {
             hearingEqualsSeeing = false;
         }
         else {
@@ -179,7 +185,7 @@ public class PreSurveyFragment extends Fragment implements  View.OnClickListener
         Log.d (TAG, "                       : hearingEqualsSeeing: " + hearingEqualsSeeing);
         //[6] Have you used a touch screen device?
         RadioButton rb2 = (RadioButton) touchScreenExperienceBtns.findViewById(touchScreenExperienceBtns.getCheckedRadioButtonId());
-        if (rb2.getText() == "NO") {
+        if (rb2.getText() == "NO" || rb2.getText() == null) {
             hasUsedSmartPhone = false;
         }
         else {
@@ -195,6 +201,6 @@ public class PreSurveyFragment extends Fragment implements  View.OnClickListener
         //TODO load all responses to USER_DATA
 
         //when done continue to next screen //TODO should become game selection screen
-        ScreenController.getInstance().openScreen(Screen.MENU_MEM);
+        ScreenController.getInstance().openScreen(Screen.SELECT_GAME);
     }
 }

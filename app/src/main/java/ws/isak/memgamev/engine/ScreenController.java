@@ -18,6 +18,7 @@ import ws.isak.memgamev.fragments.MenuFragment;
 import ws.isak.memgamev.fragments.ThemeSelectFragment;
 import ws.isak.memgamev.fragments.UserSetupFragment;
 import ws.isak.memgamev.fragments.PreSurveyFragment;
+import ws.isak.memgamev.fragments.GameSelectFragment;
 
 /*
  * Class ScreenController instantiates a list of currently openedScreens and a fragmentManager
@@ -35,6 +36,7 @@ public class ScreenController {
 	private FragmentManager mFragmentManager;
 
 	private ScreenController() {
+        //
         Log.d (TAG, "constructor does nothing");
 	}
 
@@ -51,13 +53,13 @@ public class ScreenController {
         PRE_SURVEY,
         SELECT_GAME,            //choose between memory game and swap game
 		MENU_MEM,               //menu allows choices of audio playback
-        MENU_SWAP,              //TODO - audio playback? required??
+        MENU_SWAP,              //TODO - audio playback is required?? so maybe some resolution parameters?
         THEME_SELECT,           //theme is only relevant to memory game
         DIFFICULTY_MEM,         //three levels of difficulty available
         DIFFICULTY_SWAP,        //TODO - start with two levels
         GAME_MEM,
-        GAME_SWAP,               //TODO
-        POST_SURVEY              //TODO should we have different ones for each game? and/or one for all?
+        GAME_SWAP,              //TODO
+        POST_SURVEY             //TODO should we have different ones for each game? and/or one for all?
     }
 	
 	public static Screen getLastScreen() {
@@ -104,19 +106,25 @@ public class ScreenController {
 	private Fragment getFragment(Screen screen) {
 		switch (screen) {
             case USER_SETUP:
+                Log.d (TAG, "method getFragment: case USER_SETUP");
                 return new UserSetupFragment();
             case PRE_SURVEY:
+                Log.d (TAG, "method getFragment: case PRE_SURVEY");
                 return new PreSurveyFragment();
-            //case SELECT_GAME:
-            //    return new SelectGameFragment();
+            case SELECT_GAME:
+                Log.d (TAG, "method getFragment: case SELECT_GAME");
+                return new GameSelectFragment();
 		    case MENU_MEM:
-			    return new MenuFragment();
+                Log.d (TAG, "method getFragment: case MENU_MEM");
+                return new MenuFragment();
             //case MENU_SWAP:
             //    return new SwapMenuFragment();
             case THEME_SELECT:
+                Log.d (TAG, "method getFragment: case THEME_SELECT");
                 return new ThemeSelectFragment();
             case DIFFICULTY_MEM:
-			    return new DifficultySelectFragment();
+                Log.d (TAG, "method getFragment: case DIFFICULTY_MEM");
+                return new DifficultySelectFragment();
             //case DIFFICULTY_SWAP:
             //    return new SwapDifficultyFragment();
             case GAME_MEM:

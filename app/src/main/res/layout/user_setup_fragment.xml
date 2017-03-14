@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:text="@string/user_setup_login_button"
         android:textColor="#0e0e0e"
+        android:background="#a9b1ef"
         android:onClick="loginExistingUser"
         android:layout_marginBottom="20dp"/>
 
@@ -73,6 +74,7 @@
         android:layout_height="wrap_content"
         android:text="@string/user_setup_register_button"
         android:textColor="#0e0e0e"
+        android:background="#a9b1ef"
         android:onClick="registerNewUser"
         android:layout_marginBottom="10dp"/>
 
