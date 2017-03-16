@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f3e7d8d9"
+    android:alpha="1"> <!-- TODO set in values: alpha sets the opacity of the background image -->
+
+    <!-- TITLE -->
+
+    <TextView
+        android:id="@+id/post_survey_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/post_survey_title"
+        android:textSize="12pt"
+        android:textColor="#0e0e0e"
+        android:layout_marginBottom="20dp"/>   <!-- TODO set in values -->
+
+    <!-- [1] Prior to today's exposure were you familiar with spectrograms as used to visually depict sounds?  [BOOLEAN] -->
+
+    <TextView
+        android:id="@+id/post_survey_prior_spectrogram_familiarity_query_text_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/post_survey_prior_spectrogram_familiarity_query_text"
+        android:textSize="8pt"
+        android:textColor="#0e0e0e"
+        android:layout_marginBottom="2dp"/>
+
+    <RadioGroup
+        android:id="@+id/post_survey_prior_spectrogram_familiarity_button_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/post_survey_prior_spectrogram_familiarity_button_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/post_survey_prior_spectrogram_familiarity_button_no"
+            android:textColor="#0e0e0e"
+            android:theme="@style/RadioButtonStyle"/>
+
+        <RadioButton
+            android:id="@+id/post_survey_prior_spectrogram_familiarity_button_yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/post_survey_prior_spectrogram_familiarity_button_yes"
+            android:textColor="#0e0e0e"
+            android:theme="@style/RadioButtonStyle"/>
+
+    </RadioGroup>
+
+    <!-- [2]  Whilst playing the game, could you hear a song by observing its shape? [LIKERT] -->
+    <TextView
+        android:id="@+id/post_survey_hearing_equals_seeing_query_text_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/post_survey_hearing_equals_seeing_query_text"
+        android:textSize="8pt"
+        android:textColor="#0e0e0e"
+        android:layout_marginBottom="2dp"/>
+
+    <RadioGroup
+        android:id="@+id/post_survey_hearing_equals_seeing_button_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/post_survey_hearing_equals_seeing_button_never"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/post_survey_hearing_equals_seeing_button_never"
+            android:textColor="#0e0e0e"
+            android:theme="@style/RadioButtonStyle"/>
+
+        <RadioButton
+            android:id="@+id/post_survey_hearing_equals_seeing_button_rarely"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/post_survey_hearing_equals_seeing_button_rarely"
+            android:textColor="#0e0e0e"
+            android:theme="@style/RadioButtonStyle"/>
+
+        <RadioButton
+            android:id="@+id/post_survey_hearing_equals_seeing_button_sometimes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/post_survey_hearing_equals_seeing_button_sometimes"
+            android:textColor="#0e0e0e"
+            android:theme="@style/RadioButtonStyle"/>
+
+        <RadioButton
+            android:id="@+id/post_survey_hearing_equals_seeing_button_frequently"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/post_survey_hearing_equals_seeing_button_frequently"
+            android:textColor="#0e0e0e"
+            android:theme="@style/RadioButtonStyle"/>
+
+        <RadioButton
+            android:id="@+id/post_survey_hearing_equals_seeing_button_always"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/post_survey_hearing_equals_seeing_button_always"
+            android:textColor="#0e0e0e"
+            android:theme="@style/RadioButtonStyle"/>
+
+    </RadioGroup>
+
+    <!-- [3] After playing the game, could you predict the shape of the song when listening to it? [LIKERT/ Boolean?] -->
+    <TextView
+        android:id="@+id/post_survey_hearing_equals_predicting_query_text_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/post_survey_hearing_equals_predicting_query_text"
+        android:textSize="8pt"
+        android:textColor="#0e0e0e"
+        android:layout_marginBottom="2dp"/>
+
+    <RadioGroup
+        android:id="@+id/post_survey_hearing_equals_predicting_button_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/post_survey_hearing_equals_predicting_button_never"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/post_survey_hearing_equals_predicting_button_never"
+            android:textColor="#0e0e0e"
+            android:theme="@style/RadioButtonStyle"/>
+
+        <RadioButton
+            android:id="@+id/post_survey_hearing_equals_predicting_button_rarely"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/post_survey_hearing_equals_predicting_button_rarely"
+            android:textColor="#0e0e0e"
+            android:theme="@style/RadioButtonStyle"/>
+
+        <RadioButton
+            android:id="@+id/post_survey_hearing_equals_predicting_button_sometimes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/post_survey_hearing_equals_predicting_button_sometimes"
+            android:textColor="#0e0e0e"
+            android:theme="@style/RadioButtonStyle"/>
+
+        <RadioButton
+            android:id="@+id/post_survey_hearing_equals_predicting_button_frequently"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/post_survey_hearing_equals_predicting_button_frequently"
+            android:textColor="#0e0e0e"
+            android:theme="@style/RadioButtonStyle"/>
+
+        <RadioButton
+            android:id="@+id/post_survey_hearing_equals_predicting_button_always"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/post_survey_hearing_equals_predicting_button_always"
+            android:textColor="#0e0e0e"
+            android:theme="@style/RadioButtonStyle"/>
+
+    </RadioGroup>
+
+    <!-- Submit Post Survey Button -->
+
+    <Button
+        android:id="@+id/post_survey_submit_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/post_survey_submit_button"
+        android:textColor="#0e0e0e"
+        android:background="#a9b1ef"
+        android:onClick="submitPostSurvey"
+        android:layout_marginBottom="5dp"/>        <!-- TODO change all colors and standardize -->
+
+
+</LinearLayout>

@@ -163,16 +163,16 @@ public class PreSurveyFragment extends Fragment implements  View.OnClickListener
         ageRange = ageQuerySpinner.getSelectedItem().toString();
         Log.d (TAG, "                       : ageRange: " + ageRange);
         //[2] Years Twitching
-        Spinner yearsTwitchingSpinner = (Spinner) getActivity().findViewById(R.id.pre_survey_years_twitching_query_spinner);
+        //Spinner yearsTwitchingSpinner = (Spinner) getActivity().findViewById(R.id.pre_survey_years_twitching_query_spinner);
         yearsTwitchingRange = yearsTwitchingSpinner.getSelectedItem().toString();
         Log.d (TAG, "                       : yearsTwitchingRange: " + yearsTwitchingRange);
         //[3] Species Known
-        Spinner speciesKnownSpinner = (Spinner) getActivity().findViewById(R.id.pre_survey_species_known_query_spinner);
-        speciesKnownRange = speciesKnownSpinner.getSelectedItem().toString();
+        //Spinner speciesKnownSpinner = (Spinner) getActivity().findViewById(R.id.pre_survey_species_known_query_spinner);
+        speciesKnownRange = numSpeciesKnownSpinner.getSelectedItem().toString();
         Log.d (TAG, "                       : speciesKnownRange: " + speciesKnownRange);
         //[4] Audible Identification
-        Spinner audibleIDSpinner = (Spinner) getActivity().findViewById(R.id.pre_survey_audible_identification_query_spinner);
-        audibleRecognizedRange = audibleIDSpinner.getSelectedItem().toString();
+        //Spinner audibleIDSpinner = (Spinner) getActivity().findViewById(R.id.pre_survey_audible_identification_query_spinner);
+        audibleRecognizedRange = audibleRecognizedSpinner.getSelectedItem().toString();
         Log.d (TAG, "                       : audibleRecognizedRange: " + audibleRecognizedRange);
         //[5] Are listening and seeing equivalent?
         RadioButton rb1 = (RadioButton) listeningEquivalentBtns.findViewById(listeningEquivalentBtns.getCheckedRadioButtonId());
@@ -193,14 +193,14 @@ public class PreSurveyFragment extends Fragment implements  View.OnClickListener
         }
         Log.d (TAG, "                       : hasUsedSmartPhone: " + hasUsedSmartPhone);
         //[6a] Touchscreen Interface Experience  //TODO generate strings/layout programmatically based on response to [6]?
-        Spinner interfaceExperienceSpinner = (Spinner) getActivity().findViewById(R.id.pre_survey_experience_duration_query_spinner);
+        //Spinner interfaceExperienceSpinner = (Spinner) getActivity().findViewById(R.id.pre_survey_experience_duration_query_spinner);
         interfaceExperienceRange = interfaceExperienceSpinner.getSelectedItem().toString();
         Log.d (TAG, "                       : interfaceExperienceRange: " + interfaceExperienceRange);
 
 
         //TODO load all responses to USER_DATA
 
-        //when done continue to next screen //TODO should become game selection screen
+        //when done continue to next screen
         ScreenController.getInstance().openScreen(Screen.SELECT_GAME);
     }
 }
