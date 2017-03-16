@@ -176,7 +176,7 @@ public class PreSurveyFragment extends Fragment implements  View.OnClickListener
         Log.d (TAG, "                       : audibleRecognizedRange: " + audibleRecognizedRange);
         //[5] Are listening and seeing equivalent?
         RadioButton rb1 = (RadioButton) listeningEquivalentBtns.findViewById(listeningEquivalentBtns.getCheckedRadioButtonId());
-        if (rb1.getText() == "NO" || rb1.getText() == null) {
+        if (rb1.getText().equals("NO") || rb1.getText() == null) {
             hearingEqualsSeeing = false;
         }
         else {
@@ -185,7 +185,7 @@ public class PreSurveyFragment extends Fragment implements  View.OnClickListener
         Log.d (TAG, "                       : hearingEqualsSeeing: " + hearingEqualsSeeing);
         //[6] Have you used a touch screen device?
         RadioButton rb2 = (RadioButton) touchScreenExperienceBtns.findViewById(touchScreenExperienceBtns.getCheckedRadioButtonId());
-        if (rb2.getText() == "NO" || rb2.getText() == null) {
+        if (rb2.getText().equals("NO") || rb2.getText() == null) {
             hasUsedSmartPhone = false;
         }
         else {

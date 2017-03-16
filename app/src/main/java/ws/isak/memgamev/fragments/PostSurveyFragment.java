@@ -1,6 +1,6 @@
 package ws.isak.memgamev.fragments;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +34,7 @@ public class PostSurveyFragment extends Fragment implements View.OnClickListener
     private RadioGroup spectrogramFamiliarBtnGrp;
     private RadioGroup hearIsSeeBtnGrp;
     private RadioGroup hearIsPredictBtnGrp;
+
     private Button submitPostSurveyBtn;
 
     /*
@@ -44,10 +45,11 @@ public class PostSurveyFragment extends Fragment implements View.OnClickListener
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "overriding onCreateView");
-        View view = LayoutInflater.from(Shared.context).inflate(R.layout.pre_survey_fragment, container, false);
+        View view = LayoutInflater.from(Shared.context).inflate(R.layout.post_survey_fragment, container, false);
 
         //create the radio groups
         spectrogramFamiliarBtnGrp = (RadioGroup) view.findViewById(R.id.post_survey_prior_spectrogram_familiarity_button_group);
+        //Log.d (TAG, "           : address of spectrogramFamiliarBtnGrp: " + spectrogramFamiliarBtnGrp);
         hearIsSeeBtnGrp = (RadioGroup) view.findViewById(R.id.post_survey_hearing_equals_seeing_button_group);
         hearIsPredictBtnGrp = (RadioGroup) view.findViewById(R.id.post_survey_hearing_equals_predicting_button_group);
         //and set them so nothing is checked at the start
@@ -97,7 +99,8 @@ public class PostSurveyFragment extends Fragment implements View.OnClickListener
         Log.d (TAG, "method submitPostSurvey: preview data in debugger before storing to UserData");
         //[1] Were you previously familiar with spectrograms
         RadioButton rb1 = (RadioButton) spectrogramFamiliarBtnGrp.findViewById(spectrogramFamiliarBtnGrp.getCheckedRadioButtonId());
-        if (rb1.getText() == "NO" || rb1.getText() == null) {
+        Log.d (TAG, "                       : rb1.getText(): " + rb1.getText());
+        if (rb1.getText().equals("NO") || rb1.getText() == null) {
             spectrogramFamiliar = false;
         }
         else {
@@ -106,24 +109,26 @@ public class PostSurveyFragment extends Fragment implements View.OnClickListener
         Log.d (TAG, "                       : spectrogramFamiliar: " + spectrogramFamiliar);
         // [2] Whilst playing the game, could you hear a song by observing its shape?
         RadioButton rb2 = (RadioButton) hearIsSeeBtnGrp.findViewById(hearIsSeeBtnGrp.getCheckedRadioButtonId());
+        Log.d (TAG, "                       : rb2.getText(): " + rb2.getText());
         if (rb2.getText() == null) {hearIsSeeLikert = 0;}
-        else if (rb2.getText() == "NEVER") {hearIsSeeLikert = 1;}
-        else if (rb2.getText() == "RARELY") {hearIsSeeLikert = 2;}
-        else if (rb2.getText() == "SOMETIMES") {hearIsSeeLikert = 3;}
-        else if (rb2.getText() == "FREQUENTLY") {hearIsSeeLikert = 4;}
-        else if (rb2.getText() == "ALWAYS") {hearIsSeeLikert = 5;}
+        else if (rb2.getText().equals("NEVER")) {hearIsSeeLikert = 1;}
+        else if (rb2.getText().equals("RARELY")) {hearIsSeeLikert = 2;}
+        else if (rb2.getText().equals("SOMETIMES")) {hearIsSeeLikert = 3;}
+        else if (rb2.getText().equals("FREQUENTLY")) {hearIsSeeLikert = 4;}
+        else if (rb2.getText().equals("ALWAYS")) {hearIsSeeLikert = 5;}
         else {
             Log.d(TAG, "method submitPostSurvey: rb2.getText() not resolving");
         }
         Log.d(TAG, "method submitPostSurvey: hearIsSeeLikert: " + hearIsSeeLikert);
         //[3] After playing the game, could you predict the shape of the song when listening to it?
         RadioButton rb3 = (RadioButton) hearIsPredictBtnGrp.findViewById(hearIsPredictBtnGrp.getCheckedRadioButtonId());
+        Log.d (TAG, "                       : rb3.getText(): " + rb3.getText());
         if (rb3.getText() == null) {hearIsPredictLikert = 0;}
-        else if (rb3.getText() == "NEVER") {hearIsPredictLikert = 1;}
-        else if (rb3.getText() == "RARELY") {hearIsPredictLikert = 2;}
-        else if (rb3.getText() == "SOMETIMES") {hearIsPredictLikert = 3;}
-        else if (rb3.getText() == "FREQUENTLY") {hearIsPredictLikert = 4;}
-        else if (rb3.getText() == "ALWAYS") {hearIsPredictLikert = 5;}
+        else if (rb3.getText().equals("NEVER")) {hearIsPredictLikert = 1;}
+        else if (rb3.getText().equals("RARELY")) {hearIsPredictLikert = 2;}
+        else if (rb3.getText().equals("SOMETIMES")) {hearIsPredictLikert = 3;}
+        else if (rb3.getText().equals("FREQUENTLY")) {hearIsPredictLikert = 4;}
+        else if (rb3.getText().equals("ALWAYS")) {hearIsPredictLikert = 5;}
         else {
             Log.d(TAG, "method submitPostSurvey: rb3.getText() not resolving");
         }

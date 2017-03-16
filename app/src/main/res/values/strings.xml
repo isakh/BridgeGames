@@ -76,25 +76,52 @@
     <string name="pre_survey_experience_duration_7_9">Between 7 and 9 years</string>
     <string name="pre_survey_experience_duration_9_11">Between 9 and 11 years</string>
     <string name="pre_survey_experience_duration_11_plus">More than 11 years</string>
+    <!-- Submit Button -->
     <string name="pre_survey_submit_button">Submit Survey And Continue To Games</string>
 
     <!-- Post Survey Form Fragment -->
     <!-- ************************* -->
-    <!-- [7] Prior to today's exposure were you familiar with spectrograms as used to
-    visually depict sounds?  [LIKERT] //TODO should this question be asked in both pre and post?-->
-    <string name="post_survey_prior_spectrogram_familiarity_query_text">TODO</string>
-    <!-- [8] How comfortable were you that each subsequent turn in the game was getting
-    closer to the solution? [LIKERT] rarely - sometimes not - half the time - sometimes yes - frequently)
-    //TODO only applicable to swap game? -->
-    <string name="post_survey_solution_progress_query_text">TODO</string>
-    <!-- [9]  Whilst playing the game, could you hear a song by observing its shape? LIKERT] -->
-    <string name="post_survey_hearing_equals_seeing_query_text">TODO</string>
-    <!-- [10] After playing the game, could you predict the shape of the song when listening to it? [LIKERT/ Boolean?] -->
-    <string name="post_survey_hearing_equals_predicting_query_text">TODO</string>
+    <string name="post_survey_title">Thank you for playing, please answer the following questions</string>
+    <!-- [1] Prior to today's exposure were you familiar with spectrograms as used to
+    visually depict sounds?  [BOOLEAN] //TODO should this question be asked in both pre and post?-->
+    <string name="post_survey_prior_spectrogram_familiarity_query_text">Before playing these games were you familiar with spectrograms as used to draw sounds?</string>
+    <string name="post_survey_prior_spectrogram_familiarity_button_no">NO</string>
+    <string name="post_survey_prior_spectrogram_familiarity_button_yes">YES</string>
+    <!-- [2]  Whilst playing the game, could you hear a song by observing its shape? LIKERT] -->
+    <string name="post_survey_hearing_equals_seeing_query_text">Whilst playing the game, did you learn to hear a song by observing its shape?</string>
+    <string name="post_survey_hearing_equals_seeing_button_never">NEVER</string>
+    <string name="post_survey_hearing_equals_seeing_button_rarely">RARELY</string>
+    <string name="post_survey_hearing_equals_seeing_button_sometimes">SOMETIMES</string>
+    <string name="post_survey_hearing_equals_seeing_button_frequently">FREQUENTLY</string>
+    <string name="post_survey_hearing_equals_seeing_button_always">ALWAYS</string>
+    <!-- [3] After playing the game, could you predict the shape of the song when listening to it? [LIKERT/ Boolean?] -->
+    <string name="post_survey_hearing_equals_predicting_query_text">After playing the game, could you predict the shape of the song when listening to it? </string>
+    <string name="post_survey_hearing_equals_predicting_button_never">NEVER</string>
+    <string name="post_survey_hearing_equals_predicting_button_rarely">RARELY</string>
+    <string name="post_survey_hearing_equals_predicting_button_sometimes">SOMETIMES</string>
+    <string name="post_survey_hearing_equals_predicting_button_frequently">FREQUENTLY</string>
+    <string name="post_survey_hearing_equals_predicting_button_always">ALWAYS</string>
+
+    <!-- Submit Button -->
+    <string name="post_survey_submit_button">Submit and Close</string>
+
+
     <!-- [11] What part of the interface caused you the most confusion? [TEXT] -->
     <string name="post_survey_cause_of_most_confusion_query_text">TODO</string>
+
+
+    <!-- TODO programmatically include the following only if the survey is after playing swap game? -->
     <!-- [12] How motivated were you to find the visual representation that best fit the song you had initially heard?
     [LIKERT] unmotivated - gradually lost interest - neutral - interested throughout the process - highly motivated)
     TODO only applicable to swap game? (phrasing)-->
     <string name="post_survey_success_motivation_query_text">TODO</string>
+    <!-- [2] How comfortable were you that each subsequent turn in the game was getting
+    closer to the solution? [LIKERT] rarely - sometimes not - half the time - sometimes yes - frequently) -->
+    <string name="post_survey_solution_progress_query_text">TODO</string>
+
+//TODO only applicable to swap game? -->
+
+    <!-- Popup Won View -->
+    <!-- ************** -->
+    <string name="popup_won_view_post_survey_button_text">Done Playing? Please Answer A Few Questions</string>
 </resources>

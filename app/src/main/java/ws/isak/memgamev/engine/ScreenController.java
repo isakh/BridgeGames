@@ -19,6 +19,7 @@ import ws.isak.memgamev.fragments.ThemeSelectFragment;
 import ws.isak.memgamev.fragments.UserSetupFragment;
 import ws.isak.memgamev.fragments.PreSurveyFragment;
 import ws.isak.memgamev.fragments.GameSelectFragment;
+import ws.isak.memgamev.fragments.PostSurveyFragment;
 
 /*
  * Class ScreenController instantiates a list of currently openedScreens and a fragmentManager
@@ -131,8 +132,8 @@ public class ScreenController {
 	    		return new GameFragment();
             //case GAME_SWAP:
             //    return new SwapGameFragment();
-            //case POST_SURVEY:
-            //    return new PostSurveyFragment();
+            case POST_SURVEY:
+                return new PostSurveyFragment();
 		    default:
 			    break;
 		}

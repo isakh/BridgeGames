@@ -53,10 +53,10 @@ public class GameSelectFragment extends Fragment implements  View.OnClickListene
                 animateShow(view);
                 ScreenController.getInstance().openScreen(Screen.MENU_MEM);
                 break;
-            case R.id.game_swap:
+            case R.id.game_swap_container:
                 Log.d(TAG, "overridden method onClick: case game_swap: switch to MENU_SWAP screen");
                 animateShow(view);
-                ScreenController.getInstance().openScreen(Screen.MENU_SWAP);
+                ScreenController.getInstance().openScreen(Screen.POST_SURVEY);      //FIXME send to MENU_SWAP - this is just to debug POST_SURVEY without having to play the game
                 break;
         }
     }

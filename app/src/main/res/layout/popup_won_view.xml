@@ -3,8 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+    <Button
+        android:id="@+id/popup_won_goto_post_survey_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/popup_won_view_post_survey_button_text"
+        android:textColor="#0e0e0e"
+        android:background="#a9b1ef"
+        android:onClick="continueToPostSurvey"
+        android:layout_marginBottom="5dp"/>
+
     <ImageView
-        android:id="@+id/button_back"
+        android:id="@+id/popup_won_view_button_back"
         android:layout_width="@dimen/popup_button_back"
         android:layout_height="@dimen/popup_button_back"
         android:layout_alignParentBottom="true"
@@ -14,7 +24,7 @@
         android:src="@drawable/button_back" />
 
     <ImageView
-        android:id="@+id/button_next"
+        android:id="@+id/popup_won_view_button_next"
         android:layout_width="@dimen/popup_button_back"
         android:layout_height="@dimen/popup_button_back"
         android:layout_alignParentBottom="true"
@@ -71,7 +81,7 @@
         android:shadowRadius="4"
         android:text="@string/time_bar_text"
         android:textColor="@color/colorText"
-        android:textSize="@dimen/popup_button_time_size" />
+        android:textSize="@dimen/popup_button_time_size" />             <!-- TODO fix text 00:60 to dynamic time  -->
 
     <TextView
         android:id="@+id/score_bar_text"

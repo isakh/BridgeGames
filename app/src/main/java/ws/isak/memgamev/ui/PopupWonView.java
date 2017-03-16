@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.BounceInterpolator;
 
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import ws.isak.memgamev.R;
 import ws.isak.memgamev.common.Music;
 import ws.isak.memgamev.common.Shared;
+import ws.isak.memgamev.engine.ScreenController;
 import ws.isak.memgamev.events.ui.BackGameEvent;
 import ws.isak.memgamev.events.ui.NextGameEvent;
 import ws.isak.memgamev.model.GameState;
@@ -28,7 +30,7 @@ import ws.isak.memgamev.utils.Clock.OnTimerCount;
 import ws.isak.memgamev.utils.FontLoader;
 import ws.isak.memgamev.utils.FontLoader.Font;
 
-public class PopupWonView extends RelativeLayout {
+public class PopupWonView extends RelativeLayout implements View.OnClickListener{
 
 	public static final String TAG = "Class: PopupWonView";
 
@@ -39,41 +41,59 @@ public class PopupWonView extends RelativeLayout {
 	private ImageView mStar3;
 	private ImageView mNextButton;
 	private ImageView mBackButton;
-	private Handler mHandler;
+	private Button gotoPostSurveyBtn;
+    private Handler mHandler;
+
 
 	public PopupWonView(Context context) {
 		this(context, null);
+        //Log.d (TAG, "constructor);
 	}
 
 	public PopupWonView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		Log.d (TAG, "constructor PopupWonView");
+		Log.d (TAG, "overloaded constructor PopupWonView");
 		LayoutInflater.from(context).inflate(R.layout.popup_won_view, this, true);
-		mTime = (TextView) findViewById(R.id.time_bar_text);
+		//Load text time and score from xml - TODO make this dynamic?
+        mTime = (TextView) findViewById(R.id.time_bar_text);
 		mScore = (TextView) findViewById(R.id.score_bar_text);
 		mStar1 = (ImageView) findViewById(R.id.star_1);
 		mStar2 = (ImageView) findViewById(R.id.star_2);
 		mStar3 = (ImageView) findViewById(R.id.star_3);
-		mBackButton = (ImageView) findViewById(R.id.button_back);
-		mNextButton = (ImageView) findViewById(R.id.button_next);
-		FontLoader.setTypeface(context, new TextView[] { mTime, mScore }, Font.ANGRYBIRDS);
+		//Load image and text buttons
+        mBackButton = (ImageView) findViewById(R.id.popup_won_view_button_back);
+		mNextButton = (ImageView) findViewById(R.id.popup_won_view_button_next);
+		gotoPostSurveyBtn = (Button) findViewById(R.id.popup_won_goto_post_survey_button);
+
+        FontLoader.setTypeface(context, new TextView[] { mTime, mScore }, Font.ANGRYBIRDS);
 		setBackgroundResource(R.drawable.level_complete);
 		mHandler = new Handler();
-		
-		mBackButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Shared.eventBus.notify(new BackGameEvent());
-			}
-		});
-		
-		mNextButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Shared.eventBus.notify(new NextGameEvent());
-			}
-		});
+		//set button (and image button) onClick listeners
+		mBackButton.setOnClickListener(this);
+		mNextButton.setOnClickListener(this);
+        gotoPostSurveyBtn.setOnClickListener(this);
 	}
+
+    @Override
+    public void onClick (View view) {
+        switch (view.getId()) {
+            case R.id.popup_won_view_button_back:
+                Shared.eventBus.notify(new BackGameEvent());
+                break;
+            case R.id.popup_won_view_button_next:
+                Shared.eventBus.notify(new NextGameEvent());
+                break;
+            case R.id.popup_won_goto_post_survey_button:
+                continueToPostSurvey();
+                break;
+        }
+    }
+
+    public void continueToPostSurvey () {
+        Log.d (TAG, "method continueToPostSurvey");
+        ScreenController.getInstance().openScreen(ScreenController.Screen.POST_SURVEY);
+
+    }
 
 	public void setGameState(final GameState gameState) {
 		Log.d (TAG, "method setGameState");
