@@ -25,7 +25,7 @@ public class MemGameData {
     private int difficulty;                 //difficulty level for the current game
     private long gameDurationAllocated;     //This is the time allocated for playing the game
     private boolean gameStarted;            //Set to Boolean false, becomes true when first card is clicked - triggers gameStarTimeStamp
-    private long gameStartTimestamp;        //keep track of the timestamp for the start of the game
+    private long gameStartTimestamp;        //keep track of the timestamp for the start of the game  //TODO move to top (header timestamp is unique)
     private ArrayList <Long> turnDurations;             //a list of durations of each turn
     private long gamePlayDuration;          //Time the player spent on the game (sum of turnDurations) (TODO can it be greater than allocated time?)
     private ArrayList <CardData> cardSelectedOrder;   //a list of cardData objects selected on each turn //TODO!!! should type be CardData, or (int) CardData.cardID

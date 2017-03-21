@@ -157,6 +157,9 @@ public class Engine extends EventObserverAdapter {
 	public void onEvent(BackGameEvent event) {
 		PopupManager.closePopup();
 		mScreenController.openScreen(Screen.DIFFICULTY_MEM);
+        //TODO verify that adding the following lines to reset the difficulty on backGameEvent worked [initially yes]
+        int difficulty = mPlayingGame.boardConfiguration.difficulty;
+        Shared.eventBus.notify (new DifficultySelectedEvent(difficulty));
 	}
 
 	@Override
@@ -173,8 +176,8 @@ public class Engine extends EventObserverAdapter {
 				Drawable backgrounds[] = new Drawable[2];
 				backgrounds[0] = new BitmapDrawable(Shared.context.getResources(), bitmap);
 				backgrounds[1] = new BitmapDrawable(Shared.context.getResources(), backgroundImage);
-				TransitionDrawable crossfader = new TransitionDrawable(backgrounds);
-				return crossfader;
+				TransitionDrawable imageCrossFader = new TransitionDrawable(backgrounds);
+				return imageCrossFader;
 			}
 
 			@Override
