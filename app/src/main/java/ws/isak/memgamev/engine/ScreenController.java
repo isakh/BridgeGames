@@ -49,7 +49,7 @@ public class ScreenController {
 		return mInstance;
 	}
 
-	public enum Screen {        //FIXME? was: public static enum Screen
+	public enum Screen {        //FIXME? was: public static enum Screen, does this need to be static?
         USER_SETUP,
         PRE_SURVEY,
         SELECT_GAME,            //choose between memory game and swap game

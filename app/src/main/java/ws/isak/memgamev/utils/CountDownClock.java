@@ -98,7 +98,7 @@ public abstract class CountDownClock {
 	 * Method isPaused tests whether the timer is paused.
 	 */
 	public boolean isPaused() {
-        Log.d (TAG, "method isPaused: returns true if pauseTimeRemains i.e. > 0");
+        //Log.d (TAG, "method isPaused: returns true if pauseTimeRemains i.e. > 0");
 		return (mPauseTimeRemaining > 0);
 	}
 
@@ -114,14 +114,14 @@ public abstract class CountDownClock {
 	 * Method timeLeft returns the number of milliseconds remaining until the timer is finished
 	 */
 	public long timeLeft() {
-        Log.d (TAG, "method timeLeft");
+        //Log.d (TAG, "method timeLeft");
 		long millisUntilFinished;
 		if (isPaused()) {
 			millisUntilFinished = mPauseTimeRemaining;
             Log.d (TAG, "       :isPaused() true: millisUntilFinished: " + millisUntilFinished);
 		} else {
 			millisUntilFinished = mStopTimeInFuture - SystemClock.elapsedRealtime();
-            Log.d (TAG, "       : isPaused() false: millisUntilFinished: " + millisUntilFinished);
+            //Log.d (TAG, "       : isPaused() false: millisUntilFinished: " + millisUntilFinished);
 			if (millisUntilFinished < 0)
 				millisUntilFinished = 0;
 		}

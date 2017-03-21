@@ -7,6 +7,7 @@ import android.util.Log;
  * Class TileData constructs the object that comprises one tile element in a theme.  This is one
  * or more image files (pairs of images are needed for the birds theme, currently the spectrograms
  * theme will only ask users to match identical spectrograms) and an audio file.
+ * TODO an audio only theme will have all cards showing the same (or no) image and only audio will play
  *
  * @author isak
  */

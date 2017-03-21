@@ -51,7 +51,7 @@ public class Clock {
 		//TODO of the game?
 	}
 
-	/*
+	/************************************************************************
 	 * Class PauseTimer keeps track of game play time when the game is paused
 	 */
 
@@ -72,7 +72,7 @@ public class Clock {
 
 		@Override
 		public void onTick(long millisUntilFinished) {
-            Log.d (TAG2, "overriding onTick from CountDownClock");
+            //Log.d (TAG2, "overriding onTick from CountDownClock");
 			if (mOnTimerCount != null) {
 				mOnTimerCount.onTick(millisUntilFinished);
 			}

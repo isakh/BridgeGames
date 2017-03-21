@@ -24,6 +24,12 @@ import ws.isak.memgamev.utils.Clock.OnTimerCount;
 import ws.isak.memgamev.utils.FontLoader;
 import ws.isak.memgamev.utils.FontLoader.Font;
 
+/*
+ *
+ *
+ * @author isak
+ */
+
 public class GameFragment extends BaseFragment {
 
     public final String TAG = "Class: Game Fragment";
@@ -76,13 +82,13 @@ public class GameFragment extends BaseFragment {
      * the countdown clock on the screen //TODO CHECK THIS IS TRUE?!
      */
 	private void setTime(long time) {
-        Log.d (TAG, "method setTime: input time (ms): " + time);
+        //Log.d (TAG, "method setTime: input time (ms): " + time);
 		int timeInSeconds = (int) Math.ceil ((double) time / 1000);
-        Log.d (TAG, "              : timeInSeconds: " + timeInSeconds);
+        //Log.d (TAG, "              : timeInSeconds: " + timeInSeconds);
 		int min = timeInSeconds / 60;
-        Log.d (TAG, "              : min: " + min);
+        //Log.d (TAG, "              : min: " + min);
 		int sec = timeInSeconds - min*60;
-        Log.d (TAG, "              : sec: " + sec + " | calling mTime.setText");
+        //Log.d (TAG, "              : sec: " + sec + " | calling mTime.setText");
 		mTime.setText(" " + String.format(Locale.ENGLISH, "%02d", min) + ":" + String.format(Locale.ENGLISH, "%02d", sec));
 	}
 
@@ -95,7 +101,7 @@ public class GameFragment extends BaseFragment {
 
             @Override
 			public void onTick(long millisUntilFinished) {
-                Log.d (TAG, "method startClock: overriding onTick: input millisUntilFinished: " + millisUntilFinished);
+                //Log.d (TAG, "method startClock: overriding onTick: input millisUntilFinished: " + millisUntilFinished);
 				setTime((int) (millisUntilFinished/1000));
 			}
 			
