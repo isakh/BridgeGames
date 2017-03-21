@@ -124,4 +124,17 @@
     <!-- Popup Won View -->
     <!-- ************** -->
     <string name="popup_won_view_post_survey_button_text">Done Playing? Please Answer A Few Questions</string>
+
+    <!-- Strings for use by SpeciesList class -->
+    <string name="species_bird_1">House Sparrow	- Passer domesticus</string>
+    <string name="species_bird_2">Blue tit - Cyanistes caeruleus</string>
+    <string name="species_bird_3">Starling - Sturnus vulgaris</string>
+    <string name="species_bird_4">Blackbird - Turdus merula</string>
+    <string name="species_bird_5">Woodpigeon - Columba palumbus</string>
+    <string name="species_bird_6">Chaffinch - Fringilla coelebs</string>
+    <string name="species_bird_7">Goldfinch - Carduelis carduelis</string>
+    <string name="species_bird_8">Great Tit - Parus major</string>
+    <string name="species_bird_9">Collared Dove	- Streptopelia decaocto</string>
+    <string name="species_bird_10">Robin - Erithacus rubecula</string>
+
 </resources>

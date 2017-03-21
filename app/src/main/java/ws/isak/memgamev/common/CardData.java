@@ -1,6 +1,8 @@
 package ws.isak.memgamev.common;
 
 import android.util.Log;
+import ws.isak.memgamev.common.Shared;
+import ws.isak.memgamev.R;
 
 
 /*
@@ -17,6 +19,7 @@ public class CardData
     private final String TAG = "Class: CardData";
 
     private int cardID;                     //Tile ID between 1 and the number of tiles objects in resources
+    private String speciesName;             //this string stores the species name from R.strings.species_bird_%
 
     private boolean pairedImagesDiffer;     //boolean true if there is a second image in the pair
     private boolean firstImageUsed;         //switches to true when the object is accessed a second time
@@ -51,6 +54,61 @@ public class CardData
         catch (NullPointerException npe) {
             npe.printStackTrace();
             return -1;
+        }
+    }
+
+    /*
+     * Methods to set/get the speciesName (to be used in a toast when a pair matches)
+     */
+    public void setSpeciesName (int id) {
+        try {
+            //Log.d (TAG, "method setSpeciesName: species: " + species);
+            switch (id) {
+                case 1:
+                    speciesName = Shared.context.getResources().getString(R.string.species_bird_1);
+                    break;
+                case 2:
+                    speciesName = Shared.context.getResources().getString(R.string.species_bird_2);
+                    break;
+                case 3:
+                    speciesName = Shared.context.getResources().getString(R.string.species_bird_3);
+                    break;
+                case 4:
+                    speciesName = Shared.context.getResources().getString(R.string.species_bird_4);
+                    break;
+                case 5:
+                    speciesName = Shared.context.getResources().getString(R.string.species_bird_5);
+                    break;
+                case 6:
+                    speciesName = Shared.context.getResources().getString(R.string.species_bird_6);
+                    break;
+                case 7:
+                    speciesName = Shared.context.getResources().getString(R.string.species_bird_7);
+                    break;
+                case 8:
+                    speciesName = Shared.context.getResources().getString(R.string.species_bird_8);
+                    break;
+                case 9:
+                    speciesName = Shared.context.getResources().getString(R.string.species_bird_9);
+                    break;
+                case 10:
+                    speciesName = Shared.context.getResources().getString(R.string.species_bird_10);
+                    break;
+            }
+        }
+        catch (IllegalArgumentException e) {
+            e.getStackTrace();
+        }
+    }
+
+    public String getSpeciesName () {
+        try {
+            //Log.d (TAG, "method getSpeciesName: return: species: " + speciesName);
+            return speciesName;
+        }
+        catch (NullPointerException npe) {
+            npe.printStackTrace();
+            return null;
         }
     }
 

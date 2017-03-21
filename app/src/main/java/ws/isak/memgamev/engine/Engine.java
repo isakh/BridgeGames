@@ -263,8 +263,10 @@ public class Engine extends EventObserverAdapter {
 	@Override
 	public void onEvent(FlipCardEvent event) {
 
-		Log.i(TAG, "onEvent FlipCardEvent: event.id is: " + event.id + " *** AT START OF method ***");
+		Log.d (TAG, "onEvent FlipCardEvent: event.id is: " + event.id + " *** AT START OF method ***");
 		int id = event.id;
+        Log.d (TAG, "                     : Card ID is: " + mPlayingGame.boardArrangement.cardObjs.get(id).getCardID());
+        Log.d (TAG, "                     : species is: " + mPlayingGame.boardArrangement.cardObjs.get(id).getSpeciesName());
 
 		if (mFlippedId == -1) {		//This is -1 when no cards are flipped up
 			mFlippedId = id;		//set id of flipped up card to id of tile from event
@@ -276,16 +278,20 @@ public class Engine extends EventObserverAdapter {
 			if (mPlayingGame.boardArrangement.isPair(mFlippedId, id)) {
 				 Log.i(TAG, "onEvent FlipCardEvent: mFlippedId != -1 (one card is already flipped): and isPair: mFlippedID is: " + mFlippedId + ", " + id + " returns true");
 				// send event - hide id1, id2
-				Shared.eventBus.notify(new HidePairCardsEvent(mFlippedId, id), 1000);		//TODO make delay variable and incorporate into total game time
-				//TODO add a toast to show the user the name of the species that they have matched??
-                Log.i (TAG, "onEvent FlipCardEvent: isPair returned TRUE: calling HidePairCardsEvent");
-				// play music
+				Shared.eventBus.notify(new HidePairCardsEvent(mFlippedId, id), 1000);//TODO make delay variable and incorporate into total game time
+
+                //display the matched species name in a toast to the user
+                Toast.makeText(Shared.context, mPlayingGame.boardArrangement.cardObjs.get(id).getSpeciesName(), Toast.LENGTH_LONG).show();
+
+                Log.d (TAG, "onEvent FlipCardEvent: isPair returned TRUE: calling HidePairCardsEvent");
+                // play music
 				mHandler.postDelayed(new Runnable() {
 
 					@Override
 					public void run() {
 						Log.d (TAG, "onEvent FlipCardEvent: isPair returns TRUE: calling Music.playCorrect()");
-						Music.playCorrect();
+						//play the correct match audio
+                        Music.playCorrect();
 					}
 				}, 1000);		//TODO instead of fixed delay 1000ms use duration of sample
 				mToFlip -= 2;			//remaining number of tiles to flip..

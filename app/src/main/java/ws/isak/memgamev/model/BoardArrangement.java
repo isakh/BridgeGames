@@ -34,7 +34,7 @@ public class BoardArrangement {
 	 * @param curTileID
 	 *            The id is the number between 0 and number of possible cards of
 	 *            this theme i.e. 6 for beginner, 8 for intermediate, & 9 for advanced (i.e. tiles/2)
-	 *            TODO : note if these are to change they must be even
+	 *            FIXME : note if these are to change they must be even
 	 * @return A Bitmap from the card to be placed on the tile
 	 */
 
