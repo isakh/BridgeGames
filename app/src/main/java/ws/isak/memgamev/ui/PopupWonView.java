@@ -68,11 +68,11 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
 		Log.d (TAG, "overloaded constructor PopupWonView");
 		LayoutInflater.from(context).inflate(R.layout.popup_won_view, this, true);
 		//Load text time and score from xml - TODO make this dynamic?
-        mTime = (TextView) findViewById(R.id.time_bar_text);
-		mScore = (TextView) findViewById(R.id.score_bar_text);
-		mStar1 = (ImageView) findViewById(R.id.star_1);
-		mStar2 = (ImageView) findViewById(R.id.star_2);
-		mStar3 = (ImageView) findViewById(R.id.star_3);
+        mTime = (TextView) findViewById(R.id.popop_won_time_left_countdown);
+		mScore = (TextView) findViewById(R.id.popup_won_score_bar_text);
+		mStar1 = (ImageView) findViewById(R.id.popup_won_star_1);
+		mStar2 = (ImageView) findViewById(R.id.popup_won_star_2);
+		mStar3 = (ImageView) findViewById(R.id.popup_won_star_3);
 		//Load image and text buttons for replaying game/ playing next difficulty/ and finishing play
         mTryAgainButton = (ImageView) findViewById(R.id.popup_won_view_button_try_again);
 		mNextLevelButton = (ImageView) findViewById(R.id.popup_won_view_button_next_level);
@@ -81,7 +81,8 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
 		gotoPostSurveyBtn = (Button) findViewById(R.id.popup_won_goto_post_survey_button);
 
         FontLoader.setTypeface(context, new TextView[] { mTime, mScore }, Font.ANGRYBIRDS);
-		setBackgroundResource(R.drawable.level_complete);
+		//FIXME this image file is to be rebuilt programmatically???
+        //FIXME setBackgroundResource(R.drawable.level_complete);
 		mHandler = new Handler();
 		//set button (and image button) onClick listeners
 		mTryAgainButton.setOnClickListener(this);
@@ -112,14 +113,14 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
         }
     }
 
-    private void continueToPostSurvey () {
+    public void continueToPostSurvey () {
         Log.d (TAG, "method continueToPostSurvey");
         PopupManager.closePopup();
         ScreenController.getInstance().openScreen(ScreenController.Screen.POST_SURVEY);
 
     }
 
-    private void continueToSelectGameFragment() {
+    public void continueToSelectGameFragment() {
         Log.d (TAG, "method continueToSelectGameFragment");
         PopupManager.closePopup();
         ScreenController.getInstance().openScreen(ScreenController.Screen.SELECT_GAME);

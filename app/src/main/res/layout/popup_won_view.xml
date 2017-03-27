@@ -1,136 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
 
     <!-- Title -->
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/popup_won_title_height"
         android:gravity="center_horizontal"
         android:layout_marginTop="5dp"
         android:text="@string/popup_won_view_title"
         android:textSize="40sp"
-        android:textColor="#0e0e0e"
-        />
+        android:textColor="#0e0e0e" />
 
-    <!-- Stars Animated in fixed Circles according to Score -->
+    <!-- Stars (Animated visible in java class) according to Score -->
 
-    <ImageView
-        android:id="@+id/star_1"
-        android:layout_width="@dimen/popup_button_star_size"
-        android:layout_height="@dimen/popup_button_star_size"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/popup_button_star_margin_1"
-        android:layout_marginTop="@dimen/popup_button_star_margin_top"
-        android:src="@drawable/level_complete_star"
-        android:visibility="invisible" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/star_2"
-        android:layout_width="@dimen/popup_button_star_size"
-        android:layout_height="@dimen/popup_button_star_size"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/popup_button_star_margin_2"
-        android:layout_marginTop="@dimen/popup_button_star_margin_top"
-        android:src="@drawable/level_complete_star"
-        android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/popup_won_star_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.33"
+            android:src="@drawable/level_complete_star"
+            android:visibility="invisible" />
 
-    <ImageView
-        android:id="@+id/star_3"
-        android:layout_width="@dimen/popup_button_star_size"
-        android:layout_height="@dimen/popup_button_star_size"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="@dimen/popup_button_star_margin_3"
-        android:layout_marginTop="@dimen/popup_button_star_margin_top"
-        android:src="@drawable/level_complete_star"
-        android:visibility="invisible" />
+        <ImageView
+            android:id="@+id/popup_won_star_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.34"
+            android:src="@drawable/level_complete_star"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/popup_won_star_3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.33"
+            android:src="@drawable/level_complete_star"
+            android:visibility="invisible"/>
+
+    </LinearLayout>
 
     <!-- Game Time -->
 
-    <TextView
-        android:id="@+id/time_bar_text"
-        android:layout_width="@dimen/popup_button_time_width"
-        android:layout_height="@dimen/popup_button_time_height"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/popup_button_time_margin_bottom"
-        android:layout_marginRight="@dimen/popup_button_time_margin_right"
-        android:gravity="center"
-        android:shadowColor="#2eaed9"
-        android:shadowDx="4"
-        android:shadowDy="4"
-        android:shadowRadius="4"
-        android:text="@string/time_bar_text"
-        android:textColor="@color/colorText"
-        android:textSize="@dimen/popup_button_time_size" />             <!-- TODO fix text 00:60 to dynamic time  -->
+    <LinearLayout
+        android:id="@+id/popup_won_time_information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
+        <TextView
+            android:id="@+id/popup_won_time_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:text="@string/popup_won_time_text"/>
+
+        <ImageView
+            android:id="@+id/popup_won_time_clock_image"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:src="@drawable/clock"/> <!-- clock image here 200x200px?-->
+
+        <TextView
+            android:id="@+id/popop_won_time_left_countdown"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/popup_won_button_time_margin_bottom"
+            android:layout_marginRight="@dimen/popup_won_button_time_margin_right"
+            android:gravity="center"
+            android:shadowColor="#2eaed9"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:shadowRadius="4"
+            android:text="@string/popup_won_game_time_at_start"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/popup_won_button_time_size" />             <!-- TODO fix text 00:60 to dynamic time  -->
+
+    </LinearLayout>
     <!-- Game Score -->
 
-    <TextView
-        android:id="@+id/score_bar_text"
-        android:layout_width="@dimen/popup_button_time_width"
-        android:layout_height="@dimen/popup_button_time_height"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/popup_button_score_margin_bottom"
-        android:layout_marginRight="@dimen/popup_button_time_margin_right"
-        android:gravity="center"
-        android:shadowColor="#2eaed9"
-        android:shadowDx="4"
-        android:shadowDy="4"
-        android:shadowRadius="4"
-        android:text="240"
-        android:textColor="@color/colorText"
-        android:textSize="@dimen/popup_button_time_size" />
+    <LinearLayout
+        android:id="@+id/popup_won_score_information"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-    <!-- Continuation Buttons -->
+        <TextView
+            android:id="@+id/popup_won_score_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:text="@string/popup_won_score_text"/>
+
+        <ImageView
+            android:id="@+id/popup_won_score_star_image"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:src="@drawable/level_complete_star"/>
+
+        <TextView
+            android:id="@+id/popup_won_score_bar_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/popup_button_score_margin_bottom"
+            android:layout_marginRight="@dimen/popup_won_button_time_margin_right"
+            android:gravity="center"
+            android:shadowColor="#2eaed9"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:shadowRadius="4"
+            android:text="240"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/popup_won_button_time_size" />
+
+    </LinearLayout>
+
+    <!-- Play Continuation Buttons -->
 
     <ImageView
         android:id="@+id/popup_won_view_button_try_again"
-        android:layout_width="@dimen/popup_won_button_width_height"
-        android:layout_height="@dimen/popup_won_button_width_height"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="@dimen/popup_won_button_margin_bottom"
-        android:layout_marginLeft="@dimen/popup_won_button_margin_left"
+        android:layout_marginBottom="@dimen/popup_won_buttons_margin_bottom"
+        android:layout_marginLeft="@dimen/popup_won_buttons_margin_left"
         android:src="@drawable/button_try_again" />
 
     <ImageView
         android:id="@+id/popup_won_view_button_next_level"
-        android:layout_width="@dimen/popup_won_button_width_height"
-        android:layout_height="@dimen/popup_won_button_width_height"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@id/popup_won_view_button_next_level"
-        android:layout_marginBottom="@dimen/popup_won_button_margin_bottom"
-        android:layout_marginRight="@dimen/popup_won_button_margin_left"
+        android:layout_marginBottom="@dimen/popup_won_buttons_margin_bottom"
+        android:layout_marginRight="@dimen/popup_won_buttons_margin_left"
         android:src="@drawable/button_next_level" />
 
     <ImageView
         android:id="@+id/popup_won_view_button_change_theme"
-        android:layout_width="@dimen/popup_won_button_width_height"
-        android:layout_height="@dimen/popup_won_button_width_height"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@id/popup_won_view_button_next_level"
-        android:layout_marginBottom="@dimen/popup_won_button_margin_bottom"
-        android:layout_marginRight="@dimen/popup_won_button_margin_left"
+        android:layout_marginBottom="@dimen/popup_won_buttons_margin_bottom"
+        android:layout_marginRight="@dimen/popup_won_buttons_margin_left"
         android:src="@drawable/button_change_theme" />
 
     <ImageView
         android:id="@+id/popup_won_view_button_change_game"
-        android:layout_width="@dimen/popup_won_button_width_height"
-        android:layout_height="@dimen/popup_won_button_width_height"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.25"
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@id/popup_won_view_button_change_theme"
-        android:layout_marginBottom="@dimen/popup_won_button_margin_bottom"
-        android:layout_marginRight="@dimen/popup_won_button_margin_left"
-        android:src="@drawable/button_change_game" />
+        android:layout_marginBottom="@dimen/popup_won_buttons_margin_bottom"
+        android:layout_marginRight="@dimen/popup_won_buttons_margin_left"
+        android:src="@drawable/button_change_game"
+        android:onClick="continueToSelectGameFragment"/>
 
     <!-- Post Survey Button-->
 
@@ -143,6 +191,5 @@
         android:background="#a9b1ef"
         android:onClick="continueToPostSurvey"
         android:layout_marginBottom="5dp"/>
-
 
 </RelativeLayout>

@@ -35,7 +35,7 @@ public class Themes {
 	public static Theme createBirdsTheme() {
 		Theme theme = new Theme();
 		theme.themeID = 1;
-		theme.name = Shared.context.getString(R.string.birds_theme_name);
+		theme.name = Shared.context.getString(R.string.themes_birds_name);
 		theme.pairedImagesDiffer = true;
 		theme.backgroundImageUrl = URI_DRAWABLE + "back_birds";
 		theme.cardObjs = new ArrayList<CardData>();		//ArrayList of type CardData
@@ -61,7 +61,7 @@ public class Themes {
 	public static Theme createSpectrogramsTheme() {
 		Theme theme = new Theme();
 		theme.themeID = 2;
-		theme.name = Shared.context.getString(R.string.spectrograms_theme_name);
+		theme.name = Shared.context.getString(R.string.themes_spectrograms_name);
 		theme.pairedImagesDiffer = false;
 		theme.backgroundImageUrl = URI_DRAWABLE + "back_spectrograms";
 		theme.cardObjs = new ArrayList<CardData>();		//ArrayList of CardData objects

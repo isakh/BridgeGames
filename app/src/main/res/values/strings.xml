@@ -1,20 +1,12 @@
 <resources>
-    <string name="app_name">BRIDGE</string>         <!-- was MemGameV  ... does this have to match elsewhere? -->
-    <string name="time_bar_text">00:60</string>     <!-- TODO fix this and make dynamic -->
-    <string name="birds_theme_name">Birds</string>
-    <string name="spectrograms_theme_name">Spectrograms</string>
 
-    <!-- User Login/Setup Fragment -->
-    <!-- ************************* -->
-    <string name="user_setup_title">Welcome: Please Login or Sign Up</string>
-    <string name="user_setup_login_text">Login Here</string>
-    <string name="user_setup_login_hint">Login Name</string>
-    <string name="user_setup_login_button">Login</string>
-    <string name="user_setup_register_text">Register Here</string>
-    <string name="user_setup_register_hint">New User Name</string>
-    <string name="user_setup_register_button">Create New User</string>
+    <!-- ============================================================================== -->
+    <!-- PACKAGE TITLE ON DEVICE-->
+    <!-- *********************** -->
+    <string name="app_name">BRIDGE</string>
 
-    <!-- Pre Survey Form Fragment -->
+    <!-- =============================================================================== -->
+    <!-- Class: PreSurveyFragment -->
     <!-- ************************ -->
     <string name="pre_survey_title">Tell Us About Yourself</string>
     <!-- [1] What is your age? [NUMBER] -->
@@ -79,7 +71,24 @@
     <!-- Submit Button -->
     <string name="pre_survey_submit_button">Submit Survey And Continue To Games</string>
 
-    <!-- Post Survey Form Fragment -->
+
+    <!-- =================================================================================== -->
+    <!-- Class: PopupWonView -->
+    <!-- ******************* -->
+    <!-- title -->
+    <string name="popup_won_view_title">Level Complete</string>
+    <!-- time information -->
+    <string name="popup_won_time_text">Time</string>
+    <string name="popup_won_game_time_at_start">00:60</string>     <!-- TODO fix this and make dynamic -->
+    <!-- score information -->
+    <string name="popup_won_score_text">Score</string>
+    <string name="popup_won_score_at_start">0</string>
+    <!-- post survey button -->
+    <string name="popup_won_view_post_survey_button_text">Done Playing? Please Answer A Few Questions</string>
+
+
+    <!-- ======================================================================================-->
+    <!-- Class: PostSurveyFragment -->
     <!-- ************************* -->
     <string name="post_survey_title">Thank you for playing, please answer the following questions</string>
     <!-- [1] Prior to today's exposure were you familiar with spectrograms as used to
@@ -105,11 +114,8 @@
     <!-- Submit Button -->
     <string name="post_survey_submit_button">Submit and Close</string>
 
-
     <!-- [11] What part of the interface caused you the most confusion? [TEXT] -->
     <string name="post_survey_cause_of_most_confusion_query_text">TODO</string>
-
-
     <!-- TODO programmatically include the following only if the survey is after playing swap game? -->
     <!-- [12] How motivated were you to find the visual representation that best fit the song you had initially heard?
     [LIKERT] unmotivated - gradually lost interest - neutral - interested throughout the process - highly motivated)
@@ -119,14 +125,10 @@
     closer to the solution? [LIKERT] rarely - sometimes not - half the time - sometimes yes - frequently) -->
     <string name="post_survey_solution_progress_query_text">TODO</string>
 
-//TODO only applicable to swap game? -->
 
-    <!-- Popup Won View -->
-    <!-- ************** -->
-    <string name="popup_won_view_title">Level Complete</string>
-    <string name="popup_won_view_post_survey_button_text">Done Playing? Please Answer A Few Questions</string>
-
-    <!-- Strings for use by SpeciesList class -->
+    <!-- =================================================================================== -->
+    <!-- Class: SpeciesList -->
+    <!-- ****************** -->
     <string name="species_bird_1">House Sparrow	- Passer domesticus</string>
     <string name="species_bird_2">Blue tit - Cyanistes caeruleus</string>
     <string name="species_bird_3">Starling - Sturnus vulgaris</string>
@@ -137,5 +139,26 @@
     <string name="species_bird_8">Great Tit - Parus major</string>
     <string name="species_bird_9">Collared Dove	- Streptopelia decaocto</string>
     <string name="species_bird_10">Robin - Erithacus rubecula</string>
+
+
+    <!-- =================================================================================== -->
+    <!-- Class: Themes -->
+    <!-- ************* -->
+    <string name="themes_blank_name">Blank</string>
+    <string name="themes_birds_name">Birds</string>
+    <string name="themes_spectrograms_name">Spectrograms</string>
+
+
+    <!-- =================================================================================== -->
+    <!-- Class: UserSetupFragment -->
+    <!-- ************************ -->
+    <string name="user_setup_title">Welcome: Please Login or Sign Up</string>
+    <string name="user_setup_login_text">Login Here</string>
+    <string name="user_setup_login_hint">Login Name</string>
+    <string name="user_setup_login_button">Login</string>
+    <string name="user_setup_register_text">Register Here</string>
+    <string name="user_setup_register_hint">New User Name</string>
+    <string name="user_setup_register_button">Create New User</string>
+
 
 </resources>
