@@ -19,9 +19,10 @@ import ws.isak.memgamev.ui.PopupManager;
 import ws.isak.memgamev.utils.Utils;
 
 /*
- * The main activity class of the app.  This instantiates the shared context, engine
+ * The main activity class of the app.  This activity class is called from the AndroidManifest.xml
+ * as the application activity on launch.  This class instantiates the shared context, engine
  * and eventBus that guide the flow of the games.  On creation, the screen will open
- * with the Menu screen (TODO should we ∆ this to USER_SETUP screen?, should USER_SETUP be Setup or Login??
+ * with the USER_SETUP screen.
  *
  * @author isak
  */
@@ -40,7 +41,7 @@ public class  MainActivity extends FragmentActivity {
         Shared.context = getApplicationContext();
 		Shared.engine = Engine.getInstance();
 		Shared.eventBus = EventBus.getInstance();
-        Shared.userData = UserData.getInstance();       //TODO does this make sense?
+        Shared.userData = new UserData();       //TODO does this make sense to remove
 
 		setContentView(R.layout.activity_main);
 		mBackgroundImage = (ImageView) findViewById(R.id.background_image);

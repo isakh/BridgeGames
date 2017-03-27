@@ -170,8 +170,10 @@ public class BoardView extends LinearLayout {
 
 			@Override
 			public void onClick(View v) {
-				if (!mLocked && tileView.isFlippedDown() && !Music.getIsAudioPlaying()) {
-					Log.d (TAG, "			   : curTileOnBoard is: " + curTileOnBoard);
+				//FIXME reintroduce: if (!mLocked && tileView.isFlippedDown() && !Music.getIsAudioPlaying()) {
+                //TODO create two versions one with Music locking, one without
+                if (!mLocked && tileView.isFlippedDown()) {
+                Log.d (TAG, "			   : curTileOnBoard is: " + curTileOnBoard);
 					Log.d (TAG, "			   : curCardOnTile is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getCardID());
 					Log.d (TAG, " 			   : curCardOnTile.getAudioURI is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getAudioURI());
 					Log.d (TAG, " 			   : curCardOnTile.getImageURI1 is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getImageURI1());

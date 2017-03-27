@@ -18,7 +18,11 @@ import ws.isak.memgamev.engine.ScreenController;
 import ws.isak.memgamev.engine.ScreenController.Screen;
 
 /*
- *
+ * This class contains the fragment that sets up the game.  It comprises two edit text fields with
+ * corresponding submission buttons for the two cases where the user is registering for the first
+ * time and where the user is logging back in having previously registered.  In either case, as this
+ * is the opening fragment for play, a UserData object mUserData is instantiated here
+ * TODO how does this work with the UserData object in Shared??
  *
  * @author isak
  */
@@ -76,7 +80,10 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
         newUserName = getNewUserName();
         if (CheckUserUnique(newUserName)) {
             Log.d(TAG, "                    : unique userName: instantiating new UserData and appending to UserData list");
-            //TODO UserData instantiateUser = new UserData();
+            //TODO ********************* DOES THIS WORK?
+            Shared.userData.getInstance();
+            Shared.userData.setUserName(newUserName);
+            //TODO Fix ^this^ because there will inevitably be access conflicts on nonStatic Shared.userData??
             Log.d (TAG, "                   : next screen is PRE_SURVEY to populate new curUserData");
             ScreenController.getInstance().openScreen(Screen.PRE_SURVEY);
         } else {
@@ -97,7 +104,8 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
         loginName = getLoginName();
         if (CheckUserExists(loginName)) {
             Log.d (TAG, "                   : preexistingUserName is true, setting current UserData to user's UserData");
-            //TODO deal with checking user exists and load current UserData
+            //TODO ******************** DOES THIS WORK
+            Shared.userData.getInstance(loginName);
             //load screen for next step
             Log.d (TAG, "                   : existing user: next screen is SELECT_GAME");
             ScreenController.getInstance().openScreen(Screen.SELECT_GAME);

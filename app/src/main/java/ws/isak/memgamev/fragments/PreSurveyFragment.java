@@ -198,7 +198,14 @@ public class PreSurveyFragment extends Fragment implements  View.OnClickListener
         Log.d (TAG, "                       : interfaceExperienceRange: " + interfaceExperienceRange);
 
 
-        //TODO load all responses to USER_DATA
+        //Load all responses to Shared.userData
+        Shared.userData.setAgeRange(ageRange);
+        Shared.userData.setYearsTwitchingRange(yearsTwitchingRange);
+        Shared.userData.setSpeciesKnownRange(speciesKnownRange);
+        Shared.userData.setAudibleRecognizedRange(audibleRecognizedRange);
+        Shared.userData.setHearingEqualsSeeing(hearingEqualsSeeing);
+        Shared.userData.setHasUsedSmartPhone(hasUsedSmartPhone);
+        Shared.userData.setInterfaceExperienceRange(interfaceExperienceRange);
 
         //when done continue to next screen
         ScreenController.getInstance().openScreen(Screen.SELECT_GAME);

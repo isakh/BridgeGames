@@ -134,9 +134,12 @@ public class PostSurveyFragment extends Fragment implements View.OnClickListener
         }
         Log.d (TAG, "method submitPostSurvey: hearIsPredictLikert: " + hearIsPredictLikert);
 
-        //TODO load all responses to USER_DATA
+        //Load all responses to USER_DATA
+        Shared.userData.setSpectrogramFamiliar(spectrogramFamiliar);
+        Shared.userData.setHearIsSeeLikert(hearIsSeeLikert);
+        Shared.userData.setHearIsPredictLikert(hearIsPredictLikert);
 
-        //when done continue to next screen
+        //when done continue to next screen? or Toast goodbye and close the app???
         ScreenController.getInstance().openScreen(ScreenController.Screen.SELECT_GAME); //FIXME where should this direct?
     }
 }
