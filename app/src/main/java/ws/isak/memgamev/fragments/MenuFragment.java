@@ -23,7 +23,7 @@ import ws.isak.memgamev.ui.PopupManager;
 import ws.isak.memgamev.utils.Utils;
 
 /*
- Class MenuFragement sets up the fragment that greets the user the first time the app is opened.  It
+ Class MenuFragment sets up the fragment that greets the user FIXME the first time the app is opened.  It
  contains the title, start game button/lights/tooltip and the settings button and includes the methods
  for animating them.  When this fragment is open, the background music is playing.
 

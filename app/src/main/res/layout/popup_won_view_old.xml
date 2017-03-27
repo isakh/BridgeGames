@@ -1,23 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
-    <!-- Title -->
-
-    <TextView
+    <Button
+        android:id="@+id/popup_won_goto_post_survey_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="5dp"
-        android:text="@string/popup_won_view_title"
-        android:textSize="40sp"
+        android:text="@string/popup_won_view_post_survey_button_text"
         android:textColor="#0e0e0e"
-        />
+        android:background="#a9b1ef"
+        android:onClick="continueToPostSurvey"
+        android:layout_marginBottom="5dp"/>
 
-    <!-- Stars Animated in fixed Circles according to Score -->
+    <ImageView
+        android:id="@+id/popup_won_view_button_back"
+        android:layout_width="@dimen/popup_button_back"
+        android:layout_height="@dimen/popup_button_back"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="@dimen/popup_button_back_bottom"
+        android:layout_marginLeft="@dimen/popup_button_back_left"
+        android:src="@drawable/button_back" />
+
+    <ImageView
+        android:id="@+id/popup_won_view_button_next"
+        android:layout_width="@dimen/popup_button_back"
+        android:layout_height="@dimen/popup_button_back"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/popup_button_back_bottom"
+        android:layout_marginRight="@dimen/popup_button_back_left"
+        android:src="@drawable/button_again" />
 
     <ImageView
         android:id="@+id/star_1"
@@ -52,8 +66,6 @@
         android:src="@drawable/level_complete_star"
         android:visibility="invisible" />
 
-    <!-- Game Time -->
-
     <TextView
         android:id="@+id/time_bar_text"
         android:layout_width="@dimen/popup_button_time_width"
@@ -71,8 +83,6 @@
         android:textColor="@color/colorText"
         android:textSize="@dimen/popup_button_time_size" />             <!-- TODO fix text 00:60 to dynamic time  -->
 
-    <!-- Game Score -->
-
     <TextView
         android:id="@+id/score_bar_text"
         android:layout_width="@dimen/popup_button_time_width"
@@ -89,60 +99,5 @@
         android:text="240"
         android:textColor="@color/colorText"
         android:textSize="@dimen/popup_button_time_size" />
-
-    <!-- Continuation Buttons -->
-
-    <ImageView
-        android:id="@+id/popup_won_view_button_try_again"
-        android:layout_width="@dimen/popup_won_button_width_height"
-        android:layout_height="@dimen/popup_won_button_width_height"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="@dimen/popup_won_button_margin_bottom"
-        android:layout_marginLeft="@dimen/popup_won_button_margin_left"
-        android:src="@drawable/button_try_again" />
-
-    <ImageView
-        android:id="@+id/popup_won_view_button_next_level"
-        android:layout_width="@dimen/popup_won_button_width_height"
-        android:layout_height="@dimen/popup_won_button_width_height"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@id/popup_won_view_button_next_level"
-        android:layout_marginBottom="@dimen/popup_won_button_margin_bottom"
-        android:layout_marginRight="@dimen/popup_won_button_margin_left"
-        android:src="@drawable/button_next_level" />
-
-    <ImageView
-        android:id="@+id/popup_won_view_button_change_theme"
-        android:layout_width="@dimen/popup_won_button_width_height"
-        android:layout_height="@dimen/popup_won_button_width_height"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@id/popup_won_view_button_next_level"
-        android:layout_marginBottom="@dimen/popup_won_button_margin_bottom"
-        android:layout_marginRight="@dimen/popup_won_button_margin_left"
-        android:src="@drawable/button_change_theme" />
-
-    <ImageView
-        android:id="@+id/popup_won_view_button_change_game"
-        android:layout_width="@dimen/popup_won_button_width_height"
-        android:layout_height="@dimen/popup_won_button_width_height"
-        android:layout_alignParentBottom="true"
-        android:layout_alignLeft="@id/popup_won_view_button_change_theme"
-        android:layout_marginBottom="@dimen/popup_won_button_margin_bottom"
-        android:layout_marginRight="@dimen/popup_won_button_margin_left"
-        android:src="@drawable/button_change_game" />
-
-    <!-- Post Survey Button-->
-
-    <Button
-        android:id="@+id/popup_won_goto_post_survey_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/popup_won_view_post_survey_button_text"
-        android:textColor="#0e0e0e"
-        android:background="#a9b1ef"
-        android:onClick="continueToPostSurvey"
-        android:layout_marginBottom="5dp"/>
-
 
 </RelativeLayout>

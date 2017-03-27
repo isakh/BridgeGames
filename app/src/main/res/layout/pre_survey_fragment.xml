@@ -14,9 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/pre_survey_title"
-        android:textSize="12pt"
+        android:textSize="12sp"
         android:textColor="#0e0e0e"
-        android:layout_marginBottom="20dp"/>   <!-- TODO set in values -->
+        android:layout_marginBottom="20dp"/>   <!-- TODO set in values - textSize sp vs pt reasonable? -->
 
     <!-- [1] Age Query Spinner -->
 

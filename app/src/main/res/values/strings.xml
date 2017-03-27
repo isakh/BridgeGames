@@ -123,6 +123,7 @@
 
     <!-- Popup Won View -->
     <!-- ************** -->
+    <string name="popup_won_view_title">Level Complete</string>
     <string name="popup_won_view_post_survey_button_text">Done Playing? Please Answer A Few Questions</string>
 
     <!-- Strings for use by SpeciesList class -->

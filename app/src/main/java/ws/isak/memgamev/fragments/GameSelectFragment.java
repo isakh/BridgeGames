@@ -16,7 +16,9 @@ import ws.isak.memgamev.engine.ScreenController;
 import ws.isak.memgamev.engine.ScreenController.Screen;
 
 /*
- *
+ * Class GameSelectFragment provides the view for the fragment where the user decides which of
+ * the games to play.  This view contains clickable buttons for each of the games with onClick
+ * listeners that animate the click action and open the appropriate subsequent screen.
  *
  *  @author isak
  */
@@ -51,7 +53,7 @@ public class GameSelectFragment extends Fragment implements  View.OnClickListene
             case R.id.game_memory_container:
                 Log.d(TAG, "overridden method onClick: case game_memory: switch to MENU_MEM screen");
                 animateShow(view);
-                ScreenController.getInstance().openScreen(Screen.MENU_MEM);
+                ScreenController.getInstance().openScreen(Screen.MENU_MEM); //FIXME should this be an event??
                 break;
             case R.id.game_swap_container:
                 Log.d(TAG, "overridden method onClick: case game_swap: switch to MENU_SWAP screen");

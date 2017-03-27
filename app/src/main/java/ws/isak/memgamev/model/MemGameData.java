@@ -22,6 +22,8 @@ public class MemGameData {
     private final String TAG = "Class: MemGameData";
 
     private Game mPlayingGame;
+    //Parameters to be saved for post hoc analysis:
+    //TODO private String theme;            //set/get string from selectiond
     private int difficulty;                 //difficulty level for the current game
     private long gameDurationAllocated;     //This is the time allocated for playing the game
     private boolean gameStarted;            //Set to Boolean false, becomes true when first card is clicked - triggers gameStarTimeStamp

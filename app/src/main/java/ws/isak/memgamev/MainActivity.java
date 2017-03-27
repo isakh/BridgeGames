@@ -41,7 +41,7 @@ public class  MainActivity extends FragmentActivity {
         Shared.context = getApplicationContext();
 		Shared.engine = Engine.getInstance();
 		Shared.eventBus = EventBus.getInstance();
-        Shared.userData = new UserData();       //TODO does this make sense to remove
+        Shared.userData = new UserData();       //TODO this is a place-keeper, set to specific on login
 
 		setContentView(R.layout.activity_main);
 		mBackgroundImage = (ImageView) findViewById(R.id.background_image);

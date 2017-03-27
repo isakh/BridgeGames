@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Handler;
 
+import android.provider.ContactsContract;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -24,11 +25,20 @@ import ws.isak.memgamev.common.Shared;
 import ws.isak.memgamev.engine.ScreenController;
 import ws.isak.memgamev.events.ui.BackGameEvent;
 import ws.isak.memgamev.events.ui.NextGameEvent;
+import ws.isak.memgamev.events.ui.StartEvent;
+import ws.isak.memgamev.events.ui.ThemeSelectedEvent;
 import ws.isak.memgamev.model.GameState;
 import ws.isak.memgamev.utils.Clock;
 import ws.isak.memgamev.utils.Clock.OnTimerCount;
 import ws.isak.memgamev.utils.FontLoader;
 import ws.isak.memgamev.utils.FontLoader.Font;
+
+/*
+ * Class PopupsWonView provides a RelativeLayout that describes the popup created via the
+ * PopupManager with defined dimensions
+ *
+ * @author isak
+ */
 
 public class PopupWonView extends RelativeLayout implements View.OnClickListener{
 
@@ -39,8 +49,11 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
 	private ImageView mStar1;
 	private ImageView mStar2;
 	private ImageView mStar3;
-	private ImageView mNextButton;
-	private ImageView mBackButton;
+	private ImageView mNextLevelButton;
+	private ImageView mTryAgainButton;
+    private ImageView mChangeThemeButton;
+    private ImageView mChangeGameButton;
+
 	private Button gotoPostSurveyBtn;
     private Handler mHandler;
 
@@ -61,27 +74,37 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
 		mStar2 = (ImageView) findViewById(R.id.star_2);
 		mStar3 = (ImageView) findViewById(R.id.star_3);
 		//Load image and text buttons for replaying game/ playing next difficulty/ and finishing play
-        mBackButton = (ImageView) findViewById(R.id.popup_won_view_button_back);
-		mNextButton = (ImageView) findViewById(R.id.popup_won_view_button_next);
+        mTryAgainButton = (ImageView) findViewById(R.id.popup_won_view_button_try_again);
+		mNextLevelButton = (ImageView) findViewById(R.id.popup_won_view_button_next_level);
+        mChangeThemeButton = (ImageView) findViewById(R.id.popup_won_view_button_change_theme);
+        mChangeGameButton = (ImageView) findViewById(R.id.popup_won_view_button_change_game);
 		gotoPostSurveyBtn = (Button) findViewById(R.id.popup_won_goto_post_survey_button);
 
         FontLoader.setTypeface(context, new TextView[] { mTime, mScore }, Font.ANGRYBIRDS);
 		setBackgroundResource(R.drawable.level_complete);
 		mHandler = new Handler();
 		//set button (and image button) onClick listeners
-		mBackButton.setOnClickListener(this);
-		mNextButton.setOnClickListener(this);
+		mTryAgainButton.setOnClickListener(this);
+		mNextLevelButton.setOnClickListener(this);
+        mChangeThemeButton.setOnClickListener(this);
+        mChangeGameButton.setOnClickListener(this);
         gotoPostSurveyBtn.setOnClickListener(this);
 	}
 
     @Override
     public void onClick (View view) {
         switch (view.getId()) {
-            case R.id.popup_won_view_button_back:
+            case R.id.popup_won_view_button_try_again:
                 Shared.eventBus.notify(new BackGameEvent());
                 break;
-            case R.id.popup_won_view_button_next:
+            case R.id.popup_won_view_button_next_level:
                 Shared.eventBus.notify(new NextGameEvent());
+                break;
+            case R.id.popup_won_view_button_change_theme:
+                Shared.eventBus.notify(new StartEvent());
+                break;
+            case R.id.popup_won_view_button_change_game:
+                continueToSelectGameFragment();
                 break;
             case R.id.popup_won_goto_post_survey_button:
                 continueToPostSurvey();
@@ -89,10 +112,17 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
         }
     }
 
-    public void continueToPostSurvey () {
+    private void continueToPostSurvey () {
         Log.d (TAG, "method continueToPostSurvey");
+        PopupManager.closePopup();
         ScreenController.getInstance().openScreen(ScreenController.Screen.POST_SURVEY);
 
+    }
+
+    private void continueToSelectGameFragment() {
+        Log.d (TAG, "method continueToSelectGameFragment");
+        PopupManager.closePopup();
+        ScreenController.getInstance().openScreen(ScreenController.Screen.SELECT_GAME);
     }
 
 	public void setGameState(final GameState gameState) {
