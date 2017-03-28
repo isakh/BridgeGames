@@ -19,9 +19,9 @@ import ws.isak.memgamev.R;
  * image file or pairs of images of the same species, and a list of card objects that contain the
  * Urls for the image(s) and audio that match the species described by the card.
  *
- * TODO (should we come up with a text list of species of interest so that when image and audio files
- * TODO (are created for each locale, we can run a find/replace on file names with a list of the
- * TODO (relevant species for the locale??
+ * TODO should we come up with a text list of species of interest so that when image and audio files
+ * TODO ... are created for each locale, we can run a find/replace on file names with a list of the
+ * TODO ... relevant species for the locale??
  *
  * @author isak
  */
@@ -31,6 +31,28 @@ public class Themes {
 	private static final String TAG = "Class: Themes";
 	public static String URI_DRAWABLE = "drawable://";
 	public static String URI_AUDIO = "raw://";
+
+    public static Theme createBlankTheme() {
+        Theme theme = new Theme();
+        theme.themeID = 0;
+        theme.name = Shared.context.getString(R.string.themes_blank_name);
+        theme.pairedImagesDiffer = false;
+        theme.backgroundImageUrl = URI_DRAWABLE + "back_blank";
+        theme.cardObjs = new ArrayList<CardData>();
+        for (int i = 1; i <= 10; i++) {
+            CardData curCard = new CardData();
+            curCard.setCardID(i);
+            curCard.setSpeciesName(curCard.getCardID());
+            curCard.setPairedImageDiffer(false);		//cards in this set only have one image
+            curCard.setImageURI1(URI_DRAWABLE + "blank_card");
+            curCard.setAudioURI(URI_AUDIO + String.format("example%d", i));
+            curCard.setSampleDuration (Music.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
+            Log.d (TAG, "method createBlankTheme: getCardID: " + curCard.getCardID() + " | getSpeciesName: " + curCard.getSpeciesName() + " | getPairedImageDiffer: " + curCard.getPairedImageDiffer() + " | getFirstImageUsed: " + curCard.getFirstImageUsed());
+            Log.d (TAG, "method createBlankTheme: adding URLS: curCard.setImageURI1: " + URI_DRAWABLE + "blank_card | curCard.setAudioURI: " + URI_DRAWABLE + String.format("example%d", i) + " | curCard.getSampleDuration: " + curCard.getSampleDuration());
+            theme.cardObjs.add(curCard);
+        }
+        return theme;
+    }
 
 	public static Theme createBirdsTheme() {
 		Theme theme = new Theme();
@@ -74,7 +96,7 @@ public class Themes {
 			curCard.setImageURI1(URI_DRAWABLE + String.format("spectrogram_%d", i));
 			curCard.setAudioURI(URI_AUDIO + String.format("example%d", i));
             curCard.setSampleDuration (Music.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
-            Log.d (TAG, "method createBirdsTheme: getCardID: " + curCard.getCardID() + " | getSpeciesName: " + curCard.getSpeciesName() + " | getPairedImageDiffer: " + curCard.getPairedImageDiffer() + " | getFirstImageUsed: " + curCard.getFirstImageUsed());
+            Log.d (TAG, "method createSpectrogramsTheme: getCardID: " + curCard.getCardID() + " | getSpeciesName: " + curCard.getSpeciesName() + " | getPairedImageDiffer: " + curCard.getPairedImageDiffer() + " | getFirstImageUsed: " + curCard.getFirstImageUsed());
             Log.d (TAG, "method createSpectrogramsTheme: adding URLS: curCard.setImageURI1: " + URI_DRAWABLE + String.format("spectrogram_%d", i) + " | curCard.setAudioURI: " + URI_DRAWABLE + String.format("example%d", i) + " | curCard.getSampleDuration: " + curCard.getSampleDuration());
 			theme.cardObjs.add(curCard);
 		}

@@ -7,6 +7,24 @@
     android:paddingLeft="@dimen/theme_padding"
     android:paddingRight="@dimen/theme_padding" >
 
+    <!-- TODO rewrite layout to eliminate need for multiple @drawables -->
+
+    <RelativeLayout
+        android:id="@+id/theme_blank_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginRight="@dimen/theme_margin"
+        android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/theme_blank"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:src="@drawable/blank_theme_star_0" />
+
+    </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/theme_birds_container"
         android:layout_width="match_parent"

@@ -20,41 +20,55 @@ import ws.isak.memgamev.events.ui.ThemeSelectedEvent;
 import ws.isak.memgamev.themes.Theme;
 import ws.isak.memgamev.themes.Themes;
 
-public class ThemeSelectFragment extends Fragment {
+public class ThemeSelectFragment extends Fragment implements View.OnClickListener{
 
     public static final String TAG="Class: ThemeSelectFrag";
+    public static Theme themeBlank;
+    public static Theme themeBirds;
+    public static Theme themeSpectrograms;
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		Log.d (TAG, "overriding method onCreateView");
         View view = LayoutInflater.from(Shared.context).inflate(R.layout.theme_select_fragment, container, false);
-		View birds = view.findViewById(R.id.theme_birds_container);
+
+        View blank = view.findViewById(R.id.theme_blank_container);
+        View birds = view.findViewById(R.id.theme_birds_container);
 		View spectrograms = view.findViewById(R.id.theme_spectrograms_container);
 
-		final Theme themeBirds = Themes.createBirdsTheme();
+        themeBlank = Themes.createBlankTheme();
+        setStars((ImageView) blank.findViewById(R.id.theme_blank), themeBlank, "blank");
+		themeBirds = Themes.createBirdsTheme();
 		setStars((ImageView) birds.findViewById(R.id.theme_birds), themeBirds, "birds");
-		final Theme themeSpectrograms = Themes.createSpectrogramsTheme();
+		themeSpectrograms = Themes.createSpectrogramsTheme();
 		setStars((ImageView) spectrograms.findViewById(R.id.theme_spectrograms), themeSpectrograms, "spectrograms");
-
-		birds.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Shared.eventBus.notify(new ThemeSelectedEvent(themeBirds));
-			}
-		});
-
-		spectrograms.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Shared.eventBus.notify(new ThemeSelectedEvent(themeSpectrograms));
-			}
-		});
-
+        //set on click listeners
+        blank.setOnClickListener(this);
+        birds.setOnClickListener(this);
+        spectrograms.setOnClickListener(this);
+        //animate views
+        animateShow(blank);
 		animateShow(birds);
 		animateShow(spectrograms);
 
 		return view;
 	}
+
+	@Override
+    public void onClick (View view) {
+        switch (view.getId()) {
+            case R.id.theme_blank_container:
+                Shared.eventBus.notify(new ThemeSelectedEvent(themeBlank));
+                break;
+            case R.id.theme_birds_container:
+                Shared.eventBus.notify(new ThemeSelectedEvent(themeBirds));
+                break;
+            case R.id.theme_spectrograms_container:
+                Shared.eventBus.notify(new ThemeSelectedEvent(themeSpectrograms));
+                break;
+        }
+    }
 
 	private void animateShow(View view) {
 		ObjectAnimator animatorScaleX = ObjectAnimator.ofFloat(view, "scaleX", 0.5f, 1f);
@@ -67,6 +81,9 @@ public class ThemeSelectFragment extends Fragment {
 		animatorSet.start();
 	}
 
+
+	//TODO Memory will be a function of UserData so need to store stars to each userData and
+    //TODO ... extract them from there
 	private void setStars(ImageView imageView, Theme theme, String type) {
 		int sum = 0;
 		for (int difficulty = 1; difficulty <= 6; difficulty++) {
