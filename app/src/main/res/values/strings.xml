@@ -82,7 +82,7 @@
     <string name="popup_won_game_time_at_start">00:60</string>     <!-- TODO fix this and make dynamic -->
     <!-- score information -->
     <string name="popup_won_score_text">Score</string>
-    <string name="popup_won_score_at_start">0</string>
+    <string name="popup_won_score_at_start">240</string>           <!-- TODO fix this and make dynamic -->
     <!-- post survey button -->
     <string name="popup_won_view_post_survey_button_text">Done Playing? Please Answer A Few Questions</string>
 

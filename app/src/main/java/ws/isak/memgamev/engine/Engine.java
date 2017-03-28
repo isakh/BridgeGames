@@ -139,7 +139,7 @@ public class Engine extends EventObserverAdapter {
 	@Override
 	public void onEvent(StartEvent event) {
         Log.d (TAG, "override onEvent for StartEvent: calling screen controller to open THEME_SELECT screen");
-
+        PopupManager.closePopup();
 		mScreenController.openScreen(Screen.THEME_SELECT);
 	}
 
