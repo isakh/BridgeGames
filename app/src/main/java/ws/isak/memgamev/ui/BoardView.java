@@ -25,6 +25,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
+import android.widget.Toast;
 
 import ws.isak.memgamev.R;
 import ws.isak.memgamev.common.Shared;
@@ -57,8 +58,8 @@ public class BoardView extends LinearLayout {
 	private BoardArrangement mBoardArrangement;					//an instance of the board arrangement for the current game
 	private Map<Integer, TileView> mViewReference;				//a mapping of each tile ID (integer curTileOnBoard) to a view TileView
 	private List<Integer> flippedUp = new ArrayList<Integer>();		//an array list to hold the id's of the currently flipped up cards
-	private boolean mLocked = false;								//a flag to keep track of whether one or two cards has been flipped
-	private int mSize;												//the dimension of the tile to be drawn
+	private boolean mLocked = false;							//a flag to keep track of whether one or two cards has been flipped
+	private int mSize;											//the dimension of the tile to be drawn
 
 	public BoardView(Context context) {
 		this(context, null);
@@ -170,38 +171,47 @@ public class BoardView extends LinearLayout {
 
 			@Override
 			public void onClick(View v) {
-				//FIXME reintroduce: if (!mLocked && tileView.isFlippedDown() && !Music.getIsAudioPlaying()) {
-                //TODO create two versions one with Music locking, one without
-                if (!mLocked && tileView.isFlippedDown() && Music.MIX) {        //check not locked; card not yet flipped; mixing audio ok
-                Log.d (TAG, "			   : curTileOnBoard is: " + curTileOnBoard);
-					Log.d (TAG, "			   : curCardOnTile is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getCardID());
-					Log.d (TAG, " 			   : curCardOnTile.getAudioURI is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getAudioURI());
-					Log.d (TAG, " 			   : curCardOnTile.getImageURI1 is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getImageURI1());
-					Log.d (TAG, " 			   : curCardOnTile.getPairedImageDiffer is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getPairedImageDiffer());
-					Log.d (TAG, " 			   : curCardOnTile.getFirstImageUsed is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getFirstImageUsed());
-					Log.d (TAG, " 			   : curCardOnTile.getImageURI2 is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getImageURI2());
+                // allow click in two instances: one with Mix ON, one with Mix OFF and a check that no other audio is playing
+                if ((!mLocked && tileView.isFlippedDown() && Music.MIX) ||
+                        (!mLocked && tileView.isFlippedDown() && (!Music.MIX && !Music.getIsAudioPlaying()))) {
+                    Log.d(TAG, "			   : curTileOnBoard is: " + curTileOnBoard);
+                    Log.d(TAG, "			   : curCardOnTile is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getCardID());
+                    Log.d(TAG, " 			   : curCardOnTile.getAudioURI is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getAudioURI());
+                    Log.d(TAG, " 			   : curCardOnTile.getImageURI1 is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getImageURI1());
+                    Log.d(TAG, " 			   : curCardOnTile.getPairedImageDiffer is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getPairedImageDiffer());
+                    Log.d(TAG, " 			   : curCardOnTile.getFirstImageUsed is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getFirstImageUsed());
+                    Log.d(TAG, " 			   : curCardOnTile.getImageURI2 is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getImageURI2());
 
-					//TODO If this is the first tile being clicked, we need to change the state of MemGameData.isGameStarted()
-			  		//TODO 		- if this is the first tile we need to set the MemGameData.setGameStartTimeStamp()
-					//TODO If this is not the first tile, we need to record that click has been made, it's time, and update accordingly
-					//TODO should this be coded here, or sent as a new event (i.e. SaveTurnDataEvent)
+                    //TODO If this is the first tile being clicked, we need to change the state of MemGameData.isGameStarted()
+                    //TODO 		- if this is the first tile we need to set the MemGameData.setGameStartTimeStamp()
+                    //TODO If this is not the first tile, we need to record that click has been made, it's time, and update accordingly
+                    //TODO should this be coded here, or sent as a new event (i.e. SaveTurnDataEvent)
 
-					Log.d (TAG, "***** Update MemGameData with current timing information *****");
-					Log.d (TAG, "Current SystemClock.elapsedReadTime(): " + SystemClock.elapsedRealtime());
+                    Log.d(TAG, "***** Update MemGameData with current timing information *****");
+                    Log.d(TAG, "Current SystemClock.elapsedReadTime(): " + SystemClock.elapsedRealtime());
 
-					tileView.flipUp();
-					//Log.d (TAG, " *** method addTile: onClick: called tileView.flipUp() *** ");
-					flippedUp.add(curTileOnBoard);
-					//Log.d (TAG, " *** flippedUp.size() is: " + flippedUp.size() + " *** ");
-					if (flippedUp.size() == 2) {
-						mLocked = true;
-					}
-					Log.d (TAG, "method addTile: tileView.setOnClickListener: Overriding onClick: new FlipCardEvent");
-					Shared.eventBus.notify(new FlipCardEvent(curTileOnBoard));
-					Log.d (TAG, "method addTile: tileView.setOnClickListener: Overriding onClick: new PlayCardAudioEvent");
-					Shared.eventBus.notify(new PlayCardAudioEvent(curTileOnBoard));
-				}
-			}
+                    tileView.flipUp();
+                    //Log.d (TAG, " *** method addTile: onClick: called tileView.flipUp() *** ");
+                    flippedUp.add(curTileOnBoard);
+                    //Log.d (TAG, " *** flippedUp.size() is: " + flippedUp.size() + " *** ");
+                    if (flippedUp.size() == 2) {
+                        mLocked = true;
+                    }
+                    Log.d(TAG, "method addTile: tileView.setOnClickListener: Overriding onClick: new FlipCardEvent");
+                    Shared.eventBus.notify(new FlipCardEvent(curTileOnBoard));
+                    Log.d(TAG, "method addTile: tileView.setOnClickListener: Overriding onClick: new PlayCardAudioEvent");
+                    Shared.eventBus.notify(new PlayCardAudioEvent(curTileOnBoard));
+                } else if (mLocked) {                                     //error check if locked
+                    Log.d(TAG, "   : onClick Failed: mLocked: " + mLocked);
+                    Toast.makeText(Shared.context, "cannot flip card, mLocked", Toast.LENGTH_SHORT).show();
+                } else if (!tileView.isFlippedDown()) {                   //error check if card flipped
+                    Log.d(TAG, "   : onClick Failed: !tileView.isFlippedDown(): " + !tileView.isFlippedDown());
+                    Toast.makeText(Shared.context, "cannot flip card, already flipped", Toast.LENGTH_SHORT).show();
+                } else if (!Music.MIX && Music.getIsAudioPlaying()) {     //error mix is off and audio already playing
+                    Log.d(TAG, "   : onClick Failed: Music.Mix is: " + Music.MIX + " & Music.getIsAudioPlaying() is: " + Music.getIsAudioPlaying());
+                    Toast.makeText(Shared.context, "cannot flip card, wait for audio to finish or set mix ON in settings", Toast.LENGTH_SHORT).show();
+                }
+            }
 		});
 
 		ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(tileView, "scaleX", 0.8f, 1f);
@@ -247,5 +257,4 @@ public class BoardView extends LinearLayout {
 		v.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 		animator.start();
 	}
-
 }

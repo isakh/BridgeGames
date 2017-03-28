@@ -320,13 +320,13 @@ public class Engine extends EventObserverAdapter {
 					Shared.eventBus.notify(new GameWonEvent(gameState), 1200);
 				}
 			} else {
-				Log.i(TAG, "onEvent FlipCardEvent: mFlippedID != -1: and !isPair: mFlippedID is:  " + mFlippedId);
-				Log.i(TAG, "onEvent: FlipCardEvent: Flip: all down");
+				Log.d(TAG, "onEvent FlipCardEvent: mFlippedID != -1: and !isPair: mFlippedID is:  " + mFlippedId);
+				Log.d(TAG, "onEvent: FlipCardEvent: Flip: all down");
 				// send event - flip all down
 				Shared.eventBus.notify(new FlipDownCardsEvent(), 1000);
 			}
 			mFlippedId = -1;
-			Log.i(TAG, "onEvent FlipCardEvent: reset mFlippedId to -1 check: " + mFlippedId);
+			Log.d(TAG, "onEvent FlipCardEvent: reset mFlippedId to -1 check: " + mFlippedId);
 		}
 	}
 
@@ -365,6 +365,7 @@ public class Engine extends EventObserverAdapter {
 					public void onCompletion(MediaPlayer curTileAudio) {
 						Log.d (TAG, "method playTileAudio: overriding onCompletion");
 						Music.setIsAudioPlaying(false);
+                        Log.d (TAG, "method playTileAudio: Music.setIsAudioPlaying(false) called. Music.getIsAudioPlaying(): " + Music.getIsAudioPlaying());
 						curTileAudio.reset();
 						curTileAudio.release();
 						curTileAudio = null;
@@ -372,12 +373,14 @@ public class Engine extends EventObserverAdapter {
             });
             curTileAudio.start();
 			Music.setIsAudioPlaying (true);
+            Log.d (TAG, "method playTileAudio: curTileAudio.start() called, Music.getIsAudioPlaying(): " + Music.getIsAudioPlaying());
             long sampleDuration = Music.getAudioDuration (audioResourceId);
             Log.d (TAG, "                    : sampleDuration: " + sampleDuration);
 
 		}
 		else {
-			Toast.makeText(Shared.context, "Please turn on game audio to play in this mode", Toast.LENGTH_LONG).show();
+			Toast.makeText(Shared.context, "Please turn on game audio to play in this mode, you can do this under settings", Toast.LENGTH_SHORT).show();
+            mScreenController.openScreen(Screen.MENU_MEM);      //FIXME do we really want to force people to play with audio?
 		}
 	}
 

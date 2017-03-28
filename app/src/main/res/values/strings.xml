@@ -161,12 +161,11 @@
     <!-- Layout: user_setup_fragment -->
     <!-- *************************** -->
     <string name="user_setup_title">Welcome: Please Login or Sign Up</string>
-    <string name="user_setup_login_text">Login Here</string>
+    <string name="user_setup_login_text">LOGIN BELOW</string>
     <string name="user_setup_login_hint">Login Name</string>
-    <string name="user_setup_login_button">Login</string>
-    <string name="user_setup_register_text">Register Here</string>
+    <string name="user_setup_login_button">LOGIN</string>
+    <string name="user_setup_register_text">REGISTER BELOW</string>
     <string name="user_setup_register_hint">New User Name</string>
-    <string name="user_setup_register_button">Create New User</string>
-
+    <string name="user_setup_register_button">REGISTER</string>
 
 </resources>
