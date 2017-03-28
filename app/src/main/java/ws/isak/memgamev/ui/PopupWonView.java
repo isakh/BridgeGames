@@ -80,9 +80,8 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
         mChangeGameButton = (ImageView) findViewById(R.id.popup_won_view_button_change_game);
 		gotoPostSurveyBtn = (Button) findViewById(R.id.popup_won_goto_post_survey_button);
 
+        //FIXME! fix FontLoader so all text is in same font at defined sizes
         FontLoader.setTypeface(context, new TextView[] { mTime, mScore }, Font.ANGRYBIRDS);
-		//FIXME this image file is to be rebuilt programmatically???
-        //FIXME setBackgroundResource(R.drawable.level_complete);
 		mHandler = new Handler();
 		//set button (and image button) onClick listeners
 		mTryAgainButton.setOnClickListener(this);

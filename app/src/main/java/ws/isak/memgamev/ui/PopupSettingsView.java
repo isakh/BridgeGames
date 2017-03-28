@@ -11,6 +11,7 @@ import android.util.Log;
 
 import ws.isak.memgamev.R;
 import ws.isak.memgamev.common.Music;
+import ws.isak.memgamev.common.Shared;
 import ws.isak.memgamev.utils.FontLoader;
 import ws.isak.memgamev.utils.FontLoader.Font;
 
@@ -20,12 +21,14 @@ import ws.isak.memgamev.utils.FontLoader.Font;
  * @author isak
  */
 
-public class PopupSettingsView extends LinearLayout {
+public class PopupSettingsView extends LinearLayout implements View.OnClickListener{
 
     public static final String TAG="Class PopupSettingsView";
 
 	private ImageView mSoundImage;
+    private ImageView mMixImage;
 	private TextView mSoundText;
+    private TextView mMixText;
 
     /*
      * constructor
@@ -42,29 +45,50 @@ public class PopupSettingsView extends LinearLayout {
 		super(context, attrs);
         Log.d (TAG, "overloaded constructor PopupSettingsView");
 		setOrientation(LinearLayout.VERTICAL);
-		setBackgroundResource(R.drawable.settings_popup);
 		LayoutInflater.from(getContext()).inflate(R.layout.popup_settings_view, this, true);
-		mSoundText = (TextView) findViewById(R.id.sound_off_text);
-		FontLoader.setTypeface(context, new TextView[] { mSoundText }, Font.ANGRYBIRDS);
-		mSoundImage = (ImageView) findViewById(R.id.sound_image);
-		View soundOff = findViewById(R.id.sound_off);
-		soundOff.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Music.OFF = !Music.OFF;
-				setMusicButton();
-			}
-		});
-		setMusicButton();
+		//Load images and text from xml
+        mSoundText = (TextView) findViewById(R.id.sound_on_off_text);
+        mMixText = (TextView) findViewById(R.id.mix_on_off_text);
+		mSoundImage = (ImageView) findViewById(R.id.sound_on_off_image);
+        mMixImage = (ImageView) findViewById(R.id.mix_on_off_image);
+        FontLoader.setTypeface(context, new TextView[] { mSoundText, mMixText }, Font.ANGRYBIRDS);
+		mSoundImage.setOnClickListener(this);
+        mMixImage.setOnClickListener(this);
+        setMusicButton();                       //initialize
+        setMixerButton();
 	}
+
+    @Override
+    public void onClick (View view) {
+        switch (view.getId()) {
+            case R.id.sound_on_off_image:
+                Music.OFF = !Music.OFF;
+                setMusicButton();
+                break;
+            case R.id.mix_on_off_image:
+                Music.MIX = !Music.MIX;
+                setMixerButton();
+                break;
+        }
+    }
 
 	private void setMusicButton() {
 		if (Music.OFF) {
-			mSoundText.setText("Sound OFF");
+			mSoundText.setText(Shared.context.getResources().getText(R.string.popup_settings_sound_off_text));
 			mSoundImage.setImageResource(R.drawable.button_music_off);
 		} else {
-			mSoundText.setText("Sound ON");
+			mSoundText.setText(Shared.context.getResources().getText(R.string.popup_settings_sound_on_text));
 			mSoundImage.setImageResource(R.drawable.button_music_on);
 		}
 	}
+
+    private void setMixerButton() {
+        if (Music.MIX) {       //mixing is on
+            mMixText.setText(Shared.context.getResources().getText(R.string.popup_settings_mixer_on_text));
+            mMixImage.setImageResource(R.drawable.button_mixer_on);
+        } else {               //mixing is off
+            mMixText.setText(Shared.context.getResources().getText(R.string.popup_settings_mixer_off_text));
+            mMixImage.setImageResource(R.drawable.button_mixer_off);
+        }
+    }
 }

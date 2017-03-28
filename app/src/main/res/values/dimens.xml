@@ -71,11 +71,14 @@
     <!-- *************************** -->
     <dimen name="popup_settings_width">300dp</dimen>
     <dimen name="popup_settings_height">200dp</dimen>
+    <!-- title section -->
+    <dimen name="popup_settings_title_height">75dp</dimen>
+    <!-- sound on/off section -->
     <dimen name="popup_settings_sound_image_size">50dp</dimen>
-    <!-- <dimen name="popup_settings_sound_text_size">20dp</dimen> OLD -->
-    <dimen name="popup_settings_sound_text_size">40dp</dimen> <!-- TODO Check size -->
-    <dimen name="popup_settings_padding_top">55dp</dimen>
-    <dimen name="popup_settings_padding_left">20dp</dimen>
+    <dimen name="popup_settings_sound_text_size">40.0sp</dimen>
+    <!-- mix on/off section -->
+    <dimen name="popup_settings_mix_image_size">50dp</dimen>
+    <dimen name="popup_settings_mix_text_size">40.0sp</dimen>
 
 
     <!-- =============================================================================== -->

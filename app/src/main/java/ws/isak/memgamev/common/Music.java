@@ -31,7 +31,8 @@ import ws.isak.memgamev.R;
 public class Music {
 
 	public static final String TAG = "Class: Music";
-	public static boolean OFF = false;
+	public static boolean OFF = false;      //on start defaults to setting where audio is enabled
+    public static boolean MIX = true;       //on start defaults to setting where mixing is enabled
     public static boolean isPlaying;
 
 	public static void playCorrect() {

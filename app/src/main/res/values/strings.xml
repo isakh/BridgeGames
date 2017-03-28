@@ -5,9 +5,19 @@
     <!-- *********************** -->
     <string name="app_name">BRIDGE</string>
 
+    <!-- ============================================================================== -->
+    <!-- Layout: popup_settings_view -->
+    <!-- *************************** -->
+    <string name="popup_settings_title_text">Settings</string>
+    <string name="popup_settings_sound_on_text">Sound ON</string>
+    <string name="popup_settings_sound_off_text">Sound OFF</string>
+    <string name="popup_settings_mixer_on_text">Mixer ON</string>
+    <string name="popup_settings_mixer_off_text">Mixer OFF</string>
+
+
     <!-- =============================================================================== -->
-    <!-- Class: PreSurveyFragment -->
-    <!-- ************************ -->
+    <!-- Layout: pre_survey_fragment -->
+    <!-- *************************** -->
     <string name="pre_survey_title">Tell Us About Yourself</string>
     <!-- [1] What is your age? [NUMBER] -->
     <string name="pre_survey_age_query_text">Please select your age?</string>
@@ -73,8 +83,8 @@
 
 
     <!-- =================================================================================== -->
-    <!-- Class: PopupWonView -->
-    <!-- ******************* -->
+    <!-- Layout: popup_won_view -->
+    <!-- ********************** -->
     <!-- title -->
     <string name="popup_won_view_title">Level Complete</string>
     <!-- time information -->
@@ -88,8 +98,8 @@
 
 
     <!-- ======================================================================================-->
-    <!-- Class: PostSurveyFragment -->
-    <!-- ************************* -->
+    <!-- Layout: post_survey_fragment -->
+    <!-- **************************** -->
     <string name="post_survey_title">Thank you for playing, please answer the following questions</string>
     <!-- [1] Prior to today's exposure were you familiar with spectrograms as used to
     visually depict sounds?  [BOOLEAN] //TODO should this question be asked in both pre and post?-->
@@ -110,10 +120,8 @@
     <string name="post_survey_hearing_equals_predicting_button_sometimes">SOMETIMES</string>
     <string name="post_survey_hearing_equals_predicting_button_frequently">FREQUENTLY</string>
     <string name="post_survey_hearing_equals_predicting_button_always">ALWAYS</string>
-
     <!-- Submit Button -->
     <string name="post_survey_submit_button">Submit and Close</string>
-
     <!-- [11] What part of the interface caused you the most confusion? [TEXT] -->
     <string name="post_survey_cause_of_most_confusion_query_text">TODO</string>
     <!-- TODO programmatically include the following only if the survey is after playing swap game? -->
@@ -150,8 +158,8 @@
 
 
     <!-- =================================================================================== -->
-    <!-- Class: UserSetupFragment -->
-    <!-- ************************ -->
+    <!-- Layout: user_setup_fragment -->
+    <!-- *************************** -->
     <string name="user_setup_title">Welcome: Please Login or Sign Up</string>
     <string name="user_setup_login_text">Login Here</string>
     <string name="user_setup_login_hint">Login Name</string>

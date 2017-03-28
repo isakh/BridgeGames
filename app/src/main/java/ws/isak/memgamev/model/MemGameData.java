@@ -24,6 +24,7 @@ public class MemGameData {
     private Game mPlayingGame;
     //Parameters to be saved for post hoc analysis:
     //TODO private String theme;            //set/get string from selectiond
+    //TODO private boolean mixer_on_off;    //keep track of mix state for each game
     private int difficulty;                 //difficulty level for the current game
     private long gameDurationAllocated;     //This is the time allocated for playing the game
     private boolean gameStarted;            //Set to Boolean false, becomes true when first card is clicked - triggers gameStarTimeStamp
