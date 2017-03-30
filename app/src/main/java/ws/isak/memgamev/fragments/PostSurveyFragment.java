@@ -139,7 +139,7 @@ public class PostSurveyFragment extends Fragment implements View.OnClickListener
         Shared.userData.setHearIsSeeLikert(hearIsSeeLikert);
         Shared.userData.setHearIsPredictLikert(hearIsPredictLikert);
 
-        //when done continue to next screen? or Toast goodbye and close the app???
-        ScreenController.getInstance().openScreen(ScreenController.Screen.SELECT_GAME); //FIXME where should this direct?
+        //when done continue to next finished screen where option are for a new user or close app
+        ScreenController.getInstance().openScreen(ScreenController.Screen.FINISHED);
     }
 }

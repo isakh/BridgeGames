@@ -67,6 +67,17 @@ public class  MainActivity extends FragmentActivity {
 		super.onDestroy();
 	}
 
+
+	/*
+	 * Overriding method onBackPressed - this defines the characteristic behaviors if the hardware
+	 * back button is pressed.  If a popup is open, this closes the popup (and if the last screen
+	 * before the popup was the Game screen (implying that the popup is popup_won), then this triggers
+	 * a BackGameEvent.
+	 *
+	 * (TODO it is better to perform this action with the appropriate button on the popup_won popup - should we prevent this behavior?)
+	 *
+	 * If we are not backing up from a popup, the ScreenController onBack() method takes precedence.
+	 */
 	@Override
 	public void onBackPressed() {
         Log.d (TAG, "overriding method onBackPressed: produces various events based on game state");

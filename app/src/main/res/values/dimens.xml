@@ -28,6 +28,11 @@
     <dimen name="difficulty_margin">10dp</dimen>
     <dimen name="difficulty_margin_top">20dp</dimen>
 
+    <!-- =============================================================================== -->
+    <!-- Layout: finished_fragment -->
+    <!-- ************************* -->
+    <dimen name="finished_fragment_next_player_button_text_size">100sp</dimen>
+    <dimen name="finished_fragment_close_app_button_text_size">100sp</dimen>
 
     <!-- =============================================================================== -->
     <!-- Layout: game_fragment -->

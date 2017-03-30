@@ -20,6 +20,7 @@ import ws.isak.memgamev.fragments.UserSetupFragment;
 import ws.isak.memgamev.fragments.PreSurveyFragment;
 import ws.isak.memgamev.fragments.GameSelectFragment;
 import ws.isak.memgamev.fragments.PostSurveyFragment;
+import ws.isak.memgamev.fragments.FinishedFragment;
 
 /*
  * Class ScreenController instantiates a list of currently openedScreens and a fragmentManager
@@ -49,7 +50,7 @@ public class ScreenController {
 		return mInstance;
 	}
 
-	public enum Screen {        //FIXME? was: public static enum Screen, does this need to be static?
+	public enum Screen {
         USER_SETUP,
         PRE_SURVEY,
         SELECT_GAME,            //choose between memory game and swap game
@@ -60,7 +61,8 @@ public class ScreenController {
         DIFFICULTY_SWAP,        //TODO - start with two levels
         GAME_MEM,
         GAME_SWAP,              //TODO
-        POST_SURVEY             //TODO should we have different ones for each game? and/or one for all?
+        POST_SURVEY,             //FIXME should we have different ones for each game? and/or one for all?
+        FINISHED
     }
 	
 	public static Screen getLastScreen() {
@@ -95,10 +97,13 @@ public class ScreenController {
 			Screen screen = openedScreens.get(openedScreens.size() - 1);
 			openedScreens.remove(openedScreens.size() - 1);
 			openScreen(screen);
-			if ((screen == Screen.THEME_SELECT || screen == Screen.MENU_MEM) &&
-					(screenToRemove == Screen.DIFFICULTY_MEM || screenToRemove == Screen.GAME_MEM)) {
+			if ((screen == Screen.THEME_SELECT || screen == Screen.MENU_MEM) && (screenToRemove == Screen.DIFFICULTY_MEM || screenToRemove == Screen.GAME_MEM)) {
 				Shared.eventBus.notify(new ResetBackgroundEvent());
-			}
+            }
+            //back from SelectGame shouldn't work?
+            if (screen == Screen.SELECT_GAME) {
+               //do nothing?
+            }
 			return false;
 		}
 		return true;
@@ -134,6 +139,8 @@ public class ScreenController {
             //    return new SwapGameFragment();
             case POST_SURVEY:
                 return new PostSurveyFragment();
+            case FINISHED:
+                return new FinishedFragment();
 		    default:
 			    break;
 		}

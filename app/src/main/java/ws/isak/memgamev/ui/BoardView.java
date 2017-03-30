@@ -199,12 +199,12 @@ public class BoardView extends LinearLayout {
                         Log.d (TAG, "   ***: getGamePlayDuration: " + Shared.userData.getCurMemGame().getGamePlayDuration());
                     }
                     //do the following on each click:
-                    //  - time to append is (current time - duration played to previous turn (which is 0 if first click))
-                    Shared.userData.getCurMemGame().appendToTurnDurations(now - (Shared.userData.getCurMemGame().getGameStartTimestamp() + Shared.userData.getCurMemGame().getGamePlayDuration()));
-                    Log.d(TAG, "    ***: | System time: " + now + " | gamePlayDuration: " + Shared.userData.getCurMemGame().getGamePlayDuration() + " | numTurnsTaken: " + Shared.userData.getCurMemGame().getNumTurnsTaken() + " | appendedToTurnDurationArray @ numTurns: " + Shared.userData.getCurMemGame().queryTurnDurationsArray(Shared.userData.getCurMemGame().getNumTurnsTaken()));
                     //  - set the gamePlayDuration to (now - startTimeStamp)
                     Shared.userData.getCurMemGame().setGamePlayDuration(now - Shared.userData.getCurMemGame().getGameStartTimestamp());
                     Log.d (TAG, "   ***: getGamePlayDuration: " + Shared.userData.getCurMemGame().getGamePlayDuration());
+                    //  - time to append is (current time - duration played to previous turn (which is 0 if first click))
+                    Shared.userData.getCurMemGame().appendToTurnDurations(now - (Shared.userData.getCurMemGame().getGameStartTimestamp() + Shared.userData.getCurMemGame().getGamePlayDuration()));
+                    Log.d(TAG, "    ***: | System time: " + now + " | gamePlayDuration: " + Shared.userData.getCurMemGame().getGamePlayDuration() + " | numTurnsTaken: " + Shared.userData.getCurMemGame().getNumTurnsTaken() + " | elapsed turn time: " + Shared.userData.getCurMemGame().queryTurnDurationsArray(Shared.userData.getCurMemGame().getNumTurnsTaken()));
                     //  - append the clicked card to array
                     Shared.userData.getCurMemGame().appendToCardsSelected(mBoardArrangement.cardObjs.get(curTileOnBoard));
                     Log.d (TAG, "   ***: cardObjArray[numTurnsTaken].cardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(Shared.userData.getCurMemGame().getNumTurnsTaken()).getCardID());

@@ -6,6 +6,12 @@
     <string name="app_name">BRIDGE</string>
 
     <!-- ============================================================================== -->
+    <!-- Layout: finished_fragment -->
+    <!-- ************************* -->
+    <string name="finished_fragment_next_player_button_text">Next Player</string>
+    <string name="finished_fragment_close_app_button_text">Exit Game</string>
+
+    <!-- ============================================================================== -->
     <!-- Layout: popup_settings_view -->
     <!-- *************************** -->
     <string name="popup_settings_title_text">Settings</string>
@@ -121,7 +127,7 @@
     <string name="post_survey_hearing_equals_predicting_button_frequently">FREQUENTLY</string>
     <string name="post_survey_hearing_equals_predicting_button_always">ALWAYS</string>
     <!-- Submit Button -->
-    <string name="post_survey_submit_button">Submit and Close</string>
+    <string name="post_survey_submit_button">Submit</string>
     <!-- [11] What part of the interface caused you the most confusion? [TEXT] -->
     <string name="post_survey_cause_of_most_confusion_query_text">TODO</string>
     <!-- TODO programmatically include the following only if the survey is after playing swap game? -->
