@@ -58,7 +58,7 @@ public class TileView extends FrameLayout {
 	}
 
 	public void setTileImage(Bitmap bitmap) {
-        Log.d (TAG, "method setTileImage");
+        //Log.d (TAG, "method setTileImage");
 		mTileImage.setImageBitmap(bitmap);
 	}
 

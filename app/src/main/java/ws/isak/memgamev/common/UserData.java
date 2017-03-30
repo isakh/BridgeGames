@@ -231,7 +231,7 @@ public class UserData {
     }
 
     public MemGameData getCurMemGame() {
-        Log.d(TAG, "method getCurMemGame");
+        //Log.d(TAG, "method getCurMemGame");
         return curMemGame;
     }
 }

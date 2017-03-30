@@ -17,6 +17,7 @@ import ws.isak.memgamev.events.engine.FlipDownCardsEvent;
 import ws.isak.memgamev.events.engine.GameWonEvent;
 import ws.isak.memgamev.events.engine.HidePairCardsEvent;
 import ws.isak.memgamev.model.Game;
+import ws.isak.memgamev.model.MemGameData;
 import ws.isak.memgamev.ui.BoardView;
 import ws.isak.memgamev.ui.PopupManager;
 import ws.isak.memgamev.utils.Clock;
@@ -117,6 +118,20 @@ public class GameFragment extends BaseFragment {
 	@Override
 	public void onEvent(GameWonEvent event) {
         //Log.d (TAG, "overriding method onEvent (GameWonEvent)");
+        //We print out all of the collected array data here?
+        for (int i = 0; i < Shared.userData.getCurMemGame().getNumTurnsTaken(); i++) {
+            if (i < 10) {
+                Log.d(TAG, "   | Turn: 0" + i + " | Turn Time: " + Shared.userData.getCurMemGame().queryTurnDurationsArray(i) + " CardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i).getCardID());
+            } else {
+                Log.d(TAG, "   | Turn: " + i + " | Turn Time: " + Shared.userData.getCurMemGame().queryTurnDurationsArray(i) + " CardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i).getCardID());
+            }
+        }
+        //append MemGameData to userData array
+        Shared.userData.appendMemGameData(Shared.userData.getCurMemGame());     //append the MemGameData for completed game to
+        //reset flags
+        Shared.userData.getCurMemGame().setGameStarted(false);                  //reset the gameStarted boolean to false
+        //null the pointer to curMemGame once it has been appended to the UserData array
+        Shared.userData.setCurMemGame(null);          //FIXME!!! Does this help clear? or unnecessary
 		mTime.setVisibility(View.GONE);
 		mTimeImage.setVisibility(View.GONE);
 		PopupManager.showPopupWon(event.gameState);

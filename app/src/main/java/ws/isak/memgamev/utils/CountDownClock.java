@@ -39,14 +39,14 @@ public abstract class CountDownClock {
         mTotalCountdown = mMillisOnTimer;
 		mCountdownInterval = countDownInterval;
 		mRunAtStart = runAtStart;
-        Log.d (TAG, "CountDownClock constructor: millisOnTimer: " + millisOnTimer + " | countDownInterval: " + countDownInterval + " | runAtStart: " + runAtStart);
+        //Log.d (TAG, "CountDownClock constructor: millisOnTimer: " + millisOnTimer + " | countDownInterval: " + countDownInterval + " | runAtStart: " + runAtStart);
 	}
 
 	/**
 	 * Cancel the countdown and clears all remaining messages
 	 */
 	public final void cancel() {
-        Log.d (TAG, "method cancel: tells the handler to remove all callbacks and messages in the queue");
+        //Log.d (TAG, "method cancel: tells the handler to remove all callbacks and messages in the queue");
 		mHandler.removeCallbacksAndMessages(null);
 	}
 
@@ -54,7 +54,7 @@ public abstract class CountDownClock {
 	 * Create the timer object.
 	 */
 	public synchronized final CountDownClock create() {
-        Log.d (TAG, "method create: create the timer object if millis remain on the  timer");
+        //Log.d (TAG, "method create: create the timer object if millis remain on the  timer");
 		if (mMillisOnTimer <= 0) {
 			onFinish();
 		} else {
@@ -70,7 +70,7 @@ public abstract class CountDownClock {
 	 * Pauses the counter.
 	 */
 	public void pause() {
-        Log.d (TAG, "method pause: if boolean isRunning is true, set the pause time remaining to timeLeft and cancel the countdown clock");
+        //Log.d (TAG, "method pause: if boolean isRunning is true, set the pause time remaining to timeLeft and cancel the countdown clock");
 		if (isRunning()) {
 			mPauseTimeRemaining = timeLeft();
 			cancel();
