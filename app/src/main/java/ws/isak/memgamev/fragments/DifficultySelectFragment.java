@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
+import android.util.Log;
 
 import ws.isak.memgamev.R;
 import ws.isak.memgamev.common.Memory;
@@ -18,6 +19,8 @@ import ws.isak.memgamev.themes.Theme;
 import ws.isak.memgamev.ui.DifficultyView;
 
 public class DifficultySelectFragment extends Fragment {
+
+    public static final String TAG="Class: DifficultySelect";
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,6 +61,7 @@ public class DifficultySelectFragment extends Fragment {
 		view.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+                Log.d (TAG, "method setOnClick , calling new DifficultySelectedEvent");
 				Shared.eventBus.notify(new DifficultySelectedEvent(difficulty));
 			}
 		});

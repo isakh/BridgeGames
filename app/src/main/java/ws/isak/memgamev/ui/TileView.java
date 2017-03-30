@@ -43,7 +43,7 @@ public class TileView extends FrameLayout {
 
 	public TileView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-        Log.d (TAG, "overloaded constructor");
+        //Log.d (TAG, "overloaded constructor");
 	}
 
 	public static TileView fromXml(Context context, ViewGroup parent) {

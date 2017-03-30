@@ -203,19 +203,25 @@ public class Engine extends EventObserverAdapter {
 
         //TODO Verify if this is a good place for instantiating the currentGameData object was in StartEvent
         currentGameData = new MemGameData(mPlayingGame);
-        Log.d (TAG, "event StartEvent: create currentGameData: currentGameData.getGameDifficulty: " + currentGameData.getGameDifficulty());
-        Log.d (TAG, "                             			 : currentGameData.getNumTurnsTaken: " + currentGameData.getNumTurnsTaken());
-        Log.d (TAG, "                             			 : currentGameData.isGameStarted: " + currentGameData.isGameStarted());
+        //check setup of memGameData - these should return current states
+        Log.d (TAG, "event DifficultySelectedEvent: create currentGameData: currentGameData.getThemeID: " + currentGameData.getThemeID());
+        Log.d (TAG, "                                                     : currentGameData.getGameDifficulty: " + currentGameData.getGameDifficulty());
+        Log.d (TAG, "                                                     : currentGameData.getMixerState : " + currentGameData.getMixerState());
+        Log.d (TAG, "                                                     : currentGameData.getGameDurationAllocated: " + currentGameData.getGameDurationAllocated());
+        //these should reflect that the game is not yet started (don't check start timeStamp as it hasn't been used?)
+        Log.d (TAG, "                             			              : currentGameData.isGameStarted: " + currentGameData.isGameStarted());
+        Log.d (TAG, "                                                     : currentGameData.getGameStartTimestamp: " + currentGameData.getGameStartTimestamp());
+        Log.d (TAG, "                             			              : currentGameData.getNumTurnsTaken: " + currentGameData.getNumTurnsTaken());
 
+        Shared.userData.setCurMemGame(currentGameData);
+        Log.d (TAG, "                             :userData.getCurMemGame @ memory location: " + Shared.userData.getCurMemGame());
         // start the screen - This call to screen controller causes the screen controller to select
         // a new GameFragment from the screen controller.  Opening the new GameFragment leads to a
         // call to buildBoard() a private method in the Game Fragment. buildBoard calls setBoard in
         // the BoardView ui class. setBoard in BoardView propagates through a local buildBoard method
         // and eventually calls addTile for each of the tiles on the board to be built.   This leads
-        // to a thread for each tile which calls getTileBitmap...
+        // to a thread for each tile which calls getTileBitmap.
 		mScreenController.openScreen(Screen.GAME_MEM);
-        currentGameData.setGameDurationAllocated(mPlayingGame.boardConfiguration.time);
-        Log.d (TAG, "                             : currentGameData.getGameDurationAllocated: " + currentGameData.getGameDurationAllocated() + "ms");
     }
 
 	private void arrangeBoard() {

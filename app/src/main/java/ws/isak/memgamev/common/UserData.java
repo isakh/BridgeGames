@@ -39,16 +39,21 @@ public class UserData {
     private static int hearIsSeeLikert;
     private static int hearIsPredictLikert;
 
-    private ArrayList <MemGameData> memGameDataList = new ArrayList<MemGameData>();
+    //data from memory games played
+    private MemGameData curMemGame;
+    private ArrayList<MemGameData> memGameDataList;
+
+    //data from swap games played
     //TODO private ArrayList swapGameDataList<SwapGameData>;   this will cover when the user plays the tile swapping game
 
 
     // Constructor - this should be called once when a userData object instance needs to be instantiated
     // the instantiator will pass all relevant nulled values
-    public UserData () {
+    public UserData() {
         //TODO what do we need on construct? or can we leave this blank and simply have a placeholder for calls to getInstance
-        Log.d (TAG, "***** CONSTRUCTOR *****");
-        Log.d (TAG, "*** WHAT GOES HERE? ***");
+        Log.d(TAG, "***** CONSTRUCTOR *****");
+        Log.d(TAG, "*** WHAT GOES HERE? ***");
+        initMemGameDataList();
     }
 
     /*
@@ -56,7 +61,7 @@ public class UserData {
      * when a new userData object needs to be created.
      */
     public static UserData getInstance() {
-        Log.d (TAG, "method getInstance");
+        Log.d(TAG, "method getInstance");
         if (mInstance == null) {
             mInstance = new UserData();
         }
@@ -67,7 +72,7 @@ public class UserData {
      * Overloaded method getInstance (String loginName) returns a pre-existing instance of a userData
      * object assuming that the loginName has been checked and can return an object from storage.
      */
-    public static UserData getInstance (String loginName) {
+    public static UserData getInstance(String loginName) {
         //TODO return the USER_DATA object with key loginName from storage
         return null;
     }
@@ -75,149 +80,158 @@ public class UserData {
     //***** USER SETUP DATA *****
 
     //[0] set and get the userName string parameter - this is used in part to define the userData object
-    public void setUserName (String user) {
+    public void setUserName(String user) {
         //TODO method CheckUserNameUnique (user, )
-        Log.d (TAG, "method setUserName: user name is: " + user);
+        Log.d(TAG, "method setUserName: user name is: " + user);
         userName = user;
     }
 
-    public String getUserName () {
-        Log.d (TAG, "method getUserName returns: " + userName);
+    public String getUserName() {
+        Log.d(TAG, "method getUserName returns: " + userName);
         return userName;
     }
 
     //***** PRE SURVEY DATA *****
 
     //[1] set and get the user's ageRange
-    public void setAgeRange (String age) {
-        Log.d (TAG, "method setAgeRange: age: " + age);
+    public void setAgeRange(String age) {
+        Log.d(TAG, "method setAgeRange: age: " + age);
         ageRange = age;
     }
 
-    public String getAgeRange () {
-        Log.d (TAG, "method getAgeRange: ageRange: " + ageRange);
+    public String getAgeRange() {
+        Log.d(TAG, "method getAgeRange: ageRange: " + ageRange);
         return ageRange;
     }
 
     //[2] set and get yearsTwitchingRange variable
-    public void setYearsTwitchingRange (String yearsTwitching) {
-        Log.d (TAG, "method setYearsTwitchingRange: yearsTwitching: " + yearsTwitching);
+    public void setYearsTwitchingRange(String yearsTwitching) {
+        Log.d(TAG, "method setYearsTwitchingRange: yearsTwitching: " + yearsTwitching);
         yearsTwitchingRange = yearsTwitching;
     }
 
-    public String getYearsTwitchingRange () {
-        Log.d (TAG, "method getYearsTwitchingRange: yearsTwitchingRange: " + yearsTwitchingRange);
+    public String getYearsTwitchingRange() {
+        Log.d(TAG, "method getYearsTwitchingRange: yearsTwitchingRange: " + yearsTwitchingRange);
         return yearsTwitchingRange;
     }
 
     //[3] set and get the speciesKnownRange variable
-    public void setSpeciesKnownRange (String speciesKnown) {
-        Log.d (TAG, "method getKnownSpeciesRange: speciesKnown: " + speciesKnown);
+    public void setSpeciesKnownRange(String speciesKnown) {
+        Log.d(TAG, "method getKnownSpeciesRange: speciesKnown: " + speciesKnown);
         speciesKnownRange = speciesKnown;
     }
 
-    public String getSpeciesKnownRange () {
-        Log.d (TAG, "method setKnownSpeciesRange: speciesKnownRange: " + speciesKnownRange);
+    public String getSpeciesKnownRange() {
+        Log.d(TAG, "method setKnownSpeciesRange: speciesKnownRange: " + speciesKnownRange);
         return speciesKnownRange;
     }
 
     //[4] set and get the audibleRecognizedRange
-    public void setAudibleRecognizedRange (String audibleRecognized) {
-        Log.d (TAG, "method setAudibleRecognizedRange: audibleRecognized: " + audibleRecognized);
+    public void setAudibleRecognizedRange(String audibleRecognized) {
+        Log.d(TAG, "method setAudibleRecognizedRange: audibleRecognized: " + audibleRecognized);
         audibleRecognizedRange = audibleRecognized;
     }
 
-    public String getAudibleRecognizedRange () {
-        Log.d (TAG, "method getAudibleRecognizedRange: audibleRecognizedRange: " + audibleRecognizedRange);
+    public String getAudibleRecognizedRange() {
+        Log.d(TAG, "method getAudibleRecognizedRange: audibleRecognizedRange: " + audibleRecognizedRange);
         return audibleRecognizedRange;
     }
 
     //[5] set and get the interfaceExperienceRange
-    public void setInterfaceExperienceRange (String interfaceExperience) {
-        Log.d (TAG, "method setInterfaceExperienceRange: interfaceExperience: " + interfaceExperience);
+    public void setInterfaceExperienceRange(String interfaceExperience) {
+        Log.d(TAG, "method setInterfaceExperienceRange: interfaceExperience: " + interfaceExperience);
         interfaceExperienceRange = interfaceExperience;
     }
 
-    public String getInterfaceExperienceRange () {
-        Log.d (TAG, "method getInterfaceExperienceRange: interfaceExperienceRange: " + interfaceExperienceRange);
+    public String getInterfaceExperienceRange() {
+        Log.d(TAG, "method getInterfaceExperienceRange: interfaceExperienceRange: " + interfaceExperienceRange);
         return interfaceExperienceRange;
     }
 
     //[6] set and get the hearingEqualsSeeing boolean
-    public void setHearingEqualsSeeing (boolean isHearingSeeing) {
-        Log.d (TAG, "method setHearingEqualsSeeing: isHearingSeeing: " + isHearingSeeing);
+    public void setHearingEqualsSeeing(boolean isHearingSeeing) {
+        Log.d(TAG, "method setHearingEqualsSeeing: isHearingSeeing: " + isHearingSeeing);
         hearingEqualsSeeing = isHearingSeeing;
     }
 
-    public boolean getHearingEqualsSeeing () {
-        Log.d (TAG, "method getHearingEqualsSeeing: hearingEqualsSeeing: " + hearingEqualsSeeing);
+    public boolean getHearingEqualsSeeing() {
+        Log.d(TAG, "method getHearingEqualsSeeing: hearingEqualsSeeing: " + hearingEqualsSeeing);
         return hearingEqualsSeeing;
     }
 
     //[7] set and get the hasUsedSmartPhone boolean
-    public void setHasUsedSmartPhone (boolean usedSmartPhone) {
-        Log.d (TAG, "method setHasUsedSmartPhone: " + usedSmartPhone);
+    public void setHasUsedSmartPhone(boolean usedSmartPhone) {
+        Log.d(TAG, "method setHasUsedSmartPhone: " + usedSmartPhone);
         hasUsedSmartPhone = usedSmartPhone;
     }
 
-    public boolean getHasUsedSmartphone () {
-        Log.d (TAG, "method getHasUsedSmartphone: hasUsedSmartPhone: " + hasUsedSmartPhone);
+    public boolean getHasUsedSmartphone() {
+        Log.d(TAG, "method getHasUsedSmartphone: hasUsedSmartPhone: " + hasUsedSmartPhone);
         return hasUsedSmartPhone;
     }
 
     //****** POST SURVEY DATA *****
     //TODO is there a way we can 'force' the user to provide this information?
     //[8] get and set spectrogramFamiliar boolean
-    public void setSpectrogramFamiliar (boolean isFamiliar) {
-        Log.d (TAG, "method setSpectrogramFamiliar: isFamiliar: " + isFamiliar);
+    public void setSpectrogramFamiliar(boolean isFamiliar) {
+        Log.d(TAG, "method setSpectrogramFamiliar: isFamiliar: " + isFamiliar);
         spectrogramFamiliar = isFamiliar;
     }
 
-    public boolean getSpectrogramFamiliar () {
-        Log.d (TAG, "method getSpectrogramFamiliar: spectrogramFamiliar: " + spectrogramFamiliar);
+    public boolean getSpectrogramFamiliar() {
+        Log.d(TAG, "method getSpectrogramFamiliar: spectrogramFamiliar: " + spectrogramFamiliar);
         return spectrogramFamiliar;
     }
 
     //[9] get and set the hearIsSeeLikert integer value
-    public void setHearIsSeeLikert (int likertValue) {
-        Log.d (TAG, "method setHearIsSeeLikert: likertValue: " + likertValue);
+    public void setHearIsSeeLikert(int likertValue) {
+        Log.d(TAG, "method setHearIsSeeLikert: likertValue: " + likertValue);
         hearIsSeeLikert = likertValue;
     }
 
-    public int getHearIsSeeLikert () {
-        Log.d (TAG, "method getHearIsSeeLikert: hearIsSeeLikert: " + hearIsSeeLikert);
+    public int getHearIsSeeLikert() {
+        Log.d(TAG, "method getHearIsSeeLikert: hearIsSeeLikert: " + hearIsSeeLikert);
         return hearIsSeeLikert;
     }
 
     //[10] get and set the hearIsPredictLikert integer value
-    public void setHearIsPredictLikert (int likertValue) {
-        Log.d (TAG, "method setHearIsPredictLikert: likertValue: " + likertValue);
+    public void setHearIsPredictLikert(int likertValue) {
+        Log.d(TAG, "method setHearIsPredictLikert: likertValue: " + likertValue);
         hearIsPredictLikert = likertValue;
     }
 
-    public int getHearIsPredictLikert () {
-        Log.d (TAG, "method getHearIsPredictLikert: hearIsPredictLikert: " + hearIsPredictLikert);
+    public int getHearIsPredictLikert() {
+        Log.d(TAG, "method getHearIsPredictLikert: hearIsPredictLikert: " + hearIsPredictLikert);
         return hearIsPredictLikert;
     }
 
     //***** MEMORY GAME DATA *****
 
-    public void createMemGameDataList () {
-        Log.d (TAG, "method createMemGameDataList");
-        memGameDataList = new ArrayList();
-    }
-
-    public void addToMemGameDataList (MemGameData game) {
-        Log.d (TAG, "method addToGameDataList: adding game data to list");
-        memGameDataList.add (game);        //TODO add try/catch block here
-    }
-
     /*
      * Method queryMemGameData returns a GameData object at position in the list gameDataRecord
      */
-    public MemGameData queryMemGameDataList (int gameDataRecord) {
+    public void initMemGameDataList() {
+        Log.d(TAG, "method initMemGameDataList");
+        memGameDataList = new ArrayList<MemGameData>();
+    }
+
+    public void appendMemGameData(MemGameData game) {
+        Log.d(TAG, "method addToGameDataList: adding game data to list");
+        memGameDataList.add(game);        //TODO add try/catch block here
+    }
+
+    public MemGameData queryMemGameDataList(int gameDataRecord) {
+        Log.d(TAG, "method queryMemGameDataList");
         return memGameDataList.get(gameDataRecord);
     }
 
-    //TODO ***** SWAP GAME DATA *****
+    public void setCurMemGame(MemGameData game) {
+        Log.d(TAG, "method setCurMemGame");
+        curMemGame = game;
+    }
+
+    public MemGameData getCurMemGame() {
+        Log.d(TAG, "method getCurMemGame");
+        return curMemGame;
+    }
 }

@@ -80,10 +80,9 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
         newUserName = getNewUserName();
         if (CheckUserUnique(newUserName)) {
             Log.d(TAG, "                    : unique userName: instantiating new UserData and appending to UserData list");
-            //TODO ********************* DOES THIS WORK?
-            Shared.userData.getInstance();
+            //get a new instance of UserData and set the Shared userData to that instance
+            Shared.userData = UserData.getInstance();
             Shared.userData.setUserName(newUserName);
-            //TODO Fix ^this^ because there will inevitably be access conflicts on nonStatic Shared.userData??
             Log.d (TAG, "                   : next screen is PRE_SURVEY to populate new curUserData");
             ScreenController.getInstance().openScreen(Screen.PRE_SURVEY);
         } else {
