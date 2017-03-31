@@ -208,7 +208,7 @@ public class UserData {
     //***** MEMORY GAME DATA *****
 
     /*
-     * Method queryMemGameData returns a GameData object at position in the list gameDataRecord
+     * MemGameData constructor, accessor, mutator follow:
      */
     public void initMemGameDataList() {
         Log.d(TAG, "method initMemGameDataList");
@@ -220,6 +220,9 @@ public class UserData {
         memGameDataList.add(game);        //TODO add try/catch block here
     }
 
+    /*
+     * Method queryMemGameData returns a GameData object at position in the list gameDataRecord.
+     */
     public MemGameData queryMemGameDataList(int gameDataRecord) {
         Log.d(TAG, "method queryMemGameDataList");
         return memGameDataList.get(gameDataRecord);

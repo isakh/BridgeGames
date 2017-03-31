@@ -67,6 +67,18 @@ public class  MainActivity extends FragmentActivity {
 		super.onDestroy();
 	}
 
+	@Override
+    protected void onPause() {
+        //do something here
+        super.onPause();
+    }
+
+    @Override
+    protected void onStop () {
+        //do something here
+        super.onStop();
+    }
+
 
 	/*
 	 * Overriding method onBackPressed - this defines the characteristic behaviors if the hardware
