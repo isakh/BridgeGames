@@ -2,6 +2,7 @@ package ws.isak.memgamev.model;
 
 import android.util.Log;
 
+import java.util.List;
 import java.util.ArrayList;
 
 import ws.isak.memgamev.common.CardData;
@@ -33,8 +34,8 @@ public class MemGameData {
     private boolean gameStarted;            //Set to Boolean false, becomes true when first card is clicked - triggers gameStarTimeStamp
     private long gameStartTimestamp;        //keep track of the timestamp for the start of the game  //TODO move to top? (header timestamp is unique)
     private long gamePlayDuration;          //Time the player spent on the game so far (sum of turnDurations) (TODO can it be greater than allocated time?)
-    private ArrayList <Long> turnDurations; //a list of durations of each turn - a turn is defined as a single click //TODO should we also have a measure of paired click turns?
-    private ArrayList <CardData> cardSelectedOrder;   //a list of cardData objects selected on each turn //TODO!!! should type be CardData, or (int) CardData.cardID
+    private List <Long> turnDurations;      //a list of durations of each turn - a turn is defined as a single click, implemented as ArrayList //TODO should we also have a measure of paired click turns?
+    private List <CardData> cardSelectedOrder;   //a list of cardData objects selected on each turn, implemented as ArrayList //TODO!!! should type be CardData, or (int) CardData.cardID - how will Database handle if CardData rather than primitive?
     private int numTurnsTakenInGame;        //Initialize number of turns in game to 0 and increment on each click.
     //TODO should/could we add a array of booleans that tracks whether a match that could be made has been missed? (For now keep this in post)
 

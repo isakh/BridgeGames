@@ -6,6 +6,7 @@ import android.util.Log;
 
 import ws.isak.memgamev.engine.Engine;
 import ws.isak.memgamev.events.EventBus;
+import ws.isak.memgamev.database.DatabaseWrapper;
 
 /*
  * Class Shared
@@ -25,6 +26,10 @@ public class Shared {
     //FIXME public Engine engine;
 	public static EventBus eventBus;
     public static UserData userData;        //TODO does this make sense?
+
+    //database knowledge
+    public static final String DATABASE_NAME = "bridge.db";
+    public static DatabaseWrapper databaseWrapper;
 
     //TODO make sense of static initialization blocks! see http://softwareengineering.stackexchange.com/questions/228242/working-with-static-constructor-in-java
     static {

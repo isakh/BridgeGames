@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.Cursor;
 import android.util.Log;
 
-import ws.isak.memgamev.common.DatabaseWrapper;
+import ws.isak.memgamev.common.Shared;
 import ws.isak.memgamev.common.UserData;
 
 /*
@@ -24,10 +24,14 @@ public class UserDataORM {
 
     private static final String COMMA_SEP = ", ";
 
-    private static final String COLUMN_ID_TYPE = "INTEGER PRIMARY KEY";
+    private static final String COLUMN_ID_TYPE = "INTEGER PRIMARY KEY"; //TODO can i have a STRING PRIMARY KEY?
     private static final String COLUMN_ID = "id";
 
-    public static final String SQL_CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" + COLUMN_ID + ")";
+    public static final String SQL_CREATE_TABLE = "CREATE TABLE " +
+            TABLE_NAME +
+            " (" +
+            COLUMN_ID + " " + COLUMN_ID_TYPE +
+            ")";
 
     public static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
@@ -37,7 +41,7 @@ public class UserDataORM {
     public static List <UserData> getUserData (Context context) {
         Log.d (TAG, "method getUserData returns a list of UserData objects");
 
-        DatabaseWrapper databaseWrapper = new DatabaseWrapper(context);
+        DatabaseWrapper databaseWrapper = Shared.databaseWrapper;   //FIXME is this right? or below
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
 
         List <UserData> userDataList = null;
@@ -50,7 +54,7 @@ public class UserDataORM {
     //method findUserDataByID identifies and returns a single UserData object based on ID
     public static UserData findUserDataByID (Context context, int userId) {
         Log.d (TAG, "method findUserDataByID: userId: " + userId);
-        DatabaseWrapper databaseWrapper = new DatabaseWrapper(context);
+        DatabaseWrapper databaseWrapper = new DatabaseWrapper(context);     //FIXME is this right? or above
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
 
         UserData userData = null;

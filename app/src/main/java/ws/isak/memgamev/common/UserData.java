@@ -1,7 +1,9 @@
 package ws.isak.memgamev.common;
 
-import android.util.Log;
+import java.util.List;
 import java.util.ArrayList;
+
+import android.util.Log;
 
 import ws.isak.memgamev.model.MemGameData;
 
@@ -41,7 +43,7 @@ public class UserData {
 
     //data from memory games played
     private MemGameData curMemGame;
-    private ArrayList<MemGameData> memGameDataList;
+    private List<MemGameData> memGameDataList;
 
     //data from swap games played
     //TODO private ArrayList swapGameDataList<SwapGameData>;   this will cover when the user plays the tile swapping game
