@@ -25,7 +25,9 @@ public class UserData {
     //TODO should there be some form of UserDataID that is unique for each user?
     //TODO can this be combined with userName to make a userID for retrieval?
 
-    private String userName;
+    private String userName;               //FIXME for now userName is TEXT_PRIMARY_KEY
+
+    //TODO private String passWord;        //userName + passWord is used as TEXT_PRIMARY_KEY in UserDataORM?
 
     //data from pre game survey
     private static String ageRange;

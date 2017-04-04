@@ -4,6 +4,7 @@
     <!-- PACKAGE TITLE ON DEVICE-->
     <!-- *********************** -->
     <string name="app_name">BRIDGE</string>
+    <string name="database_name">bridge.db</string>
 
     <!-- ============================================================================== -->
     <!-- Layout: finished_fragment -->
