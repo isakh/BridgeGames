@@ -22,12 +22,10 @@ public class UserData {
 
     private static UserData mInstance = null;
 
-    //TODO should there be some form of UserDataID that is unique for each user?
-    //TODO can this be combined with userName to make a userID for retrieval?
-
     private String userName;               //FIXME for now userName is TEXT_PRIMARY_KEY
 
-    //TODO private String passWord;        //userName + passWord is used as TEXT_PRIMARY_KEY in UserDataORM?
+    //TODO private String passWord;             //userName + passWord is used as TEXT_PRIMARY_KEY in UserDataORM?
+    //TODO private long userCreateTimeStamp;
 
     //data from pre game survey
     private static String ageRange;
@@ -86,12 +84,12 @@ public class UserData {
     //[0] set and get the userName string parameter - this is used in part to define the userData object
     public void setUserName(String user) {
         //TODO method CheckUserNameUnique (user, )
-        Log.d(TAG, "method setUserName: user name is: " + user);
+        //Log.d(TAG, "method setUserName: user name is: " + user);
         userName = user;
     }
 
     public String getUserName() {
-        Log.d(TAG, "method getUserName returns: " + userName);
+        //Log.d(TAG, "method getUserName returns: " + userName);
         return userName;
     }
 
@@ -99,78 +97,78 @@ public class UserData {
 
     //[1] set and get the user's ageRange
     public void setAgeRange(String age) {
-        Log.d(TAG, "method setAgeRange: age: " + age);
+        //Log.d(TAG, "method setAgeRange: age: " + age);
         ageRange = age;
     }
 
     public String getAgeRange() {
-        Log.d(TAG, "method getAgeRange: ageRange: " + ageRange);
+        //Log.d(TAG, "method getAgeRange: ageRange: " + ageRange);
         return ageRange;
     }
 
     //[2] set and get yearsTwitchingRange variable
     public void setYearsTwitchingRange(String yearsTwitching) {
-        Log.d(TAG, "method setYearsTwitchingRange: yearsTwitching: " + yearsTwitching);
+        //Log.d(TAG, "method setYearsTwitchingRange: yearsTwitching: " + yearsTwitching);
         yearsTwitchingRange = yearsTwitching;
     }
 
     public String getYearsTwitchingRange() {
-        Log.d(TAG, "method getYearsTwitchingRange: yearsTwitchingRange: " + yearsTwitchingRange);
+        //Log.d(TAG, "method getYearsTwitchingRange: yearsTwitchingRange: " + yearsTwitchingRange);
         return yearsTwitchingRange;
     }
 
     //[3] set and get the speciesKnownRange variable
     public void setSpeciesKnownRange(String speciesKnown) {
-        Log.d(TAG, "method getKnownSpeciesRange: speciesKnown: " + speciesKnown);
+        //Log.d(TAG, "method getKnownSpeciesRange: speciesKnown: " + speciesKnown);
         speciesKnownRange = speciesKnown;
     }
 
     public String getSpeciesKnownRange() {
-        Log.d(TAG, "method setKnownSpeciesRange: speciesKnownRange: " + speciesKnownRange);
+        //Log.d(TAG, "method setKnownSpeciesRange: speciesKnownRange: " + speciesKnownRange);
         return speciesKnownRange;
     }
 
     //[4] set and get the audibleRecognizedRange
     public void setAudibleRecognizedRange(String audibleRecognized) {
-        Log.d(TAG, "method setAudibleRecognizedRange: audibleRecognized: " + audibleRecognized);
+        //Log.d(TAG, "method setAudibleRecognizedRange: audibleRecognized: " + audibleRecognized);
         audibleRecognizedRange = audibleRecognized;
     }
 
     public String getAudibleRecognizedRange() {
-        Log.d(TAG, "method getAudibleRecognizedRange: audibleRecognizedRange: " + audibleRecognizedRange);
+        //Log.d(TAG, "method getAudibleRecognizedRange: audibleRecognizedRange: " + audibleRecognizedRange);
         return audibleRecognizedRange;
     }
 
     //[5] set and get the interfaceExperienceRange
     public void setInterfaceExperienceRange(String interfaceExperience) {
-        Log.d(TAG, "method setInterfaceExperienceRange: interfaceExperience: " + interfaceExperience);
+        //Log.d(TAG, "method setInterfaceExperienceRange: interfaceExperience: " + interfaceExperience);
         interfaceExperienceRange = interfaceExperience;
     }
 
     public String getInterfaceExperienceRange() {
-        Log.d(TAG, "method getInterfaceExperienceRange: interfaceExperienceRange: " + interfaceExperienceRange);
+        //Log.d(TAG, "method getInterfaceExperienceRange: interfaceExperienceRange: " + interfaceExperienceRange);
         return interfaceExperienceRange;
     }
 
     //[6] set and get the hearingEqualsSeeing boolean
     public void setHearingEqualsSeeing(boolean isHearingSeeing) {
-        Log.d(TAG, "method setHearingEqualsSeeing: isHearingSeeing: " + isHearingSeeing);
+        //Log.d(TAG, "method setHearingEqualsSeeing: isHearingSeeing: " + isHearingSeeing);
         hearingEqualsSeeing = isHearingSeeing;
     }
 
     public boolean getHearingEqualsSeeing() {
-        Log.d(TAG, "method getHearingEqualsSeeing: hearingEqualsSeeing: " + hearingEqualsSeeing);
+        //Log.d(TAG, "method getHearingEqualsSeeing: hearingEqualsSeeing: " + hearingEqualsSeeing);
         return hearingEqualsSeeing;
     }
 
     //[7] set and get the hasUsedSmartPhone boolean
     public void setHasUsedSmartPhone(boolean usedSmartPhone) {
-        Log.d(TAG, "method setHasUsedSmartPhone: " + usedSmartPhone);
+        //Log.d(TAG, "method setHasUsedSmartPhone: " + usedSmartPhone);
         hasUsedSmartPhone = usedSmartPhone;
     }
 
     public boolean getHasUsedSmartphone() {
-        Log.d(TAG, "method getHasUsedSmartphone: hasUsedSmartPhone: " + hasUsedSmartPhone);
+        //Log.d(TAG, "method getHasUsedSmartphone: hasUsedSmartPhone: " + hasUsedSmartPhone);
         return hasUsedSmartPhone;
     }
 
@@ -178,34 +176,34 @@ public class UserData {
     //TODO is there a way we can 'force' the user to provide this information?
     //[8] get and set spectrogramFamiliar boolean
     public void setSpectrogramFamiliar(boolean isFamiliar) {
-        Log.d(TAG, "method setSpectrogramFamiliar: isFamiliar: " + isFamiliar);
+        //Log.d(TAG, "method setSpectrogramFamiliar: isFamiliar: " + isFamiliar);
         spectrogramFamiliar = isFamiliar;
     }
 
     public boolean getSpectrogramFamiliar() {
-        Log.d(TAG, "method getSpectrogramFamiliar: spectrogramFamiliar: " + spectrogramFamiliar);
+        //Log.d(TAG, "method getSpectrogramFamiliar: spectrogramFamiliar: " + spectrogramFamiliar);
         return spectrogramFamiliar;
     }
 
     //[9] get and set the hearIsSeeLikert integer value
     public void setHearIsSeeLikert(int likertValue) {
-        Log.d(TAG, "method setHearIsSeeLikert: likertValue: " + likertValue);
+        //Log.d(TAG, "method setHearIsSeeLikert: likertValue: " + likertValue);
         hearIsSeeLikert = likertValue;
     }
 
     public int getHearIsSeeLikert() {
-        Log.d(TAG, "method getHearIsSeeLikert: hearIsSeeLikert: " + hearIsSeeLikert);
+        //Log.d(TAG, "method getHearIsSeeLikert: hearIsSeeLikert: " + hearIsSeeLikert);
         return hearIsSeeLikert;
     }
 
     //[10] get and set the hearIsPredictLikert integer value
     public void setHearIsPredictLikert(int likertValue) {
-        Log.d(TAG, "method setHearIsPredictLikert: likertValue: " + likertValue);
+        //Log.d(TAG, "method setHearIsPredictLikert: likertValue: " + likertValue);
         hearIsPredictLikert = likertValue;
     }
 
     public int getHearIsPredictLikert() {
-        Log.d(TAG, "method getHearIsPredictLikert: hearIsPredictLikert: " + hearIsPredictLikert);
+        //Log.d(TAG, "method getHearIsPredictLikert: hearIsPredictLikert: " + hearIsPredictLikert);
         return hearIsPredictLikert;
     }
 

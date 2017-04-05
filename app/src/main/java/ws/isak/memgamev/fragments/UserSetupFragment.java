@@ -14,15 +14,14 @@ import android.widget.Toast;
 import ws.isak.memgamev.R;
 import ws.isak.memgamev.common.Shared;
 import ws.isak.memgamev.common.UserData;
+import ws.isak.memgamev.database.UserDataORM;
 import ws.isak.memgamev.engine.ScreenController;
 import ws.isak.memgamev.engine.ScreenController.Screen;
 
 /*
  * This class contains the fragment that sets up the game.  It comprises two edit text fields with
  * corresponding submission buttons for the two cases where the user is registering for the first
- * time and where the user is logging back in having previously registered.  In either case, as this
- * is the opening fragment for play, a UserData object mUserData is instantiated here
- * TODO how does this work with the UserData object in Shared??
+ * time and where the user is logging back in having previously registered.
  *
  * @author isak
  */
@@ -73,7 +72,6 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
      * Method createNewUser takes the current View, uses that information to call a method which
      * extracts the name field typed by the user, checks whether said name is unique and new, and if
      * so, creates a new UserData entity and starts to fill in the data fields
-     * FIXME - should this return the UserData??
      */
     public void registerNewUser(View v) {
         Log.d(TAG, "method registerNewUser");
@@ -103,8 +101,7 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
         loginName = getLoginName();
         if (CheckUserExists(loginName)) {
             Log.d (TAG, "                   : preexistingUserName is true, setting current UserData to user's UserData");
-            //TODO ******************** DOES THIS WORK
-            Shared.userData.getInstance(loginName);
+            Shared.userData = UserDataORM.findUserDataByID(Shared.context, loginName);
             //load screen for next step
             Log.d (TAG, "                   : existing user: next screen is SELECT_GAME");
             ScreenController.getInstance().openScreen(Screen.SELECT_GAME);
@@ -131,15 +128,15 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
 
     private boolean CheckUserExists(String userName) {
         Log.d(TAG, "method CheckUserExists: called from loginExistingUser");
-        boolean userExists = true;      //FIXME
-        //TODO check to find match for name in database
+        boolean userExists = UserDataORM.isUserNameInDB(Shared.context, userName);  //true if userName in DB
+        Log.d (TAG, "method CheckUserExists: UserDataORM.isUserNameInDB: " + userExists);
         return userExists;
     }
 
     private boolean CheckUserUnique(String userName) {
         Log.d(TAG, "method CheckUserUnique");
-        boolean userUnique = true;
-        //TODO check against all names in database, set false if matches any
+        boolean userUnique = !UserDataORM.isUserNameInDB(Shared.context, userName); //true if userName not in DB
+        Log.d (TAG, "method CheckUserUnique: !UserDataORM.isUserNameInDB: " + userUnique);
         return userUnique;
     }
 }

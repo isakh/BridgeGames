@@ -2,9 +2,9 @@ package ws.isak.memgamev.database;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
 
+import android.database.sqlite.SQLiteException;
+import android.widget.Toast;
 import android.content.Context;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
@@ -27,37 +27,35 @@ public class UserDataORM {
 
     private static final String COMMA_SEP = ", ";
 
-    //FIXME construct userNameId from input userName and passWord
-    private static final String COLUMN_USER_NAME_ID_TYPE = "TEXT PRIMARY KEY";
+    //TODO construct userNameId from input userName and passWord, currently just userName
+    private static final String COLUMN_USER_NAME_ID_TYPE = " TEXT PRIMARY KEY";
     private static final String COLUMN_USER_NAME_ID = "userNameID";
 
 
-    private static final String COLUMN_AGE_RANGE_TYPE = "TEXT";
+    private static final String COLUMN_AGE_RANGE_TYPE = " TEXT";
     private static final String COLUMN_AGE_RANGE = "ageRange";
 
-    private static final String COLUMN_YEARS_TWITCHING_RANGE_TYPE = "TEXT";
+    private static final String COLUMN_YEARS_TWITCHING_RANGE_TYPE = " TEXT";
     private static final String COLUMN_YEARS_TWITCHING_RANGE = "yearsTwitchingRange";
 
-    private static final String COLUMN_SPECIES_KNOWN_RANGE_TYPE = "TEXT";
+    private static final String COLUMN_SPECIES_KNOWN_RANGE_TYPE = " TEXT";
     private static final String COLUMN_SPECIES_KNOWN_RANGE = "speciesKnownRange";
 
-    private static final String COLUMN_AUDIBLE_RECOGNIZED_RANGE_TYPE = "TEXT";
+    private static final String COLUMN_AUDIBLE_RECOGNIZED_RANGE_TYPE = " TEXT";
     private static final String COLUMN_AUDIBLE_RECOGNIZED_RANGE = "audibleRecognizedRange";
 
-    private static final String COLUMN_INTERFACE_EXPERIENCE_RANGE_TYPE = "TEXT";
+    private static final String COLUMN_INTERFACE_EXPERIENCE_RANGE_TYPE = " TEXT";
     private static final String COLUMN_INTERFACE_EXPERIENCE_RANGE = "interfaceExperienceRange";
 
     //TODO sqlite cannot deal with booleans: private static boolean hearingEqualsSeeing; becomes int
-    private static final String COLUMN_HEARING_EQUALS_SEEING_TYPE = "INTEGER";
+    private static final String COLUMN_HEARING_EQUALS_SEEING_TYPE = " INTEGER";
     private static final String COLUMN_HEARING_EQUALS_SEEING = "hearingEqualsSeeing";
 
     //TODO sqlite cannot deal with booleans: private static boolean hasUsedSmartPhone; becomes int
-    private static final String COLUMN_HAS_USED_SMARTPHONE_TYPE = "INTEGER";
+    private static final String COLUMN_HAS_USED_SMARTPHONE_TYPE = " INTEGER";
     private static final String COLUMN_HAS_USED_SMARTPHONE = "hasUsedSmartPhone";
 
-    public static final String SQL_CREATE_TABLE = "CREATE TABLE " +
-            TABLE_NAME +
-            " (" +
+    public static final String SQL_CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
             COLUMN_USER_NAME_ID + " " + COLUMN_USER_NAME_ID_TYPE + COMMA_SEP +
             COLUMN_AGE_RANGE + " " + COLUMN_AGE_RANGE_TYPE + COMMA_SEP +
             COLUMN_YEARS_TWITCHING_RANGE + " " + COLUMN_YEARS_TWITCHING_RANGE_TYPE + COMMA_SEP +
@@ -65,12 +63,10 @@ public class UserDataORM {
             COLUMN_AUDIBLE_RECOGNIZED_RANGE + " " + COLUMN_AUDIBLE_RECOGNIZED_RANGE_TYPE + COMMA_SEP +
             COLUMN_INTERFACE_EXPERIENCE_RANGE + " " + COLUMN_INTERFACE_EXPERIENCE_RANGE_TYPE + COMMA_SEP +
             COLUMN_HEARING_EQUALS_SEEING + " " + COLUMN_HEARING_EQUALS_SEEING_TYPE + COMMA_SEP +
-            COLUMN_HAS_USED_SMARTPHONE + " " + COLUMN_HAS_USED_SMARTPHONE_TYPE + COMMA_SEP +
+            COLUMN_HAS_USED_SMARTPHONE + " " + COLUMN_HAS_USED_SMARTPHONE_TYPE +
             ")";
 
     public static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
-
-    private static final SimpleDateFormat _dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ", Locale.ENGLISH);
 
     //==================================================================================
 
@@ -78,7 +74,7 @@ public class UserDataORM {
     public static List <UserData> getUserData (Context context) {
         Log.d (TAG, "method getUserData returns a list of UserData objects");
 
-        DatabaseWrapper databaseWrapper = Shared.databaseWrapper;   //FIXME is this right? or below
+        DatabaseWrapper databaseWrapper =  new DatabaseWrapper(context); //FIXME should this be Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
 
         List <UserData> userDataList = null;
@@ -97,26 +93,58 @@ public class UserDataORM {
                 }
                 Log.d (TAG, "method getUserData: UserData objects loaded successfully");
             }
+            cursor.close();
             database.close();
         }
         return  userDataList;
     }
 
+    //method isUserNameInDB takes a userNameString and checks whether it has been used as a
+    //primary key yet in the database - used to check existence and uniqueness of login names.
+    public static boolean isUserNameInDB (Context context, String userName) {
+        Log.d (TAG, "method isUserNameInDB: check userName: " + userName);
+        DatabaseWrapper databaseWrapper = new DatabaseWrapper(context);
+        SQLiteDatabase database = databaseWrapper.getReadableDatabase();
+
+        boolean userExists = false;     //false unless found in database
+        if (database != null) {
+            Log.d (TAG, "method isUserNameInDB: searching...");
+            Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " ='" + userName + "'", null);
+            //FIXME - this prevent's SQL injection: Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " =?", userName);
+            if (cursor.getCount() > 0) {
+                userExists = true;
+                Toast.makeText(Shared.context, "userName is in Database" , Toast.LENGTH_SHORT).show();
+            }
+            else {
+                Toast.makeText(Shared.context, "new userName is available" , Toast.LENGTH_SHORT).show();
+            }
+            cursor.close();
+            database.close();
+        }
+        return  userExists;
+    }
+
     //method findUserDataByID identifies and returns a single UserData object based on ID
-    public static UserData findUserDataByID (Context context, String userId) {
-        Log.d (TAG, "method findUserDataByID: userId: " + userId);
+    public static UserData findUserDataByID (Context context, String userNameId) {
+        Log.d (TAG, "method findUserDataByID: userId: " + userNameId);
         DatabaseWrapper databaseWrapper = new DatabaseWrapper(context);     //FIXME is this right? or above
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
 
         UserData userData = null;
 
         if (database != null) {
-            Log.d (TAG, "method findUserDataById: Loading User: " + userId);
-            Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " = " + userId, null);
-            if (cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                userData = cursorToUserData(cursor);
-                Log.d(TAG, "method findUserDataByID: UserData loaded successfully");
+            Log.d (TAG, "method findUserDataById: Loading User: " + userNameId);
+            try {
+                Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " = " + userNameId, null);
+                if (cursor.getCount() > 0) {
+                    cursor.moveToFirst();
+                    userData = cursorToUserData(cursor);
+                    Log.d(TAG, "method findUserDataByID: UserData loaded successfully");
+                }
+                cursor.close();
+            } catch (SQLiteException sqlex) {
+                //Toast.makeText (Shared.context, "Failed to Find User", Toast.LENGTH_SHORT).show();
+                sqlex.printStackTrace();
             }
             database.close();
         }
@@ -130,7 +158,7 @@ public class UserDataORM {
             Log.d (TAG, "userData already exists in database, not inserting");
             return updateUserData (context , userData);
         }
-
+        Log.d (TAG, "method insertUserData: creating ContentValues");
         ContentValues values = userDataToContentValues (userData);
 
         DatabaseWrapper databaseWrapper = new DatabaseWrapper(context);
@@ -140,13 +168,13 @@ public class UserDataORM {
 
         try {
             if (database != null) {
-                long userDataID = database.insert(UserDataORM.TABLE_NAME, "null", values);
-                Log.d (TAG, "method insertUserData: Inserted new UserData with ID: " + userDataID);
-                // TODO iterate over GameDataORM.insertGames to set new Games in UserData
+                long rowID = database.insert(TABLE_NAME, "null", values);
+                Log.d (TAG, "method insertUserData: Inserted new UserData into rowID: " + rowID);
+                // TODO iterate over GameDataORM.insertGames to set new Games in UserData? or only on update
                 success = true;
             }
-        } catch (NullPointerException npe) {
-            Log.e (TAG, "method insertUserData: Failed to insert UserData[" + userData.getUserName() + "] due to: " + npe);
+        } catch (SQLiteException sqlex) {
+            Log.e (TAG, "method insertUserData: Failed to insert UserData[" + userData.getUserName() + "] due to: " + sqlex);
         } finally {
             if (database != null) {
                 database.close();
@@ -157,7 +185,7 @@ public class UserDataORM {
 
     //method updateUserData updates an existing UserData in the database
     public static boolean updateUserData (Context context, UserData userData) {
-        Log.d (TAG, "method updateUserData");
+        Log.d (TAG, "method updateUserData: creating ContentValues");
         ContentValues values = userDataToContentValues (userData);
         DatabaseWrapper databaseWrapper = new DatabaseWrapper(context);
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
@@ -170,7 +198,7 @@ public class UserDataORM {
                 success = true;
             }
         } catch (NullPointerException npe) {
-            Log.e (TAG, "method updateUserData: Failed to update UserData[" + userData.getUserName() + "] due to: " npe);
+            Log.e (TAG, "method updateUserData: Failed to update UserData[" + userData.getUserName() + "] due to: " + npe);
         } finally {
             if (database != null) {
                 database.close();
@@ -185,24 +213,18 @@ public class UserDataORM {
         Log.d (TAG, "private method userDataToContentValues");
         ContentValues values = new ContentValues();
 
-        values.put (UserDataORM.COLUMN_USER_NAME_ID, userData.getUserName());
-        values.put (UserDataORM.COLUMN_AGE_RANGE, userData.getAgeRange());
-        values.put (UserDataORM.COLUMN_YEARS_TWITCHING_RANGE, userData.getYearsTwitchingRange());
-        values.put (UserDataORM.COLUMN_SPECIES_KNOWN_RANGE, userData.getSpeciesKnownRange());
-        values.put (UserDataORM.COLUMN_AUDIBLE_RECOGNIZED_RANGE, userData.getAudibleRecognizedRange());
-        values.put (UserDataORM.COLUMN_INTERFACE_EXPERIENCE_RANGE, userData.getInterfaceExperienceRange());
-        if (userData.getHearingEqualsSeeing() == false) {
-            values.put (UserDataORM.COLUMN_HEARING_EQUALS_SEEING, 0);
-        }
-        else{
-            values.put (UserDataORM.COLUMN_HEARING_EQUALS_SEEING, 1);
-        }
-        if (userData.getHasUsedSmartphone() == false) {
-            values.put (UserDataORM.COLUMN_HAS_USED_SMARTPHONE, 0);
-        }
-        else {
-            values.put (UserDataORM.COLUMN_HAS_USED_SMARTPHONE, 1);
-        }
+        Log.d (TAG, "values.put... userData.getUserName(): " + userData.getUserName() + " to COLUMN_USER_NAME_ID: " + COLUMN_USER_NAME_ID);
+        values.put (COLUMN_USER_NAME_ID, userData.getUserName());
+        Log.d (TAG, "values.put... userData.getAgeRange(): " + userData.getAgeRange() + " to COLUMN_AGE_RANGE: " + COLUMN_AGE_RANGE);
+        values.put (COLUMN_AGE_RANGE, userData.getAgeRange());
+        values.put (COLUMN_YEARS_TWITCHING_RANGE, userData.getYearsTwitchingRange());
+        values.put (COLUMN_SPECIES_KNOWN_RANGE, userData.getSpeciesKnownRange());
+        values.put (COLUMN_AUDIBLE_RECOGNIZED_RANGE, userData.getAudibleRecognizedRange());
+        values.put (COLUMN_INTERFACE_EXPERIENCE_RANGE, userData.getInterfaceExperienceRange());
+        if (!userData.getHearingEqualsSeeing()) { values.put (UserDataORM.COLUMN_HEARING_EQUALS_SEEING, 0);}
+        else{ values.put (UserDataORM.COLUMN_HEARING_EQUALS_SEEING, 1); }
+        if (!userData.getHasUsedSmartphone()) { values.put (UserDataORM.COLUMN_HAS_USED_SMARTPHONE, 0); }
+        else { values.put (UserDataORM.COLUMN_HAS_USED_SMARTPHONE, 1); }
         return values;
     }
 

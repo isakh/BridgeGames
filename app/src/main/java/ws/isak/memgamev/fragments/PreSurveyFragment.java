@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import ws.isak.memgamev.R;
 import ws.isak.memgamev.common.Shared;
+import ws.isak.memgamev.database.UserDataORM;
 import ws.isak.memgamev.engine.ScreenController;
 import ws.isak.memgamev.engine.ScreenController.Screen;
 
@@ -207,6 +208,8 @@ public class PreSurveyFragment extends Fragment implements  View.OnClickListener
         Shared.userData.setHasUsedSmartPhone(hasUsedSmartPhone);
         Shared.userData.setInterfaceExperienceRange(interfaceExperienceRange);
 
+        //and update the database
+        UserDataORM.insertUserData(Shared.context, Shared.userData);
         //when done continue to next screen
         ScreenController.getInstance().openScreen(Screen.SELECT_GAME);
     }

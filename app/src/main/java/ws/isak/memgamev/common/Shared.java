@@ -31,7 +31,8 @@ public class Shared {
     public static UserData userData;        //This holds the current active UserData
 
     //database
-    public static final String DATABASE_NAME = context.getResources().getString(R.string.database_name);
+    //FIXME - can't use context here? public static final String DATABASE_NAME = context.getResources().getString(R.string.database_name);
+    public static final String DATABASE_NAME = "bridge.db";
     public static DatabaseWrapper databaseWrapper;
 
     //TODO make sense of static initialization blocks! see http://softwareengineering.stackexchange.com/questions/228242/working-with-static-constructor-in-java

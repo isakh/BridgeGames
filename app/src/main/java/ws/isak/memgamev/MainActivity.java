@@ -1,13 +1,11 @@
 package ws.isak.memgamev;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 import android.util.Log;
-
-import java.io.File;
+import java.util.List;
 
 import ws.isak.memgamev.common.Shared;
 import ws.isak.memgamev.common.UserData;
@@ -19,6 +17,7 @@ import ws.isak.memgamev.events.ui.BackGameEvent;
 import ws.isak.memgamev.ui.PopupManager;
 import ws.isak.memgamev.utils.Utils;
 import ws.isak.memgamev.database.DatabaseWrapper;
+import ws.isak.memgamev.database.UserDataORM;
 
 /*
  * The main activity class of the app.  This activity class is called from the AndroidManifest.xml
@@ -48,9 +47,29 @@ public class  MainActivity extends FragmentActivity {
 		Shared.eventBus = EventBus.getInstance();
         Shared.userData = new UserData();       //TODO this is a place-keeper, set to specific on login
 
-        //FIXME - does this work?
+        //instantiate a DatabaseWrapper
         DatabaseWrapper db = new DatabaseWrapper(this);
         Shared.databaseWrapper = db;
+
+        /* The following code can be commented out once it has been used to verify the stability of
+         * the database.  TODO remove the following:
+         */
+
+        List <UserData> userDataList = UserDataORM.getUserData(Shared.context);
+        for (int i = 0; i < userDataList.size(); i++) {
+            UserData storedUserData = userDataList.get(i);
+            Log.d (TAG, "... Database row: " + i +
+                        " | userName: " + storedUserData.getUserName() +
+                        " | userAge: " + storedUserData.getAgeRange() +
+                        " | yearsTwitching: " + storedUserData.getYearsTwitchingRange() +
+                        " | speciesKnown: " + storedUserData.getSpeciesKnownRange() +
+                        " | audibleRecognized: " + storedUserData.getAudibleRecognizedRange() +
+                        " | interfaceExperience: " + storedUserData.getInterfaceExperienceRange() +
+                        " | hearingIsSeeing: " + storedUserData.getHearingEqualsSeeing() +
+                        " | usedSmartphone: " + storedUserData.getHasUsedSmartphone());
+        }
+
+        /* TODO End remove */
 
 		Shared.activity = this;
 		Shared.engine.start();
