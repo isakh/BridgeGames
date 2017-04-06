@@ -43,9 +43,12 @@ public class  MainActivity extends FragmentActivity {
 
 		Log.d (TAG, "method onCreate: setting Shared data");
         Shared.context = getApplicationContext();
-		Shared.engine = Engine.getInstance();
+        Shared.userData = UserData.getInstance();       //FIXME this is a place-keeper, set to specific on login
+        Log.d (TAG, " *******: Shared.userData @: " + Shared.userData);
+        Shared.engine = Engine.getInstance();
+        Log.d (TAG, " *******: Shared.engine @: " + Shared.engine);
 		Shared.eventBus = EventBus.getInstance();
-        Shared.userData = new UserData();       //TODO this is a place-keeper, set to specific on login
+        Log.d (TAG, " *******: Shared.eventBus @: " + Shared.eventBus);
 
         //instantiate a DatabaseWrapper
         DatabaseWrapper db = new DatabaseWrapper(this);
@@ -55,20 +58,21 @@ public class  MainActivity extends FragmentActivity {
          * the database.  TODO remove the following:
          */
 
-        List <UserData> userDataList = UserDataORM.getUserData(Shared.context);
-        for (int i = 0; i < userDataList.size(); i++) {
-            UserData storedUserData = userDataList.get(i);
-            Log.d (TAG, "... Database row: " + i +
-                        " | userName: " + storedUserData.getUserName() +
-                        " | userAge: " + storedUserData.getAgeRange() +
-                        " | yearsTwitching: " + storedUserData.getYearsTwitchingRange() +
-                        " | speciesKnown: " + storedUserData.getSpeciesKnownRange() +
-                        " | audibleRecognized: " + storedUserData.getAudibleRecognizedRange() +
-                        " | interfaceExperience: " + storedUserData.getInterfaceExperienceRange() +
-                        " | hearingIsSeeing: " + storedUserData.getHearingEqualsSeeing() +
-                        " | usedSmartphone: " + storedUserData.getHasUsedSmartphone());
+        Shared.userDataList = UserDataORM.getUserData(Shared.context);
+        Log.d (TAG, "... Shared.userDataList.size(): " + Shared.userDataList.size() + " | @: " + Shared.userDataList);
+        if (Shared.userDataList != null) {
+            for (int i = 0; i < Shared.userDataList.size(); i++) {
+                Log.d(TAG, "... Database row: " + i +
+                        " | userName: " + Shared.userDataList.get(i).getUserName() +
+                        " | userAge: " + Shared.userDataList.get(i).getAgeRange() +
+                        " | yearsTwitching: " + Shared.userDataList.get(i).getYearsTwitchingRange() +
+                        " | speciesKnown: " + Shared.userDataList.get(i).getSpeciesKnownRange() +
+                        " | audibleRecognized: " + Shared.userDataList.get(i).getAudibleRecognizedRange() +
+                        " | interfaceExperience: " + Shared.userDataList.get(i).getInterfaceExperienceRange() +
+                        " | hearingIsSeeing: " + Shared.userDataList.get(i).getHearingEqualsSeeing() +
+                        " | usedSmartphone: " + Shared.userDataList.get(i).getHasUsedSmartphone());
+            }
         }
-
         /* TODO End remove */
 
 		Shared.activity = this;

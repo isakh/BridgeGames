@@ -121,11 +121,34 @@ public class GameFragment extends BaseFragment {
         //We print out all of the collected array data here?
         for (int i = 0; i < Shared.userData.getCurMemGame().getNumTurnsTaken(); i++) {
             if (i < 10) {
-                Log.d(TAG, "   | Turn: 0" + i + " | Turn Time: " + Shared.userData.getCurMemGame().queryTurnDurationsArray(i) + " CardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i).getCardID());
+                Log.d(TAG, "*****| Turn: 0" + i + " | Turn Time: " + Shared.userData.getCurMemGame().queryTurnDurationsArray(i) +
+                        " | Play Duration: " + Shared.userData.getCurMemGame().queryGamePlayDurations(i) +
+                        " | CardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i).getCardID());
             } else {
-                Log.d(TAG, "   | Turn: " + i + " | Turn Time: " + Shared.userData.getCurMemGame().queryTurnDurationsArray(i) + " CardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i).getCardID());
+                Log.d(TAG, "*****| Turn: " + i + " | Turn Time: " + Shared.userData.getCurMemGame().queryTurnDurationsArray(i) +
+                        " | Play Duration: " + Shared.userData.getCurMemGame().queryGamePlayDurations(i) +
+                        " | CardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i).getCardID());
             }
         }
+
+        //TODO this can be removed once validated
+        Log.d (TAG, "... Shared.curMemGameData: themeID: " + Shared.userData.getCurMemGame().getThemeID() +
+                " | difficulty selected: " + Shared.userData.getCurMemGame().getGameDifficulty() +
+                " | gameDurationAllocated: " + Shared.userData.getCurMemGame().getGameDurationAllocated() +
+                " | mixerState: " + Shared.userData.getCurMemGame().getMixerState() +
+                " | gameStarted: " + Shared.userData.getCurMemGame().isGameStarted() +
+                " | gameStartTimeStamp: " + Shared.userData.getCurMemGame().getGameStartTimestamp() +
+                " | numPlayDurationsRecorded: " + Shared.userData.getCurMemGame().sizeOfTurnDurationsArray() +
+                " | numTurnDurationsRecorded: " + Shared.userData.getCurMemGame().sizeOfTurnDurationsArray() +
+                " | numCardsSelectionsRecorded: " + Shared.userData.getCurMemGame().sizeOfCardSelectionArray() +
+                " | numTurnsTaken:  " + Shared.userData.getCurMemGame().getNumTurnsTaken());
+        for (int i = 0; i < Shared.userData.getCurMemGame().sizeOfTurnDurationsArray(); i++ ) {
+            Log.d(TAG, "... turnDurations[" + i + "] : " + Shared.userData.getCurMemGame().queryTurnDurationsArray(i));
+        }
+        for (int i = 0; i < Shared.userData.getCurMemGame().sizeOfCardSelectionArray(); i++ ) {
+            Log.d(TAG, "... cardSelections[" + i + "].getCardId(): " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i).getCardID());
+        }
+        //TODO end validation block
         //append MemGameData to userData array
         Shared.userData.appendMemGameData(Shared.userData.getCurMemGame());     //append the MemGameData for completed game to
         //reset flags

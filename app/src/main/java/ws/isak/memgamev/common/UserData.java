@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import android.util.Log;
 
+import ws.isak.memgamev.database.UserDataORM;
 import ws.isak.memgamev.model.MemGameData;
 
 /*
@@ -52,14 +53,31 @@ public class UserData {
     // Constructor - this should be called once when a userData object instance needs to be instantiated
     // the instantiator will pass all relevant nulled values
     public UserData() {
-        //TODO what do we need on construct? or can we leave this blank and simply have a placeholder for calls to getInstance
         Log.d(TAG, "***** CONSTRUCTOR *****");
-        Log.d(TAG, "*** WHAT GOES HERE? ***");
+        //set strings to null
+            //pre
+        setUserName(null);
+        setAgeRange(null);
+        setYearsTwitchingRange(null);
+        setSpeciesKnownRange(null);
+        setAudibleRecognizedRange(null);
+        setInterfaceExperienceRange(null);
+        //set ints to 0 (Likert null)
+            //post
+        setHearIsSeeLikert(0);
+        setHearIsPredictLikert(0);
+        //set booleans to false
+            //pre
+        setHearingEqualsSeeing(false);
+        setHasUsedSmartPhone(false);
+            //post
+        setSpectrogramFamiliar(false);
+        //set game data lists
         initMemGameDataList();
     }
 
     /*
-     * Method getInstance returns an instance of an empty  UserData object - this is called once
+     * Method getInstance returns an instance of an empty  UserData object - this is called only
      * when a new userData object needs to be created.
      */
     public static UserData getInstance() {
@@ -70,20 +88,10 @@ public class UserData {
         return mInstance;
     }
 
-    /* FIXME!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-     * Overloaded method getInstance (String loginName) returns a pre-existing instance of a userData
-     * object assuming that the loginName has been checked and can return an object from storage.
-     */
-    public static UserData getInstance(String loginName) {
-        //TODO return the USER_DATA object with key loginName from storage
-        return null;
-    }
-
     //***** USER SETUP DATA *****
 
     //[0] set and get the userName string parameter - this is used in part to define the userData object
     public void setUserName(String user) {
-        //TODO method CheckUserNameUnique (user, )
         //Log.d(TAG, "method setUserName: user name is: " + user);
         userName = user;
     }
@@ -230,9 +238,9 @@ public class UserData {
         return memGameDataList.get(gameDataRecord);
     }
 
-    public void setCurMemGame(MemGameData game) {
+    public void setCurMemGame(MemGameData gameData) {
         Log.d(TAG, "method setCurMemGame");
-        curMemGame = game;
+        curMemGame = gameData;
     }
 
     public MemGameData getCurMemGame() {

@@ -91,9 +91,9 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
 
     /*
      * Method loginExistingUser takes the current View, uses that information to call a method which
-     * extracts the name field typed by the user, checks whether said name is already in the list of
-     * registered users, and if so, sets that UserData object to 'live' and triggers loading of the
-     * next screen.
+     * extracts the name field typed by the user, checks whether said name is already in the database
+     * of registered users and, if so, sets the pointer to Shared.userData to the retrieved UserData
+     * and continues to the next screen.
      */
     public void loginExistingUser(View v) {
         Log.d(TAG, "method loginExistingUser");
@@ -102,6 +102,7 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
         if (CheckUserExists(loginName)) {
             Log.d (TAG, "                   : preexistingUserName is true, setting current UserData to user's UserData");
             Shared.userData = UserDataORM.findUserDataByID(Shared.context, loginName);
+            Log.d (TAG, " ******* Shared.userData @: " + Shared.userData);
             //load screen for next step
             Log.d (TAG, "                   : existing user: next screen is SELECT_GAME");
             ScreenController.getInstance().openScreen(Screen.SELECT_GAME);

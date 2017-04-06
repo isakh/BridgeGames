@@ -173,7 +173,7 @@ public class BoardView extends LinearLayout {
 			public void onClick(View v) {
                 //keep local track of click time
                 long now = System.currentTimeMillis();
-                // allow click in two instances: one with Mix ON, one with Mix OFF and a check that no other audio is playing
+                // allow click in two instances: one with Mix ON vs one with Mix OFF and a check that no other audio is playing
                 if ((!mLocked && tileView.isFlippedDown() && Music.MIX) ||
                         (!mLocked && tileView.isFlippedDown() && (!Music.MIX && !Music.getIsAudioPlaying()))) {
                     Log.d(TAG, "			   : curTileOnBoard is: " + curTileOnBoard);
@@ -187,7 +187,7 @@ public class BoardView extends LinearLayout {
                     //If this is the first tile being clicked, we need to change the state of MemGameData.isGameStarted()
                     //If this is the first tile we need to set the MemGameData.setGameStartTimeStamp()
                     //Whether this is not the first tile or not, we need to record that click has been made, it's time, and update accordingly
-                    Log.d(TAG, "***** Update MemGameData with current timing information (and card info) *****");
+                    Log.d(TAG, "**** Update MemGameData with current timing information (and card info) ****");
                     //do the following if it is the first click in a game
                     if (!Shared.userData.getCurMemGame().isGameStarted()) {     //if this is the first card being flipped
                         Log.d (TAG, "This is the First Tile Flipped In Game");
@@ -195,16 +195,28 @@ public class BoardView extends LinearLayout {
                         Log.d (TAG, "   ***: getGameStarted: " + Shared.userData.getCurMemGame().isGameStarted());
                         Shared.userData.getCurMemGame().setGameStartTimestamp(now);
                         Log.d (TAG, "   ***: getGameStartTimestamp: " + Shared.userData.getCurMemGame().getGameStartTimestamp());
-                        Shared.userData.getCurMemGame().setGamePlayDuration(0); //game has been played for 0ms
-                        Log.d (TAG, "   ***: getGamePlayDuration: " + Shared.userData.getCurMemGame().getGamePlayDuration());
                     }
                     //do the following on each click:
                     //  - set the gamePlayDuration to (now - startTimeStamp)
-                    Shared.userData.getCurMemGame().setGamePlayDuration(now - Shared.userData.getCurMemGame().getGameStartTimestamp());
-                    Log.d (TAG, "   ***: getGamePlayDuration: " + Shared.userData.getCurMemGame().getGamePlayDuration());
-                    //  - time to append is (current time - duration played to previous turn (which is 0 if first click))
-                    Shared.userData.getCurMemGame().appendToTurnDurations(now - (Shared.userData.getCurMemGame().getGameStartTimestamp() + Shared.userData.getCurMemGame().getGamePlayDuration()));
-                    Log.d(TAG, "    ***: | System time: " + now + " | gamePlayDuration: " + Shared.userData.getCurMemGame().getGamePlayDuration() + " | numTurnsTaken: " + Shared.userData.getCurMemGame().getNumTurnsTaken() + " | elapsed turn time: " + Shared.userData.getCurMemGame().queryTurnDurationsArray(Shared.userData.getCurMemGame().getNumTurnsTaken()));
+                    Shared.userData.getCurMemGame().appendToGamePlayDurations(now - Shared.userData.getCurMemGame().getGameStartTimestamp());
+                    Log.d (TAG, "   ***: queryGamePlayDuration @ array location numTurnsTaken: " + Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken()));
+                    //  - time to append is (current time - queryGamePlayDuration[numTurns - 1] unless first turn in which case 0))
+                    if (Shared.userData.getCurMemGame().getNumTurnsTaken() == 0) {
+                        Shared.userData.getCurMemGame().appendToTurnDurations(0);
+                        Log.d(TAG, " *****: | System time: " + now +
+                                " | gameStartTimeStamp: " + Shared.userData.getCurMemGame().getGameStartTimestamp() +
+                                " | numTurnsTaken: " + Shared.userData.getCurMemGame().getNumTurnsTaken() +
+                                " | gamePlayDuration @ numTurnsTaken: " + Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken()) +
+                                " | elapsed turn time: " + (Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken())));
+                    }
+                    else {
+                        Shared.userData.getCurMemGame().appendToTurnDurations(now - (Shared.userData.getCurMemGame().getGameStartTimestamp() + Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken() - 1)));
+                        Log.d(TAG, " *****: | System time: " + now +
+                                " | gameStartTimeStamp: " + Shared.userData.getCurMemGame().getGameStartTimestamp() +
+                                " | numTurnsTaken: " + Shared.userData.getCurMemGame().getNumTurnsTaken() +
+                                " | gamePlayDuration @ numTurnsTaken: " + Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken()) +
+                                " | elapsed turn time: " + (Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken()) - Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken() - 1)));
+                    }
                     //  - append the clicked card to array
                     Shared.userData.getCurMemGame().appendToCardsSelected(mBoardArrangement.cardObjs.get(curTileOnBoard));
                     Log.d (TAG, "   ***: cardObjArray[numTurnsTaken].cardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(Shared.userData.getCurMemGame().getNumTurnsTaken()).getCardID());

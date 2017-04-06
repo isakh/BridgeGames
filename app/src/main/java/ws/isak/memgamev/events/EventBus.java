@@ -9,7 +9,7 @@ import java.util.Map;
 import android.os.Handler;
 
 /**
- * The gateway of all events running in the game from ui to engine components
+ * The gateway for all events running in the game from ui to engine components
  * and back.
  *
  * @author isak
@@ -22,6 +22,7 @@ public class EventBus {
 	private Object obj = new Object();
 
 	private EventBus() {
+        //Log.d (TAG, "Constructor");
 		mHandler = new Handler();
 	}
 

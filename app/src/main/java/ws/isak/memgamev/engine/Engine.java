@@ -22,7 +22,6 @@ import ws.isak.memgamev.common.Memory;
 import ws.isak.memgamev.common.Music;
 import ws.isak.memgamev.common.Shared;
 import ws.isak.memgamev.common.CardData;
-import ws.isak.memgamev.common.UserData;
 
 import ws.isak.memgamev.engine.ScreenController.Screen;
 import ws.isak.memgamev.events.engine.PlayCardAudioEvent;
@@ -87,6 +86,8 @@ public class Engine extends EventObserverAdapter {
 	}
 
 	public void start() {
+        Log.d (TAG, "method start");
+        Log.d (TAG, " *******: Shared.eventBus @: " + Shared.eventBus);
 		Shared.eventBus.listen(DifficultySelectedEvent.TYPE, this);
 		Shared.eventBus.listen(FlipCardEvent.TYPE, this);
 		Shared.eventBus.listen(StartEvent.TYPE, this);
@@ -130,8 +131,9 @@ public class Engine extends EventObserverAdapter {
 					return bitmap;
 				}
 				protected void onPostExecute(Bitmap bitmap) {
+                    //
 					mBackgroundImage.setImageBitmap(bitmap);
-				};
+				}
 			}.execute();
 		}
 	}
@@ -201,20 +203,26 @@ public class Engine extends EventObserverAdapter {
 		// arrange board
 		arrangeBoard();
 
-        //TODO Verify if this is a good place for instantiating the currentGameData object was in StartEvent
+        //instantiating the currentGameData object - some fields default to 0 || null
         currentGameData = new MemGameData(mPlayingGame);
         //check setup of memGameData - these should return current states
         Log.d (TAG, "event DifficultySelectedEvent: create currentGameData: currentGameData.getThemeID: " + currentGameData.getThemeID());
         Log.d (TAG, "                                                     : currentGameData.getGameDifficulty: " + currentGameData.getGameDifficulty());
-        Log.d (TAG, "                                                     : currentGameData.getMixerState : " + currentGameData.getMixerState());
         Log.d (TAG, "                                                     : currentGameData.getGameDurationAllocated: " + currentGameData.getGameDurationAllocated());
+        Log.d (TAG, "                                                     : currentGameData.getMixerState : " + currentGameData.getMixerState());
         //these should reflect that the game is not yet started (don't check start timeStamp as it hasn't been used?)
         Log.d (TAG, "                             			              : currentGameData.isGameStarted: " + currentGameData.isGameStarted());
         Log.d (TAG, "                                                     : currentGameData.getGameStartTimestamp: " + currentGameData.getGameStartTimestamp());
+        Log.d (TAG, "                                                     : currentGameData.numPlayDurationsRecorded: " + currentGameData.sizeOfPlayDurationsArray());
+        Log.d (TAG, "                                                     : currentGameData.numTurnDurationsRecorded: " + currentGameData.sizeOfTurnDurationsArray());
+        Log.d (TAG, "                                                     : currentGameData.numCardSelectionsRecorded: " + currentGameData.sizeOfCardSelectionArray());
         Log.d (TAG, "                             			              : currentGameData.getNumTurnsTaken: " + currentGameData.getNumTurnsTaken());
 
+        //debug Shared.userData
+        Log.d (TAG, " ******* : Shared.userData @ : " + Shared.userData);
+        Log.d (TAG, " ******* : userData.getCurMemGame @ : " + Shared.userData.getCurMemGame());
+
         Shared.userData.setCurMemGame(currentGameData);
-        Log.d (TAG, "                             :userData.getCurMemGame @ memory location: " + Shared.userData.getCurMemGame());
         // start the screen - This call to screen controller causes the screen controller to select
         // a new GameFragment from the screen controller.  Opening the new GameFragment leads to a
         // call to buildBoard() a private method in the Game Fragment. buildBoard calls setBoard in

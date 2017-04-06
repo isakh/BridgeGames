@@ -30,15 +30,14 @@ public class MemGameData {
     private int difficulty;                 //difficulty level for the current game
     private long gameDurationAllocated;     //This is the fixed time allocated for playing the game
     private boolean mixerState;             //keep track of mix state for each game,
-    //the following respond to user input during the game
     private boolean gameStarted;            //Set to Boolean false, becomes true when first card is clicked - triggers gameStarTimeStamp
+    //the following respond to user input during the game
     private long gameStartTimestamp;        //keep track of the timestamp for the start of the game  //TODO move to top? (header timestamp is unique)
-    private long gamePlayDuration;          //Time the player spent on the game so far (sum of turnDurations) (TODO can it be greater than allocated time?)
+    private List <Long> gamePlayDurations;  //Time the player spent on the game so far (sum of turnDurations) at each turn (TODO can it be greater than allocated time?)
     private List <Long> turnDurations;      //a list of durations of each turn - a turn is defined as a single click, implemented as ArrayList //TODO should we also have a measure of paired click turns?
     private List <CardData> cardSelectedOrder;   //a list of cardData objects selected on each turn, implemented as ArrayList //TODO!!! should type be CardData, or (int) CardData.cardID - how will Database handle if CardData rather than primitive?
     private int numTurnsTakenInGame;        //Initialize number of turns in game to 0 and increment on each click.
     //TODO should/could we add a array of booleans that tracks whether a match that could be made has been missed? (For now keep this in post)
-
 
     //constructor method describes the information that is stored about each game played
     public MemGameData (Game currentGame) {
@@ -52,10 +51,10 @@ public class MemGameData {
         setGameStarted(false);      //initialize to false on setup
         setGameStartTimestamp(0);
         setNumTurnsTaken(0);
-        initTurnDurationsArray();   //null array at start
-        initCardsSelectedArray();   //null array at start
+        initTurnDurationsArray();       //null array at start
+        initCardsSelectedArray();       //null array at start
+        initGamePlayDurationsArray();   //null array at start
         //update before closing and returning MemGameData to UserData
-        setGamePlayDuration(0);
     }
 
     /*
@@ -130,15 +129,24 @@ public class MemGameData {
         return gameStartTimestamp;
     }
 
-    //[3] set/get gamePlayDuration
-    public void setGamePlayDuration (long gamePlayStartTime) {            //TODO FIX THIS METHOD
-        //Log.d (TAG, "method setGamePlayDuration: initialize to 0ms");
-        gamePlayDuration = gamePlayStartTime;   //TODO WE NEED ACCESS TO START TIME OF GAME FROM CLOCK
+    //[3] control methods for  gamePlayDurations
+    public void initGamePlayDurationsArray () {
+        //Log.d (TAG, "method initGamePlayDurationsArray");
+        gamePlayDurations = new ArrayList<Long>();
+    }
+    public void appendToGamePlayDurations (long durToAdd) {
+        //Log.d (TAG, "method appendToGamePlayDurations");
+        gamePlayDurations.add(durToAdd);
     }
 
-    public long getGamePlayDuration () {
+    public long queryGamePlayDurations (int locToQuery) {
         //Log.d (TAG, "method getGamePlayDuration: gamePlayDuration: " + gamePlayDuration);
-        return gamePlayDuration;
+        return gamePlayDurations.get(locToQuery);
+    }
+
+    public int sizeOfPlayDurationsArray () {
+        //Log.d (TAG, "method sizeOfPlayDurationsArray");
+        return gamePlayDurations.size();
     }
 
     //[4] control methods for the turnsDurationArray
@@ -152,9 +160,14 @@ public class MemGameData {
         turnDurations.add(durToAdd);
     }
 
-    public long queryTurnDurationsArray (int locToQuery) {                //TODO this will be used for later analysis only?
+    public long queryTurnDurationsArray (int locToQuery) {
         //Log.d (TAG, "method queryTurnDurationArray: location to query: " + locToQuery);
         return turnDurations.get(locToQuery);
+    }
+
+    public int sizeOfTurnDurationsArray (){
+        //Log.d (TAG, "method sizeOfTurnDurationsArray);
+        return turnDurations.size();
     }
 
     //[4] control methods for the cardsSelectedArray
@@ -171,6 +184,11 @@ public class MemGameData {
     public CardData queryCardsSelectedArray (int locToQuery) {
         //Log.d (TAG, "method queryCardsSelectedArray");
         return cardSelectedOrder.get(locToQuery);
+    }
+
+    public int sizeOfCardSelectionArray () {
+        //Log.d (TAG, "method sizeOfCardSelectionArray);
+        return cardSelectedOrder.size();
     }
 
     //[6] set/get/increment numTurnsTaken

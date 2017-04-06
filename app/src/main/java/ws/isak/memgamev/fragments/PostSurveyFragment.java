@@ -135,6 +135,7 @@ public class PostSurveyFragment extends Fragment implements View.OnClickListener
         Log.d (TAG, "method submitPostSurvey: hearIsPredictLikert: " + hearIsPredictLikert);
 
         //Load all responses to USER_DATA
+        Log.d (TAG, "******* Shared.userData @: " + Shared.userData);
         Shared.userData.setSpectrogramFamiliar(spectrogramFamiliar);
         Shared.userData.setHearIsSeeLikert(hearIsSeeLikert);
         Shared.userData.setHearIsPredictLikert(hearIsPredictLikert);
