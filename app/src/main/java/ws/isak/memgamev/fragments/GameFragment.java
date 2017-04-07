@@ -151,6 +151,9 @@ public class GameFragment extends BaseFragment {
         //TODO end validation block
         //append MemGameData to userData array
         Shared.userData.appendMemGameData(Shared.userData.getCurMemGame());     //append the MemGameData for completed game to
+
+        //TODO method to validate all data in UserData including each MemGameData
+
         //reset flags
         Shared.userData.getCurMemGame().setGameStarted(false);                  //reset the gameStarted boolean to false
         //null the pointer to curMemGame once it has been appended to the UserData array

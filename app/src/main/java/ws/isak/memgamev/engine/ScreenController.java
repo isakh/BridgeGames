@@ -100,9 +100,10 @@ public class ScreenController {
 			if ((screen == Screen.THEME_SELECT || screen == Screen.MENU_MEM) && (screenToRemove == Screen.DIFFICULTY_MEM || screenToRemove == Screen.GAME_MEM)) {
 				Shared.eventBus.notify(new ResetBackgroundEvent());
             }
-            //back from SelectGame shouldn't work?
+            //back from SelectGame should be limited?
             if (screen == Screen.SELECT_GAME) {
-               //do nothing?
+                //allow user to change pre survey data
+                openScreen(Screen.PRE_SURVEY);
             }
 			return false;
 		}
