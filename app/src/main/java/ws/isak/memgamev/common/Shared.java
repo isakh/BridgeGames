@@ -9,6 +9,8 @@ import java.util.List;
 import ws.isak.memgamev.engine.Engine;
 import ws.isak.memgamev.events.EventBus;
 import ws.isak.memgamev.database.DatabaseWrapper;
+import ws.isak.memgamev.model.Game;
+import ws.isak.memgamev.model.MemGameData;
 
 /*
  * Class Shared
@@ -24,6 +26,7 @@ public class Shared {
 	public static FragmentActivity activity; // TODO: move to weak reference
 	public static Engine engine;
 	public static EventBus eventBus;
+    public static Game currentGame;
 
     //database
     //FIXME - can't use context here why? public static final String DATABASE_NAME = context.getResources().getString(R.string.database_name);
@@ -33,6 +36,7 @@ public class Shared {
     //data classes / methods
     public static UserData userData;        //This holds the current active UserData
     public static List <UserData> userDataList;
+    public static List <MemGameData> memGameDataList;
     
     public static void setUserData (UserData user) {
         Log.d (TAG, "method setUserData");

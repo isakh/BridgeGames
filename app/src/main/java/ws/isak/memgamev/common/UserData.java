@@ -245,4 +245,9 @@ public class UserData {
         //Log.d(TAG, "method getCurMemGame");
         return curMemGame;
     }
+
+    public int sizeOfMemGameDataList () {
+        //
+        return memGameDataList.size();
+    }
 }

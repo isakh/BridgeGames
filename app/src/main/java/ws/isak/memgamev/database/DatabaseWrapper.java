@@ -35,6 +35,7 @@ public class DatabaseWrapper extends SQLiteOpenHelper {
         Log.d (TAG, "method onCreate: Creating Database [" + Shared.DATABASE_NAME + " v." + DATABASE_VERSION + "]...");
         //create the database
         sqliteDB.execSQL(UserDataORM.SQL_CREATE_TABLE);
+        sqliteDB.execSQL(MemGameDataORM.SQL_CREATE_TABLE);
         Log.d (TAG, "method onCreate: check doesDatabaseExist: " + doesDatabaseExist(Shared.context));
     }
 
@@ -44,6 +45,7 @@ public class DatabaseWrapper extends SQLiteOpenHelper {
     public void onUpgrade (SQLiteDatabase sqliteDB, int oldVersion, int newVersion) {
         Log.d (TAG, "Upgrading Database [" + Shared.DATABASE_NAME + " v." + oldVersion + "] to [" + Shared.DATABASE_NAME + " v." + newVersion);
         sqliteDB.execSQL(UserDataORM.SQL_DROP_TABLE);
+        sqliteDB.execSQL(MemGameDataORM.SQL_DROP_TABLE);
         onCreate(sqliteDB);
     }
 

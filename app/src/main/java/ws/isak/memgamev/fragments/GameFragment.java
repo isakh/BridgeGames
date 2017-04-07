@@ -13,6 +13,7 @@ import java.util.Locale;
 
 import ws.isak.memgamev.R;
 import ws.isak.memgamev.common.Shared;
+import ws.isak.memgamev.database.MemGameDataORM;
 import ws.isak.memgamev.events.engine.FlipDownCardsEvent;
 import ws.isak.memgamev.events.engine.GameWonEvent;
 import ws.isak.memgamev.events.engine.HidePairCardsEvent;
@@ -152,7 +153,8 @@ public class GameFragment extends BaseFragment {
         //append MemGameData to userData array
         Shared.userData.appendMemGameData(Shared.userData.getCurMemGame());     //append the MemGameData for completed game to
 
-        //TODO method to validate all data in UserData including each MemGameData
+        //insert current memGameData into database
+        MemGameDataORM.insertMemGameData(Shared.userData.getCurMemGame());
 
         //reset flags
         Shared.userData.getCurMemGame().setGameStarted(false);                  //reset the gameStarted boolean to false

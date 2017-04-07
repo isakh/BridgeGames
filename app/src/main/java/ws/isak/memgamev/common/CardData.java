@@ -9,7 +9,6 @@ import ws.isak.memgamev.R;
  * Class TileData constructs the object that comprises one tile element in a theme.  This is one
  * or more image files (pairs of images are needed for the birds theme, currently the spectrograms
  * theme will only ask users to match identical spectrograms) and an audio file.
- * TODO an audio only theme will have all cards showing the same (or no) image and only audio will play
  *
  * @author isak
  */
@@ -18,8 +17,8 @@ public class CardData
 {
     private final String TAG = "Class: CardData";
 
-    private int cardID;                     //Tile ID between 1 and the number of tiles objects in resources
-    private String speciesName;             //this string stores the species name from R.strings.species_bird_%
+    private int cardID;                     //FIXME Private Key? Tile ID between 1 and the number of tiles objects in resources
+    private String speciesName;             //this string stores the species name from R.strings.species_bird_% FIXME make dynamic?
 
     private boolean pairedImagesDiffer;     //boolean true if there is a second image in the pair
     private boolean firstImageUsed;         //switches to true when the object is accessed a second time

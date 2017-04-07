@@ -70,9 +70,10 @@ public class UserDataORM {
 
     //==================================================================================
 
-    //method recordsInDatabase returns true if there are records in the DB, otherwise, false
-    public static boolean recordsInDatabase (Context context) {
-        //Log.d (TAG, "method recordsInDatabase");
+    // method userDataRecordsInDatabase returns true if there are records in the UserDataORM table
+    // in the DB, otherwise, false
+    public static boolean userDataRecordsInDatabase (Context context) {
+        //Log.d (TAG, "method userDataRecordsInDatabase");
 
         DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
@@ -81,7 +82,7 @@ public class UserDataORM {
 
         if (database != null) {
             Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME, null);
-            Log.d(TAG, "method recordsInDatabase: Checked " + cursor.getCount() + " UserData records...");
+            Log.d(TAG, "method userDataRecordsInDatabase: Checked " + cursor.getCount() + " UserData records...");
 
             if (cursor.getCount() > 0) {
                 recordsExist = true;
@@ -92,8 +93,9 @@ public class UserDataORM {
         return recordsExist;
     }
 
-    //method numRecordsInDatabase returns true if there are records in the DB, otherwise, false
-    public static int numRecordsInDatabase (Context context) {
+    // method numUserDataRecordsInDatabase returns the number of records in the UserDataORM table
+    // in the DB, otherwise, false
+    public static int numUserDataRecordsInDatabase (Context context) {
         //Log.d (TAG, "method recordsInDatabase");
 
         DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
@@ -103,7 +105,7 @@ public class UserDataORM {
 
         if (database != null) {
             Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME, null);
-            Log.d(TAG, "method numRecordsInDatabase: There are: " + cursor.getCount() + " UserData records...");
+            Log.d(TAG, "method numUserDataRecordsInDatabase: There are: " + cursor.getCount() + " UserData records...");
 
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();
@@ -130,15 +132,15 @@ public class UserDataORM {
         if (database !=  null) {
             Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME, null);
             Log.d (TAG, "method getUserData: Loaded " + cursor.getCount() + " UserData records...");
-            if (recordsInDatabase(Shared.context)) {
-                userDataList = new ArrayList<UserData>(numRecordsInDatabase(Shared.context));
+            if (userDataRecordsInDatabase(Shared.context)) {
+                userDataList = new ArrayList<UserData>(numUserDataRecordsInDatabase(Shared.context));
                 cursor.moveToFirst();
                 int rowCount = 0;
                 while (!cursor.isAfterLast()) {
                     UserData userDataAtCursor = cursorToUserData(cursor);
                     //Check the state of all userData fields here
                     /*
-                    Log.d (TAG, "... PARSE: Database row: " + rowCount +
+                    Log.d (TAG, "... PARSE: method getUserData: Database row: " + rowCount +
                             " | userName: " + userDataAtCursor.getUserName() +
                             " | userAge: " + userDataAtCursor.getAgeRange() +
                             " | yearsTwitching: " + userDataAtCursor.getYearsTwitchingRange() +
@@ -148,7 +150,6 @@ public class UserDataORM {
                             " | hearingIsSeeing: " + userDataAtCursor.getHearingEqualsSeeing() +
                             " | usedSmartphone: " + userDataAtCursor.getHasUsedSmartphone());
                     */
-                    //TODO userData.getGames (MemGameDataORM.getGamesForUserData (context, userData));
                     userDataList.add(userDataAtCursor);
                     Log.d (TAG, "!!! userDataList.get(rowCount) userData Object @: " + userDataList.get(rowCount));
                     //move cursor to start of next row
@@ -157,19 +158,6 @@ public class UserDataORM {
                 }
                 cursor.close();
                 database.close();
-                /*
-                for (int j = 0; j < userDataList.size(); j++) {
-                    Log.d(TAG, "... RETURN: Database row: " + j +
-                            " | userName: " + userDataList.get(j).getUserName() +
-                            " | userAge: " + userDataList.get(j).getAgeRange() +
-                            " | yearsTwitching: " + userDataList.get(j).getYearsTwitchingRange() +
-                            " | speciesKnown: " + userDataList.get(j).getSpeciesKnownRange() +
-                            " | audibleRecognized: " + userDataList.get(j).getAudibleRecognizedRange() +
-                            " | interfaceExperience: " + userDataList.get(j).getInterfaceExperienceRange() +
-                            " | hearingIsSeeing: " + userDataList.get(j).getHearingEqualsSeeing() +
-                            " | usedSmartphone: " + userDataList.get(j).getHasUsedSmartphone());
-                }
-                */
             }
         }
         return  userDataList;
@@ -212,7 +200,7 @@ public class UserDataORM {
             Log.d (TAG, "method findUserDataById: Loading User: " + userNameId);
             try {
                 Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " ='" + userNameId + "'", null);
-                //FIXME - this prevent's SQL injection: Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " =?", userName);
+                //FIXME - this prevent's SQL injection: Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " =?", userNameId, null);
                 if (cursor.getCount() > 0) {
                     cursor.moveToFirst();
                     userData = cursorToUserData(cursor);

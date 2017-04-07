@@ -2,11 +2,11 @@ package ws.isak.memgamev.model;
 
 import android.util.Log;
 
-import java.util.List;
 import java.util.ArrayList;
 
 import ws.isak.memgamev.common.CardData;
 import ws.isak.memgamev.common.Music;
+import ws.isak.memgamev.common.Shared;
 
 
 /*
@@ -24,6 +24,9 @@ public class MemGameData {
     private final String TAG = "Class: MemGameData";
 
     private Game mPlayingGame;
+    //Parameters to be saved for database matching game to user
+    private long gameStartTimestamp;        //keep track of the timestamp for the start of the game - database primary key
+    private String userPlayingName;         //FIXME database foreign key?
     //Parameters to be saved for analysis:
     //defined at DifficultySelectedEvent - the following are fixed for the duration of the game
     private int themeID;                    //set/get string from selection
@@ -32,21 +35,22 @@ public class MemGameData {
     private boolean mixerState;             //keep track of mix state for each game,
     private boolean gameStarted;            //Set to Boolean false, becomes true when first card is clicked - triggers gameStarTimeStamp
     //the following respond to user input during the game
-    private long gameStartTimestamp;        //keep track of the timestamp for the start of the game  //TODO move to top? (header timestamp is unique)
-    private List <Long> gamePlayDurations;  //Time the player spent on the game so far (sum of turnDurations) at each turn (TODO can it be greater than allocated time?)
-    private List <Long> turnDurations;      //a list of durations of each turn - a turn is defined as a single click, implemented as ArrayList //TODO should we also have a measure of paired click turns?
-    private List <CardData> cardSelectedOrder;   //a list of cardData objects selected on each turn, implemented as ArrayList //TODO!!! should type be CardData, or (int) CardData.cardID - how will Database handle if CardData rather than primitive?
     private int numTurnsTakenInGame;        //Initialize number of turns in game to 0 and increment on each click.
+    private ArrayList <Long> gamePlayDurations;  //Time the player spent on the game so far (sum of turnDurations) at each turn (can it be greater than allocated time?)
+    private ArrayList <Long> turnDurations;      //a list of durations of each turn - a turn is defined as a single click, implemented as ArrayList //TODO should we also have a measure of paired click turns?
+    private ArrayList <CardData> cardSelectedOrder;   //a list of cardData object IDs selected on each turn, implemented as ArrayList
     //TODO should/could we add a array of booleans that tracks whether a match that could be made has been missed? (For now keep this in post)
 
     //constructor method describes the information that is stored about each game played
-    public MemGameData (Game currentGame) {
+    public MemGameData () {
         Log.d (TAG, "Constructor: initializing game data fields");
-        mPlayingGame = currentGame;
-        setThemeID();
-        setGameDifficulty();
-        setGameDurationAllocated(mPlayingGame.boardConfiguration.time);
-        setMixerState();
+        setUserPlayingName(Shared.userData.getUserName());
+        //setNumGamesUserPlayed(Shared.userData.sizeOfMemGameDataList());     //FIXME, should this include the current game?, do we need this? or is timestamp enough to solve game play order??
+        //
+        setThemeID(-1);
+        setGameDifficulty(-1);
+        setGameDurationAllocated(0);
+        setMixerState(false);
         //initialize to 0 or null as necessary
         setGameStarted(false);      //initialize to false on setup
         setGameStartTimestamp(0);
@@ -58,13 +62,24 @@ public class MemGameData {
     }
 
     /*
+     * The following are used for key and access when retrieving from that database
+     */
+    public void setUserPlayingName (String userName) { userPlayingName = userName; }
+
+    public String getUserPlayingName () { return userPlayingName; }
+
+    //public void setNumGamesUserPlayed (int numGames) { numGamesUserPlayed = numGames; }
+
+    //public int getNumGamesUserPlayed () { return numGamesUserPlayed;}
+    /*
      * The following are set to game specific values on setup
      */
     //[1] set/get themeID
-    public void setThemeID () {
-        //Log.d (TAG, "method setThemeID");
-        themeID = mPlayingGame.theme.themeID;
+    public void setThemeID (int theme) {
+        //Log.d (TAG, "Overloaded method setThemeID: theme: " + theme);
+        themeID = theme;
     }
+
 
     public int getThemeID () {
         //Log.d (TAG, "method getThemeID: themeId: " + themeID);
@@ -72,9 +87,9 @@ public class MemGameData {
     }
 
     //[2] set/get gameDifficulty
-    public void setGameDifficulty () {
-        //Log.d (TAG, "method setGameDifficulty");
-        difficulty = mPlayingGame.boardConfiguration.difficulty;
+    public void setGameDifficulty (int diff) {
+        //Log.d (TAG, "Overloaded method setGameDifficulty: difficulty: " + diff);
+        difficulty = diff;
     }
 
     public int getGameDifficulty () {
@@ -94,9 +109,8 @@ public class MemGameData {
     }
 
     //[4] set/get mixerState
-    public void setMixerState () {
-        //Log.d (TAG, "method setMixerState);
-        mixerState = Music.MIX;
+    public void setMixerState (boolean state) {
+        mixerState = state;
     }
 
     public boolean getMixerState () {
@@ -107,18 +121,8 @@ public class MemGameData {
     /*
      * The following are set to appropriate null values at startup
      */
-    //[1] set/get gameStarted
-    public void setGameStarted (boolean startedYet) {
-        //Log.d (TAG, "method setGameStarted");
-        gameStarted = startedYet;
-    }
 
-    public boolean isGameStarted () {
-        //Log.d (TAG, "method isGameStarted");
-        return gameStarted;
-    }
-
-    //[2] set/get gameStartTimestamp
+    //[1] set/get gameStartTimestamp - this is unique and functions as a key?
     public void setGameStartTimestamp (long gameStartTime) {
         Log.d (TAG, "method setGameStartTimestamp");
         gameStartTimestamp = gameStartTime;
@@ -127,6 +131,16 @@ public class MemGameData {
     public long getGameStartTimestamp () {
         //Log.d (TAG, "method getGameStartTimestamp");
         return gameStartTimestamp;
+    }
+    //[2] set/get gameStarted
+    public void setGameStarted (boolean startedYet) {
+        //Log.d (TAG, "method setGameStarted");
+        gameStarted = startedYet;
+    }
+
+    public boolean isGameStarted () {
+        //Log.d (TAG, "method isGameStarted");
+        return gameStarted;
     }
 
     //[3] control methods for  gamePlayDurations
@@ -147,6 +161,11 @@ public class MemGameData {
     public int sizeOfPlayDurationsArray () {
         //Log.d (TAG, "method sizeOfPlayDurationsArray");
         return gamePlayDurations.size();
+    }
+
+    public ArrayList <Long> getGamePlayDurations () {
+        //
+        return gamePlayDurations;
     }
 
     //[4] control methods for the turnsDurationArray
@@ -170,7 +189,12 @@ public class MemGameData {
         return turnDurations.size();
     }
 
-    //[4] control methods for the cardsSelectedArray
+    public ArrayList <Long> getTurnDurationsArray () {
+        //
+        return turnDurations;
+    }
+
+    //[5] control methods for the cardsSelectedArray
     private void initCardsSelectedArray () {
         //Log.d (TAG, "method initCardsSelectedOrderArray array list");
         cardSelectedOrder = new ArrayList<CardData>();
@@ -192,7 +216,7 @@ public class MemGameData {
     }
 
     //[6] set/get/increment numTurnsTaken
-    private void setNumTurnsTaken (int numTurns) {
+    public void setNumTurnsTaken (int numTurns) {
         //Log.d (TAG, "method setNumTurnsTaken: This is called on init as 0");
         numTurnsTakenInGame = numTurns;
     }

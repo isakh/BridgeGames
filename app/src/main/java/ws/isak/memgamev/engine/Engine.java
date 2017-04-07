@@ -149,7 +149,7 @@ public class Engine extends EventObserverAdapter {
 	public void onEvent(NextGameEvent event) {
 		PopupManager.closePopup();
 		int difficulty = mPlayingGame.boardConfiguration.difficulty;
-		if (mPlayingGame.gameState.achievedStars == 3 && difficulty < 6) {
+		if (mPlayingGame.gameState.achievedStars == 3 && difficulty < 3) {  //TODO set these numbers in values.xml?
 			difficulty++;
 		}
 		Shared.eventBus.notify(new DifficultySelectedEvent(difficulty));
@@ -199,14 +199,21 @@ public class Engine extends EventObserverAdapter {
         mPlayingGame.theme = mSelectedTheme;
 		mPlayingGame.boardConfiguration = new BoardConfiguration(event.difficulty, mSelectedTheme);
 		mToFlip = mPlayingGame.boardConfiguration.numTiles;
+        Shared.currentGame = mPlayingGame;
 
 		// arrange board
 		arrangeBoard();
 
         //instantiating the currentGameData object - some fields default to 0 || null
-        currentGameData = new MemGameData(mPlayingGame);
+        currentGameData = new MemGameData();
+        currentGameData.setThemeID(Shared.currentGame.theme.themeID);
+        currentGameData.setGameDifficulty(Shared.currentGame.boardConfiguration.difficulty);
+        currentGameData.setGameDurationAllocated(Shared.currentGame.boardConfiguration.time);
+        currentGameData.setMixerState(Music.MIX);
         //check setup of memGameData - these should return current states
-        Log.d (TAG, "event DifficultySelectedEvent: create currentGameData: currentGameData.getThemeID: " + currentGameData.getThemeID());
+        Log.d (TAG, "******* New MemGameData Instantiated *******");
+        Log.d (TAG, "event DifficultySelectedEvent: create currentGameData: currentGameData.getUserPlayingName : " + currentGameData.getUserPlayingName());
+        Log.d (TAG, "                                                     : currentGameData.getThemeID : " + currentGameData.getThemeID());
         Log.d (TAG, "                                                     : currentGameData.getGameDifficulty: " + currentGameData.getGameDifficulty());
         Log.d (TAG, "                                                     : currentGameData.getGameDurationAllocated: " + currentGameData.getGameDurationAllocated());
         Log.d (TAG, "                                                     : currentGameData.getMixerState : " + currentGameData.getMixerState());
@@ -395,7 +402,7 @@ public class Engine extends EventObserverAdapter {
 		}
 		else {
 			Toast.makeText(Shared.context, "Please turn on game audio to play in this mode, you can do this under settings", Toast.LENGTH_SHORT).show();
-            mScreenController.openScreen(Screen.MENU_MEM);      //FIXME do we really want to force people to play with audio?
+            mScreenController.openScreen(Screen.MENU_MEM);
 		}
 	}
 
