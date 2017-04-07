@@ -101,6 +101,11 @@ public class CardData
         }
     }
 
+    //FIXME Overloaded method call for retrieval from database
+    public void setSpeciesName (String name) {
+        speciesName = name;
+    }
+
     public String getSpeciesName () {
         try {
             //Log.d (TAG, "method getSpeciesName: return: species: " + speciesName);

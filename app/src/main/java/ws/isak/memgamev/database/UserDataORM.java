@@ -343,10 +343,10 @@ public class UserDataORM {
         values.put (COLUMN_SPECIES_KNOWN_RANGE, userData.getSpeciesKnownRange());
         values.put (COLUMN_AUDIBLE_RECOGNIZED_RANGE, userData.getAudibleRecognizedRange());
         values.put (COLUMN_INTERFACE_EXPERIENCE_RANGE, userData.getInterfaceExperienceRange());
-        if (!userData.getHearingEqualsSeeing()) { values.put (UserDataORM.COLUMN_HEARING_EQUALS_SEEING, 0);}
-        else{ values.put (UserDataORM.COLUMN_HEARING_EQUALS_SEEING, 1); }
-        if (!userData.getHasUsedSmartphone()) { values.put (UserDataORM.COLUMN_HAS_USED_SMARTPHONE, 0); }
-        else { values.put (UserDataORM.COLUMN_HAS_USED_SMARTPHONE, 1); }
+        if (!userData.getHearingEqualsSeeing()) { values.put (COLUMN_HEARING_EQUALS_SEEING, 0);}
+        else{ values.put (COLUMN_HEARING_EQUALS_SEEING, 1); }
+        if (!userData.getHasUsedSmartphone()) { values.put (COLUMN_HAS_USED_SMARTPHONE, 0); }
+        else { values.put (COLUMN_HAS_USED_SMARTPHONE, 1); }
         return values;
     }
 
