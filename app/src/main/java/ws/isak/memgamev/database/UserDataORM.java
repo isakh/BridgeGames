@@ -1,7 +1,7 @@
 package ws.isak.memgamev.database;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
 
 import android.database.sqlite.SQLiteException;
 import android.widget.Toast;
@@ -70,31 +70,107 @@ public class UserDataORM {
 
     //==================================================================================
 
-    //method getUserData fetches the full list of UserData objects in the local Database
-    public static List <UserData> getUserData (Context context) {
-        Log.d (TAG, "method getUserData returns a list of UserData objects");
+    //method recordsInDatabase returns true if there are records in the DB, otherwise, false
+    public static boolean recordsInDatabase (Context context) {
+        //Log.d (TAG, "method recordsInDatabase");
 
-        DatabaseWrapper databaseWrapper =  new DatabaseWrapper(context); //FIXME should this be Shared.databaseWrapper;
+        DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
 
-        List <UserData> userDataList = null;
+        boolean recordsExist = false;
+
+        if (database != null) {
+            Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME, null);
+            Log.d(TAG, "method recordsInDatabase: Checked " + cursor.getCount() + " UserData records...");
+
+            if (cursor.getCount() > 0) {
+                recordsExist = true;
+            }
+            cursor.close();
+        }
+        database.close();
+        return recordsExist;
+    }
+
+    //method numRecordsInDatabase returns true if there are records in the DB, otherwise, false
+    public static int numRecordsInDatabase (Context context) {
+        //Log.d (TAG, "method recordsInDatabase");
+
+        DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
+        SQLiteDatabase database = databaseWrapper.getReadableDatabase();
+
+        int numRecords = 0;
+
+        if (database != null) {
+            Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME, null);
+            Log.d(TAG, "method numRecordsInDatabase: There are: " + cursor.getCount() + " UserData records...");
+
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    numRecords++;
+                    cursor.moveToNext();
+                }
+            }
+            cursor.close();
+        }
+        database.close();
+        return numRecords;
+    }
+
+    //method getUserData fetches the full list of UserData objects in the local Database
+    public static ArrayList <UserData> getUserData (Context context) {
+        Log.d (TAG, "method getUserData returns a list of UserData objects");
+
+        DatabaseWrapper databaseWrapper =  Shared.databaseWrapper;
+        SQLiteDatabase database = databaseWrapper.getReadableDatabase();
+
+        ArrayList <UserData> userDataList = null;
 
         if (database !=  null) {
             Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME, null);
             Log.d (TAG, "method getUserData: Loaded " + cursor.getCount() + " UserData records...");
-            if (cursor.getCount() > 0) {
-                userDataList = new ArrayList<UserData>();
+            if (recordsInDatabase(Shared.context)) {
+                userDataList = new ArrayList<UserData>(numRecordsInDatabase(Shared.context));
                 cursor.moveToFirst();
+                int rowCount = 0;
                 while (!cursor.isAfterLast()) {
-                    UserData userData = cursorToUserData(cursor);
+                    UserData userDataAtCursor = cursorToUserData(cursor);
+                    //Check the state of all userData fields here
+                    /*
+                    Log.d (TAG, "... PARSE: Database row: " + rowCount +
+                            " | userName: " + userDataAtCursor.getUserName() +
+                            " | userAge: " + userDataAtCursor.getAgeRange() +
+                            " | yearsTwitching: " + userDataAtCursor.getYearsTwitchingRange() +
+                            " | speciesKnown: " + userDataAtCursor.getSpeciesKnownRange() +
+                            " | audibleRecognized: " + userDataAtCursor.getAudibleRecognizedRange() +
+                            " | interfaceExperience: " + userDataAtCursor.getInterfaceExperienceRange() +
+                            " | hearingIsSeeing: " + userDataAtCursor.getHearingEqualsSeeing() +
+                            " | usedSmartphone: " + userDataAtCursor.getHasUsedSmartphone());
+                    */
                     //TODO userData.getGames (MemGameDataORM.getGamesForUserData (context, userData));
-                    userDataList.add(userData);
+                    userDataList.add(userDataAtCursor);
+                    Log.d (TAG, "!!! userDataList.get(rowCount) userData Object @: " + userDataList.get(rowCount));
+                    //move cursor to start of next row
+                    rowCount++;
                     cursor.moveToNext();
                 }
-                Log.d (TAG, "method getUserData: UserData objects loaded successfully");
+                cursor.close();
+                database.close();
+                /*
+                for (int j = 0; j < userDataList.size(); j++) {
+                    Log.d(TAG, "... RETURN: Database row: " + j +
+                            " | userName: " + userDataList.get(j).getUserName() +
+                            " | userAge: " + userDataList.get(j).getAgeRange() +
+                            " | yearsTwitching: " + userDataList.get(j).getYearsTwitchingRange() +
+                            " | speciesKnown: " + userDataList.get(j).getSpeciesKnownRange() +
+                            " | audibleRecognized: " + userDataList.get(j).getAudibleRecognizedRange() +
+                            " | interfaceExperience: " + userDataList.get(j).getInterfaceExperienceRange() +
+                            " | hearingIsSeeing: " + userDataList.get(j).getHearingEqualsSeeing() +
+                            " | usedSmartphone: " + userDataList.get(j).getHasUsedSmartphone());
+                }
+                */
             }
-            cursor.close();
-            database.close();
         }
         return  userDataList;
     }
@@ -103,7 +179,7 @@ public class UserDataORM {
     //primary key yet in the database - used to check existence and uniqueness of login names.
     public static boolean isUserNameInDB (Context context, String userName) {
         Log.d (TAG, "method isUserNameInDB: check userName: " + userName);
-        DatabaseWrapper databaseWrapper = new DatabaseWrapper(context);
+        DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
 
         boolean userExists = false;     //false unless found in database
@@ -127,7 +203,7 @@ public class UserDataORM {
     //method findUserDataByID identifies and returns a single UserData object based on ID
     public static UserData findUserDataByID (Context context, String userNameId) {
         Log.d (TAG, "method findUserDataByID: userId: " + userNameId);
-        DatabaseWrapper databaseWrapper = new DatabaseWrapper(context);     //FIXME is this right? or above
+        DatabaseWrapper databaseWrapper = new DatabaseWrapper(context); //FIXME Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
 
         UserData userData = null;
@@ -135,7 +211,8 @@ public class UserDataORM {
         if (database != null) {
             Log.d (TAG, "method findUserDataById: Loading User: " + userNameId);
             try {
-                Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " = " + userNameId, null);
+                Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " ='" + userNameId + "'", null);
+                //FIXME - this prevent's SQL injection: Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " =?", userName);
                 if (cursor.getCount() > 0) {
                     cursor.moveToFirst();
                     userData = cursorToUserData(cursor);
@@ -148,46 +225,90 @@ public class UserDataORM {
             }
             database.close();
         }
+        //TODO REMOVE: Check the state of all userData fields here
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getUserName: " + userData.getUserName());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getAgeRange: " + userData.getAgeRange());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getYearsTwitching: " + userData.getYearsTwitchingRange());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getSpeciesKnownRange: " + userData.getSpeciesKnownRange());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getAudibleRecognized: " + userData.getAudibleRecognizedRange());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getInterfaceExperience: " + userData.getInterfaceExperienceRange());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getHearingEqualsSeeing: " + userData.getHearingEqualsSeeing());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getHasUsedSmartphone: " + userData.getHasUsedSmartphone());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
         return userData;
     }
 
     //method insertUserData inserts a new UserData object into the database if it doesn't already exist
     public static boolean insertUserData (Context context, UserData userData) {
         Log.d (TAG, "method insertUserData tries to insert a new UserData object into the database");
-        if (findUserDataByID(context, userData.getUserName()) != null) {
-            Log.d (TAG, "userData already exists in database, not inserting");
-            return updateUserData (context , userData);
-        }
-        Log.d (TAG, "method insertUserData: creating ContentValues");
-        ContentValues values = userDataToContentValues (userData);
-
-        DatabaseWrapper databaseWrapper = new DatabaseWrapper(context);
-        SQLiteDatabase database = databaseWrapper.getReadableDatabase();
 
         boolean success = false;
 
-        try {
-            if (database != null) {
-                long rowID = database.insert(TABLE_NAME, "null", values);
-                Log.d (TAG, "method insertUserData: Inserted new UserData into rowID: " + rowID);
-                // TODO iterate over GameDataORM.insertGames to set new Games in UserData? or only on update
-                success = true;
+        if (findUserDataByID(context, userData.getUserName()) == null) {
+            Log.d(TAG, "method insertUserData: creating ContentValues");
+            ContentValues values = userDataToContentValues(userData);
+
+            DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
+            SQLiteDatabase database = databaseWrapper.getReadableDatabase();
+
+            try {
+                if (database != null) {
+                    long rowID = database.insert(TABLE_NAME, "null", values);
+                    Log.d(TAG, "method insertUserData: Inserted new UserData into rowID: " + rowID);
+                    success = true;
+                }
+            } catch (SQLiteException sqlex) {
+                Log.e(TAG, "method insertUserData: Failed to insert UserData[" + userData.getUserName() + "] due to: " + sqlex);
+            } finally {
+                if (database != null) {
+                    database.close();
+                }
             }
-        } catch (SQLiteException sqlex) {
-            Log.e (TAG, "method insertUserData: Failed to insert UserData[" + userData.getUserName() + "] due to: " + sqlex);
-        } finally {
-            if (database != null) {
-                database.close();
-            }
+            return success;
         }
-        return success;
+
+        else {
+            Log.d (TAG, "userData already exists in database, instead of inserting, updating");
+            return updateUserData (context , userData);
+        }
     }
 
     //method updateUserData updates an existing UserData in the database
     public static boolean updateUserData (Context context, UserData userData) {
         Log.d (TAG, "method updateUserData: creating ContentValues");
         ContentValues values = userDataToContentValues (userData);
-        DatabaseWrapper databaseWrapper = new DatabaseWrapper(context);
+        DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
 
         boolean success = false;
@@ -195,6 +316,7 @@ public class UserDataORM {
             if (database != null) {
                 Log.d (TAG, "method updateUserData: Updating UserData[" + userData.getUserName() + "]...");
                 database.update(UserDataORM.TABLE_NAME, values, UserDataORM.COLUMN_USER_NAME_ID + " = " + userData.getUserName(), null);
+                // TODO iterate over GameDataORM.insertGames to set new Games in UserData? or only on update
                 success = true;
             }
         } catch (NullPointerException npe) {
@@ -231,24 +353,26 @@ public class UserDataORM {
     //method cursorToUserData populates a UserData object with data from the cursor
     private static UserData cursorToUserData (Cursor cursor) {
         Log.d (TAG, "method cursorToUserData");
-        UserData userData = new UserData();
+        UserData cursorAtUserData = new UserData();     //FIXME this or UserData.getInstance()
+        Log.d (TAG, "!!!!! cursorAtUserData @: " + cursorAtUserData);
 
-        userData.setUserName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME_ID)));
-        userData.setAgeRange(cursor.getString(cursor.getColumnIndex(COLUMN_AGE_RANGE)));
-        userData.setYearsTwitchingRange(cursor.getString(cursor.getColumnIndex(COLUMN_YEARS_TWITCHING_RANGE)));
-        userData.setSpeciesKnownRange(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIES_KNOWN_RANGE)));
-        userData.setAudibleRecognizedRange(cursor.getString(cursor.getColumnIndex(COLUMN_AUDIBLE_RECOGNIZED_RANGE)));
-        userData.setInterfaceExperienceRange(cursor.getString(cursor.getColumnIndex(COLUMN_INTERFACE_EXPERIENCE_RANGE)));
-        if (cursor.getInt(cursor.getColumnIndex(COLUMN_HEARING_EQUALS_SEEING)) == 1) { userData.setHearingEqualsSeeing(true); }
-        if (cursor.getInt(cursor.getColumnIndex(COLUMN_HEARING_EQUALS_SEEING)) == 0) { userData.setHearingEqualsSeeing(false); }
+        cursorAtUserData.setUserName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME_ID)));
+        cursorAtUserData.setAgeRange(cursor.getString(cursor.getColumnIndex(COLUMN_AGE_RANGE)));
+        cursorAtUserData.setYearsTwitchingRange(cursor.getString(cursor.getColumnIndex(COLUMN_YEARS_TWITCHING_RANGE)));
+        cursorAtUserData.setSpeciesKnownRange(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIES_KNOWN_RANGE)));
+        cursorAtUserData.setAudibleRecognizedRange(cursor.getString(cursor.getColumnIndex(COLUMN_AUDIBLE_RECOGNIZED_RANGE)));
+        cursorAtUserData.setInterfaceExperienceRange(cursor.getString(cursor.getColumnIndex(COLUMN_INTERFACE_EXPERIENCE_RANGE)));
+        if (cursor.getInt(cursor.getColumnIndex(COLUMN_HEARING_EQUALS_SEEING)) == 1) { cursorAtUserData.setHearingEqualsSeeing(true); }
+        else if (cursor.getInt(cursor.getColumnIndex(COLUMN_HEARING_EQUALS_SEEING)) == 0) { cursorAtUserData.setHearingEqualsSeeing(false); }
         else {
-            Log.d (TAG, "method cursorToUserData: hearingEqualsSeeing: " + cursor.getInt(cursor.getColumnIndex(COLUMN_HEARING_EQUALS_SEEING)));
+            Log.d (TAG, "ERROR: method cursorToUserData: hearingEqualsSeeing: " + cursor.getInt(cursor.getColumnIndex(COLUMN_HEARING_EQUALS_SEEING)));
         }
-        if (cursor.getInt(cursor.getColumnIndex(COLUMN_HAS_USED_SMARTPHONE)) == 1) { userData.setHasUsedSmartPhone(true); }
-        if (cursor.getInt(cursor.getColumnIndex(COLUMN_HAS_USED_SMARTPHONE)) == 0) { userData.setHasUsedSmartPhone(false); }
+        if (cursor.getInt(cursor.getColumnIndex(COLUMN_HAS_USED_SMARTPHONE)) == 1) { cursorAtUserData.setHasUsedSmartPhone(true); }
+        else if (cursor.getInt(cursor.getColumnIndex(COLUMN_HAS_USED_SMARTPHONE)) == 0) { cursorAtUserData.setHasUsedSmartPhone(false); }
         else {
-            Log.d (TAG, "method cursorToUserData: hasUsedSmartphone: " + cursor.getInt(cursor.getColumnIndex(COLUMN_HAS_USED_SMARTPHONE)));
+            Log.d (TAG, "ERROR: method cursorToUserData: hasUsedSmartphone: " + cursor.getInt(cursor.getColumnIndex(COLUMN_HAS_USED_SMARTPHONE)));
         }
-        return  userData;
+
+        return  cursorAtUserData;
     }
 }

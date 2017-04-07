@@ -200,7 +200,7 @@ public class PreSurveyFragment extends Fragment implements  View.OnClickListener
 
 
         //Load all responses to Shared.userData
-        Log.d (TAG, "******* Shared.userData @: " + Shared.userData);
+        Log.d (TAG, "*******: Shared.userData @: " + Shared.userData);
         Shared.userData.setAgeRange(ageRange);
         Shared.userData.setYearsTwitchingRange(yearsTwitchingRange);
         Shared.userData.setSpeciesKnownRange(speciesKnownRange);

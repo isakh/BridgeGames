@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.widget.ImageView;
 import android.util.Log;
-import java.util.List;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 import ws.isak.memgamev.common.Shared;
 import ws.isak.memgamev.common.UserData;
@@ -43,6 +45,8 @@ public class  MainActivity extends FragmentActivity {
 
 		Log.d (TAG, "method onCreate: setting Shared data");
         Shared.context = getApplicationContext();
+        Shared.activity = this;
+
         Shared.userData = UserData.getInstance();       //FIXME this is a place-keeper, set to specific on login
         Log.d (TAG, " *******: Shared.userData @: " + Shared.userData);
         Shared.engine = Engine.getInstance();
@@ -53,29 +57,8 @@ public class  MainActivity extends FragmentActivity {
         //instantiate a DatabaseWrapper
         DatabaseWrapper db = new DatabaseWrapper(this);
         Shared.databaseWrapper = db;
+        testLoadDatabase ();
 
-        /* The following code can be commented out once it has been used to verify the stability of
-         * the database.  TODO remove the following:
-         */
-
-        Shared.userDataList = UserDataORM.getUserData(Shared.context);
-        Log.d (TAG, "... Shared.userDataList.size(): " + Shared.userDataList.size() + " | @: " + Shared.userDataList);
-        if (Shared.userDataList != null) {
-            for (int i = 0; i < Shared.userDataList.size(); i++) {
-                Log.d(TAG, "... Database row: " + i +
-                        " | userName: " + Shared.userDataList.get(i).getUserName() +
-                        " | userAge: " + Shared.userDataList.get(i).getAgeRange() +
-                        " | yearsTwitching: " + Shared.userDataList.get(i).getYearsTwitchingRange() +
-                        " | speciesKnown: " + Shared.userDataList.get(i).getSpeciesKnownRange() +
-                        " | audibleRecognized: " + Shared.userDataList.get(i).getAudibleRecognizedRange() +
-                        " | interfaceExperience: " + Shared.userDataList.get(i).getInterfaceExperienceRange() +
-                        " | hearingIsSeeing: " + Shared.userDataList.get(i).getHearingEqualsSeeing() +
-                        " | usedSmartphone: " + Shared.userDataList.get(i).getHasUsedSmartphone());
-            }
-        }
-        /* TODO End remove */
-
-		Shared.activity = this;
 		Shared.engine.start();
 		Shared.engine.setBackgroundImageView(mBackgroundImage);
 
@@ -139,4 +122,37 @@ public class  MainActivity extends FragmentActivity {
 		bitmap = Utils.downscaleBitmap(bitmap, 2);
 		mBackgroundImage.setImageBitmap(bitmap);
 	}
+
+	//private method testLoadDatabase
+	private void testLoadDatabase () {
+        if (UserDataORM.recordsInDatabase(Shared.context)) {
+            int dbLength = UserDataORM.numRecordsInDatabase(Shared.context);
+            Shared.userDataList = new ArrayList<UserData>(dbLength);
+            while (Shared.userDataList.size() < dbLength) {
+                Shared.userDataList.add(UserData.getInstance());
+            }
+            Log.d (TAG, "**** Shared.userDataList.size(): " + Shared.userDataList.size() +
+                    " | UserDataORM.getUserData(Shared.context).size(): " + dbLength);
+            Collections.copy(Shared.userDataList, UserDataORM.getUserData(Shared.context));
+            Log.d(TAG, "... Shared.userDataList.size(): " + Shared.userDataList.size() + " | @: " + Shared.userDataList);
+            if (Shared.userDataList != null) {
+                for (int i = 0; i < Shared.userDataList.size(); i++) {
+                    Log.d(TAG, "... MAIN Database row: " + i +
+                            " | userName: " + Shared.userDataList.get(i).getUserName() +
+                            " | userAge: " + Shared.userDataList.get(i).getAgeRange() +
+                            " | yearsTwitching: " + Shared.userDataList.get(i).getYearsTwitchingRange() +
+                            " | speciesKnown: " + Shared.userDataList.get(i).getSpeciesKnownRange() +
+                            " | audibleRecognized: " + Shared.userDataList.get(i).getAudibleRecognizedRange() +
+                            " | interfaceExperience: " + Shared.userDataList.get(i).getInterfaceExperienceRange() +
+                            " | hearingIsSeeing: " + Shared.userDataList.get(i).getHearingEqualsSeeing() +
+                            " | usedSmartphone: " + Shared.userDataList.get(i).getHasUsedSmartphone());
+                }
+            }
+        }
+        else if (UserDataORM.getUserData(Shared.context) == null) {
+            //
+            Log.d (TAG, "*!*!* no UserData objects in database, please create one");
+        }
+        /* TODO End remove */
+    }
 }

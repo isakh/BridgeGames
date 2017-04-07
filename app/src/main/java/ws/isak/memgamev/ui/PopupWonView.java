@@ -215,7 +215,7 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
 
 			@Override
 			public void onTick(long millisUntilFinished) {
-                Log.d (TAG, "method animateScoreAndTime: overriding onTick: millisUntilFinished: " + millisUntilFinished);
+                //Log.d (TAG, "method animateScoreAndTime: overriding onTick: millisUntilFinished: " + millisUntilFinished);
 				float factor = millisUntilFinished / (totalAnimation * 1f); // 0.1
 				int scoreToShow = achievedScore - (int) (achievedScore * factor);
 				int timeToShow = (int) (remainingTimeInSeconds * factor);

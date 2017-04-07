@@ -6,11 +6,9 @@ import android.util.Log;
 
 import java.util.List;
 
-import ws.isak.memgamev.R;
 import ws.isak.memgamev.engine.Engine;
 import ws.isak.memgamev.events.EventBus;
 import ws.isak.memgamev.database.DatabaseWrapper;
-import ws.isak.memgamev.model.MemGameData;
 
 /*
  * Class Shared
@@ -22,7 +20,7 @@ public class Shared {
 
     public static final String TAG = "Class: Shared";
 
-	public static Context context;           //FIXME can we make these non-static?
+	public static Context context;           // FIXME can we make these non-static?
 	public static FragmentActivity activity; // TODO: move to weak reference
 	public static Engine engine;
 	public static EventBus eventBus;

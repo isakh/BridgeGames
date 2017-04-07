@@ -1,11 +1,9 @@
 package ws.isak.memgamev.common;
 
-import java.util.List;
 import java.util.ArrayList;
 
 import android.util.Log;
 
-import ws.isak.memgamev.database.UserDataORM;
 import ws.isak.memgamev.model.MemGameData;
 
 /*
@@ -29,13 +27,13 @@ public class UserData {
     //TODO private long userCreateTimeStamp;
 
     //data from pre game survey
-    private static String ageRange;
-    private static String yearsTwitchingRange;
-    private static String speciesKnownRange;
-    private static String audibleRecognizedRange;
-    private static String interfaceExperienceRange;
-    private static boolean hearingEqualsSeeing;
-    private static boolean hasUsedSmartPhone;
+    private String ageRange;
+    private String yearsTwitchingRange;
+    private String speciesKnownRange;
+    private String audibleRecognizedRange;
+    private String interfaceExperienceRange;
+    private boolean hearingEqualsSeeing;
+    private boolean hasUsedSmartPhone;
 
     //data from post game survey
     private static boolean spectrogramFamiliar;
@@ -44,16 +42,16 @@ public class UserData {
 
     //data from memory games played
     private MemGameData curMemGame;
-    private List<MemGameData> memGameDataList;
+    private ArrayList<MemGameData> memGameDataList;
 
     //data from swap games played
-    //TODO private ArrayList swapGameDataList<SwapGameData>;   this will cover when the user plays the tile swapping game
+    //TODO private List swapGameDataList<SwapGameData>;   this will cover when the user plays the tile swapping game
 
 
     // Constructor - this should be called once when a userData object instance needs to be instantiated
     // the instantiator will pass all relevant nulled values
     public UserData() {
-        Log.d(TAG, "***** CONSTRUCTOR *****");
+        //Log.d(TAG, "***** CONSTRUCTOR *****");
         //set strings to null
             //pre
         setUserName(null);

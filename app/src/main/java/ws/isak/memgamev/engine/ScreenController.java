@@ -43,7 +43,7 @@ public class ScreenController {
 	}
 
 	public static ScreenController getInstance() {
-        Log.d (TAG, "method getInstance of ScreenController");
+        //Log.d (TAG, "method getInstance of ScreenController");
 		if (mInstance == null) {
 			mInstance = new ScreenController();
 		}

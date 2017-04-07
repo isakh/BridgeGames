@@ -354,20 +354,21 @@ public class Engine extends EventObserverAdapter {
 	 * Method playTileAudio is called when a tile is turned over and the game mode involves hearing
 	 * the audio of the bird / spectrogram in question.  In order to play the correct audio, the
 	 * method takes input of:
-	 * 	@param curCard
-	 * which is the the CardData object associated with the given tile.  If the audio
+	 * 	@param tileID
+	 * which is the the integer tile ID  associated with the given tile.  If the audio
 	 * is turned off and the mode expects playback, a toast is sent to the user.
 	 */
 
 	private void playTileAudio(int tileID) {
-		Log.d (TAG, "method playTileAudio: tileID: " + tileID);
+		/*
+        Log.d (TAG, "method playTileAudio: tileID: " + tileID);
 		Log.d (TAG, "					 : curCardOnTile is: " + mPlayingGame.boardArrangement.cardObjs.get(tileID).getCardID());
 		Log.d (TAG, " 					 : curCardOnTile.getAudioURI is: " + mPlayingGame.boardArrangement.cardObjs.get(tileID).getAudioURI());
 		Log.d (TAG, " 					 : curCardOnTile.getImageURI1 is: " + mPlayingGame.boardArrangement.cardObjs.get(tileID).getImageURI1());
 		Log.d (TAG, " 					 : curCardOnTile.getPairedImageDiffer is: " + mPlayingGame.boardArrangement.cardObjs.get(tileID).getPairedImageDiffer());
 		Log.d (TAG, " 					 : curCardOnTile.getFirstImageUsed is: " + mPlayingGame.boardArrangement.cardObjs.get(tileID).getFirstImageUsed());
 		Log.d (TAG, " 					 : curCardOnTile.getImageURI2 is: " + mPlayingGame.boardArrangement.cardObjs.get(tileID).getImageURI2());
-
+        */
         if (!Music.OFF) {
             String audioResourceName = mPlayingGame.boardArrangement.cardObjs.get(tileID).getAudioURI().substring(Themes.URI_AUDIO.length());
             Log.d (TAG, "                    : audioResourceName: " + audioResourceName);
