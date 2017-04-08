@@ -38,12 +38,12 @@ public class MemGameData {
     private int numTurnsTakenInGame;        //Initialize number of turns in game to 0 and increment on each click.
     private ArrayList <Long> gamePlayDurations;  //Time the player spent on the game so far (sum of turnDurations) at each turn (can it be greater than allocated time?)
     private ArrayList <Long> turnDurations;      //a list of durations of each turn - a turn is defined as a single click, implemented as ArrayList //TODO should we also have a measure of paired click turns?
-    private ArrayList <CardData> cardSelectedOrder;   //a list of cardData object IDs selected on each turn, implemented as ArrayList
+    private ArrayList <Integer> cardSelectedOrder;   //a list of cardData object IDs selected on each turn, implemented as ArrayList
     //TODO should/could we add a array of booleans that tracks whether a match that could be made has been missed? (For now keep this in post)
 
     //constructor method describes the information that is stored about each game played
     public MemGameData () {
-        Log.d (TAG, "Constructor: initializing game data fields");
+        //Log.d (TAG, "Constructor: initializing game data fields");
         setUserPlayingName(Shared.userData.getUserName());
         //setNumGamesUserPlayed(Shared.userData.sizeOfMemGameDataList());     //FIXME, should this include the current game?, do we need this? or is timestamp enough to solve game play order??
         //
@@ -68,9 +68,6 @@ public class MemGameData {
 
     public String getUserPlayingName () { return userPlayingName; }
 
-    //public void setNumGamesUserPlayed (int numGames) { numGamesUserPlayed = numGames; }
-
-    //public int getNumGamesUserPlayed () { return numGamesUserPlayed;}
     /*
      * The following are set to game specific values on setup
      */
@@ -124,7 +121,7 @@ public class MemGameData {
 
     //[1] set/get gameStartTimestamp - this is unique and functions as a key?
     public void setGameStartTimestamp (long gameStartTime) {
-        Log.d (TAG, "method setGameStartTimestamp");
+        //Log.d (TAG, "method setGameStartTimestamp");
         gameStartTimestamp = gameStartTime;
     }
 
@@ -197,15 +194,15 @@ public class MemGameData {
     //[5] control methods for the cardsSelectedArray
     private void initCardsSelectedArray () {
         //Log.d (TAG, "method initCardsSelectedOrderArray array list");
-        cardSelectedOrder = new ArrayList<CardData>();
+        cardSelectedOrder = new ArrayList<Integer>();
     }
 
-    public void appendToCardsSelected (CardData cardToAdd) {
+    public void appendToCardsSelected (int cardId) {
         //Log.d (TAG, "method addCardToCardsSelectedArray");
-        cardSelectedOrder.add(cardToAdd);
+        cardSelectedOrder.add(cardId);
     }
 
-    public CardData queryCardsSelectedArray (int locToQuery) {
+    public int queryCardsSelectedArray (int locToQuery) {
         //Log.d (TAG, "method queryCardsSelectedArray");
         return cardSelectedOrder.get(locToQuery);
     }
@@ -213,6 +210,11 @@ public class MemGameData {
     public int sizeOfCardSelectionArray () {
         //Log.d (TAG, "method sizeOfCardSelectionArray);
         return cardSelectedOrder.size();
+    }
+
+    public ArrayList <Integer> getCardsSelectedArray () {
+        //
+        return cardSelectedOrder;
     }
 
     //[6] set/get/increment numTurnsTaken

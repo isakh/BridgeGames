@@ -10,7 +10,7 @@ public class Theme {
 	public String name;						//and each Theme has a name
 	public String backgroundImageUrl;		//this is the board background image for the theme
 	public boolean pairedImagesDiffer;		//this boolean tracks whether paired images are identical
-	public ArrayList<CardData> cardObjs;	//Theme comprises a list of card objects where each of
-											//the card objects links one or two image urls and an audio url
+	public ArrayList<CardData> cardObjs;	//Theme contains a list of card objects where each of
+											//the card objects links for all possible image urls and an audio url
 											//as well as flags for the current state of the card
 }

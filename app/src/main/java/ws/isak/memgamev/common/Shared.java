@@ -36,7 +36,10 @@ public class Shared {
     //data classes / methods
     public static UserData userData;        //This holds the current active UserData
     public static List <UserData> userDataList;
+    public static MemGameData memGameData;  //FIXME - is this necessary? we can generally access the current memGameData from userData.getCurMemGameData()
     public static List <MemGameData> memGameDataList;
+    public static CardData cardData;        //placeholder cardData for return from database call
+    public static List <CardData> cardDataList;
     
     public static void setUserData (UserData user) {
         Log.d (TAG, "method setUserData");

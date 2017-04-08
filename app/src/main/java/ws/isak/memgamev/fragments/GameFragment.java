@@ -18,7 +18,6 @@ import ws.isak.memgamev.events.engine.FlipDownCardsEvent;
 import ws.isak.memgamev.events.engine.GameWonEvent;
 import ws.isak.memgamev.events.engine.HidePairCardsEvent;
 import ws.isak.memgamev.model.Game;
-import ws.isak.memgamev.model.MemGameData;
 import ws.isak.memgamev.ui.BoardView;
 import ws.isak.memgamev.ui.PopupManager;
 import ws.isak.memgamev.utils.Clock;
@@ -124,15 +123,18 @@ public class GameFragment extends BaseFragment {
             if (i < 10) {
                 Log.d(TAG, "*****| Turn: 0" + i + " | Turn Time: " + Shared.userData.getCurMemGame().queryTurnDurationsArray(i) +
                         " | Play Duration: " + Shared.userData.getCurMemGame().queryGamePlayDurations(i) +
-                        " | CardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i).getCardID());
+                        " | CardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i));
+                        //" | Species on Card: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i).getSpeciesName());
             } else {
                 Log.d(TAG, "*****| Turn: " + i + " | Turn Time: " + Shared.userData.getCurMemGame().queryTurnDurationsArray(i) +
                         " | Play Duration: " + Shared.userData.getCurMemGame().queryGamePlayDurations(i) +
-                        " | CardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i).getCardID());
+                        " | CardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i));
+                        //" | Species on Card: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i).getSpeciesName());
             }
         }
 
-        //TODO this can be removed once validated
+        /*
+        //this can be removed once validated
         Log.d (TAG, "... Shared.curMemGameData: themeID: " + Shared.userData.getCurMemGame().getThemeID() +
                 " | difficulty selected: " + Shared.userData.getCurMemGame().getGameDifficulty() +
                 " | gameDurationAllocated: " + Shared.userData.getCurMemGame().getGameDurationAllocated() +
@@ -143,13 +145,16 @@ public class GameFragment extends BaseFragment {
                 " | numTurnDurationsRecorded: " + Shared.userData.getCurMemGame().sizeOfTurnDurationsArray() +
                 " | numCardsSelectionsRecorded: " + Shared.userData.getCurMemGame().sizeOfCardSelectionArray() +
                 " | numTurnsTaken:  " + Shared.userData.getCurMemGame().getNumTurnsTaken());
+        //TODO validation block doesn't include information from playDurationArray
         for (int i = 0; i < Shared.userData.getCurMemGame().sizeOfTurnDurationsArray(); i++ ) {
             Log.d(TAG, "... turnDurations[" + i + "] : " + Shared.userData.getCurMemGame().queryTurnDurationsArray(i));
         }
         for (int i = 0; i < Shared.userData.getCurMemGame().sizeOfCardSelectionArray(); i++ ) {
-            Log.d(TAG, "... cardSelections[" + i + "].getCardId(): " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i).getCardID());
+            Log.d(TAG, "... cardSelections[" + i + "].getCardId(): " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i));
         }
-        //TODO end validation block
+        //end validation block
+        */
+
         //append MemGameData to userData array
         Shared.userData.appendMemGameData(Shared.userData.getCurMemGame());     //append the MemGameData for completed game to
 
@@ -159,7 +164,7 @@ public class GameFragment extends BaseFragment {
         //reset flags
         Shared.userData.getCurMemGame().setGameStarted(false);                  //reset the gameStarted boolean to false
         //null the pointer to curMemGame once it has been appended to the UserData array
-        Shared.userData.setCurMemGame(null);          //FIXME!!! Does this help clear? or unnecessary
+        Shared.userData.setCurMemGame(null);
 		mTime.setVisibility(View.GONE);
 		mTimeImage.setVisibility(View.GONE);
 		PopupManager.showPopupWon(event.gameState);

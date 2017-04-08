@@ -66,7 +66,7 @@ public class BoardConfiguration {
         long cumulativeTime = (long) difficultyBaseline;
         for (int i = 0; i < numTiles/2; i++) {
             //Log.d (TAG, "method CalculateGameDuration: theme.cardObjs.get(i).getCardId(): " + theme.cardObjs.get(i).getCardID());
-            long curCardDur = theme.cardObjs.get(i).getSampleDuration();
+            long curCardDur = Shared.cardDataList.get(i).getSampleDuration();       //FIXME !!!!!!!!!! WAS theme.cardObjs instead of Shared.cardDataList, if this works we can get rid of field in Theme
             //Log.d (TAG, "                            : theme.cardObjs.get(i).getSampleDuration(): " + theme.cardObjs.get(i).getSampleDuration());
             cumulativeTime = cumulativeTime + (2 * curCardDur);
             //Log.d (TAG, "                            : cumulativeTime: " + cumulativeTime);

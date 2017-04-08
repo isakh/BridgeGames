@@ -263,10 +263,10 @@ public class Engine extends EventObserverAdapter {
 				// and ensure that the mapping is bi-directional
 				boardArrangement.pairs.put(tileIDs.get(i + 1), tileIDs.get(i));
 				// map each of the paired tile IDs to the same card object ID
-				boardArrangement.cardObjs.put(tileIDs.get(i), mSelectedTheme.cardObjs.get(j));
-				boardArrangement.cardObjs.put(tileIDs.get(i + 1), mSelectedTheme.cardObjs.get(j));
+				boardArrangement.cardObjs.put(tileIDs.get(i), Shared.cardDataList.get(j));
+				boardArrangement.cardObjs.put(tileIDs.get(i + 1), Shared.cardDataList.get(j));
 				//debug report: state of tile id's paired on board, and card id for the tile pair
-				Log.d (TAG, "method arrangeBoard: Map Tile Pairs: Tile id1: " + tileIDs.get(i) + " |  Tile id2: " + tileIDs.get(i + 1) + " | Mapped Card id: " + mSelectedTheme.cardObjs.get(j).getCardID());
+				Log.d (TAG, "method arrangeBoard: Map Tile Pairs: Tile id1: " + tileIDs.get(i) + " |  Tile id2: " + tileIDs.get(i + 1) + " | Mapped Card id: " + Shared.cardDataList.get(j).getCardID());
 				//Log.d (TAG, "method arrangeBoard: Mapping cardObjs to IDs: ID is: " + tileIDs.get(i) + " | Card Object ID is: " + mSelectedTheme.cardObjs.get(j).getCardID());
 				//Log.d (TAG, "method arrangeBoard: 		Card Object Image URI 1 is : " + mSelectedTheme.cardObjs.get(j).getImageURI1());
 				//Log.d (TAG, "method arrangeBoard: 		Card Object Image URI 2 is : " + mSelectedTheme.cardObjs.get(j).getImageURI2());

@@ -7,10 +7,15 @@ import android.widget.ImageView;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Collections;
+import java.util.Locale;
 
+import ws.isak.memgamev.common.CardData;
+import ws.isak.memgamev.common.Music;
 import ws.isak.memgamev.common.Shared;
 import ws.isak.memgamev.common.UserData;
+import ws.isak.memgamev.database.CardDataORM;
 import ws.isak.memgamev.database.MemGameDataORM;
 import ws.isak.memgamev.engine.Engine;
 import ws.isak.memgamev.engine.ScreenController;
@@ -34,7 +39,11 @@ import ws.isak.memgamev.database.UserDataORM;
 
 public class  MainActivity extends FragmentActivity {
 
-    public static final String TAG = "Class: MainActivity";
+    private static final String TAG = "Class: MainActivity";
+
+    private static String URI_AUDIO = "raw://";
+    private static String URI_DRAWABLE = "drawable://";
+
     private ImageView mBackgroundImage;
 
 
@@ -49,12 +58,12 @@ public class  MainActivity extends FragmentActivity {
         Shared.context = getApplicationContext();
         Shared.activity = this;
 
-        Shared.userData = UserData.getInstance();       //FIXME this is a place-keeper, set to specific on login
-        Log.d(TAG, " *******: Shared.userData @: " + Shared.userData);
+        Shared.userData = UserData.getInstance();
+        //Log.d(TAG, " *******: Shared.userData @: " + Shared.userData);
         Shared.engine = Engine.getInstance();
-        Log.d(TAG, " *******: Shared.engine @: " + Shared.engine);
+        //Log.d(TAG, " *******: Shared.engine @: " + Shared.engine);
         Shared.eventBus = EventBus.getInstance();
-        Log.d(TAG, " *******: Shared.eventBus @: " + Shared.eventBus);
+        //Log.d(TAG, " *******: Shared.eventBus @: " + Shared.eventBus);
 
         //instantiate a DatabaseWrapper
         DatabaseWrapper db = new DatabaseWrapper(this);
@@ -63,6 +72,10 @@ public class  MainActivity extends FragmentActivity {
 
         Shared.engine.start();
         Shared.engine.setBackgroundImageView(mBackgroundImage);
+
+        //build the list of CardData objects based on resources
+        // TODO can this become dynamic if I can load variable resources?
+        buildCardDataList();
 
         // set background
         setBackgroundImage();
@@ -117,6 +130,28 @@ public class  MainActivity extends FragmentActivity {
         }
     }
 
+    //build the cardData list in for access by themes
+    private void buildCardDataList () {
+        Shared.cardDataList = new ArrayList<CardData>();
+
+        for (int i = 1; i <= 10; i++) {                             //FIXME - make this constant into a variable
+            CardData curCard = new CardData();
+            curCard.setCardID(i);
+            curCard.setSpeciesName(curCard.getCardID());
+            curCard.setPairedImageDiffer(false);
+            curCard.setFirstImageUsed(false);
+            curCard.setImageURI0(URI_DRAWABLE + "blank_card");
+            curCard.setImageURI1(URI_DRAWABLE + String.format(Locale.ENGLISH, "bird_%d", i) + "a");
+            curCard.setImageURI2(URI_DRAWABLE + String.format(Locale.ENGLISH, "bird_%d", i) + "b");
+            curCard.setImageURI3(URI_DRAWABLE + String.format("spectrogram_%d", i));
+            curCard.setAudioURI(URI_AUDIO + String.format("example%d", i));
+            curCard.setSampleDuration(Music.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
+            //insert cardData object into Database and local storage
+            Shared.cardDataList.add(curCard);
+            CardDataORM.insertCardData(curCard);
+        }
+    }
+
     private void setBackgroundImage() {
         Log.d(TAG, "method setBackgroundImage");
         Bitmap bitmap = Utils.scaleDown(R.drawable.background, Utils.screenWidth(), Utils.screenHeight());
@@ -127,7 +162,7 @@ public class  MainActivity extends FragmentActivity {
 
 
     //private methods check that the ORM's have correctly populated the  shared data records of prior
-    //users and their games from the database TODO and card information?
+    //users and their games from the database with a cardData for each
 
     private void loadDatabase() {
         if (UserDataORM.userDataRecordsInDatabase(Shared.context)) {
@@ -187,14 +222,14 @@ public class  MainActivity extends FragmentActivity {
                             Log.d(TAG, " ... MAIN: GAME ARRAYS in MemGame Table, " + j +
                                     " | current array element i: " + j +
                                     " | gamePlayDuration(i): " + Shared.memGameDataList.get(i).queryGamePlayDurations(j) +
-                                    " | turnDurations(i): " + Shared.memGameDataList.get(i).queryTurnDurationsArray(j));
-                            //" | cardSelectedOrder: " + memGameDataAtCursor. +) //TODO add cardSelectedOrder
+                                    " | turnDurations(i): " + Shared.memGameDataList.get(i).queryTurnDurationsArray(j) +
+                                    " | cardsSelected(i): " + Shared.memGameDataList.get(i).queryCardsSelectedArray(j));
+                            loadCardSelectedData (Shared.memGameDataList.get(i).queryCardsSelectedArray(j));
                         }
                     } else {
-                        //TODO extend to compare with cardObjects array size as well
                         Log.d(TAG, " ***** ERROR! Size of play durations and turn durations not returned as equal");
                     }
-                    Shared.userData.appendMemGameData(Shared.memGameDataList.get(i));       //FIXME - is this how to add for testing?
+                    Shared.userData.appendMemGameData(Shared.memGameDataList.get(i));
                 }
             } else if (MemGameDataORM.getMemGameData(userData.getUserName()) == null) {
                 //
@@ -202,5 +237,35 @@ public class  MainActivity extends FragmentActivity {
             }
         }
     }
-}
 
+    //this should print out the information associated with the cardData object with id cardID
+    private void loadCardSelectedData (int cardID) {
+        if (CardDataORM.cardDataRecordsInDatabase(Shared.context)) {
+            int dbLength = CardDataORM.numCardDataRecordsInDatabase(Shared.context);
+            Shared.cardDataList = new ArrayList<CardData>(dbLength);
+            while (Shared.cardDataList.size() < dbLength) {
+                Shared.cardDataList.add(new CardData());
+            }
+            //Log.d(TAG, "**** Shared.cardDataList.size(): " + Shared.cardDataList.size() +
+            //           " | CardDataORM.getCardData(Shared.context).size(): " + dbLength);
+            Shared.cardData = CardDataORM.getCardData(cardID);
+            //Log.d(TAG, "... Shared.cardDataList.size(): " + Shared.cardDataList.size() + " | @: " + Shared.cardDataList);
+            if (Shared.cardDataList != null) {
+                Log.d (TAG, "... PARSE: CardData table: Database row: " + i +
+                        " | cardID: " + Shared.cardData.getCardID() +
+                        " | speciesName: " + Shared.cardData.getSpeciesName() +
+                        " | pairedImagesDiffer: " + Shared.cardData.getPairedImageDiffer() +
+                        " | firstImageUsed: " + Shared.cardData.getFirstImageUsed() +
+                        " | imageURI0: " + Shared.cardData.getImageURI0() +
+                        " | imageURI1: " + Shared.cardData.getImageURI1() +
+                        " | imageURI2: " + Shared.cardData.getImageURI2() +
+                        " | imageURI3: " + Shared.cardData.getImageURI3() +
+                        " | audioURI: " + Shared.cardData.getAudioURI() +
+                        " | sampleDuration: "+ Shared.cardData.getSampleDuration());
+            } else if (CardDataORM.getCardData(cardID) == null) {
+                //
+                Log.d(TAG, "*!*!* no CardData object for cardID: " + cardID);
+            }
+        }
+    }
+}

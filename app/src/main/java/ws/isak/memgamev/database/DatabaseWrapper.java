@@ -7,6 +7,7 @@ import android.util.Log;
 
 import java.io.File;
 
+import ws.isak.memgamev.common.CardData;
 import ws.isak.memgamev.common.Shared;
 
 
@@ -35,7 +36,11 @@ public class DatabaseWrapper extends SQLiteOpenHelper {
         Log.d (TAG, "method onCreate: Creating Database [" + Shared.DATABASE_NAME + " v." + DATABASE_VERSION + "]...");
         //create the database
         sqliteDB.execSQL(UserDataORM.SQL_CREATE_TABLE);
+        Log.d (TAG, "created UserData table");
         sqliteDB.execSQL(MemGameDataORM.SQL_CREATE_TABLE);
+        Log.d (TAG, "created MemGameData table");
+        sqliteDB.execSQL(CardDataORM.SQL_CREATE_TABLE);
+        Log.d (TAG, "created CardData table");
         Log.d (TAG, "method onCreate: check doesDatabaseExist: " + doesDatabaseExist(Shared.context));
     }
 
@@ -46,6 +51,7 @@ public class DatabaseWrapper extends SQLiteOpenHelper {
         Log.d (TAG, "Upgrading Database [" + Shared.DATABASE_NAME + " v." + oldVersion + "] to [" + Shared.DATABASE_NAME + " v." + newVersion);
         sqliteDB.execSQL(UserDataORM.SQL_DROP_TABLE);
         sqliteDB.execSQL(MemGameDataORM.SQL_DROP_TABLE);
+        sqliteDB.execSQL(CardDataORM.SQL_DROP_TABLE);
         onCreate(sqliteDB);
     }
 

@@ -278,6 +278,7 @@ public class UserDataORM {
                 }
             } catch (SQLiteException sqlex) {
                 Log.e(TAG, "method insertUserData: Failed to insert UserData[" + userData.getUserName() + "] due to: " + sqlex);
+                sqlex.printStackTrace();
             } finally {
                 if (database != null) {
                     database.close();

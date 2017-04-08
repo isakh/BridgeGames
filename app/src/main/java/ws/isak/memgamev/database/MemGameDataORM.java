@@ -86,7 +86,7 @@ public class MemGameDataORM {
     // method recordsInDatabase returns true if there are records of type MemGameData
     // in the DB, otherwise, false
     public static boolean memGameRecordsInDatabase (Context context) {
-        //Log.d (TAG, "method recordsInDatabase");
+        //Log.d (TAG, "method memGameRecordsInDatabase");
 
         DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
@@ -94,7 +94,7 @@ public class MemGameDataORM {
         boolean recordsExist = false;
 
         if (database != null) {
-            Cursor cursor = database.rawQuery("SELECT * FROM " + MemGameDataORM.TABLE_NAME, null);
+            Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME, null);     //FIXME was MemGameDataORM.TABLE_NAME
             Log.d(TAG, "method recordsInDatabase: Checked " + cursor.getCount() + " MemGameData records...");
 
             if (cursor.getCount() > 0) {
@@ -172,8 +172,8 @@ public class MemGameDataORM {
                         Log.d(TAG, " ... PARSE ARRAYS in Database row " + rowCount +
                                 " | current array element i: " + i +
                                 " | gamePlayDuration(i): " + memGameDataAtCursor.queryGamePlayDurations(i) +
-                                " | turnDurations(i): " + memGameDataAtCursor.queryTurnDurationsArray(i));
-                        //" | cardSelectedOrder: " + memGameDataAtCursor. +) //TODO add cardSelectedOrder
+                                " | turnDurations(i): " + memGameDataAtCursor.queryTurnDurationsArray(i) +
+                                " | cardSelectedOrder: " + memGameDataAtCursor.queryCardsSelectedArray(i));
                     }
                     memGameDataList.add(memGameDataAtCursor);
                     Log.d (TAG, "!!! userDataList.get(rowCount) userData Object @: " + memGameDataList.get(rowCount));
@@ -208,6 +208,7 @@ public class MemGameDataORM {
             }
         } catch (SQLiteException sqlex) {
             Log.e(TAG, "method insertMemGameData: Failed to insert MemGameData[" + memGameData.getGameStartTimestamp() + "] due to: " + sqlex);
+            sqlex.printStackTrace();
         } finally {
             if (database != null) {
                 database.close();
@@ -247,7 +248,14 @@ public class MemGameDataORM {
         }
         values.put (COLUMN_TURN_DURATIONS, turnDurationsString.toString());
 
-        //values.put (COLUMN_CARD_SELECTED_ORDER, "WHAT GOES HERE");      //TODO SOLVE SERIALIZATION? OR OTHERWISE LINK TO TABLE??
+        StringBuilder cardSelectionOrderString = new StringBuilder();
+        for (Integer elementInCardSelectionOrderArrayList : memGameData.getCardsSelectedArray()) {
+            //Log.d (TAG, "*******: method memGameDataToContentValues: iterating on memGameData.getCardsSelectedArray: elementInCardSelectionOrderArrayList: " + elementInCardSelectionOrderArrayList);
+            cardSelectionOrderString.append(elementInCardSelectionOrderArrayList);
+            cardSelectionOrderString.append(DELIMITER);
+        }
+        Log.d (TAG, "******** setting cardSelectionOrderString: " + cardSelectionOrderString);
+        values.put (COLUMN_CARD_SELECTED_ORDER, cardSelectionOrderString.toString());
 
         values.put (COLUMN_NUM_TURNS_TAKEN_IN_GAME, memGameData.getNumTurnsTaken());
         return values;
@@ -280,10 +288,14 @@ public class MemGameDataORM {
         for (String s : gamePlayDurationsString.split(DELIMITER)) cursorAtMemGameData.appendToGamePlayDurations(Long.valueOf(s));
 
         String turnDurationsString = cursor.getString(cursor.getColumnIndex(COLUMN_TURN_DURATIONS));
+        //Log.d (TAG, "******** method cursorToMemGameData: turnDurationsString: " + turnDurationsString);
         for (String s : turnDurationsString.split(DELIMITER)) cursorAtMemGameData.appendToTurnDurations(Long.valueOf(s));
 
-        //TODO figure out how to pull back in Lists for COLUMN_CARD_SELECTED_ORDER
-
+        String cardSelectionOrderString = cursor.getString(cursor.getColumnIndex(COLUMN_CARD_SELECTED_ORDER));
+        Log.d (TAG, "******** method cursorToMemGameData: cardSelectionOrderString: " + cardSelectionOrderString);
+        for (String s : cardSelectionOrderString.split(DELIMITER)) {
+            cursorAtMemGameData.appendToCardsSelected(Integer.valueOf(s));
+        }
         cursorAtMemGameData.setNumTurnsTaken(cursor.getInt(cursor.getColumnIndex(COLUMN_NUM_TURNS_TAKEN_IN_GAME)));
         return  cursorAtMemGameData;
     }

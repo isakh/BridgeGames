@@ -29,11 +29,12 @@ public class BoardArrangement {
 
 	/**
 	 * Method getTileBitmap returns a bitmap from a URI associated with a card ID and the settings of
-	 * flags which check whether we want the first or second image associated with the card.
+	 * flags which check whether we want the first or second image associated with the card based on
+     * the current theme being played.
 	 *
 	 * @param curTileID
 	 *            The id is the number between 0 and number of possible cards of
-	 *            this theme i.e. 6 for beginner, 8 for intermediate, & 9 for advanced (i.e. tiles/2)
+	 *            this theme i.e. 6 for beginner, 8 for intermediate, & 10 for advanced (i.e. tiles/2)
 	 *            FIXME : note if these are to change they must be even
 	 * @return A Bitmap from the card to be placed on the tile
 	 */
@@ -48,13 +49,32 @@ public class BoardArrangement {
 		Log.d (TAG, "                    : cardOnTile id: " + cardOnTile.getCardID());
 		Log.d (TAG, "					 : cardOnTile.getPairedImagedDiffer: " + cardOnTile.getPairedImageDiffer());
 		Log.d (TAG, " 					 : cardOnTile.getFirstImageUsed: " + cardOnTile.getFirstImageUsed());
-		if (cardOnTile.getPairedImageDiffer() && cardOnTile.getFirstImageUsed()) {
-			imageUri = cardOnTile.getImageURI2();
-		}
-		else {
-			imageUri = cardOnTile.getImageURI1();
-			cardOnTile.setFirstImageUsed(true);
-		}
+
+        switch (Shared.userData.getCurMemGame().getThemeID()) {
+            case 0:                                                                         //Theme is blank
+                Log.d (TAG, "method getTileBitmap: switch themeID: " + Shared.userData.getCurMemGame().getThemeID());
+                imageUri = cardOnTile.getImageURI0();
+                break;
+            case 1:                                                                         //Theme is birds
+                if (cardOnTile.getPairedImageDiffer() && cardOnTile.getFirstImageUsed()) {  //first card used
+                    Log.d (TAG, "method getTileBitmap: switch themeID: " + Shared.userData.getCurMemGame().getThemeID() +
+                            " pairedImagesDiffer: " + cardOnTile.getPairedImageDiffer() +
+                            " firstImageUsed: " + cardOnTile.getFirstImageUsed());
+                    imageUri = cardOnTile.getImageURI2();
+                }
+                else {
+                    Log.d (TAG, "method getTileBitmap: switch themeID: " + Shared.userData.getCurMemGame().getThemeID() +
+                            " pairedImagesDiffer: " + cardOnTile.getPairedImageDiffer() +
+                            " firstImageUsed: " + cardOnTile.getFirstImageUsed());
+                    imageUri = cardOnTile.getImageURI1();                                   //use second card
+                    cardOnTile.setFirstImageUsed(true);
+                }
+                break;
+            case 2:                                                                         //Theme is spectrograms
+                Log.d (TAG, "method getTileBitmap: switch themeID: " + Shared.userData.getCurMemGame().getThemeID());
+                imageUri = cardOnTile.getImageURI3();
+                break;
+        }
 		Log.d (TAG, "					 : imageURI: " + imageUri);
 		//Log.d (TAG, "					 : Themes.URI_DRAWABLE: " + Themes.URI_DRAWABLE);
 		if (imageUri.contains(Themes.URI_DRAWABLE)) {

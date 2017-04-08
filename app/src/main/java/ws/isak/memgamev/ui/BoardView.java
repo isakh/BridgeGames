@@ -218,8 +218,8 @@ public class BoardView extends LinearLayout {
                                 " | elapsed turn time: " + (Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken()) - Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken() - 1)));
                     }
                     //  - append the clicked card to array
-                    Shared.userData.getCurMemGame().appendToCardsSelected(mBoardArrangement.cardObjs.get(curTileOnBoard));
-                    Log.d (TAG, "   ***: cardObjArray[numTurnsTaken].cardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(Shared.userData.getCurMemGame().getNumTurnsTaken()).getCardID());
+                    Shared.userData.getCurMemGame().appendToCardsSelected(mBoardArrangement.cardObjs.get(curTileOnBoard).getCardID());
+                    Log.d (TAG, "   ***: method addTile:  appended to cards selected array: cardObjArray[numTurnsTaken].cardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(Shared.userData.getCurMemGame().getNumTurnsTaken()));
                     //  - update the number of turns taken
                     Shared.userData.getCurMemGame().incrementNumTurnsTaken();
                     Log.d (TAG, "   ***: numTurnsTaken postIncrement: " + Shared.userData.getCurMemGame().getNumTurnsTaken());
