@@ -44,7 +44,7 @@
         android:layout_marginTop="@dimen/swap_menu_fragment_title_margin_top"
         android:adjustViewBounds="true"
         android:scaleType="centerCrop"
-        android:src="@drawable/match_menu_title" />     <!-- TODO either generate image swap_menu_title or make both text instead of images -->
+        android:src="@drawable/swap_menu_title" />     <!-- TODO either generate image swap_menu_title or make both text instead of images -->
 
     <ImageView
         android:id="@+id/swap_menu_tooltip"
