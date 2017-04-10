@@ -12,6 +12,7 @@ import ws.isak.memgamev.events.ui.MatchNextGameEvent;
 import ws.isak.memgamev.events.ui.MatchResetBackgroundEvent;
 import ws.isak.memgamev.events.ui.MatchStartEvent;
 import ws.isak.memgamev.events.ui.MatchThemeSelectedEvent;
+import ws.isak.memgamev.events.ui.SwapStartEvent;
 
 
 /*
@@ -32,6 +33,8 @@ public interface EventObserver {
 	void onEvent(MatchFlipDownCardsEvent event);
 
 	void onEvent(MatchStartEvent event);
+
+    void onEvent(SwapStartEvent event);
 
 	void onEvent(MatchThemeSelectedEvent event);
 

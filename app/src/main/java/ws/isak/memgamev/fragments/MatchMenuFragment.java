@@ -24,11 +24,12 @@ import ws.isak.memgamev.ui.PopupManager;
 import ws.isak.memgamev.utils.Utils;
 
 /*
- Class MatchMenuFragment sets up the fragment that greets the user FIXME the first time the app is opened.  It
- contains the title, start game button/lights/tooltip and the settings button and includes the methods
- for animating them.  When this fragment is open, the background music is playing.
-
- @author isak
+ * Class MatchMenuFragment sets up the fragment that allows the user to either choose settings for
+ * the matching game, or to launch the difficulty selection fragment prior to starting game play.  It
+ * contains the match_menu_title, start game button/lights/tooltip and the settings button and includes the methods
+ * for animating them.  When this fragment is open, the background music is playing.
+ *
+ * @author isak
  */
 
 public class MatchMenuFragment extends Fragment {
@@ -44,25 +45,25 @@ public class MatchMenuFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.match_menu_fragment, container, false);
-		mTitle = (ImageView) view.findViewById(R.id.title);
-		mStartGameButton = (ImageView) view.findViewById(R.id.start_game_button);
-		mSettingsGameButton = (ImageView) view.findViewById(R.id.settings_game_button);
+		mTitle = (ImageView) view.findViewById(R.id.match_menu_title);
+		mStartGameButton = (ImageView) view.findViewById(R.id.start_match_game_button);
+		mSettingsGameButton = (ImageView) view.findViewById(R.id.settings_match_game_button);
 		mSettingsGameButton.setSoundEffectsEnabled(false);
 		mSettingsGameButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
                 Log.d (TAG, "method onCreateView: mSettingsGameButton: onClick");
-				PopupManager.showPopupSettings();
+				PopupManager.showMatchPopupSettings();
 			}
 		});
-		mStartButtonLights = (ImageView) view.findViewById(R.id.start_game_button_lights);
-		mTooltip = (ImageView) view.findViewById(R.id.tooltip);
+		mStartButtonLights = (ImageView) view.findViewById(R.id.start_match_game_button_lights);
+		mTooltip = (ImageView) view.findViewById(R.id.match_menu_tooltip);
 		mStartGameButton.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
                 Log.d (TAG, "method onCreateView: mStartGameButton: onClick");
-                // animate title from place and navigation buttons from place
+                // animate match_menu_title from place and navigation buttons from place
 				animateAllAssetsOff(new AnimatorListenerAdapter() {
 					@Override
 					public void onAnimationEnd(Animator animation) {
@@ -82,7 +83,7 @@ public class MatchMenuFragment extends Fragment {
 	}
 
 	protected void animateAllAssetsOff(AnimatorListenerAdapter adapter) {
-		// title
+		// match_menu_title
 		// 120dp + 50dp + buffer(30dp)
 		ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTitle, "translationY", Utils.px(-200));  //TODO constant to variable
 		titleAnimator.setInterpolator(new AccelerateInterpolator(2));

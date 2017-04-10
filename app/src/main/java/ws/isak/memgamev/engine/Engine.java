@@ -31,6 +31,7 @@ import ws.isak.memgamev.events.ui.MatchDifficultySelectedEvent;
 import ws.isak.memgamev.events.ui.MatchNextGameEvent;
 import ws.isak.memgamev.events.ui.MatchResetBackgroundEvent;
 import ws.isak.memgamev.events.ui.MatchThemeSelectedEvent;
+import ws.isak.memgamev.events.ui.SwapStartEvent;
 import ws.isak.memgamev.model.MatchBoardConfiguration;
 import ws.isak.memgamev.model.MatchGame;
 import ws.isak.memgamev.model.MatchBoardArrangement;
@@ -139,10 +140,18 @@ public class Engine extends EventObserverAdapter {
 
 	@Override
 	public void onEvent(MatchStartEvent event) {
-        Log.d (TAG, "override onEvent for MatchStartEvent: calling screen controller to open THEME_SELECT screen");
+        Log.d (TAG, "override onEvent for MatchStartEvent: calling screen controller to open THEME_SELECT_MATCH screen");
         PopupManager.closePopup();
-		mScreenController.openScreen(Screen.THEME_SELECT);
+		mScreenController.openScreen(Screen.THEME_SELECT_MATCH);
 	}
+
+	@Override
+    public void onEvent (SwapStartEvent event) {
+        Log.d (TAG, "override inEvent for SwapStarEvent: Calling screen controller to open DIFFICULTY_SWAP");
+        PopupManager.closePopup();
+        //FIXME!!! mScreenController.openScreen(Screen.DIFFICULTY_SWAP);
+        mScreenController.openScreen(Screen.FINISHED);      //TODO - this is just for debugging
+    }
 
 	@Override
 	public void onEvent(MatchNextGameEvent event) {

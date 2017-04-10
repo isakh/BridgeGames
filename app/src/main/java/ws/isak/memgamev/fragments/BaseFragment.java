@@ -17,6 +17,7 @@ import ws.isak.memgamev.events.ui.MatchNextGameEvent;
 import ws.isak.memgamev.events.ui.MatchResetBackgroundEvent;
 import ws.isak.memgamev.events.ui.MatchThemeSelectedEvent;
 import ws.isak.memgamev.events.ui.MatchStartEvent;
+import ws.isak.memgamev.events.ui.SwapStartEvent;
 
 /*
  * Class BaseFragment defines the core of each fragment behavior when an event occurs
@@ -57,6 +58,12 @@ public class BaseFragment extends Fragment implements EventObserver {
         //Log.d (TAG, "");
         throw new UnsupportedOperationException();
 	}
+
+    @Override
+    public void onEvent(SwapStartEvent event) {
+        //Log.d (TAG, "");
+        throw new UnsupportedOperationException();
+    }
 
 	@Override
 	public void onEvent(MatchThemeSelectedEvent event) {

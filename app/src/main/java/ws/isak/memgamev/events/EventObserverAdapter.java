@@ -14,6 +14,7 @@ import ws.isak.memgamev.events.ui.MatchNextGameEvent;
 import ws.isak.memgamev.events.ui.MatchResetBackgroundEvent;
 import ws.isak.memgamev.events.ui.MatchThemeSelectedEvent;
 import ws.isak.memgamev.events.ui.MatchStartEvent;
+import ws.isak.memgamev.events.ui.SwapStartEvent;
 
 /*
  * Class EventObserverAdapter defines the behavior of each eventObserver onEvent method
@@ -55,6 +56,12 @@ public class EventObserverAdapter implements EventObserver {
         //Log.d (TAG, "");
         throw new UnsupportedOperationException();
 	}
+
+    @Override
+    public void onEvent(SwapStartEvent event) {
+        //Log.d (TAG, "");
+        throw new UnsupportedOperationException();
+    }
 
 	@Override
 	public void onEvent(MatchThemeSelectedEvent event) {

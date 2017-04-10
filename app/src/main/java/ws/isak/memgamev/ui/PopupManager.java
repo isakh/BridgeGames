@@ -30,8 +30,8 @@ public class PopupManager {
 
     private static final String TAG = "PopupManager";
 	
-	public static void showPopupSettings() {
-        Log.d (TAG, "method showPopupSettings");
+	public static void showMatchPopupSettings() {
+        Log.d (TAG, "method showMatchPopupSettings");
 		RelativeLayout popupContainer = (RelativeLayout) Shared.activity.findViewById(R.id.popup_container);
 		popupContainer.removeAllViews();
 
@@ -60,6 +60,10 @@ public class PopupManager {
 		animatorSet.setInterpolator(new DecelerateInterpolator(2));
 		animatorSet.start();
 	}
+
+	public static void showSwapPopupSettings() {
+        //TODO ALL OF THIS!!
+    }
 
 	public static void showPopupWon(GameState gameState) {
         Log.d (TAG, "method showPopupWon");

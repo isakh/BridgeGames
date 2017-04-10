@@ -16,16 +16,16 @@ import ws.isak.memgamev.engine.ScreenController;
 import ws.isak.memgamev.engine.ScreenController.Screen;
 
 /*
- * Class MatchGameSelectFragment provides the view for the fragment where the user decides which of
+ * Class GameSelectFragment provides the view for the fragment where the user decides which of
  * the games to play.  This view contains clickable buttons for each of the games with onClick
  * listeners that animate the click action and open the appropriate subsequent screen.
  *
  *  @author isak
  */
 
-public class MatchGameSelectFragment extends Fragment implements  View.OnClickListener{
+public class GameSelectFragment extends Fragment implements  View.OnClickListener{
 
-    public static final String TAG="MatchGameSelectFragment";
+    public static final String TAG="GameSelectFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -53,12 +53,12 @@ public class MatchGameSelectFragment extends Fragment implements  View.OnClickLi
             case R.id.game_memory_container:
                 Log.d(TAG, "overridden method onClick: case game_memory: switch to MENU_MEM screen");
                 animateShow(view);
-                ScreenController.getInstance().openScreen(Screen.MENU_MEM); //FIXME should this be an event??
+                ScreenController.getInstance().openScreen(Screen.MENU_MEM);
                 break;
             case R.id.game_swap_container:
                 Log.d(TAG, "overridden method onClick: case game_swap: switch to MENU_SWAP screen");
                 animateShow(view);
-                ScreenController.getInstance().openScreen(Screen.POST_SURVEY);      //FIXME send to MENU_SWAP - this is just to debug POST_SURVEY without having to play the game
+                ScreenController.getInstance().openScreen(Screen.MENU_SWAP);
                 break;
         }
     }
