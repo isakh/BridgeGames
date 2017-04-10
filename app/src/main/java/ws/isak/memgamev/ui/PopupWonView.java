@@ -6,7 +6,6 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Handler;
 
-import android.provider.ContactsContract;
 import android.util.AttributeSet;
 import android.util.Log;
 
@@ -20,13 +19,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import ws.isak.memgamev.R;
-import ws.isak.memgamev.common.Music;
+import ws.isak.memgamev.common.Audio;
 import ws.isak.memgamev.common.Shared;
 import ws.isak.memgamev.engine.ScreenController;
-import ws.isak.memgamev.events.ui.BackGameEvent;
-import ws.isak.memgamev.events.ui.NextGameEvent;
-import ws.isak.memgamev.events.ui.StartEvent;
-import ws.isak.memgamev.events.ui.ThemeSelectedEvent;
+import ws.isak.memgamev.events.ui.MatchBackGameEvent;
+import ws.isak.memgamev.events.ui.MatchNextGameEvent;
+import ws.isak.memgamev.events.ui.MatchStartEvent;
 import ws.isak.memgamev.model.GameState;
 import ws.isak.memgamev.utils.Clock;
 import ws.isak.memgamev.utils.Clock.OnTimerCount;
@@ -37,12 +35,14 @@ import ws.isak.memgamev.utils.FontLoader.Font;
  * Class PopupsWonView provides a RelativeLayout that describes the popup created via the
  * PopupManager with defined dimensions
  *
+ * TODO figure out if this is sufficiently generic for all games or needs to be set for each
+ *
  * @author isak
  */
 
 public class PopupWonView extends RelativeLayout implements View.OnClickListener{
 
-	public static final String TAG = "Class: PopupWonView";
+	public static final String TAG = "PopupWonView";
 
 	private TextView mTime;
 	private TextView mScore;
@@ -95,13 +95,13 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
     public void onClick (View view) {
         switch (view.getId()) {
             case R.id.popup_won_view_button_try_again:
-                Shared.eventBus.notify(new BackGameEvent());
+                Shared.eventBus.notify(new MatchBackGameEvent());
                 break;
             case R.id.popup_won_view_button_next_level:
-                Shared.eventBus.notify(new NextGameEvent());
+                Shared.eventBus.notify(new MatchNextGameEvent());
                 break;
             case R.id.popup_won_view_button_change_theme:
-                Shared.eventBus.notify(new StartEvent());
+                Shared.eventBus.notify(new MatchStartEvent());
                 break;
             case R.id.popup_won_view_button_change_game:
                 continueToSelectGameFragment();
@@ -201,7 +201,7 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
 			@Override
 			public void run() {
 				Log.d (TAG, "method animateStar: overriding run()");
-				Music.showStar();
+				Audio.showStar();
 			}
 		}, delay);
 	}

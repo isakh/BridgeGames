@@ -6,16 +6,16 @@ import ws.isak.memgamev.R;
 
 
 /*
- * Class TileData constructs the object that comprises one tile element in a theme.  This is one
- * or more image files (pairs of images are needed for the birds theme, currently the spectrograms
- * theme will only ask users to match identical spectrograms) and an audio file.
+ * Class TileData constructs the object that comprises one tile element in a matchTheme.  This is one
+ * or more image files (pairs of images are needed for the birds matchTheme, currently the spectrograms
+ * matchTheme will only ask users to match identical spectrograms) and an audio file.
  *
  * @author isak
  */
 
 public class CardData
 {
-    private final String TAG = "Class: CardData";
+    private final String TAG = "CardData";
 
     private int cardID;                     //FIXME Private Key? Tile ID between 1 and the number of tiles objects in resources
     private String speciesName;             //this string stores the species name from R.strings.species_bird_% FIXME make dynamic?
@@ -26,7 +26,7 @@ public class CardData
     private String imageURI0;               //path to a blank image for the blank tile game
     private String imageURI1;               //path to the first image file if the object requires paired images
     private String imageURI2;               //path to second image file of pair if necessary
-    private String imageURI3;               //path to spectrogram image file for spectrogram theme
+    private String imageURI3;               //path to spectrogram image file for spectrogram matchTheme
 
     private String audioURI;                //path to audio file for object
     private long sampleDuration;

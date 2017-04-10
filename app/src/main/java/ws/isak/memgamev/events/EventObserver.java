@@ -1,40 +1,47 @@
 package ws.isak.memgamev.events;
 
-import ws.isak.memgamev.events.engine.FlipDownCardsEvent;
-import ws.isak.memgamev.events.engine.GameWonEvent;
-import ws.isak.memgamev.events.engine.HidePairCardsEvent;
+import ws.isak.memgamev.events.engine.MatchFlipDownCardsEvent;
+import ws.isak.memgamev.events.engine.MatchGameWonEvent;
+import ws.isak.memgamev.events.engine.MatchHidePairCardsEvent;
 import ws.isak.memgamev.events.engine.PlayCardAudioEvent;
 
-import ws.isak.memgamev.events.ui.BackGameEvent;
-import ws.isak.memgamev.events.ui.DifficultySelectedEvent;
-import ws.isak.memgamev.events.ui.FlipCardEvent;
-import ws.isak.memgamev.events.ui.NextGameEvent;
-import ws.isak.memgamev.events.ui.ResetBackgroundEvent;
-import ws.isak.memgamev.events.ui.StartEvent;
-import ws.isak.memgamev.events.ui.ThemeSelectedEvent;
+import ws.isak.memgamev.events.ui.MatchBackGameEvent;
+import ws.isak.memgamev.events.ui.MatchDifficultySelectedEvent;
+import ws.isak.memgamev.events.ui.MatchFlipCardEvent;
+import ws.isak.memgamev.events.ui.MatchNextGameEvent;
+import ws.isak.memgamev.events.ui.MatchResetBackgroundEvent;
+import ws.isak.memgamev.events.ui.MatchStartEvent;
+import ws.isak.memgamev.events.ui.MatchThemeSelectedEvent;
 
+
+/*
+ * Interface EventObserver defines the onEvent methods for each type of event - these
+ * methods will be overridden whenever the event is triggered.
+ *
+ * @author isak
+ */
 
 public interface EventObserver {
 
-	void onEvent(FlipCardEvent event);
+	void onEvent(MatchFlipCardEvent event);
 
-	void onEvent(DifficultySelectedEvent event);
+	void onEvent(MatchDifficultySelectedEvent event);
 
-	void onEvent(HidePairCardsEvent event);
+	void onEvent(MatchHidePairCardsEvent event);
 
-	void onEvent(FlipDownCardsEvent event);
+	void onEvent(MatchFlipDownCardsEvent event);
 
-	void onEvent(StartEvent event);
+	void onEvent(MatchStartEvent event);
 
-	void onEvent(ThemeSelectedEvent event);
+	void onEvent(MatchThemeSelectedEvent event);
 
-	void onEvent(GameWonEvent event);
+	void onEvent(MatchGameWonEvent event);
 
-	void onEvent(BackGameEvent event);
+	void onEvent(MatchBackGameEvent event);
 
-	void onEvent(NextGameEvent event);
+	void onEvent(MatchNextGameEvent event);
 
-	void onEvent(ResetBackgroundEvent event);
+	void onEvent(MatchResetBackgroundEvent event);
 
 	void onEvent(PlayCardAudioEvent event);
 

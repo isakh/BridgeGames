@@ -13,20 +13,20 @@ import ws.isak.memgamev.R;
 import ws.isak.memgamev.common.Shared;
 
 /*
- * Class DifficultyView
+ * Class DifficultyView creates the view for the match difficulty screen
  *
  * @author isak
  */
 
-public class DifficultyView extends LinearLayout {
+public class MatchDifficultyView extends LinearLayout {
 
-    public static final String TAG = "Class: DifficultyView";
+    public static final String TAG = "DifficultyView";
 	private ImageView mTitle;
 
     /*
      * Constructor DifficultyView sets context
      */
-	public DifficultyView(Context context) {
+	public MatchDifficultyView(Context context) {
 		this(context, null);
         Log.d (TAG, "constructor");
 	}
@@ -34,10 +34,10 @@ public class DifficultyView extends LinearLayout {
     /*
      * Overloaded constructor sets context and attributes
      */
-	public DifficultyView(Context context, AttributeSet attrs) {
+	public MatchDifficultyView(Context context, AttributeSet attrs) {
 		super(context, attrs);
         Log.d (TAG, "overloaded constructor, includes AttributeSet");
-		LayoutInflater.from(context).inflate(R.layout.difficulty_view, this, true);
+		LayoutInflater.from(context).inflate(R.layout.match_difficulty_view, this, true);
 		setOrientation(LinearLayout.VERTICAL);
 		mTitle = (ImageView) findViewById(R.id.title);
 	}

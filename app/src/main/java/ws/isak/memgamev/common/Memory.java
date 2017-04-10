@@ -22,6 +22,8 @@ import java.util.Locale;
 
 public class Memory {
 
+    private static final String TAG = "Memory";
+
 	private static final String SHARED_PREFERENCES_NAME = "ws.isak.memgamev";
 	private static String highStarKey = "theme_%d_difficulty_%d";
 

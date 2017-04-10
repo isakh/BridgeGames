@@ -6,20 +6,20 @@ import android.graphics.Bitmap;
 import android.util.Log;
 
 import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.themes.Themes;
+import ws.isak.memgamev.themes.MatchThemes;
 import ws.isak.memgamev.utils.Utils;
 import ws.isak.memgamev.common.CardData;
 
 /**
  * Before game starts, engine builds a new board - this involves setting up the mappings for tiles
  * to id, image, and audio.  This is done by creating a map between location id pairs and a map from
- * a tile id to a card object
+ * a tile id to a card object in the MatchBoardArrangement class.
  *
  * @author isak
  */
-public class BoardArrangement {
+public class MatchBoardArrangement {
 
-	public final String TAG = "Class: BoardArrangement";
+	public final String TAG = "MatchBoardArrangement";
 
 	// Map pairs of tile IDs (in range of 0 to n-1 tiles
 	// like {0-2, 4-3, 1-(n-1}
@@ -30,11 +30,11 @@ public class BoardArrangement {
 	/**
 	 * Method getTileBitmap returns a bitmap from a URI associated with a card ID and the settings of
 	 * flags which check whether we want the first or second image associated with the card based on
-     * the current theme being played.
+     * the current matchTheme being played.
 	 *
 	 * @param curTileID
 	 *            The id is the number between 0 and number of possible cards of
-	 *            this theme i.e. 6 for beginner, 8 for intermediate, & 10 for advanced (i.e. tiles/2)
+	 *            this matchTheme i.e. 6 for beginner, 8 for intermediate, & 10 for advanced (i.e. tiles/2)
 	 *            FIXME : note if these are to change they must be even
 	 * @return A Bitmap from the card to be placed on the tile
 	 */
@@ -51,11 +51,11 @@ public class BoardArrangement {
 		Log.d (TAG, " 					 : cardOnTile.getFirstImageUsed: " + cardOnTile.getFirstImageUsed());
 
         switch (Shared.userData.getCurMemGame().getThemeID()) {
-            case 0:                                                                         //Theme is blank
+            case 0:                                                                         //MatchTheme is blank
                 Log.d (TAG, "method getTileBitmap: switch themeID: " + Shared.userData.getCurMemGame().getThemeID());
                 imageUri = cardOnTile.getImageURI0();
                 break;
-            case 1:                                                                         //Theme is birds
+            case 1:                                                                         //MatchTheme is birds
                 if (cardOnTile.getPairedImageDiffer() && cardOnTile.getFirstImageUsed()) {  //first card used
                     Log.d (TAG, "method getTileBitmap: switch themeID: " + Shared.userData.getCurMemGame().getThemeID() +
                             " pairedImagesDiffer: " + cardOnTile.getPairedImageDiffer() +
@@ -70,15 +70,15 @@ public class BoardArrangement {
                     cardOnTile.setFirstImageUsed(true);
                 }
                 break;
-            case 2:                                                                         //Theme is spectrograms
+            case 2:                                                                         //MatchTheme is spectrograms
                 Log.d (TAG, "method getTileBitmap: switch themeID: " + Shared.userData.getCurMemGame().getThemeID());
                 imageUri = cardOnTile.getImageURI3();
                 break;
         }
 		Log.d (TAG, "					 : imageURI: " + imageUri);
-		//Log.d (TAG, "					 : Themes.URI_DRAWABLE: " + Themes.URI_DRAWABLE);
-		if (imageUri.contains(Themes.URI_DRAWABLE)) {
-			String drawableResourceName = imageUri.substring(Themes.URI_DRAWABLE.length());
+		//Log.d (TAG, "					 : MatchThemes.URI_DRAWABLE: " + MatchThemes.URI_DRAWABLE);
+		if (imageUri.contains(MatchThemes.URI_DRAWABLE)) {
+			String drawableResourceName = imageUri.substring(MatchThemes.URI_DRAWABLE.length());
 			Log.d (TAG, "                : drawableResourceName: " + drawableResourceName);
 			int drawableResourceId = Shared.context.getResources().getIdentifier(drawableResourceName, "drawable", Shared.context.getPackageName());
 			Log.d (TAG, "                : drawableResourceID: " + drawableResourceId);

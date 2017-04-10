@@ -11,13 +11,14 @@ import android.widget.TextView;
 import ws.isak.memgamev.R;
 
 /*
+ * Class UserSetupView creates the view for the user setup fragment
  *
  * @author isak
  */
 
 public class UserSetupView extends LinearLayout {
 
-    public static final String TAG = "Class: UserSetupView";
+    public static final String TAG = "UserSetupView";
     private TextView mTitle;
 
     public UserSetupView (Context context) {

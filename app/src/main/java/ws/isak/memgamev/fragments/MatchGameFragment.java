@@ -14,11 +14,11 @@ import java.util.Locale;
 import ws.isak.memgamev.R;
 import ws.isak.memgamev.common.Shared;
 import ws.isak.memgamev.database.MemGameDataORM;
-import ws.isak.memgamev.events.engine.FlipDownCardsEvent;
-import ws.isak.memgamev.events.engine.GameWonEvent;
-import ws.isak.memgamev.events.engine.HidePairCardsEvent;
-import ws.isak.memgamev.model.Game;
-import ws.isak.memgamev.ui.BoardView;
+import ws.isak.memgamev.events.engine.MatchFlipDownCardsEvent;
+import ws.isak.memgamev.events.engine.MatchGameWonEvent;
+import ws.isak.memgamev.events.engine.MatchHidePairCardsEvent;
+import ws.isak.memgamev.model.MatchGame;
+import ws.isak.memgamev.ui.MatchBoardView;
 import ws.isak.memgamev.ui.PopupManager;
 import ws.isak.memgamev.utils.Clock;
 import ws.isak.memgamev.utils.Clock.OnTimerCount;
@@ -26,55 +26,56 @@ import ws.isak.memgamev.utils.FontLoader;
 import ws.isak.memgamev.utils.FontLoader.Font;
 
 /*
- *
+ * Class MatchGameFragment creates the view for the match game fragment, including the clock, and
+ * overrides the events for flipping cards down, hiding a pair, and winning the game.
  *
  * @author isak
  */
 
-public class GameFragment extends BaseFragment {
+public class MatchGameFragment extends BaseFragment {
 
-    public final String TAG = "Class: Game Fragment";
+    public final String TAG = "MatchGameFragment";
 
-	private BoardView mBoardView;
+	private MatchBoardView mMatchBoardView;
 	private TextView mTime;
 	private ImageView mTimeImage;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d (TAG, "method onCreateView");
-		ViewGroup view = (ViewGroup) inflater.inflate(R.layout.game_fragment, container, false);
+		ViewGroup view = (ViewGroup) inflater.inflate(R.layout.match_game_fragment, container, false);
 		view.setClipChildren(false);
 		((ViewGroup)view.findViewById(R.id.game_board)).setClipChildren(false);
 		mTime = (TextView) view.findViewById(R.id.time_bar_text);                       //FIXME is this id right?
 		mTimeImage = (ImageView) view.findViewById(R.id.time_bar_image);
 		FontLoader.setTypeface(Shared.context, new TextView[] {mTime}, Font.ANGRYBIRDS);
-		mBoardView = BoardView.fromXml(getActivity().getApplicationContext(), view);
+		mMatchBoardView = MatchBoardView.fromXml(getActivity().getApplicationContext(), view);
 		FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.game_container);
-		frameLayout.addView(mBoardView);
+		frameLayout.addView(mMatchBoardView);
 		frameLayout.setClipChildren(false);
 
 		// build board
 		buildBoard();
-		Shared.eventBus.listen(FlipDownCardsEvent.TYPE, this);
-		Shared.eventBus.listen(HidePairCardsEvent.TYPE, this);
-		Shared.eventBus.listen(GameWonEvent.TYPE, this);
+		Shared.eventBus.listen(MatchFlipDownCardsEvent.TYPE, this);
+		Shared.eventBus.listen(MatchHidePairCardsEvent.TYPE, this);
+		Shared.eventBus.listen(MatchGameWonEvent.TYPE, this);
 		
 		return view;
 	}
 	
 	@Override
 	public void onDestroy() {
-		Shared.eventBus.unlisten(FlipDownCardsEvent.TYPE, this);
-		Shared.eventBus.unlisten(HidePairCardsEvent.TYPE, this);
-		Shared.eventBus.unlisten(GameWonEvent.TYPE, this);
+		Shared.eventBus.unlisten(MatchFlipDownCardsEvent.TYPE, this);
+		Shared.eventBus.unlisten(MatchHidePairCardsEvent.TYPE, this);
+		Shared.eventBus.unlisten(MatchGameWonEvent.TYPE, this);
 		super.onDestroy();
 	}
 
 	private void buildBoard() {
-		Game game = Shared.engine.getActiveGame();
-		long time = game.boardConfiguration.time;
+		MatchGame matchGame = Shared.engine.getActiveGame();
+		long time = matchGame.matchBoardConfiguration.time;
 		setTime(time);
-		mBoardView.setBoard(game);
+		mMatchBoardView.setBoard(matchGame);
 		
 		startClock(time);
 	}
@@ -116,8 +117,8 @@ public class GameFragment extends BaseFragment {
 	}
 
 	@Override
-	public void onEvent(GameWonEvent event) {
-        //Log.d (TAG, "overriding method onEvent (GameWonEvent)");
+	public void onEvent(MatchGameWonEvent event) {
+        //Log.d (TAG, "overriding method onEvent (MatchGameWonEvent)");
         //We print out all of the collected array data here?
         for (int i = 0; i < Shared.userData.getCurMemGame().getNumTurnsTaken(); i++) {
             if (i < 10) {
@@ -171,14 +172,14 @@ public class GameFragment extends BaseFragment {
 	}
 
 	@Override
-	public void onEvent(FlipDownCardsEvent event) {
-        //Log.d (TAG, "overriding method onEvent (FlipDownCardsEvent)");
-		mBoardView.flipDownAll();
+	public void onEvent(MatchFlipDownCardsEvent event) {
+        //Log.d (TAG, "overriding method onEvent (MatchFlipDownCardsEvent)");
+		mMatchBoardView.flipDownAll();
 	}
 
 	@Override
-	public void onEvent(HidePairCardsEvent event) {
-        //Log.d (TAG, "overriding method onEvent (HidePairCardsEvent)");
-		mBoardView.hideCards(event.id1, event.id2);
+	public void onEvent(MatchHidePairCardsEvent event) {
+        //Log.d (TAG, "overriding method onEvent (MatchHidePairCardsEvent)");
+		mMatchBoardView.hideCards(event.id1, event.id2);
 	}
 }

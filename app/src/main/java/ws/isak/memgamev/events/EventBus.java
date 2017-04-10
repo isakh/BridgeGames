@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.os.Handler;
+import android.util.Log;
 
 /**
  * The gateway for all events running in the game from ui to engine components
@@ -16,13 +17,15 @@ import android.os.Handler;
  */
 public class EventBus {
 
+    private static final String TAG = "EventBus";
+
 	private Handler mHandler;
 	private static EventBus mInstance = null;
 	private final Map<String, List<EventObserver>> events = Collections.synchronizedMap(new HashMap<String, List<EventObserver>>());
 	private Object obj = new Object();
 
 	private EventBus() {
-        //Log.d (TAG, "Constructor");
+        Log.d (TAG, "Constructor");
 		mHandler = new Handler();
 	}
 
@@ -65,7 +68,8 @@ public class EventBus {
 		mHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
-				EventBus.this.notify(event);
+                Log.d (TAG, "method notify: overriding method run: on event: " + event);
+                EventBus.this.notify(event);
 			}
 		}, delay);
 	}

@@ -2,8 +2,10 @@ package ws.isak.memgamev.events;
 
 
 /**
- * The event that is invoked from the low levels of this game (like engine) and
- * not from the ui.
+ * This is the interface for Events.  Regardless of where the event is invoked from
+ * it must have a type.
+ *
+ * @author isak
  */
 public interface Event {
 

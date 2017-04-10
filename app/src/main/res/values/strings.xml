@@ -13,13 +13,13 @@
     <string name="finished_fragment_close_app_button_text">Exit Game</string>
 
     <!-- ============================================================================== -->
-    <!-- Layout: popup_settings_view -->
+    <!-- Layout: match_popup_settings_view -->
     <!-- *************************** -->
-    <string name="popup_settings_title_text">Settings</string>
-    <string name="popup_settings_sound_on_text">Sound ON</string>
-    <string name="popup_settings_sound_off_text">Sound OFF</string>
-    <string name="popup_settings_mixer_on_text">Mixer ON</string>
-    <string name="popup_settings_mixer_off_text">Mixer OFF</string>
+    <string name="match_popup_settings_title_text">Settings</string>
+    <string name="match_popup_settings_sound_on_text">Sound ON</string>
+    <string name="match_popup_settings_sound_off_text">Sound OFF</string>
+    <string name="match_popup_settings_mixer_on_text">Mixer ON</string>
+    <string name="match_popup_settings_mixer_off_text">Mixer OFF</string>
 
 
     <!-- =============================================================================== -->
@@ -113,15 +113,15 @@
     <string name="post_survey_prior_spectrogram_familiarity_query_text">Before playing these games were you familiar with spectrograms as used to draw sounds?</string>
     <string name="post_survey_prior_spectrogram_familiarity_button_no">NO</string>
     <string name="post_survey_prior_spectrogram_familiarity_button_yes">YES</string>
-    <!-- [2]  Whilst playing the game, could you hear a song by observing its shape? LIKERT] -->
-    <string name="post_survey_hearing_equals_seeing_query_text">Whilst playing the game, did you learn to hear a song by observing its shape?</string>
+    <!-- [2]  Whilst playing the matchGame, could you hear a song by observing its shape? LIKERT] -->
+    <string name="post_survey_hearing_equals_seeing_query_text">Whilst playing the matchGame, did you learn to hear a song by observing its shape?</string>
     <string name="post_survey_hearing_equals_seeing_button_never">NEVER</string>
     <string name="post_survey_hearing_equals_seeing_button_rarely">RARELY</string>
     <string name="post_survey_hearing_equals_seeing_button_sometimes">SOMETIMES</string>
     <string name="post_survey_hearing_equals_seeing_button_frequently">FREQUENTLY</string>
     <string name="post_survey_hearing_equals_seeing_button_always">ALWAYS</string>
-    <!-- [3] After playing the game, could you predict the shape of the song when listening to it? [LIKERT/ Boolean?] -->
-    <string name="post_survey_hearing_equals_predicting_query_text">After playing the game, could you predict the shape of the song when listening to it? </string>
+    <!-- [3] After playing the matchGame, could you predict the shape of the song when listening to it? [LIKERT/ Boolean?] -->
+    <string name="post_survey_hearing_equals_predicting_query_text">After playing the matchGame, could you predict the shape of the song when listening to it? </string>
     <string name="post_survey_hearing_equals_predicting_button_never">NEVER</string>
     <string name="post_survey_hearing_equals_predicting_button_rarely">RARELY</string>
     <string name="post_survey_hearing_equals_predicting_button_sometimes">SOMETIMES</string>
@@ -131,12 +131,12 @@
     <string name="post_survey_submit_button">Submit</string>
     <!-- [11] What part of the interface caused you the most confusion? [TEXT] -->
     <string name="post_survey_cause_of_most_confusion_query_text">TODO</string>
-    <!-- TODO programmatically include the following only if the survey is after playing swap game? -->
+    <!-- TODO programmatically include the following only if the survey is after playing swap matchGame? -->
     <!-- [12] How motivated were you to find the visual representation that best fit the song you had initially heard?
     [LIKERT] unmotivated - gradually lost interest - neutral - interested throughout the process - highly motivated)
-    TODO only applicable to swap game? (phrasing)-->
+    TODO only applicable to swap matchGame? (phrasing)-->
     <string name="post_survey_success_motivation_query_text">TODO</string>
-    <!-- [2] How comfortable were you that each subsequent turn in the game was getting
+    <!-- [2] How comfortable were you that each subsequent turn in the matchGame was getting
     closer to the solution? [LIKERT] rarely - sometimes not - half the time - sometimes yes - frequently) -->
     <string name="post_survey_solution_progress_query_text">TODO</string>
 
@@ -157,11 +157,11 @@
 
 
     <!-- =================================================================================== -->
-    <!-- Class: Themes -->
+    <!-- Class: MatchThemes -->
     <!-- ************* -->
-    <string name="themes_blank_name">Blank</string>
-    <string name="themes_birds_name">Birds</string>
-    <string name="themes_spectrograms_name">Spectrograms</string>
+    <string name="match_themes_blank_name">Blank</string>
+    <string name="match_themes_birds_name">Birds</string>
+    <string name="match_themes_spectrograms_name">Spectrograms</string>
 
 
     <!-- =================================================================================== -->

@@ -16,14 +16,15 @@ import ws.isak.memgamev.common.Shared;
 import ws.isak.memgamev.engine.ScreenController;
 
 /*
- *
+ * Class PostSurveyFragment defines the information found in the Post-Survey screen and the behavior
+ * of all of the associated buttons etc.
  *
  * @author isak
  */
 
 public class PostSurveyFragment extends Fragment implements View.OnClickListener, RadioGroup.OnCheckedChangeListener {
 
-    public static final String TAG = "Class: PostSurveyFrag";
+    public static final String TAG = "PostSurveyFragment";
 
     //return values
     public static boolean spectrogramFamiliar;

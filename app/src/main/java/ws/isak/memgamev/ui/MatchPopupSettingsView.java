@@ -10,20 +10,20 @@ import android.widget.TextView;
 import android.util.Log;
 
 import ws.isak.memgamev.R;
-import ws.isak.memgamev.common.Music;
+import ws.isak.memgamev.common.Audio;
 import ws.isak.memgamev.common.Shared;
 import ws.isak.memgamev.utils.FontLoader;
 import ws.isak.memgamev.utils.FontLoader.Font;
 
 /*
- *
+ * The class PopupSettingsView defines the settings popup for the matching game.
  *
  * @author isak
  */
 
-public class PopupSettingsView extends LinearLayout implements View.OnClickListener{
+public class MatchPopupSettingsView extends LinearLayout implements View.OnClickListener{
 
-    public static final String TAG="Class PopupSettingsView";
+    public static final String TAG="PopupSettingsView";
 
 	private ImageView mSoundImage;
     private ImageView mMixImage;
@@ -33,7 +33,7 @@ public class PopupSettingsView extends LinearLayout implements View.OnClickListe
     /*
      * constructor
      */
-	public PopupSettingsView(Context context) {
+	public MatchPopupSettingsView(Context context) {
 		this(context, null);
         Log.d (TAG, "constructor PopupSettingsView");
 	}
@@ -41,11 +41,11 @@ public class PopupSettingsView extends LinearLayout implements View.OnClickListe
     /*
      * overloaded constructor takes attribute set as parameter
      */
-	public PopupSettingsView(Context context, AttributeSet attrs) {
+	public MatchPopupSettingsView(Context context, AttributeSet attrs) {
 		super(context, attrs);
         Log.d (TAG, "overloaded constructor PopupSettingsView");
 		setOrientation(LinearLayout.VERTICAL);
-		LayoutInflater.from(getContext()).inflate(R.layout.popup_settings_view, this, true);
+		LayoutInflater.from(getContext()).inflate(R.layout.match_popup_settings_view, this, true);
 		//Load images and text from xml
         mSoundText = (TextView) findViewById(R.id.sound_on_off_text);
         mMixText = (TextView) findViewById(R.id.mix_on_off_text);
@@ -62,32 +62,32 @@ public class PopupSettingsView extends LinearLayout implements View.OnClickListe
     public void onClick (View view) {
         switch (view.getId()) {
             case R.id.sound_on_off_image:
-                Music.OFF = !Music.OFF;
+                Audio.OFF = !Audio.OFF;
                 setMusicButton();
                 break;
             case R.id.mix_on_off_image:
-                Music.MIX = !Music.MIX;
+                Audio.MIX = !Audio.MIX;
                 setMixerButton();
                 break;
         }
     }
 
 	private void setMusicButton() {
-		if (Music.OFF) {
-			mSoundText.setText(Shared.context.getResources().getText(R.string.popup_settings_sound_off_text));
+		if (Audio.OFF) {
+			mSoundText.setText(Shared.context.getResources().getText(R.string.match_popup_settings_sound_off_text));
 			mSoundImage.setImageResource(R.drawable.button_music_off);
 		} else {
-			mSoundText.setText(Shared.context.getResources().getText(R.string.popup_settings_sound_on_text));
+			mSoundText.setText(Shared.context.getResources().getText(R.string.match_popup_settings_sound_on_text));
 			mSoundImage.setImageResource(R.drawable.button_music_on);
 		}
 	}
 
     private void setMixerButton() {
-        if (Music.MIX) {       //mixing is on
-            mMixText.setText(Shared.context.getResources().getText(R.string.popup_settings_mixer_on_text));
+        if (Audio.MIX) {       //mixing is on
+            mMixText.setText(Shared.context.getResources().getText(R.string.match_popup_settings_mixer_on_text));
             mMixImage.setImageResource(R.drawable.button_mixer_on);
         } else {               //mixing is off
-            mMixText.setText(Shared.context.getResources().getText(R.string.popup_settings_mixer_off_text));
+            mMixText.setText(Shared.context.getResources().getText(R.string.match_popup_settings_mixer_off_text));
             mMixImage.setImageResource(R.drawable.button_mixer_off);
         }
     }

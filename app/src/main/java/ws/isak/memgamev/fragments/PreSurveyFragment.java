@@ -21,13 +21,15 @@ import ws.isak.memgamev.engine.ScreenController;
 import ws.isak.memgamev.engine.ScreenController.Screen;
 
 /*
+ * Class PreSurveyFragment defines the information found in the Pre-Survey screen and the behavior
+ * of all of the associated buttons etc.
  *
  * @author isak
  */
 
 public class PreSurveyFragment extends Fragment implements  View.OnClickListener, AdapterView.OnItemSelectedListener, RadioGroup.OnCheckedChangeListener {
 
-    public static final String TAG="Class: PreSurveyFrag";
+    public static final String TAG="PreSurveyFrag";
 
     public static String ageRange;
     public static String yearsTwitchingRange;

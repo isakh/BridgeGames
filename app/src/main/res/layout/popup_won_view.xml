@@ -57,7 +57,7 @@
 
     </LinearLayout>
 
-    <!-- Game Time -->
+    <!-- MatchGame Time -->
 
     <LinearLayout
         android:id="@+id/popup_won_time_information"
@@ -99,7 +99,7 @@
             android:textSize="@dimen/popup_won_time_text_size" />             <!-- TODO fix text 00:60 to dynamic time  -->
 
     </LinearLayout>
-    <!-- Game Score -->
+    <!-- MatchGame Score -->
 
     <LinearLayout
         android:id="@+id/popup_won_score_information"

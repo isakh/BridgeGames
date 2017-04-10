@@ -22,32 +22,32 @@ import android.widget.RelativeLayout;
 import ws.isak.memgamev.R;
 
 /**
- * Class TileView contains the code for generating a single tile in the board array.  This includes
- * methods for flipping a tile and verifying the state of a tile (face up/ down)
+ * Class TileView contains the code for generating a single tile in the match board array.
+ * This includes methods for flipping a tile and verifying the state of a tile (face up/ down)
  *
  * @author isak
  */
 
-public class TileView extends FrameLayout {
+public class MatchTileView extends FrameLayout {
 
-	public final String TAG = "Class: TileView";
+	public final String TAG = "TileView";
 
 	private RelativeLayout mTopImage;
 	private ImageView mTileImage;
 	private boolean mFlippedDown = true;
 
-	public TileView(Context context) {
+	public MatchTileView(Context context) {
 		this(context, null);
         Log.d (TAG, "constructor");
 	}
 
-	public TileView(Context context, AttributeSet attrs) {
+	public MatchTileView(Context context, AttributeSet attrs) {
 		super(context, attrs);
         //Log.d (TAG, "overloaded constructor");
 	}
 
-	public static TileView fromXml(Context context, ViewGroup parent) {
-		return (TileView) LayoutInflater.from(context).inflate(R.layout.tile_view, parent, false);
+	public static MatchTileView fromXml(Context context, ViewGroup parent) {
+		return (MatchTileView) LayoutInflater.from(context).inflate(R.layout.match_tile_view, parent, false);
 	}
 
 	@Override

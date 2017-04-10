@@ -17,7 +17,7 @@ import ws.isak.memgamev.model.MemGameData;
 
 public class UserData {
 
-    private static final String TAG = "Class: UserData";
+    private static final String TAG = "UserData";
 
     private static UserData mInstance = null;
 

@@ -21,7 +21,8 @@ import ws.isak.memgamev.model.MemGameData;
 
 public class MemGameDataORM {
 
-    private static final String TAG="Class: MemGameDataORM";
+    private static final String TAG="MemGameDataORM";
+
     private static final String DELIMITER=", ";
 
     private static final String TABLE_NAME="mem_game_data";

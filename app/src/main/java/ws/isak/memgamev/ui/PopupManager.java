@@ -11,35 +11,48 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
+import android.util.Log;
 
 import ws.isak.memgamev.R;
 import ws.isak.memgamev.common.Shared;
 import ws.isak.memgamev.model.GameState;
 
+/*
+ *  Class PopupManager defines general characteristics for closing a popup and specific methods
+ *  for showing each available popup.
+ *
+ *  //TODO ∆ existing method's to reflect which game they are part of
+ *
+ * @author isak
+ */
+
 public class PopupManager {
+
+    private static final String TAG = "PopupManager";
 	
 	public static void showPopupSettings() {
+        Log.d (TAG, "method showPopupSettings");
 		RelativeLayout popupContainer = (RelativeLayout) Shared.activity.findViewById(R.id.popup_container);
 		popupContainer.removeAllViews();
 
 		// background
 		ImageView imageView = new ImageView(Shared.context);
-		imageView.setBackgroundColor(Color.parseColor("#88555555"));
+		imageView.setBackgroundColor(Color.parseColor("#88555555"));        //TODO set in colors.xml
 		imageView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 		imageView.setClickable(true);
 		popupContainer.addView(imageView);
 
 		// popup
-		PopupSettingsView popupSettingsView = new PopupSettingsView(Shared.context);
-		int width = Shared.context.getResources().getDimensionPixelSize(R.dimen.popup_settings_width);
-		int height = Shared.context.getResources().getDimensionPixelSize(R.dimen.popup_settings_height);
+		MatchPopupSettingsView matchPopupSettingsView = new MatchPopupSettingsView(Shared.context);
+		int width = Shared.context.getResources().getDimensionPixelSize(R.dimen.match_popup_settings_width);
+		int height = Shared.context.getResources().getDimensionPixelSize(R.dimen.match_popup_settings_height);
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
 		params.addRule(RelativeLayout.CENTER_IN_PARENT);
-		popupContainer.addView(popupSettingsView, params);
+		popupContainer.addView(matchPopupSettingsView, params);
 
 		// animate all together
-		ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(popupSettingsView, "scaleX", 0f, 1f);
-		ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(popupSettingsView, "scaleY", 0f, 1f);
+		ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(matchPopupSettingsView, "scaleX", 0f, 1f);
+		ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(matchPopupSettingsView, "scaleY", 0f, 1f);
 		ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(imageView, "alpha", 0f, 1f);
 		AnimatorSet animatorSet = new AnimatorSet();
 		animatorSet.playTogether(scaleXAnimator, scaleYAnimator, alphaAnimator);
@@ -49,6 +62,7 @@ public class PopupManager {
 	}
 
 	public static void showPopupWon(GameState gameState) {
+        Log.d (TAG, "method showPopupWon");
 		RelativeLayout popupContainer = (RelativeLayout) Shared.activity.findViewById(R.id.popup_container);
 		popupContainer.removeAllViews();
 

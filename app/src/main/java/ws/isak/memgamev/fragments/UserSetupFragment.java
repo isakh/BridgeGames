@@ -28,7 +28,7 @@ import ws.isak.memgamev.engine.ScreenController.Screen;
 
 public class UserSetupFragment extends Fragment implements View.OnClickListener {
 
-    public static final String TAG = "Class: UserSetupFrag";
+    public static final String TAG = "UserSetupFrag";
     public static String newUserName;
     public static String loginName;
 

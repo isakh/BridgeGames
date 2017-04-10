@@ -15,7 +15,7 @@ import ws.isak.memgamev.R;
 //TODO remove? import android.provider.MediaStore;
 
 /**
- * Class Music handles all of the media player events for the game.  During the game this includes
+ * Class Audio handles all of the media player events for the game.  During the game this includes
  * both the audio sounds triggered for each correct match (method playCorrect) and for each star
  * achieved at the end of the game (method showStar).
  *
@@ -28,9 +28,9 @@ import ws.isak.memgamev.R;
  * @author isak
  */
 
-public class Music {
+public class Audio {
 
-	public static final String TAG = "Class: Music";
+	public static final String TAG = "Audio";
 	public static boolean OFF = false;      //on start defaults to setting where audio is enabled
     public static boolean MIX = true;       //on start defaults to setting where mixing is enabled
     public static boolean isPlaying;

@@ -14,13 +14,17 @@ import ws.isak.memgamev.engine.ScreenController;
 
 
 /*
+ * Class Finished Fragment creates the view and defines the button clicks for the fragment that
+ * comes after the post-survey and allows either a new user to start, or the app to close
+ *
+ * TODO solve fully closing the app
  *
  * @author isak
  */
 
 public class FinishedFragment extends Fragment implements View.OnClickListener {
 
-    public static final String TAG = "Class: FinishedFragment";
+    public static final String TAG = "FinishedFragment";
 
     private Button nextPlayerBtn;
     private Button closeAppBtn;

@@ -14,29 +14,35 @@ import android.util.Log;
 import ws.isak.memgamev.R;
 import ws.isak.memgamev.common.Memory;
 import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.events.ui.DifficultySelectedEvent;
-import ws.isak.memgamev.themes.Theme;
-import ws.isak.memgamev.ui.DifficultyView;
+import ws.isak.memgamev.events.ui.MatchDifficultySelectedEvent;
+import ws.isak.memgamev.themes.MatchTheme;
+import ws.isak.memgamev.ui.MatchDifficultyView;
 
-public class DifficultySelectFragment extends Fragment {
+/*
+ * Class MatchDifficultySelectFragment creates the view for selecting the difficulty for the matching game.
+ *
+ * @author isak
+ */
 
-    public static final String TAG="Class: DifficultySelect";
+public class MatchDifficultySelectFragment extends Fragment {
+
+    public static final String TAG="DifficultySelect";
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = LayoutInflater.from(Shared.context).inflate(R.layout.difficulty_select_fragment, container, false);
-		Theme theme = Shared.engine.getSelectedTheme();
+		View view = LayoutInflater.from(Shared.context).inflate(R.layout.match_difficulty_select_fragment, container, false);
+		MatchTheme matchTheme = Shared.engine.getSelectedTheme();
 
-		DifficultyView difficulty1 = (DifficultyView) view.findViewById(R.id.select_difficulty_1);
-		difficulty1.setDifficulty(1, Memory.getHighStars(theme.themeID, 1));
+		MatchDifficultyView difficulty1 = (MatchDifficultyView) view.findViewById(R.id.select_difficulty_1);
+		difficulty1.setDifficulty(1, Memory.getHighStars(matchTheme.themeID, 1));
 		setOnClick(difficulty1, 1);
 
-		DifficultyView difficulty2 = (DifficultyView) view.findViewById(R.id.select_difficulty_2);
-		difficulty2.setDifficulty(2, Memory.getHighStars(theme.themeID, 2));
+		MatchDifficultyView difficulty2 = (MatchDifficultyView) view.findViewById(R.id.select_difficulty_2);
+		difficulty2.setDifficulty(2, Memory.getHighStars(matchTheme.themeID, 2));
 		setOnClick(difficulty2, 2);
 
-		DifficultyView difficulty3 = (DifficultyView) view.findViewById(R.id.select_difficulty_3);
-		difficulty3.setDifficulty(3, Memory.getHighStars(theme.themeID, 3));
+		MatchDifficultyView difficulty3 = (MatchDifficultyView) view.findViewById(R.id.select_difficulty_3);
+		difficulty3.setDifficulty(3, Memory.getHighStars(matchTheme.themeID, 3));
 		setOnClick(difficulty3, 3);
 
 		animate(difficulty1, difficulty2, difficulty3);
@@ -61,8 +67,8 @@ public class DifficultySelectFragment extends Fragment {
 		view.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-                Log.d (TAG, "method setOnClick , calling new DifficultySelectedEvent");
-				Shared.eventBus.notify(new DifficultySelectedEvent(difficulty));
+                Log.d (TAG, "method setOnClick , calling new MatchDifficultySelectedEvent");
+				Shared.eventBus.notify(new MatchDifficultySelectedEvent(difficulty));
 			}
 		});
 	}

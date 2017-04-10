@@ -13,7 +13,7 @@ import ws.isak.memgamev.events.EventObserver;
  */
 
 public class PlayCardAudioEvent extends AbstractEvent {
-    public  final String TAG = "Class: PlayCardAudio";
+    public  final String TAG = "PlayCardAudioEvent";
 
     public static final String TYPE = PlayCardAudioEvent.class.getName();
 

@@ -19,7 +19,7 @@ import ws.isak.memgamev.common.CardData;
 
 public class CardDataORM {
 
-    private static final String TAG="Class: CardDataORM";
+    private static final String TAG="CardDataORM";
 
     private static final String TABLE_NAME = "card_data";
 

@@ -16,21 +16,21 @@ import ws.isak.memgamev.engine.ScreenController;
 import ws.isak.memgamev.engine.ScreenController.Screen;
 
 /*
- * Class GameSelectFragment provides the view for the fragment where the user decides which of
+ * Class MatchGameSelectFragment provides the view for the fragment where the user decides which of
  * the games to play.  This view contains clickable buttons for each of the games with onClick
  * listeners that animate the click action and open the appropriate subsequent screen.
  *
  *  @author isak
  */
 
-public class GameSelectFragment extends Fragment implements  View.OnClickListener{
+public class MatchGameSelectFragment extends Fragment implements  View.OnClickListener{
 
-    public static final String TAG="Class: GameSelectFrag";
+    public static final String TAG="MatchGameSelectFragment";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "overriding method onCreateView");
-        View view = LayoutInflater.from(Shared.context).inflate(R.layout.game_select_fragment, container, false);
+        View view = LayoutInflater.from(Shared.context).inflate(R.layout.match_game_select_fragment, container, false);
 
         //creating views for memGameLaunch and swapGameLaunch
         Log.d (TAG, "       : creating views for memGameLaunch and swapGameLaunch");

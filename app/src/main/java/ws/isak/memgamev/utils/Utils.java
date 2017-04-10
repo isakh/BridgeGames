@@ -6,6 +6,8 @@ import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.media.ThumbnailUtils;
 
+import android.util.Log;
+
 import ws.isak.memgamev.common.Shared;
 
 /*
@@ -17,7 +19,10 @@ import ws.isak.memgamev.common.Shared;
 
 public class Utils {
 
+    private static final String TAG = "Utils";
+
 	public static int px(int dp) {
+        Log.d (TAG, "method px converts dp to px: dp: " + dp);
 		return (int) (Shared.context.getResources().getDisplayMetrics().density * dp);
 	}
 

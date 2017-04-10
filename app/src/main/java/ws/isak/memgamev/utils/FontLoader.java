@@ -3,6 +3,7 @@ package ws.isak.memgamev.utils;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.util.SparseArray;
+import android.util.Log;
 import android.widget.TextView;
 
 /*
@@ -12,6 +13,8 @@ import android.widget.TextView;
  */
 
 public class FontLoader {
+
+    private static final String TAG = "FontLoader";
 
 	public static final int ANGRYBIRDS = 0;
 
@@ -40,6 +43,7 @@ public class FontLoader {
 	}
 	
 	public static void loadFonts(Context context) {
+        Log.d (TAG, "method loadFonts");
 		for (int i = 0; i < Font.values().length; i++) {
 			fonts.put(i, Typeface.createFromAsset(context.getAssets(), Font.getByVal(i)));
 		}

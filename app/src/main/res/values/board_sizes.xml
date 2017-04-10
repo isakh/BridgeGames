@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- board sizes in tiles for varying difficulty levels -->
-    <integer name="board_size_easy">12</integer>
-    <integer name="board_size_intermediate">16</integer>
-    <integer name="board_size_hard">18</integer>
+    <integer name="match_board_size_easy">12</integer>
+    <integer name="match_board_size_intermediate">16</integer>
+    <integer name="match_board_size_hard">18</integer>
 
     <!-- number of tiles associated with varying difficulties... TODO is this necessary or always 1/2 of board size? -->
 </resources>

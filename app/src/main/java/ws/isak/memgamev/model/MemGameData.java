@@ -1,11 +1,7 @@
 package ws.isak.memgamev.model;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
-import ws.isak.memgamev.common.CardData;
-import ws.isak.memgamev.common.Music;
 import ws.isak.memgamev.common.Shared;
 
 
@@ -21,14 +17,14 @@ import ws.isak.memgamev.common.Shared;
 
 public class MemGameData {
 
-    private final String TAG = "Class: MemGameData";
+    private final String TAG = "MemGameData";
 
-    private Game mPlayingGame;
+    private MatchGame mPlayingMatchGame;
     //Parameters to be saved for database matching game to user
     private long gameStartTimestamp;        //keep track of the timestamp for the start of the game - database primary key
     private String userPlayingName;         //FIXME database foreign key?
     //Parameters to be saved for analysis:
-    //defined at DifficultySelectedEvent - the following are fixed for the duration of the game
+    //defined at MatchDifficultySelectedEvent - the following are fixed for the duration of the game
     private int themeID;                    //set/get string from selection
     private int difficulty;                 //difficulty level for the current game
     private long gameDurationAllocated;     //This is the fixed time allocated for playing the game
@@ -73,7 +69,7 @@ public class MemGameData {
      */
     //[1] set/get themeID
     public void setThemeID (int theme) {
-        //Log.d (TAG, "Overloaded method setThemeID: theme: " + theme);
+        //Log.d (TAG, "Overloaded method setThemeID: matchTheme: " + matchTheme);
         themeID = theme;
     }
 

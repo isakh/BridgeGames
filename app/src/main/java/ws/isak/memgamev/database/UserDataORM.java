@@ -21,7 +21,7 @@ import ws.isak.memgamev.common.UserData;
 
 public class UserDataORM {
 
-    private static final String TAG="Class: UserDataORM";
+    private static final String TAG="UserDataORM";
 
     private static final String TABLE_NAME = "user_data";
 

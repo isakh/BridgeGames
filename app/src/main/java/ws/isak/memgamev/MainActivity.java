@@ -7,12 +7,11 @@ import android.widget.ImageView;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
 import java.util.Locale;
 
 import ws.isak.memgamev.common.CardData;
-import ws.isak.memgamev.common.Music;
+import ws.isak.memgamev.common.Audio;
 import ws.isak.memgamev.common.Shared;
 import ws.isak.memgamev.common.UserData;
 import ws.isak.memgamev.database.CardDataORM;
@@ -21,7 +20,7 @@ import ws.isak.memgamev.engine.Engine;
 import ws.isak.memgamev.engine.ScreenController;
 import ws.isak.memgamev.engine.ScreenController.Screen;
 import ws.isak.memgamev.events.EventBus;
-import ws.isak.memgamev.events.ui.BackGameEvent;
+import ws.isak.memgamev.events.ui.MatchBackGameEvent;
 import ws.isak.memgamev.model.MemGameData;
 import ws.isak.memgamev.ui.PopupManager;
 import ws.isak.memgamev.utils.Utils;
@@ -31,7 +30,8 @@ import ws.isak.memgamev.database.UserDataORM;
 /*
  * The main activity class of the app.  This activity class is called from the AndroidManifest.xml
  * as the application activity on launch.  This class instantiates the shared context, engine
- * and eventBus that guide the flow of the games.  On creation, the screen will open
+ * and eventBus that guide the flow of the games. In addition it handles (loads and checks)the database
+ * that stores information about users and previously played games On creation, the screen will open
  * with the USER_SETUP screen.
  *
  * @author isak
@@ -39,7 +39,7 @@ import ws.isak.memgamev.database.UserDataORM;
 
 public class  MainActivity extends FragmentActivity {
 
-    private static final String TAG = "Class: MainActivity";
+    private static final String TAG = "MainActivity";
 
     private static String URI_AUDIO = "raw://";
     private static String URI_DRAWABLE = "drawable://";
@@ -54,7 +54,7 @@ public class  MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         mBackgroundImage = (ImageView) findViewById(R.id.background_image);
 
-        Log.d(TAG, "method onCreate: setting Shared data");
+        //Log.d(TAG, "method onCreate: setting Shared data");
         Shared.context = getApplicationContext();
         Shared.activity = this;
 
@@ -65,9 +65,8 @@ public class  MainActivity extends FragmentActivity {
         Shared.eventBus = EventBus.getInstance();
         //Log.d(TAG, " *******: Shared.eventBus @: " + Shared.eventBus);
 
-        //instantiate a DatabaseWrapper
-        DatabaseWrapper db = new DatabaseWrapper(this);
-        Shared.databaseWrapper = db;
+        //instantiate a DatabaseWrapper and load the database into memory
+        Shared.databaseWrapper= new DatabaseWrapper(this);
         loadDatabase();
 
         Shared.engine.start();
@@ -80,11 +79,8 @@ public class  MainActivity extends FragmentActivity {
         // set background
         setBackgroundImage();
 
-        // TODO figure out if we need this or can open to User setup screen... remove this?
-        //ScreenController.getInstance().openScreen(Screen.MENU); //TODO...    remove this ?
-
         // open to User setup screen
-        Log.d(TAG, "               : get instance of user setup screen");
+        //Log.d(TAG, "               : get instance of user setup screen");
         ScreenController.getInstance().openScreen(Screen.USER_SETUP);
     }
 
@@ -96,7 +92,7 @@ public class  MainActivity extends FragmentActivity {
 
     @Override
     protected void onPause() {
-        //do something here
+        //do something here             //TODO sort out paused game mode?
         super.onPause();
     }
 
@@ -110,8 +106,8 @@ public class  MainActivity extends FragmentActivity {
     /*
 	 * Overriding method onBackPressed - this defines the characteristic behaviors if the hardware
 	 * back button is pressed.  If a popup is open, this closes the popup (and if the last screen
-	 * before the popup was the Game screen (implying that the popup is popup_won), then this triggers
-	 * a BackGameEvent.
+	 * before the popup was the MatchGame screen (implying that the popup is popup_won), then this triggers
+	 * a MatchBackGameEvent.
 	 *
 	 * (TODO it is better to perform this action with the appropriate button on the popup_won popup - should we prevent this behavior?)
 	 *
@@ -123,7 +119,7 @@ public class  MainActivity extends FragmentActivity {
         if (PopupManager.isShown()) {
             PopupManager.closePopup();
             if (ScreenController.getLastScreen() == Screen.GAME_MEM) {
-                Shared.eventBus.notify(new BackGameEvent());
+                Shared.eventBus.notify(new MatchBackGameEvent());
             }
         } else if (ScreenController.getInstance().onBack()) {
             super.onBackPressed();
@@ -143,9 +139,9 @@ public class  MainActivity extends FragmentActivity {
             curCard.setImageURI0(URI_DRAWABLE + "blank_card");
             curCard.setImageURI1(URI_DRAWABLE + String.format(Locale.ENGLISH, "bird_%d", i) + "a");
             curCard.setImageURI2(URI_DRAWABLE + String.format(Locale.ENGLISH, "bird_%d", i) + "b");
-            curCard.setImageURI3(URI_DRAWABLE + String.format("spectrogram_%d", i));
-            curCard.setAudioURI(URI_AUDIO + String.format("example%d", i));
-            curCard.setSampleDuration(Music.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
+            curCard.setImageURI3(URI_DRAWABLE + String.format(Locale.ENGLISH, "spectrogram_%d", i));
+            curCard.setAudioURI(URI_AUDIO + String.format(Locale.ENGLISH, "example%d", i));
+            curCard.setSampleDuration(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
             //insert cardData object into Database and local storage
             Shared.cardDataList.add(curCard);
             CardDataORM.insertCardData(curCard);
@@ -185,7 +181,7 @@ public class  MainActivity extends FragmentActivity {
                             " | audibleRecognized: " + Shared.userDataList.get(i).getAudibleRecognizedRange() +
                             " | interfaceExperience: " + Shared.userDataList.get(i).getInterfaceExperienceRange() +
                             " | hearingIsSeeing: " + Shared.userDataList.get(i).getHearingEqualsSeeing() +
-                            " | usedSmartphone: " + Shared.userDataList.get(i).getHasUsedSmartphone());
+                            " | usedSmartPhone: " + Shared.userDataList.get(i).getHasUsedSmartphone());
                     loadUsersMemGameDataRecords(Shared.userDataList.get(i));
                 }
             }
@@ -251,7 +247,7 @@ public class  MainActivity extends FragmentActivity {
             Shared.cardData = CardDataORM.getCardData(cardID);
             //Log.d(TAG, "... Shared.cardDataList.size(): " + Shared.cardDataList.size() + " | @: " + Shared.cardDataList);
             if (Shared.cardDataList != null) {
-                Log.d (TAG, "... PARSE: CardData table: Database row: " + i +
+                Log.d (TAG, "... PARSE: CardData table: " +
                         " | cardID: " + Shared.cardData.getCardID() +
                         " | speciesName: " + Shared.cardData.getSpeciesName() +
                         " | pairedImagesDiffer: " + Shared.cardData.getPairedImageDiffer() +

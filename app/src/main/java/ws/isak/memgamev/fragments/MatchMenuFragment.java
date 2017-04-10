@@ -14,23 +14,26 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
+import android.util.Log;
 
 import ws.isak.memgamev.R;
-import ws.isak.memgamev.common.Music;
+import ws.isak.memgamev.common.Audio;
 import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.events.ui.StartEvent;
+import ws.isak.memgamev.events.ui.MatchStartEvent;
 import ws.isak.memgamev.ui.PopupManager;
 import ws.isak.memgamev.utils.Utils;
 
 /*
- Class MenuFragment sets up the fragment that greets the user FIXME the first time the app is opened.  It
+ Class MatchMenuFragment sets up the fragment that greets the user FIXME the first time the app is opened.  It
  contains the title, start game button/lights/tooltip and the settings button and includes the methods
  for animating them.  When this fragment is open, the background music is playing.
 
  @author isak
  */
 
-public class MenuFragment extends Fragment {
+public class MatchMenuFragment extends Fragment {
+
+    private static final String TAG = "MatchMenuFragment";
 
 	private ImageView mTitle;
 	private ImageView mStartGameButton;
@@ -40,7 +43,7 @@ public class MenuFragment extends Fragment {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.menu_fragment, container, false);
+		View view = inflater.inflate(R.layout.match_menu_fragment, container, false);
 		mTitle = (ImageView) view.findViewById(R.id.title);
 		mStartGameButton = (ImageView) view.findViewById(R.id.start_game_button);
 		mSettingsGameButton = (ImageView) view.findViewById(R.id.settings_game_button);
@@ -48,6 +51,7 @@ public class MenuFragment extends Fragment {
 		mSettingsGameButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+                Log.d (TAG, "method onCreateView: mSettingsGameButton: onClick");
 				PopupManager.showPopupSettings();
 			}
 		});
@@ -57,12 +61,13 @@ public class MenuFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-
-				// animate title from place and navigation buttons from place
+                Log.d (TAG, "method onCreateView: mStartGameButton: onClick");
+                // animate title from place and navigation buttons from place
 				animateAllAssetsOff(new AnimatorListenerAdapter() {
 					@Override
 					public void onAnimationEnd(Animator animation) {
-						Shared.eventBus.notify(new StartEvent());
+                        Log.d (TAG, "method onCreateView: mStartGameButton: onClick: animateAllAssetsOff: onAnimationEnd");
+                        Shared.eventBus.notify(new MatchStartEvent());
 					}
 				});
 			}
@@ -72,14 +77,14 @@ public class MenuFragment extends Fragment {
 		startTootipAnimation();
 
 		// play background music
-		Music.playBackgroundMusic();
+		Audio.playBackgroundMusic();
 		return view;
 	}
 
 	protected void animateAllAssetsOff(AnimatorListenerAdapter adapter) {
 		// title
 		// 120dp + 50dp + buffer(30dp)
-		ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTitle, "translationY", Utils.px(-200));
+		ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTitle, "translationY", Utils.px(-200));  //TODO constant to variable
 		titleAnimator.setInterpolator(new AccelerateInterpolator(2));
 		titleAnimator.setDuration(300);
 

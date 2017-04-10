@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="match_num_tiles_to_load">10</integer> <!-- TODO can this become dynamic? -->
+</resources>

@@ -38,11 +38,11 @@ import android.util.Log;
 
 
 public class Clock {
-	public static final String TAG = "Class: Clock";
+	public static final String TAG = "Clock";
 
 	private static PauseTimer mPauseTimer = null;
 	private static Clock mInstance = null;
-    public static long gameStartTimestamp;      //this needs to be set not when Clock is instantiated but when game play starts
+    public static long gameStartTimestamp;      //TODO this needs to be set not when Clock is instantiated but when game play starts
 
 	//constructor method
 	private Clock() {
@@ -97,7 +97,7 @@ public class Clock {
 		return mInstance;
 	}
 
-	/**
+	/*
 	 * Start timer
 	 * 
 	 * @param millisOnTimer
@@ -111,7 +111,7 @@ public class Clock {
 		mPauseTimer.create();
 	}
 
-	/**
+	/*
 	 * Method Pause: pauses the current timer
 	 */
 	public void pause() {
@@ -120,7 +120,7 @@ public class Clock {
 		}
 	}
 
-	/**
+	/*
 	 * Method Resume: resumes the current timer
 	 */
 	public void resume() {
@@ -129,7 +129,7 @@ public class Clock {
 		}
 	}
 
-	/**
+	/*
 	 * Method cancel: Stops and cancels the timer
 	 */
 	public void cancel() {

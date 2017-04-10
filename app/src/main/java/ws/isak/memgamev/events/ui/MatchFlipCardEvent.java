@@ -12,27 +12,29 @@ import ws.isak.memgamev.events.EventObserver;
  *
  * @author isak
  */
-public class FlipCardEvent extends AbstractEvent {
+public class MatchFlipCardEvent extends AbstractEvent {
 
-	public  final String TAG = "Class: FlipCardEvent";
+	public  final String TAG = "MatchFlipCardEvent";
 
-	public static final String TYPE = FlipCardEvent.class.getName();
+	public static final String TYPE = MatchFlipCardEvent.class.getName();
 
 	public final int id;
 	
-	public FlipCardEvent(int id) {
-		//Log.d (TAG, "constructor method: FlipCardEvent: param id is: " + id);
+	public MatchFlipCardEvent(int id) {
+		Log.d (TAG, "constructor method: MatchFlipCardEvent: param id is: " + id);
 		this.id = id;
 	}
 	
 	@Override
 	protected void fire(EventObserver eventObserver) {
-		eventObserver.onEvent(this);
+        //Log.d (TAG, "");
+        eventObserver.onEvent(this);
 	}
 
 	@Override
 	public String getType() {
-		return TYPE;
+        //Log.d (TAG, "");
+        return TYPE;
 	}
 
 }

@@ -10,7 +10,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 
-import android.os.SystemClock;
 import android.os.AsyncTask;
 
 import android.util.Log;
@@ -28,53 +27,53 @@ import android.view.animation.BounceInterpolator;
 import android.widget.Toast;
 
 import ws.isak.memgamev.R;
+import ws.isak.memgamev.common.Audio;
 import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.common.Music;
-import ws.isak.memgamev.events.ui.FlipCardEvent;
+import ws.isak.memgamev.events.ui.MatchFlipCardEvent;
 import ws.isak.memgamev.events.engine.PlayCardAudioEvent;
-import ws.isak.memgamev.model.BoardArrangement;
-import ws.isak.memgamev.model.BoardConfiguration;
-import ws.isak.memgamev.model.Game;
+import ws.isak.memgamev.model.MatchBoardConfiguration;
+import ws.isak.memgamev.model.MatchGame;
+import ws.isak.memgamev.model.MatchBoardArrangement;
 import ws.isak.memgamev.utils.Utils;
 
 /*
- * Class BoardView comprises the code which builds the board according to the dimensions found in the
- * xml dimens file according to the the ratios of tiles to rows/columns that is defined in the
- * BoardConfiguration class given users' difficulty selection.  The board is a 2D array of tiles
- * each tile mapped to a card object.
-  *
-  * @author isak
+ * Class BoardView comprises the code which builds the match game board according to the dimensions
+ * found in the xml dimens file according to the the ratios of tiles to rows/columns that is defined
+ * in the MatchBoardConfiguration class given users' difficulty selection.  The board is a 2D array
+ * of tiles each tile mapped to a card object.
+ *
+ * @author isak
  */
 
-public class BoardView extends LinearLayout {
+public class MatchBoardView extends LinearLayout {
 
-	public final String TAG = "Class: BoardView";
+	public final String TAG = "BoardView";
 
 	private LinearLayout.LayoutParams mRowLayoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 	private LinearLayout.LayoutParams mTileLayoutParams;
 	private int mScreenWidth;
 	private int mScreenHeight;
-	private BoardConfiguration mBoardConfiguration;				//an instance of the board configuration for the current game
-	private BoardArrangement mBoardArrangement;					//an instance of the board arrangement for the current game
-	private Map<Integer, TileView> mViewReference;				//a mapping of each tile ID (integer curTileOnBoard) to a view TileView
+	private MatchBoardConfiguration mMatchMatchBoardConfiguration;				//an instance of the board configuration for the current game
+	private MatchBoardArrangement mMatchBoardArrangement;					//an instance of the board arrangement for the current game
+	private Map<Integer, MatchTileView> mViewReference;				//a mapping of each tile ID (integer curTileOnBoard) to a view TileView
 	private List<Integer> flippedUp = new ArrayList<Integer>();		//an array list to hold the id's of the currently flipped up cards
 	private boolean mLocked = false;							//a flag to keep track of whether one or two cards has been flipped
 	private int mSize;											//the dimension of the tile to be drawn
 
-	public BoardView(Context context) {
+	public MatchBoardView(Context context) {
 		this(context, null);
         Log.d (TAG, "constructor BoardView");
 	}
 
-	public BoardView(Context context, AttributeSet attributeSet) {
+	public MatchBoardView(Context context, AttributeSet attributeSet) {
 		super(context, attributeSet);
 		setOrientation(LinearLayout.VERTICAL);
 		setGravity(Gravity.CENTER);
-		int margin = getResources().getDimensionPixelSize(R.dimen.margin_top);
-		int padding = getResources().getDimensionPixelSize(R.dimen.board_padding);
+		int margin = getResources().getDimensionPixelSize(R.dimen.match_margin_top);
+		int padding = getResources().getDimensionPixelSize(R.dimen.match_board_padding);
 		mScreenHeight = getResources().getDisplayMetrics().heightPixels - margin - padding*2;
 		mScreenWidth = getResources().getDisplayMetrics().widthPixels - padding*2 - Utils.px(20);
-		mViewReference = new HashMap<Integer, TileView>();
+		mViewReference = new HashMap<Integer, MatchTileView>();
 		setClipToPadding(false);
 	}
 
@@ -83,24 +82,24 @@ public class BoardView extends LinearLayout {
 		super.onFinishInflate();
 	}
 
-	public static BoardView fromXml(Context context, ViewGroup parent) {
-		return (BoardView) LayoutInflater.from(context).inflate(R.layout.board_view, parent, false);
+	public static MatchBoardView fromXml(Context context, ViewGroup parent) {
+		return (MatchBoardView) LayoutInflater.from(context).inflate(R.layout.match_board_view, parent, false);
 	}
 
-	public void setBoard(Game game) {
+	public void setBoard(MatchGame matchGame) {
 		Log.d (TAG, "method setBoard ... at start");
-		mBoardConfiguration = game.boardConfiguration;
-		mBoardArrangement = game.boardArrangement;
+		mMatchMatchBoardConfiguration = matchGame.matchMatchBoardConfiguration;
+		mMatchBoardArrangement = matchGame.matchBoardArrangement;
 		// calc prefered tiles in width and height
-		int singleMargin = getResources().getDimensionPixelSize(R.dimen.card_margin);
+		int singleMargin = getResources().getDimensionPixelSize(R.dimen.match_card_margin);
 		float density = getResources().getDisplayMetrics().density;
-		singleMargin = Math.max((int) (1 * density), (int) (singleMargin - mBoardConfiguration.difficulty * 2 * density));
+		singleMargin = Math.max((int) (1 * density), (int) (singleMargin - mMatchMatchBoardConfiguration.difficulty * 2 * density));
 		int sumMargin = 0;
-		for (int row = 0; row < mBoardConfiguration.numRows; row++) {
+		for (int row = 0; row < mMatchMatchBoardConfiguration.numRows; row++) {
 			sumMargin += singleMargin * 2;
 		}
-		int tilesHeight = (mScreenHeight - sumMargin) / mBoardConfiguration.numRows;
-		int tilesWidth = (mScreenWidth - sumMargin) / mBoardConfiguration.numTilesInRow;
+		int tilesHeight = (mScreenHeight - sumMargin) / mMatchMatchBoardConfiguration.numRows;
+		int tilesWidth = (mScreenWidth - sumMargin) / mMatchMatchBoardConfiguration.numTilesInRow;
 		mSize = Math.min(tilesHeight, tilesWidth);
 
 		mTileLayoutParams = new LinearLayout.LayoutParams(mSize, mSize);
@@ -116,7 +115,7 @@ public class BoardView extends LinearLayout {
 	 */
 	private void buildBoard() {
 		//Log.d (TAG, "method: buildBoard");
-		for (int row = 0; row < mBoardConfiguration.numRows; row++) {
+		for (int row = 0; row < mMatchMatchBoardConfiguration.numRows; row++) {
 			// add row
 			addBoardRow(row);
 		}
@@ -133,8 +132,8 @@ public class BoardView extends LinearLayout {
 		linearLayout.setOrientation(LinearLayout.HORIZONTAL);
 		linearLayout.setGravity(Gravity.CENTER);
 
-		for (int curTileInRow = 0; curTileInRow < mBoardConfiguration.numTilesInRow; curTileInRow++) {
-			addTile(rowNum * mBoardConfiguration.numTilesInRow + curTileInRow, linearLayout);
+		for (int curTileInRow = 0; curTileInRow < mMatchMatchBoardConfiguration.numTilesInRow; curTileInRow++) {
+			addTile(rowNum * mMatchMatchBoardConfiguration.numTilesInRow + curTileInRow, linearLayout);
 		}
 
 		// add to this view
@@ -147,42 +146,42 @@ public class BoardView extends LinearLayout {
 	 */
 	private void addTile(final int curTileOnBoard, ViewGroup parent) {
 		//Log.d (TAG, "method addTile init");
-		final TileView tileView = TileView.fromXml(getContext(), parent);
-		tileView.setLayoutParams(mTileLayoutParams);
-		parent.addView(tileView);
+		final MatchTileView matchTileView = MatchTileView.fromXml(getContext(), parent);
+		matchTileView.setLayoutParams(mTileLayoutParams);
+		parent.addView(matchTileView);
 		parent.setClipChildren(false);
-		mViewReference.put(curTileOnBoard, tileView);
+		mViewReference.put(curTileOnBoard, matchTileView);
 
 		new AsyncTask<Void, Void, Bitmap>() {
 
 			@Override
 			protected Bitmap doInBackground(Void... params) {
 				//Log.d (TAG, "*** method: addTile: new AsyncTask: override doInBackground: calling getTileBitmap: curTileOnBoard is: " + curTileOnBoard + " mSize is: " + mSize);
-				return mBoardArrangement.getTileBitmap(curTileOnBoard, mSize);  //this gets one of two bitmaps depending on flags
+				return mMatchBoardArrangement.getTileBitmap(curTileOnBoard, mSize);  //this gets one of two bitmaps depending on flags
 			}
 			
 			@Override
 			protected void onPostExecute(Bitmap result) {
-				tileView.setTileImage(result);
+				matchTileView.setTileImage(result);
 			}
 		}.execute();
 		
-		tileView.setOnClickListener(new View.OnClickListener() {
+		matchTileView.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
                 //keep local track of click time
                 long now = System.currentTimeMillis();
                 // allow click in two instances: one with Mix ON vs one with Mix OFF and a check that no other audio is playing
-                if ((!mLocked && tileView.isFlippedDown() && Music.MIX) ||
-                        (!mLocked && tileView.isFlippedDown() && (!Music.MIX && !Music.getIsAudioPlaying()))) {
+                if ((!mLocked && matchTileView.isFlippedDown() && Audio.MIX) ||
+                        (!mLocked && matchTileView.isFlippedDown() && (!Audio.MIX && !Audio.getIsAudioPlaying()))) {
                     Log.d(TAG, "			   : curTileOnBoard is: " + curTileOnBoard);
-                    Log.d(TAG, "			   : curCardOnTile is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getCardID());
-                    Log.d(TAG, " 			   : curCardOnTile.getAudioURI is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getAudioURI());
-                    Log.d(TAG, " 			   : curCardOnTile.getImageURI1 is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getImageURI1());
-                    Log.d(TAG, " 			   : curCardOnTile.getPairedImageDiffer is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getPairedImageDiffer());
-                    Log.d(TAG, " 			   : curCardOnTile.getFirstImageUsed is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getFirstImageUsed());
-                    Log.d(TAG, " 			   : curCardOnTile.getImageURI2 is: " + mBoardArrangement.cardObjs.get(curTileOnBoard).getImageURI2());
+                    Log.d(TAG, "			   : curCardOnTile is: " + mMatchBoardArrangement.cardObjs.get(curTileOnBoard).getCardID());
+                    Log.d(TAG, " 			   : curCardOnTile.getAudioURI is: " + mMatchBoardArrangement.cardObjs.get(curTileOnBoard).getAudioURI());
+                    Log.d(TAG, " 			   : curCardOnTile.getImageURI1 is: " + mMatchBoardArrangement.cardObjs.get(curTileOnBoard).getImageURI1());
+                    Log.d(TAG, " 			   : curCardOnTile.getPairedImageDiffer is: " + mMatchBoardArrangement.cardObjs.get(curTileOnBoard).getPairedImageDiffer());
+                    Log.d(TAG, " 			   : curCardOnTile.getFirstImageUsed is: " + mMatchBoardArrangement.cardObjs.get(curTileOnBoard).getFirstImageUsed());
+                    Log.d(TAG, " 			   : curCardOnTile.getImageURI2 is: " + mMatchBoardArrangement.cardObjs.get(curTileOnBoard).getImageURI2());
 
                     //If this is the first tile being clicked, we need to change the state of MemGameData.isGameStarted()
                     //If this is the first tile we need to set the MemGameData.setGameStartTimeStamp()
@@ -190,7 +189,7 @@ public class BoardView extends LinearLayout {
                     Log.d(TAG, "**** Update MemGameData with current timing information (and card info) ****");
                     //do the following if it is the first click in a game
                     if (!Shared.userData.getCurMemGame().isGameStarted()) {     //if this is the first card being flipped
-                        Log.d (TAG, "This is the First Tile Flipped In Game");
+                        Log.d (TAG, "This is the First Tile Flipped In MatchGame");
                         Shared.userData.getCurMemGame().setGameStarted(true);
                         Log.d (TAG, "   ***: getGameStarted: " + Shared.userData.getCurMemGame().isGameStarted());
                         Shared.userData.getCurMemGame().setGameStartTimestamp(now);
@@ -218,45 +217,45 @@ public class BoardView extends LinearLayout {
                                 " | elapsed turn time: " + (Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken()) - Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken() - 1)));
                     }
                     //  - append the clicked card to array
-                    Shared.userData.getCurMemGame().appendToCardsSelected(mBoardArrangement.cardObjs.get(curTileOnBoard).getCardID());
+                    Shared.userData.getCurMemGame().appendToCardsSelected(mMatchBoardArrangement.cardObjs.get(curTileOnBoard).getCardID());
                     Log.d (TAG, "   ***: method addTile:  appended to cards selected array: cardObjArray[numTurnsTaken].cardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(Shared.userData.getCurMemGame().getNumTurnsTaken()));
                     //  - update the number of turns taken
                     Shared.userData.getCurMemGame().incrementNumTurnsTaken();
                     Log.d (TAG, "   ***: numTurnsTaken postIncrement: " + Shared.userData.getCurMemGame().getNumTurnsTaken());
 
                     //flip the current tile up
-                    tileView.flipUp();
+                    matchTileView.flipUp();
                     //Log.d (TAG, " *** method addTile: onClick: called tileView.flipUp() *** ");
                     flippedUp.add(curTileOnBoard);
                     //Log.d (TAG, " *** flippedUp.size() is: " + flippedUp.size() + " *** ");
                     if (flippedUp.size() == 2) {
                         mLocked = true;
                     }
-                    Log.d(TAG, "method addTile: tileView.setOnClickListener: Overriding onClick: new FlipCardEvent");
-                    Shared.eventBus.notify(new FlipCardEvent(curTileOnBoard));
+                    Log.d(TAG, "method addTile: tileView.setOnClickListener: Overriding onClick: new MatchFlipCardEvent");
+                    Shared.eventBus.notify(new MatchFlipCardEvent(curTileOnBoard));
                     Log.d(TAG, "method addTile: tileView.setOnClickListener: Overriding onClick: new PlayCardAudioEvent");
                     Shared.eventBus.notify(new PlayCardAudioEvent(curTileOnBoard));
                 } else if (mLocked) {                                     //error check if locked
                     Log.d(TAG, "   : onClick Failed: mLocked: " + mLocked);
                     Toast.makeText(Shared.context, "cannot flip card, mLocked", Toast.LENGTH_SHORT).show();
-                } else if (!tileView.isFlippedDown()) {                   //error check if card flipped
-                    Log.d(TAG, "   : onClick Failed: !tileView.isFlippedDown(): " + !tileView.isFlippedDown());
+                } else if (!matchTileView.isFlippedDown()) {                   //error check if card flipped
+                    Log.d(TAG, "   : onClick Failed: !tileView.isFlippedDown(): " + !matchTileView.isFlippedDown());
                     Toast.makeText(Shared.context, "cannot flip card, already flipped", Toast.LENGTH_SHORT).show();
-                } else if (!Music.MIX && Music.getIsAudioPlaying()) {     //error mix is off and audio already playing
-                    Log.d(TAG, "   : onClick Failed: Music.Mix is: " + Music.MIX + " & Music.getIsAudioPlaying() is: " + Music.getIsAudioPlaying());
+                } else if (!Audio.MIX && Audio.getIsAudioPlaying()) {     //error mix is off and audio already playing
+                    Log.d(TAG, "   : onClick Failed: Audio.Mix is: " + Audio.MIX + " & Audio.getIsAudioPlaying() is: " + Audio.getIsAudioPlaying());
                     Toast.makeText(Shared.context, "cannot flip card, wait for audio to finish or set mix ON in settings", Toast.LENGTH_SHORT).show();
                 }
             }
 		});
 
-		ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(tileView, "scaleX", 0.8f, 1f);
+		ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(matchTileView, "scaleX", 0.8f, 1f);
 		scaleXAnimator.setInterpolator(new BounceInterpolator());
-		ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(tileView, "scaleY", 0.8f, 1f);
+		ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(matchTileView, "scaleY", 0.8f, 1f);
 		scaleYAnimator.setInterpolator(new BounceInterpolator());
 		AnimatorSet animatorSet = new AnimatorSet();
 		animatorSet.playTogether(scaleXAnimator, scaleYAnimator);
 		animatorSet.setDuration(500);
-		tileView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+		matchTileView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 		animatorSet.start();
 	}
 
@@ -279,7 +278,7 @@ public class BoardView extends LinearLayout {
 		mLocked = false;
 	}
 
-	protected void animateHide(final TileView v) {
+	protected void animateHide(final MatchTileView v) {
 		ObjectAnimator animator = ObjectAnimator.ofFloat(v, "alpha", 0f);
 		animator.addListener(new AnimatorListenerAdapter() {
 			@Override

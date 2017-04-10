@@ -19,7 +19,7 @@ import ws.isak.memgamev.common.Shared;
 
 public class DatabaseWrapper extends SQLiteOpenHelper {
 
-    private static final String TAG="Class: DatabaseWrapper";
+    private static final String TAG="DatabaseWrapper";
 
     private static final int DATABASE_VERSION = 1;
 

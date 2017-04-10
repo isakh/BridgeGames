@@ -9,7 +9,7 @@ import java.util.List;
 import ws.isak.memgamev.engine.Engine;
 import ws.isak.memgamev.events.EventBus;
 import ws.isak.memgamev.database.DatabaseWrapper;
-import ws.isak.memgamev.model.Game;
+import ws.isak.memgamev.model.MatchGame;
 import ws.isak.memgamev.model.MemGameData;
 
 /*
@@ -20,13 +20,13 @@ import ws.isak.memgamev.model.MemGameData;
 
 public class Shared {
 
-    public static final String TAG = "Class: Shared";
+    public static final String TAG = "Shared";
 
 	public static Context context;           // FIXME can we make these non-static?
 	public static FragmentActivity activity; // TODO: move to weak reference
 	public static Engine engine;
 	public static EventBus eventBus;
-    public static Game currentGame;
+    public static MatchGame currentMatchGame;
 
     //database
     //FIXME - can't use context here why? public static final String DATABASE_NAME = context.getResources().getString(R.string.database_name);

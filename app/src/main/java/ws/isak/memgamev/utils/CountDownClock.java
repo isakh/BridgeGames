@@ -10,8 +10,14 @@ import android.util.Log;
 @SuppressLint("HandlerLeak")
 
 
+/*
+ * Class CountDownClock
+ *
+ * @author isak
+ */
+
 public abstract class CountDownClock {
-    public final String TAG = "Class: CountDownClock";
+    public final String TAG = "CountDownClock";
 
     private long mStopTimeInFuture;		    //Milliseconds since boot when alarm should stop.
 	private long mMillisOnTimer;            //Real time remaining until timer completes

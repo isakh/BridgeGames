@@ -11,14 +11,14 @@ import android.support.v4.app.FragmentTransaction;
 
 import ws.isak.memgamev.R;
 import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.events.ui.ResetBackgroundEvent;
-import ws.isak.memgamev.fragments.DifficultySelectFragment;
-import ws.isak.memgamev.fragments.GameFragment;
-import ws.isak.memgamev.fragments.MenuFragment;
-import ws.isak.memgamev.fragments.ThemeSelectFragment;
+import ws.isak.memgamev.events.ui.MatchResetBackgroundEvent;
+import ws.isak.memgamev.fragments.MatchDifficultySelectFragment;
+import ws.isak.memgamev.fragments.MatchGameFragment;
+import ws.isak.memgamev.fragments.MatchMenuFragment;
+import ws.isak.memgamev.fragments.MatchThemeSelectFragment;
 import ws.isak.memgamev.fragments.UserSetupFragment;
 import ws.isak.memgamev.fragments.PreSurveyFragment;
-import ws.isak.memgamev.fragments.GameSelectFragment;
+import ws.isak.memgamev.fragments.MatchGameSelectFragment;
 import ws.isak.memgamev.fragments.PostSurveyFragment;
 import ws.isak.memgamev.fragments.FinishedFragment;
 
@@ -31,7 +31,7 @@ import ws.isak.memgamev.fragments.FinishedFragment;
 
 public class ScreenController {
 
-    public static final String TAG = "Class: ScreenController";
+    public static final String TAG = "ScreenController";
 
 	private static ScreenController mInstance = null;
 	private static List<Screen> openedScreens = new ArrayList<Screen>();
@@ -56,7 +56,7 @@ public class ScreenController {
         SELECT_GAME,            //choose between memory game and swap game
 		MENU_MEM,               //menu allows choices of audio playback
         MENU_SWAP,              //TODO - audio playback is required?? so maybe some resolution parameters?
-        THEME_SELECT,           //theme is only relevant to memory game
+        THEME_SELECT,           //matchTheme is only relevant to memory game
         DIFFICULTY_MEM,         //three levels of difficulty available
         DIFFICULTY_SWAP,        //TODO - start with two levels
         GAME_MEM,
@@ -98,7 +98,7 @@ public class ScreenController {
 			openedScreens.remove(openedScreens.size() - 1);
 			openScreen(screen);
 			if ((screen == Screen.THEME_SELECT || screen == Screen.MENU_MEM) && (screenToRemove == Screen.DIFFICULTY_MEM || screenToRemove == Screen.GAME_MEM)) {
-				Shared.eventBus.notify(new ResetBackgroundEvent());
+				Shared.eventBus.notify(new MatchResetBackgroundEvent());
             }
             //back from SelectGame should be limited?
             if (screen == Screen.SELECT_GAME) {
@@ -120,22 +120,22 @@ public class ScreenController {
                 return new PreSurveyFragment();
             case SELECT_GAME:
                 Log.d (TAG, "method getFragment: case SELECT_GAME");
-                return new GameSelectFragment();
+                return new MatchGameSelectFragment();
 		    case MENU_MEM:
                 Log.d (TAG, "method getFragment: case MENU_MEM");
-                return new MenuFragment();
+                return new MatchMenuFragment();
             //case MENU_SWAP:
             //    return new SwapMenuFragment();
             case THEME_SELECT:
                 Log.d (TAG, "method getFragment: case THEME_SELECT");
-                return new ThemeSelectFragment();
+                return new MatchThemeSelectFragment();
             case DIFFICULTY_MEM:
                 Log.d (TAG, "method getFragment: case DIFFICULTY_MEM");
-                return new DifficultySelectFragment();
+                return new MatchDifficultySelectFragment();
             //case DIFFICULTY_SWAP:
             //    return new SwapDifficultyFragment();
             case GAME_MEM:
-	    		return new GameFragment();
+	    		return new MatchGameFragment();
             //case GAME_SWAP:
             //    return new SwapGameFragment();
             case POST_SURVEY:

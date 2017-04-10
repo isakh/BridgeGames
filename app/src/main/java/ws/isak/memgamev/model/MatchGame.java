@@ -1,33 +1,33 @@
 package ws.isak.memgamev.model;
 
-import ws.isak.memgamev.themes.Theme;
+import ws.isak.memgamev.themes.MatchTheme;
 
 /**
  * This is the instance of an active playing game.  A given game is comprised of: a board configuration
  * which is defined by the dimensions of the board based on the difficulty selected; a board
- * arrangement which covers mapping tile pairs and tile IDs to bitmaps; a theme which defines the
+ * arrangement which covers mapping tile pairs and tile IDs to bitmaps; a matchTheme which defines the
  * set of images (and whether they are identical pairs or non-identical) and audio corresponding to
- * the theme; and game state which tracks the current performance in terms of time, stars earned, and
+ * the matchTheme; and game state which tracks the current performance in terms of time, stars earned, and
  * corresponding score.
  *
  * @author isak
  */
-public class Game {
+public class MatchGame {
 
 	/**
 	 * The board configuration
 	 */
-	public BoardConfiguration boardConfiguration;
+	public MatchBoardConfiguration matchMatchBoardConfiguration;
 
 	/**
 	 * The board arrangement
 	 */
-	public BoardArrangement boardArrangement;
+	public MatchBoardArrangement matchBoardArrangement;
 
 	/**
-	 * The selected theme
+	 * The selected matchTheme
 	 */
-	public Theme theme;
+	public MatchTheme matchTheme;
 
 	public GameState gameState;
 

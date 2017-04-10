@@ -55,7 +55,7 @@
 
     </RadioGroup>
 
-    <!-- [2]  Whilst playing the game, could you hear a song by observing its shape? [LIKERT] -->
+    <!-- [2]  Whilst playing the matchGame, could you hear a song by observing its shape? [LIKERT] -->
     <TextView
         android:id="@+id/post_survey_hearing_equals_seeing_query_text_id"
         android:layout_width="match_parent"
@@ -118,7 +118,7 @@
 
     </RadioGroup>
 
-    <!-- [3] After playing the game, could you predict the shape of the song when listening to it? [LIKERT/ Boolean?] -->
+    <!-- [3] After playing the matchGame, could you predict the shape of the song when listening to it? [LIKERT/ Boolean?] -->
     <TextView
         android:id="@+id/post_survey_hearing_equals_predicting_query_text_id"
         android:layout_width="match_parent"
