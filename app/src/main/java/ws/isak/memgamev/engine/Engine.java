@@ -150,7 +150,7 @@ public class Engine extends EventObserverAdapter {
         Log.d (TAG, "override inEvent for SwapStarEvent: Calling screen controller to open DIFFICULTY_SWAP");
         PopupManager.closePopup();
         //FIXME!!! mScreenController.openScreen(Screen.DIFFICULTY_SWAP);
-        mScreenController.openScreen(Screen.FINISHED);      //TODO - this is just for debugging
+        mScreenController.openScreen(Screen.POST_SURVEY);      //TODO - this is just for debugging
     }
 
 	@Override
