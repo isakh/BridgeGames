@@ -73,7 +73,7 @@ public class MatchGameFragment extends BaseFragment {
 
 	private void buildBoard() {
 		MatchGame matchGame = Shared.engine.getActiveGame();
-		long time = matchGame.matchBoardConfiguration.time;
+		long time = matchGame.matchMatchBoardConfiguration.time;
 		setTime(time);
 		mMatchBoardView.setBoard(matchGame);
 		
