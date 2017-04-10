@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:gravity="left|top">
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/match_popup_settings_title_height"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="5dp"
+        android:shadowColor="#2eaed9"
+        android:shadowDx="4"
+        android:shadowDy="4"
+        android:shadowRadius="4"
+        android:text="@string/swap_popup_settings_title_text"
+        android:textSize="@dimen/swap_popup_won_title_text_size"
+        android:textColor="#0e0e0e" />
+
+    <!-- Sound on/off button and text-->
+    <LinearLayout
+        android:id="@+id/looper_on_off"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginLeft="5dp">
+
+        <ImageView
+            android:id="@+id/looper_on_off_image"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/swap_popup_settings_looper_image_size"
+            android:layout_marginLeft="5dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/button_looper_on"
+            android:onClick="setLooperButton"/>
+
+        <TextView
+            android:id="@+id/looper_on_off_text"
+            android:layout_width="175dp"
+            android:layout_height="@dimen/swap_popup_settings_looper_image_size"
+            android:layout_marginLeft="8dp"
+            android:gravity="left|center_vertical"
+            android:shadowColor="#2eaed9"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:shadowRadius="4"
+            android:text="@string/swap_popup_settings_looper_on_text"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/swap_popup_settings_looper_text_size" />
+    </LinearLayout>
+
+    <!-- Mix on/off button and text -->
+    <LinearLayout
+        android:id="@+id/mix_on_off"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginLeft="5dp">
+
+        <ImageView
+            android:id="@+id/mix_on_off_image"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/swap_popup_settings_mix_image_size"
+            android:layout_marginLeft="5dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/button_mixer_on"
+            android:onClick="setMixerButton"/>
+
+        <TextView
+            android:id="@+id/mix_on_off_text"
+            android:layout_width="175dp"
+            android:layout_height="@dimen/swap_popup_settings_mix_image_size"
+            android:layout_marginLeft="8dp"
+            android:gravity="left|center_vertical"
+            android:shadowColor="#2eaed9"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:shadowRadius="4"
+            android:text="@string/swap_popup_settings_mixer_on_text"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/swap_popup_settings_mix_text_size" /> <!-- TODO change all constants to dimens/colours/etc -->
+    </LinearLayout>
+
+</LinearLayout>
