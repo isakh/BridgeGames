@@ -144,7 +144,9 @@ public class  MainActivity extends FragmentActivity {
             curCard.setSampleDuration(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
             //insert cardData object into Database and local storage
             Shared.cardDataList.add(curCard);
-            CardDataORM.insertCardData(curCard);
+            if (!CardDataORM.isCardDataInDB(curCard)) {
+                CardDataORM.insertCardData(curCard);
+            }
         }
     }
 

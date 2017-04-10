@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -121,6 +122,31 @@ public class CardDataORM {
         }
         database.close();
         return numRecords;
+    }
+
+    //method isCardDataInDB takes a CardData object and checks whether it has been used as a
+    //primary key yet in the database - used to check existence and uniqueness when loading cards.
+    public static boolean isCardDataInDB (CardData cardToCheck) {
+        Log.d (TAG, "method isCardDataInDB: check cardToCheck: " + cardToCheck);
+        DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
+        SQLiteDatabase database = databaseWrapper.getReadableDatabase();
+
+        boolean cardExists = false;     //false unless found in database
+        int cardID = cardToCheck.getCardID();
+        if (database != null) {
+            Log.d (TAG, "method isCardDataInDB: searching...");
+            Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_CARD_ID + " ='" + cardID + "'", null);
+            //FIXME - this prevent's SQL injection: Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " =?", userName);
+            if (cursor.getCount() > 0) {
+                cardExists = true;
+            }
+            else {
+                Toast.makeText(Shared.context, "new card added to database" , Toast.LENGTH_SHORT).show();
+            }
+            cursor.close();
+            database.close();
+        }
+        return  cardExists;
     }
 
 
