@@ -92,7 +92,7 @@
     <!-- =================================================================================== -->
     <!-- Layout: popup_won_view -->
     <!-- ********************** -->
-    <!-- title -->
+    <!-- match_menu_title -->
     <string name="popup_won_view_title">Level Complete</string>
     <!-- time information -->
     <string name="popup_won_time_text">Time</string>

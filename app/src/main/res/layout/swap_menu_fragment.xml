@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/start_swap_game_button_lights"
+        android:layout_width="@dimen/swap_menu_fragment_start_game_button_lights"
+        android:layout_height="@dimen/swap_menu_fragment_start_game_button_lights"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/button_start_lights"/>
+
+    <ImageView
+        android:id="@+id/start_swap_game_button"
+        android:layout_width="@dimen/swap_menu_fragment_start_game_button"
+        android:layout_height="@dimen/swap_menu_fragment_start_game_button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/swap_menu_fragment_start_game_button_margin"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/button_start" />
+
+    <ImageView
+        android:id="@+id/settings_swap_game_button"
+        android:layout_width="@dimen/swap_menu_fragment_settings_game_button"
+        android:layout_height="@dimen/swap_menu_fragment_settings_game_button"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/swap_menu_fragment_settings_game_button_margin"
+        android:layout_toLeftOf="@id/start_swap_game_button"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/button_settings" />
+
+    <ImageView
+        android:id="@+id/swap_menu_title"
+        android:layout_width="@dimen/swap_menu_fragment_title_width"
+        android:layout_height="@dimen/swap_menu_fragment_title_height"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/swap_menu_fragment_title_margin_top"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:src="@drawable/match_menu_title" />     <!-- TODO either generate image swap_menu_title or make both text instead of images -->
+
+    <ImageView
+        android:id="@+id/swap_menu_tooltip"
+        android:layout_width="@dimen/swap_menu_fragment_tooltip_width"
+        android:layout_height="@dimen/swap_menu_fragment_tooltip_height"
+        android:layout_alignLeft="@id/settings_swap_game_button"
+        android:adjustViewBounds="true"
+        android:layout_marginLeft="@dimen/swap_menu_fragment_tooltip_margin_left"
+        android:scaleType="centerCrop"
+        android:src="@drawable/tooltip_play"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/swap_menu_fragment_tooltip_margin_bottom"/>
+
+</RelativeLayout>
