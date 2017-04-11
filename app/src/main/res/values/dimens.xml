@@ -25,6 +25,14 @@
     <dimen name="match_difficulty_margin">10dp</dimen>
     <dimen name="match_difficulty_margin_top">20dp</dimen>
 
+    <!-- ================================================================================-->
+    <!-- Layout: swap_difficulty_select_fragment -->
+    <!-- ********************************** -->
+    <dimen name="swap_difficulty_padding">40dp</dimen>
+    <dimen name="swap_difficulty_margin">10dp</dimen>
+    <dimen name="swap_difficulty_margin_top">20dp</dimen>
+
+
     <!-- =============================================================================== -->
     <!-- Layout: finished_fragment -->
     <!-- ************************* -->
