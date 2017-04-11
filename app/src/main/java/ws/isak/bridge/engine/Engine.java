@@ -28,6 +28,7 @@ import ws.isak.bridge.events.engine.MatchFlipDownCardsEvent;
 import ws.isak.bridge.events.engine.MatchGameWonEvent;
 import ws.isak.bridge.events.engine.PlayCardAudioEvent;
 import ws.isak.bridge.events.ui.MatchDifficultySelectedEvent;
+import ws.isak.bridge.events.ui.SwapDifficultySelectedEvent;
 import ws.isak.bridge.events.ui.MatchNextGameEvent;
 import ws.isak.bridge.events.ui.MatchResetBackgroundEvent;
 import ws.isak.bridge.events.ui.MatchThemeSelectedEvent;
@@ -149,8 +150,7 @@ public class Engine extends EventObserverAdapter {
     public void onEvent (SwapStartEvent event) {
         Log.d (TAG, "override inEvent for SwapStarEvent: Calling screen controller to open DIFFICULTY_SWAP");
         PopupManager.closePopup();
-        //FIXME!!! mScreenController.openScreen(Screen.DIFFICULTY_SWAP);
-        mScreenController.openScreen(Screen.POST_SURVEY);      //TODO - this is just for debugging
+        mScreenController.openScreen(Screen.DIFFICULTY_SWAP);
     }
 
 	@Override
@@ -210,7 +210,7 @@ public class Engine extends EventObserverAdapter {
         Shared.currentMatchGame = mPlayingMatchGame;
 
 		// arrange board
-		arrangeBoard();
+		arrangeMatchBoard();
 
         //instantiating the currentGameData object - some fields default to 0 || null
         currentGameData = new MemGameData();
@@ -247,7 +247,7 @@ public class Engine extends EventObserverAdapter {
 		mScreenController.openScreen(Screen.GAME_MEM);
     }
 
-	private void arrangeBoard() {
+	private void arrangeMatchBoard() {
 		MatchBoardConfiguration matchMatchBoardConfiguration = mPlayingMatchGame.matchMatchBoardConfiguration;
 		MatchBoardArrangement matchBoardArrangement = new MatchBoardArrangement();
 
@@ -285,6 +285,15 @@ public class Engine extends EventObserverAdapter {
 		}
 		mPlayingMatchGame.matchBoardArrangement = matchBoardArrangement;
 	}
+
+    @Override
+    public void onEvent(SwapDifficultySelectedEvent event) {
+        //TODO
+        //TODO
+        //TODO
+        mScreenController.openScreen(Screen.FINISHED); //FIXME to GAME_SWAP when ready
+
+    }
 
 	/*
 	 * Override method onEvent when the event being passed is a MatchFlipCardEvent.
@@ -344,7 +353,7 @@ public class Engine extends EventObserverAdapter {
 					// calculate the score
 					gameState.achievedScore = mPlayingMatchGame.matchMatchBoardConfiguration.difficulty * gameState.remainingTimeInSeconds * mPlayingMatchGame.matchTheme.themeID;
 					// save to memory
-					Memory.save(mPlayingMatchGame.matchTheme.themeID, mPlayingMatchGame.matchMatchBoardConfiguration.difficulty, gameState.achievedStars);
+					Memory.saveMatch(mPlayingMatchGame.matchTheme.themeID, mPlayingMatchGame.matchMatchBoardConfiguration.difficulty, gameState.achievedStars);
 					//trigger the MatchGameWonEvent
 					Shared.eventBus.notify(new MatchGameWonEvent(gameState), 1200);
 				}

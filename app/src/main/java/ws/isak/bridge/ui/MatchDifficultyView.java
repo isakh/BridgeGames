@@ -13,7 +13,7 @@ import ws.isak.bridge.R;
 import ws.isak.bridge.common.Shared;
 
 /*
- * Class DifficultyView creates the view for the match difficulty screen
+ * Class MatchDifficultyView creates the view for the match difficulty screen
  *
  * @author isak
  */
@@ -43,11 +43,11 @@ public class MatchDifficultyView extends LinearLayout {
 	}
 
     /*
-     * Method setDifficulty
+     * Method setMatchDifficulty
      */
-	public void setDifficulty(int difficulty, int stars) {
-        Log.d (TAG, "method setDifficulty");
-		String titleResource = String.format(Locale.US, "button_difficulty_%d_star_%d", difficulty, stars);
+	public void setMatchDifficulty(int difficulty, int stars) {
+        Log.d (TAG, "method setMatchDifficulty");
+		String titleResource = String.format(Locale.ENGLISH, "button_difficulty_%d_star_%d", difficulty, stars);
 		int drawableResourceId = Shared.context.getResources().getIdentifier(titleResource, "drawable", Shared.context.getPackageName());
 		mTitle.setImageResource(drawableResourceId);
 	}

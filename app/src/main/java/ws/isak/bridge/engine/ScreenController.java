@@ -13,6 +13,7 @@ import ws.isak.bridge.R;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.events.ui.MatchResetBackgroundEvent;
 import ws.isak.bridge.fragments.MatchDifficultySelectFragment;
+import ws.isak.bridge.fragments.SwapDifficultySelectFragment;
 import ws.isak.bridge.fragments.MatchGameFragment;
 import ws.isak.bridge.fragments.MatchMenuFragment;
 import ws.isak.bridge.fragments.SwapMenuFragment;
@@ -56,10 +57,10 @@ public class ScreenController {
         PRE_SURVEY,
         SELECT_GAME,            //choose between memory game and swap game
 		MENU_MEM,               //menu allows choices of audio playback
-        MENU_SWAP,              //TODO - audio playback is required?? so maybe some resolution parameters?THEME_SELECT_MEM,
+        MENU_SWAP,              //audio playback is required - mixer & looper for now: TODO maybe some resolution parameters?
         THEME_SELECT_MEM,
         DIFFICULTY_MEM,         //three levels of difficulty available
-        DIFFICULTY_SWAP,        //TODO - start with two levels
+        DIFFICULTY_SWAP,        //three levels 2x4, 3x4, 4x4 [species x chunks in sample]
         GAME_MEM,
         GAME_SWAP,              //TODO
         POST_SURVEY,             //FIXME should we have different ones for each game? and/or one for all?
@@ -138,8 +139,9 @@ public class ScreenController {
             case DIFFICULTY_MEM:
                 Log.d (TAG, "method getFragment: case DIFFICULTY_MEM");
                 return new MatchDifficultySelectFragment();
-            //case DIFFICULTY_SWAP:
-            //    return new SwapDifficultyFragment();
+            case DIFFICULTY_SWAP:
+                Log.d (TAG, "method getFragment: case DIFFICULTY_SWAP");
+                return new SwapDifficultySelectFragment();
             case GAME_MEM:
 	    		return new MatchGameFragment();
             //case GAME_SWAP:

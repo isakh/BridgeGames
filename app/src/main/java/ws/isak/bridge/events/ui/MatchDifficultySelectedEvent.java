@@ -12,7 +12,7 @@ import ws.isak.bridge.events.EventObserver;
  */
 public class MatchDifficultySelectedEvent extends AbstractEvent {
 
-    private static final String TAG = "MatchDifficultySelectedEvent";
+    private static final String TAG = "MatchDiffSelectedEvent";
 
 	public static final String TYPE = MatchDifficultySelectedEvent.class.getName();
 

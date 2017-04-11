@@ -95,7 +95,7 @@ public class MatchThemeSelectFragment extends Fragment implements View.OnClickLi
 	private void setStars(ImageView imageView, MatchTheme matchTheme, String type) {
 		int sum = 0;
 		for (int difficulty = 1; difficulty <= 6; difficulty++) {
-			sum += Memory.getHighStars(matchTheme.themeID, difficulty);
+			sum += Memory.getMatchHighStars(matchTheme.themeID, difficulty);
 		}
 		int num = sum / 6;
 		if (num != 0) {

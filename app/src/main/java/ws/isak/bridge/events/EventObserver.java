@@ -7,6 +7,7 @@ import ws.isak.bridge.events.engine.PlayCardAudioEvent;
 
 import ws.isak.bridge.events.ui.MatchBackGameEvent;
 import ws.isak.bridge.events.ui.MatchDifficultySelectedEvent;
+import ws.isak.bridge.events.ui.SwapDifficultySelectedEvent;
 import ws.isak.bridge.events.ui.MatchFlipCardEvent;
 import ws.isak.bridge.events.ui.MatchNextGameEvent;
 import ws.isak.bridge.events.ui.MatchResetBackgroundEvent;
@@ -27,6 +28,8 @@ public interface EventObserver {
 	void onEvent(MatchFlipCardEvent event);
 
 	void onEvent(MatchDifficultySelectedEvent event);
+
+    void onEvent(SwapDifficultySelectedEvent event);
 
 	void onEvent(MatchHidePairCardsEvent event);
 

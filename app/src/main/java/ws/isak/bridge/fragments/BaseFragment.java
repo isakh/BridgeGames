@@ -13,6 +13,7 @@ import ws.isak.bridge.events.engine.PlayCardAudioEvent;
 import ws.isak.bridge.events.ui.MatchBackGameEvent;
 import ws.isak.bridge.events.ui.MatchFlipCardEvent;
 import ws.isak.bridge.events.ui.MatchDifficultySelectedEvent;
+import ws.isak.bridge.events.ui.SwapDifficultySelectedEvent;
 import ws.isak.bridge.events.ui.MatchNextGameEvent;
 import ws.isak.bridge.events.ui.MatchResetBackgroundEvent;
 import ws.isak.bridge.events.ui.MatchThemeSelectedEvent;
@@ -40,6 +41,12 @@ public class BaseFragment extends Fragment implements EventObserver {
         //Log.d (TAG, "");
         throw new UnsupportedOperationException();
 	}
+
+    @Override
+    public void onEvent(SwapDifficultySelectedEvent event) {
+        //Log.d (TAG, "");
+        throw new UnsupportedOperationException();
+    }
 
 	@Override
 	public void onEvent(MatchHidePairCardsEvent event) {

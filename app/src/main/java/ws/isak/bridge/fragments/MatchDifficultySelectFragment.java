@@ -34,19 +34,19 @@ public class MatchDifficultySelectFragment extends Fragment {
 		View view = LayoutInflater.from(Shared.context).inflate(R.layout.match_difficulty_select_fragment, container, false);
 		MatchTheme matchTheme = Shared.engine.getSelectedTheme();
 
-		MatchDifficultyView difficulty1 = (MatchDifficultyView) view.findViewById(R.id.select_match_difficulty_1);
-		difficulty1.setDifficulty(1, Memory.getHighStars(matchTheme.themeID, 1));
-		setOnClick(difficulty1, 1);
+		MatchDifficultyView matchDifficulty1 = (MatchDifficultyView) view.findViewById(R.id.select_match_difficulty_1);
+		matchDifficulty1.setMatchDifficulty(1, Memory.getMatchHighStars(matchTheme.themeID, 1));
+		setOnClick(matchDifficulty1, 1);
 
-		MatchDifficultyView difficulty2 = (MatchDifficultyView) view.findViewById(R.id.select_match_difficulty_2);
-		difficulty2.setDifficulty(2, Memory.getHighStars(matchTheme.themeID, 2));
-		setOnClick(difficulty2, 2);
+		MatchDifficultyView matchDifficulty2 = (MatchDifficultyView) view.findViewById(R.id.select_match_difficulty_2);
+		matchDifficulty2.setMatchDifficulty(2, Memory.getMatchHighStars(matchTheme.themeID, 2));
+		setOnClick(matchDifficulty2, 2);
 
-		MatchDifficultyView difficulty3 = (MatchDifficultyView) view.findViewById(R.id.select_match_difficulty_3);
-		difficulty3.setDifficulty(3, Memory.getHighStars(matchTheme.themeID, 3));
-		setOnClick(difficulty3, 3);
+		MatchDifficultyView matchDifficulty3 = (MatchDifficultyView) view.findViewById(R.id.select_match_difficulty_3);
+		matchDifficulty3.setMatchDifficulty(3, Memory.getMatchHighStars(matchTheme.themeID, 3));
+		setOnClick(matchDifficulty3, 3);
 
-		animate(difficulty1, difficulty2, difficulty3);
+		animate(matchDifficulty1, matchDifficulty2, matchDifficulty3);
 
 		return view;
 	}
@@ -59,7 +59,7 @@ public class MatchDifficultySelectFragment extends Fragment {
 			ObjectAnimator scaleY = ObjectAnimator.ofFloat(view[i], "scaleY", 0.8f, 1f);
 			builder.with(scaleX).with(scaleY);
 		}
-		animatorSet.setDuration(500);
+		animatorSet.setDuration(500);               //TODO make this constant a variable?
 		animatorSet.setInterpolator(new BounceInterpolator());
 		animatorSet.start();
 	}
