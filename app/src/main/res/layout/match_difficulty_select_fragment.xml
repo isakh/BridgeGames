@@ -15,7 +15,7 @@
         android:gravity="center"
         android:orientation="vertical" >
 
-        <ws.isak.memgamev.ui.MatchDifficultyView
+        <ws.isak.bridge.ui.MatchDifficultyView
             android:id="@+id/select_difficulty_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -30,7 +30,7 @@
         android:gravity="center"
         android:orientation="vertical" >
 
-        <ws.isak.memgamev.ui.MatchDifficultyView
+        <ws.isak.bridge.ui.MatchDifficultyView
             android:id="@+id/select_difficulty_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -45,7 +45,7 @@
         android:gravity="center"
         android:orientation="vertical" >
 
-        <ws.isak.memgamev.ui.MatchDifficultyView
+        <ws.isak.bridge.ui.MatchDifficultyView
             android:id="@+id/select_difficulty_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
