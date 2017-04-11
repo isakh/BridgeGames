@@ -62,8 +62,35 @@ public class PopupManager {
 	}
 
 	public static void showSwapPopupSettings() {
-        //TODO ALL OF THIS!!
-    }
+        Log.d (TAG, "method showSwapPopupSettings");
+        RelativeLayout popupContainer = (RelativeLayout) Shared.activity.findViewById(R.id.popup_container);
+        popupContainer.removeAllViews();
+
+        // background
+        ImageView imageView = new ImageView(Shared.context);
+        imageView.setBackgroundColor(Color.parseColor("#88555555"));        //TODO set in colors.xml
+        imageView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        imageView.setClickable(true);
+        popupContainer.addView(imageView);
+
+        // popup
+        SwapPopupSettingsView swapPopupSettingsView = new SwapPopupSettingsView(Shared.context);
+        int width = Shared.context.getResources().getDimensionPixelSize(R.dimen.swap_popup_settings_width);
+        int height = Shared.context.getResources().getDimensionPixelSize(R.dimen.swap_popup_settings_height);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        popupContainer.addView(swapPopupSettingsView, params);
+
+        // animate all together
+        ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(swapPopupSettingsView, "scaleX", 0f, 1f);
+        ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(swapPopupSettingsView, "scaleY", 0f, 1f);
+        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(imageView, "alpha", 0f, 1f);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(scaleXAnimator, scaleYAnimator, alphaAnimator);
+        animatorSet.setDuration(500);
+        animatorSet.setInterpolator(new DecelerateInterpolator(2));
+        animatorSet.start();
+    }    
 
 	public static void showPopupWon(GameState gameState) {
         Log.d (TAG, "method showPopupWon");

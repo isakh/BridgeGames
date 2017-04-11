@@ -16,14 +16,14 @@ import ws.isak.memgamev.utils.FontLoader;
 import ws.isak.memgamev.utils.FontLoader.Font;
 
 /*
- * The class PopupSettingsView defines the settings popup for the matching game.
+ * The class MatchPopupSettingsView defines the settings popup for the matching game.
  *
  * @author isak
  */
 
 public class MatchPopupSettingsView extends LinearLayout implements View.OnClickListener{
 
-    public static final String TAG="PopupSettingsView";
+    public static final String TAG="MatchPopupSettingsView";
 
 	private ImageView mSoundImage;
     private ImageView mMixImage;

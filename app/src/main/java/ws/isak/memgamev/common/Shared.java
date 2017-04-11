@@ -11,6 +11,7 @@ import ws.isak.memgamev.events.EventBus;
 import ws.isak.memgamev.database.DatabaseWrapper;
 import ws.isak.memgamev.model.MatchGame;
 import ws.isak.memgamev.model.MemGameData;
+import ws.isak.memgamev.model.SwapGameData;
 
 /*
  * Class Shared
@@ -33,13 +34,15 @@ public class Shared {
     public static final String DATABASE_NAME = "bridge.db";
     public static DatabaseWrapper databaseWrapper;
 
-    //data classes / methods
+    //data classes / methods    FIXME - should these be static???
     public static UserData userData;        //This holds the current active UserData
     public static List <UserData> userDataList;
     public static MemGameData memGameData;  //FIXME - is this necessary? we can generally access the current memGameData from userData.getCurMemGameData()
     public static List <MemGameData> memGameDataList;
     public static CardData cardData;        //placeholder cardData for return from database call
     public static List <CardData> cardDataList;
+    public static SwapGameData swapGameData;
+    public static List <SwapGameData> swapGameDataList;
     
     public static void setUserData (UserData user) {
         Log.d (TAG, "method setUserData");

@@ -56,8 +56,8 @@ public class ScreenController {
         PRE_SURVEY,
         SELECT_GAME,            //choose between memory game and swap game
 		MENU_MEM,               //menu allows choices of audio playback
-        MENU_SWAP,              //TODO - audio playback is required?? so maybe some resolution parameters?THEME_SELECT_MATCH,
-        THEME_SELECT_MATCH,
+        MENU_SWAP,              //TODO - audio playback is required?? so maybe some resolution parameters?THEME_SELECT_MEM,
+        THEME_SELECT_MEM,
         DIFFICULTY_MEM,         //three levels of difficulty available
         DIFFICULTY_SWAP,        //TODO - start with two levels
         GAME_MEM,
@@ -98,13 +98,17 @@ public class ScreenController {
 			Screen screen = openedScreens.get(openedScreens.size() - 1);
 			openedScreens.remove(openedScreens.size() - 1);
 			openScreen(screen);
-			if ((screen == Screen.THEME_SELECT_MATCH || screen == Screen.MENU_MEM) && (screenToRemove == Screen.DIFFICULTY_MEM || screenToRemove == Screen.GAME_MEM)) {
+			//menu/theme select is where we go back to when at difficulty select/game for memory matching game
+            if ((screen == Screen.THEME_SELECT_MEM || screen == Screen.MENU_MEM) && (screenToRemove == Screen.DIFFICULTY_MEM || screenToRemove == Screen.GAME_MEM)) {
 				Shared.eventBus.notify(new MatchResetBackgroundEvent());
             }
             //back from SelectGame should be limited?
             if (screen == Screen.SELECT_GAME) {
                 //allow user to change pre survey data
                 openScreen(Screen.PRE_SURVEY);
+            }
+            if (screen == Screen.MENU_SWAP) {       //TODO || Screen.MENU_MEM?
+                openScreen(Screen.SELECT_GAME);
             }
 			return false;
 		}
@@ -126,9 +130,10 @@ public class ScreenController {
                 Log.d (TAG, "method getFragment: case MENU_MEM");
                 return new MatchMenuFragment();
             case MENU_SWAP:
+                Log.d (TAG, "method getFragment: case MENU_SWAP");
                 return new SwapMenuFragment();
-            case THEME_SELECT_MATCH:
-                Log.d (TAG, "method getFragment: case THEME_SELECT_MATCH");
+            case THEME_SELECT_MEM:
+                Log.d (TAG, "method getFragment: case THEME_SELECT_MEM");
                 return new MatchThemeSelectFragment();
             case DIFFICULTY_MEM:
                 Log.d (TAG, "method getFragment: case DIFFICULTY_MEM");

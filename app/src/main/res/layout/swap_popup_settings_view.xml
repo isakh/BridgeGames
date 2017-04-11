@@ -48,7 +48,7 @@
             android:shadowDx="4"
             android:shadowDy="4"
             android:shadowRadius="4"
-            android:text="@string/swap_popup_settings_looper_on_text"
+            android:text="@string/swap_popup_settings_looper_off_text"
             android:textColor="@color/colorText"
             android:textSize="@dimen/swap_popup_settings_looper_text_size" />
     </LinearLayout>

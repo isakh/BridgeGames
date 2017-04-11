@@ -31,8 +31,9 @@ import ws.isak.memgamev.R;
 public class Audio {
 
 	public static final String TAG = "Audio";
-	public static boolean OFF = false;      //on start defaults to setting where audio is enabled
-    public static boolean MIX = true;       //on start defaults to setting where mixing is enabled
+	public static boolean OFF = false;      //match game on start defaults to setting where audio is enabled
+    public static boolean MIX = true;       //both match and swap games on start defaults to setting where mixing is enabled
+    public static boolean LOOPER = false;   //swap game on start defaults to looping being off
     public static boolean isPlaying;
 
 	public static void playCorrect() {

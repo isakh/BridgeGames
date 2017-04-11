@@ -140,9 +140,9 @@ public class Engine extends EventObserverAdapter {
 
 	@Override
 	public void onEvent(MatchStartEvent event) {
-        Log.d (TAG, "override onEvent for MatchStartEvent: calling screen controller to open THEME_SELECT_MATCH screen");
+        Log.d (TAG, "override onEvent for MatchStartEvent: calling screen controller to open THEME_SELECT_MEM screen");
         PopupManager.closePopup();
-		mScreenController.openScreen(Screen.THEME_SELECT_MATCH);
+		mScreenController.openScreen(Screen.THEME_SELECT_MEM);
 	}
 
 	@Override

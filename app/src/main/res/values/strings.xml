@@ -25,8 +25,8 @@
     <!-- Layout: swap_popup_settings_view -->
     <!-- *************************** -->
     <string name="swap_popup_settings_title_text">Settings</string>
-    <string name="swap_popup_settings_looper_on_text">Looper ON</string>    <!-- the looper will replay a track until pause/stop is pressed -->
-    <string name="swap_popup_settings_looper_off_text">Looper OFF</string>
+    <string name="swap_popup_settings_looper_on_text">Loop ON</string>    <!-- the looper will replay a track until pause/stop is pressed -->
+    <string name="swap_popup_settings_looper_off_text">Loop OFF</string>
     <string name="swap_popup_settings_mixer_on_text">Mixer ON</string>
     <string name="swap_popup_settings_mixer_off_text">Mixer OFF</string>
 
