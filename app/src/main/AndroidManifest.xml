@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ws.isak.memgamev" >
+    package="ws.isak.bridge" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -9,13 +9,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- needed to write out user data -->
     
     <application
-        android:name="ws.isak.memgamev.GameApplication"
+        android:name="ws.isak.bridge.GameApplication"
         android:allowBackup="true"
         android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="ws.isak.memgamev.MainActivity"
+            android:name="ws.isak.bridge.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape" >
             <intent-filter>
