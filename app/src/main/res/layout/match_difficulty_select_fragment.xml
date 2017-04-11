@@ -16,7 +16,7 @@
         android:orientation="vertical" >
 
         <ws.isak.bridge.ui.MatchDifficultyView
-            android:id="@+id/select_difficulty_1"
+            android:id="@+id/select_match_difficulty_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -31,7 +31,7 @@
         android:orientation="vertical" >
 
         <ws.isak.bridge.ui.MatchDifficultyView
-            android:id="@+id/select_difficulty_2"
+            android:id="@+id/select_match_difficulty_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -46,7 +46,7 @@
         android:orientation="vertical" >
 
         <ws.isak.bridge.ui.MatchDifficultyView
-            android:id="@+id/select_difficulty_3"
+            android:id="@+id/select_match_difficulty_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

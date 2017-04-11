@@ -20,6 +20,7 @@ import ws.isak.bridge.ui.MatchDifficultyView;
 
 /*
  * Class MatchDifficultySelectFragment creates the view for selecting the difficulty for the matching game.
+ * See MatchDifficultyView for more.
  *
  * @author isak
  */
@@ -33,15 +34,15 @@ public class MatchDifficultySelectFragment extends Fragment {
 		View view = LayoutInflater.from(Shared.context).inflate(R.layout.match_difficulty_select_fragment, container, false);
 		MatchTheme matchTheme = Shared.engine.getSelectedTheme();
 
-		MatchDifficultyView difficulty1 = (MatchDifficultyView) view.findViewById(R.id.select_difficulty_1);
+		MatchDifficultyView difficulty1 = (MatchDifficultyView) view.findViewById(R.id.select_match_difficulty_1);
 		difficulty1.setDifficulty(1, Memory.getHighStars(matchTheme.themeID, 1));
 		setOnClick(difficulty1, 1);
 
-		MatchDifficultyView difficulty2 = (MatchDifficultyView) view.findViewById(R.id.select_difficulty_2);
+		MatchDifficultyView difficulty2 = (MatchDifficultyView) view.findViewById(R.id.select_match_difficulty_2);
 		difficulty2.setDifficulty(2, Memory.getHighStars(matchTheme.themeID, 2));
 		setOnClick(difficulty2, 2);
 
-		MatchDifficultyView difficulty3 = (MatchDifficultyView) view.findViewById(R.id.select_difficulty_3);
+		MatchDifficultyView difficulty3 = (MatchDifficultyView) view.findViewById(R.id.select_match_difficulty_3);
 		difficulty3.setDifficulty(3, Memory.getHighStars(matchTheme.themeID, 3));
 		setOnClick(difficulty3, 3);
 
