@@ -1,4 +1,4 @@
-package ws.isak.memgamev.engine;
+package ws.isak.bridge.engine;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,40 +16,40 @@ import android.widget.ImageView;
 import android.util.Log;
 import android.widget.Toast;
 
-import ws.isak.memgamev.R;
+import ws.isak.bridge.R;
 
-import ws.isak.memgamev.common.Audio;
-import ws.isak.memgamev.common.Memory;
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.common.CardData;
+import ws.isak.bridge.common.Audio;
+import ws.isak.bridge.common.Memory;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.common.CardData;
 
-import ws.isak.memgamev.engine.ScreenController.Screen;
-import ws.isak.memgamev.events.engine.MatchFlipDownCardsEvent;
-import ws.isak.memgamev.events.engine.MatchGameWonEvent;
-import ws.isak.memgamev.events.engine.PlayCardAudioEvent;
-import ws.isak.memgamev.events.ui.MatchDifficultySelectedEvent;
-import ws.isak.memgamev.events.ui.MatchNextGameEvent;
-import ws.isak.memgamev.events.ui.MatchResetBackgroundEvent;
-import ws.isak.memgamev.events.ui.MatchThemeSelectedEvent;
-import ws.isak.memgamev.events.ui.SwapStartEvent;
-import ws.isak.memgamev.model.MatchBoardConfiguration;
-import ws.isak.memgamev.model.MatchGame;
-import ws.isak.memgamev.model.MatchBoardArrangement;
-import ws.isak.memgamev.themes.MatchTheme;
-import ws.isak.memgamev.themes.MatchThemes;
-import ws.isak.memgamev.ui.PopupManager;
+import ws.isak.bridge.engine.ScreenController.Screen;
+import ws.isak.bridge.events.engine.MatchFlipDownCardsEvent;
+import ws.isak.bridge.events.engine.MatchGameWonEvent;
+import ws.isak.bridge.events.engine.PlayCardAudioEvent;
+import ws.isak.bridge.events.ui.MatchDifficultySelectedEvent;
+import ws.isak.bridge.events.ui.MatchNextGameEvent;
+import ws.isak.bridge.events.ui.MatchResetBackgroundEvent;
+import ws.isak.bridge.events.ui.MatchThemeSelectedEvent;
+import ws.isak.bridge.events.ui.SwapStartEvent;
+import ws.isak.bridge.model.MatchBoardConfiguration;
+import ws.isak.bridge.model.MatchGame;
+import ws.isak.bridge.model.MatchBoardArrangement;
+import ws.isak.bridge.themes.MatchTheme;
+import ws.isak.bridge.themes.MatchThemes;
+import ws.isak.bridge.ui.PopupManager;
 
-import ws.isak.memgamev.events.EventObserverAdapter;
-import ws.isak.memgamev.events.engine.MatchHidePairCardsEvent;
-import ws.isak.memgamev.events.ui.MatchBackGameEvent;
-import ws.isak.memgamev.events.ui.MatchFlipCardEvent;
-import ws.isak.memgamev.events.ui.MatchStartEvent;
+import ws.isak.bridge.events.EventObserverAdapter;
+import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
+import ws.isak.bridge.events.ui.MatchBackGameEvent;
+import ws.isak.bridge.events.ui.MatchFlipCardEvent;
+import ws.isak.bridge.events.ui.MatchStartEvent;
 
-import ws.isak.memgamev.model.GameState;
-import ws.isak.memgamev.model.MemGameData;
+import ws.isak.bridge.model.GameState;
+import ws.isak.bridge.model.MemGameData;
 
-import ws.isak.memgamev.utils.Clock;
-import ws.isak.memgamev.utils.Utils;
+import ws.isak.bridge.utils.Clock;
+import ws.isak.bridge.utils.Utils;
 
 /*
  * Class Engine contains the core behavior of the app.

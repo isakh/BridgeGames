@@ -1,8 +1,6 @@
-package ws.isak.memgamev.common;
+package ws.isak.bridge.common;
 
-import android.util.Log;
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.R;
+import ws.isak.bridge.R;
 
 
 /*

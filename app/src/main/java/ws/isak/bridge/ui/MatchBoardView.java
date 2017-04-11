@@ -1,4 +1,4 @@
-package ws.isak.memgamev.ui;
+package ws.isak.bridge.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,15 +26,15 @@ import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
 import android.widget.Toast;
 
-import ws.isak.memgamev.R;
-import ws.isak.memgamev.common.Audio;
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.events.ui.MatchFlipCardEvent;
-import ws.isak.memgamev.events.engine.PlayCardAudioEvent;
-import ws.isak.memgamev.model.MatchBoardConfiguration;
-import ws.isak.memgamev.model.MatchGame;
-import ws.isak.memgamev.model.MatchBoardArrangement;
-import ws.isak.memgamev.utils.Utils;
+import ws.isak.bridge.R;
+import ws.isak.bridge.common.Audio;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.events.ui.MatchFlipCardEvent;
+import ws.isak.bridge.events.engine.PlayCardAudioEvent;
+import ws.isak.bridge.model.MatchBoardConfiguration;
+import ws.isak.bridge.model.MatchGame;
+import ws.isak.bridge.model.MatchBoardArrangement;
+import ws.isak.bridge.utils.Utils;
 
 /*
  * Class BoardView comprises the code which builds the match game board according to the dimensions

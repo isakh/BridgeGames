@@ -1,4 +1,4 @@
-package ws.isak.memgamev.model;
+package ws.isak.bridge.model;
 
 /*
  * Class GameState defines the core information about any/(the memory) game

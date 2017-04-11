@@ -1,6 +1,6 @@
-package ws.isak.memgamev.model;
+package ws.isak.bridge.model;
 
-import ws.isak.memgamev.themes.MatchTheme;
+import ws.isak.bridge.themes.MatchTheme;
 
 /**
  * This is the instance of an active playing game.  A given game is comprised of: a board configuration

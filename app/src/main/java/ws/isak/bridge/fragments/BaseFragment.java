@@ -1,23 +1,23 @@
-package ws.isak.memgamev.fragments;
+package ws.isak.bridge.fragments;
 
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
-import ws.isak.memgamev.events.EventObserver;
+import ws.isak.bridge.events.EventObserver;
 
-import ws.isak.memgamev.events.engine.MatchFlipDownCardsEvent;
-import ws.isak.memgamev.events.engine.MatchGameWonEvent;
-import ws.isak.memgamev.events.engine.MatchHidePairCardsEvent;
-import ws.isak.memgamev.events.engine.PlayCardAudioEvent;
+import ws.isak.bridge.events.engine.MatchFlipDownCardsEvent;
+import ws.isak.bridge.events.engine.MatchGameWonEvent;
+import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
+import ws.isak.bridge.events.engine.PlayCardAudioEvent;
 
-import ws.isak.memgamev.events.ui.MatchBackGameEvent;
-import ws.isak.memgamev.events.ui.MatchFlipCardEvent;
-import ws.isak.memgamev.events.ui.MatchDifficultySelectedEvent;
-import ws.isak.memgamev.events.ui.MatchNextGameEvent;
-import ws.isak.memgamev.events.ui.MatchResetBackgroundEvent;
-import ws.isak.memgamev.events.ui.MatchThemeSelectedEvent;
-import ws.isak.memgamev.events.ui.MatchStartEvent;
-import ws.isak.memgamev.events.ui.SwapStartEvent;
+import ws.isak.bridge.events.ui.MatchBackGameEvent;
+import ws.isak.bridge.events.ui.MatchFlipCardEvent;
+import ws.isak.bridge.events.ui.MatchDifficultySelectedEvent;
+import ws.isak.bridge.events.ui.MatchNextGameEvent;
+import ws.isak.bridge.events.ui.MatchResetBackgroundEvent;
+import ws.isak.bridge.events.ui.MatchThemeSelectedEvent;
+import ws.isak.bridge.events.ui.MatchStartEvent;
+import ws.isak.bridge.events.ui.SwapStartEvent;
 
 /*
  * Class BaseFragment defines the core of each fragment behavior when an event occurs

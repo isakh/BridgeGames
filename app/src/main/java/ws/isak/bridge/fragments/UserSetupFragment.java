@@ -1,4 +1,4 @@
-package ws.isak.memgamev.fragments;
+package ws.isak.bridge.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,12 +11,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import ws.isak.memgamev.R;
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.common.UserData;
-import ws.isak.memgamev.database.UserDataORM;
-import ws.isak.memgamev.engine.ScreenController;
-import ws.isak.memgamev.engine.ScreenController.Screen;
+import ws.isak.bridge.R;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.common.UserData;
+import ws.isak.bridge.database.UserDataORM;
+import ws.isak.bridge.engine.ScreenController;
+import ws.isak.bridge.engine.ScreenController.Screen;
 
 /*
  * This class contains the fragment that sets up the game.  It comprises two edit text fields with

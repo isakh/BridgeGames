@@ -1,4 +1,4 @@
-package ws.isak.memgamev.ui;
+package ws.isak.bridge.ui;
 
 import android.content.Context;
 import android.util.Log;
@@ -19,7 +19,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import ws.isak.memgamev.R;
+import ws.isak.bridge.R;
 
 /**
  * Class TileView contains the code for generating a single tile in the match board array.

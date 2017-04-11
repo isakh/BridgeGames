@@ -1,10 +1,10 @@
-package ws.isak.memgamev.events.ui;
+package ws.isak.bridge.events.ui;
 
 import android.util.Log;
 
-import ws.isak.memgamev.events.AbstractEvent;
-import ws.isak.memgamev.events.EventObserver;
-import ws.isak.memgamev.themes.MatchTheme;
+import ws.isak.bridge.events.AbstractEvent;
+import ws.isak.bridge.events.EventObserver;
+import ws.isak.bridge.themes.MatchTheme;
 
 public class MatchThemeSelectedEvent extends AbstractEvent {
 

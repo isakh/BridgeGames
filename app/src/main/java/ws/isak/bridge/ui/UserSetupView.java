@@ -1,4 +1,4 @@
-package ws.isak.memgamev.ui;
+package ws.isak.bridge.ui;
 
 import android.util.Log;
 
@@ -8,7 +8,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import ws.isak.memgamev.R;
+import ws.isak.bridge.R;
 
 /*
  * Class UserSetupView creates the view for the user setup fragment

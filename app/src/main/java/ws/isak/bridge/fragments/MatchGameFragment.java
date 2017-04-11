@@ -1,4 +1,4 @@
-package ws.isak.memgamev.fragments;
+package ws.isak.bridge.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,19 +11,19 @@ import android.util.Log;
 
 import java.util.Locale;
 
-import ws.isak.memgamev.R;
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.database.MemGameDataORM;
-import ws.isak.memgamev.events.engine.MatchFlipDownCardsEvent;
-import ws.isak.memgamev.events.engine.MatchGameWonEvent;
-import ws.isak.memgamev.events.engine.MatchHidePairCardsEvent;
-import ws.isak.memgamev.model.MatchGame;
-import ws.isak.memgamev.ui.MatchBoardView;
-import ws.isak.memgamev.ui.PopupManager;
-import ws.isak.memgamev.utils.Clock;
-import ws.isak.memgamev.utils.Clock.OnTimerCount;
-import ws.isak.memgamev.utils.FontLoader;
-import ws.isak.memgamev.utils.FontLoader.Font;
+import ws.isak.bridge.R;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.database.MemGameDataORM;
+import ws.isak.bridge.events.engine.MatchFlipDownCardsEvent;
+import ws.isak.bridge.events.engine.MatchGameWonEvent;
+import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
+import ws.isak.bridge.model.MatchGame;
+import ws.isak.bridge.ui.MatchBoardView;
+import ws.isak.bridge.ui.PopupManager;
+import ws.isak.bridge.utils.Clock;
+import ws.isak.bridge.utils.Clock.OnTimerCount;
+import ws.isak.bridge.utils.FontLoader;
+import ws.isak.bridge.utils.FontLoader.Font;
 
 /*
  * Class MatchGameFragment creates the view for the match game fragment, including the clock, and

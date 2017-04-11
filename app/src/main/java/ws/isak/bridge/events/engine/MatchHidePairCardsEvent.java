@@ -1,9 +1,9 @@
-package ws.isak.memgamev.events.engine;
+package ws.isak.bridge.events.engine;
 
 import android.util.Log;
 
-import ws.isak.memgamev.events.AbstractEvent;
-import ws.isak.memgamev.events.EventObserver;
+import ws.isak.bridge.events.AbstractEvent;
+import ws.isak.bridge.events.EventObserver;
 
 /**
  * When a matched pair of cards is selected, hide them from the screen.

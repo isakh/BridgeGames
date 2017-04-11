@@ -1,10 +1,10 @@
-package ws.isak.memgamev.common;
+package ws.isak.bridge.common;
 
 import java.util.ArrayList;
 
 import android.util.Log;
 
-import ws.isak.memgamev.model.MemGameData;
+import ws.isak.bridge.model.MemGameData;
 
 /*
  * The UserData class contains creation and accessor methods for the data collected about a particular

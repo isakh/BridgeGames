@@ -1,4 +1,4 @@
-package ws.isak.memgamev.events;
+package ws.isak.bridge.events;
 
 /*
  * This abstract class defines AbstractEvents for the games.  It defines an abstract method

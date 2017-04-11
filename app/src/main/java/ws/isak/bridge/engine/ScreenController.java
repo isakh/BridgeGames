@@ -1,4 +1,4 @@
-package ws.isak.memgamev.engine;
+package ws.isak.bridge.engine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,19 +9,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
-import ws.isak.memgamev.R;
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.events.ui.MatchResetBackgroundEvent;
-import ws.isak.memgamev.fragments.MatchDifficultySelectFragment;
-import ws.isak.memgamev.fragments.MatchGameFragment;
-import ws.isak.memgamev.fragments.MatchMenuFragment;
-import ws.isak.memgamev.fragments.SwapMenuFragment;
-import ws.isak.memgamev.fragments.MatchThemeSelectFragment;
-import ws.isak.memgamev.fragments.UserSetupFragment;
-import ws.isak.memgamev.fragments.PreSurveyFragment;
-import ws.isak.memgamev.fragments.GameSelectFragment;
-import ws.isak.memgamev.fragments.PostSurveyFragment;
-import ws.isak.memgamev.fragments.FinishedFragment;
+import ws.isak.bridge.R;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.events.ui.MatchResetBackgroundEvent;
+import ws.isak.bridge.fragments.MatchDifficultySelectFragment;
+import ws.isak.bridge.fragments.MatchGameFragment;
+import ws.isak.bridge.fragments.MatchMenuFragment;
+import ws.isak.bridge.fragments.SwapMenuFragment;
+import ws.isak.bridge.fragments.MatchThemeSelectFragment;
+import ws.isak.bridge.fragments.UserSetupFragment;
+import ws.isak.bridge.fragments.PreSurveyFragment;
+import ws.isak.bridge.fragments.GameSelectFragment;
+import ws.isak.bridge.fragments.PostSurveyFragment;
+import ws.isak.bridge.fragments.FinishedFragment;
 
 /*
  * Class ScreenController instantiates a list of currently openedScreens and a fragmentManager

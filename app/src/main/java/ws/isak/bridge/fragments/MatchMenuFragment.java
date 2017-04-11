@@ -1,4 +1,4 @@
-package ws.isak.memgamev.fragments;
+package ws.isak.bridge.fragments;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -16,12 +16,12 @@ import android.view.animation.BounceInterpolator;
 import android.widget.ImageView;
 import android.util.Log;
 
-import ws.isak.memgamev.R;
-import ws.isak.memgamev.common.Audio;
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.events.ui.MatchStartEvent;
-import ws.isak.memgamev.ui.PopupManager;
-import ws.isak.memgamev.utils.Utils;
+import ws.isak.bridge.R;
+import ws.isak.bridge.common.Audio;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.events.ui.MatchStartEvent;
+import ws.isak.bridge.ui.PopupManager;
+import ws.isak.bridge.utils.Utils;
 
 /*
  * Class MatchMenuFragment sets up the fragment that allows the user to either choose settings for

@@ -1,4 +1,4 @@
-package ws.isak.memgamev.fragments;
+package ws.isak.bridge.fragments;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -10,10 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
-import ws.isak.memgamev.R;
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.engine.ScreenController;
-import ws.isak.memgamev.engine.ScreenController.Screen;
+import ws.isak.bridge.R;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.engine.ScreenController;
+import ws.isak.bridge.engine.ScreenController.Screen;
 
 /*
  * Class GameSelectFragment provides the view for the fragment where the user decides which of

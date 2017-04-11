@@ -1,4 +1,4 @@
-package ws.isak.memgamev.database;
+package ws.isak.bridge.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,10 +8,8 @@ import android.database.sqlite.SQLiteException;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.common.CardData;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.common.CardData;
 
 /*
  *

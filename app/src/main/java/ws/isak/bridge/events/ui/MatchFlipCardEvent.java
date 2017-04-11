@@ -1,9 +1,9 @@
-package ws.isak.memgamev.events.ui;
+package ws.isak.bridge.events.ui;
 
 import android.util.Log;
 
-import ws.isak.memgamev.events.AbstractEvent;
-import ws.isak.memgamev.events.EventObserver;
+import ws.isak.bridge.events.AbstractEvent;
+import ws.isak.bridge.events.EventObserver;
 
 /**
  * When a card is flipped over this event is triggered. When this happens events are triggered which

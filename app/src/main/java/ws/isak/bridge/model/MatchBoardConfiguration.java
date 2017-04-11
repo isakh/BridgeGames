@@ -1,10 +1,10 @@
-package ws.isak.memgamev.model;
+package ws.isak.bridge.model;
 
 import android.util.Log;
 
-import ws.isak.memgamev.R;
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.themes.MatchTheme;
+import ws.isak.bridge.R;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.themes.MatchTheme;
 
 /**
  * Class MatchBoardConfiguration provides a switch for the three difficulty levels and the corresponding

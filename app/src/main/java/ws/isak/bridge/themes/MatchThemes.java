@@ -1,14 +1,14 @@
-package ws.isak.memgamev.themes;
+package ws.isak.bridge.themes;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import android.graphics.Bitmap;
 
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.utils.Utils;
-import ws.isak.memgamev.common.CardData;
-import ws.isak.memgamev.R;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.utils.Utils;
+import ws.isak.bridge.common.CardData;
+import ws.isak.bridge.R;
 
 /*
  * The MatchThemes class describes each of the themes.  From the MatchTheme description, each will have a name

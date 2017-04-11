@@ -1,9 +1,9 @@
-package ws.isak.memgamev.events.ui;
+package ws.isak.bridge.events.ui;
 
 import android.util.Log;
 
-import ws.isak.memgamev.events.AbstractEvent;
-import ws.isak.memgamev.events.EventObserver;
+import ws.isak.bridge.events.AbstractEvent;
+import ws.isak.bridge.events.EventObserver;
 
 /*
  * This event is triggered when the MatchNextGameEvent is called on a matching game

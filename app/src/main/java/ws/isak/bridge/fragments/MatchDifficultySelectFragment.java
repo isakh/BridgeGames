@@ -1,4 +1,4 @@
-package ws.isak.memgamev.fragments;
+package ws.isak.bridge.fragments;
 
 import android.animation.AnimatorSet;
 import android.animation.AnimatorSet.Builder;
@@ -11,12 +11,12 @@ import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
 import android.util.Log;
 
-import ws.isak.memgamev.R;
-import ws.isak.memgamev.common.Memory;
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.events.ui.MatchDifficultySelectedEvent;
-import ws.isak.memgamev.themes.MatchTheme;
-import ws.isak.memgamev.ui.MatchDifficultyView;
+import ws.isak.bridge.R;
+import ws.isak.bridge.common.Memory;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.events.ui.MatchDifficultySelectedEvent;
+import ws.isak.bridge.themes.MatchTheme;
+import ws.isak.bridge.ui.MatchDifficultyView;
 
 /*
  * Class MatchDifficultySelectFragment creates the view for selecting the difficulty for the matching game.

@@ -1,4 +1,4 @@
-package ws.isak.memgamev.database;
+package ws.isak.bridge.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,10 +9,9 @@ import android.util.Log;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.model.MemGameData;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.model.MemGameData;
 
 /*
  *

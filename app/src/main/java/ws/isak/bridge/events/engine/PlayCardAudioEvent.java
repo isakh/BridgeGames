@@ -1,9 +1,9 @@
-package ws.isak.memgamev.events.engine;
+package ws.isak.bridge.events.engine;
 
 import android.util.Log;
 
-import ws.isak.memgamev.events.AbstractEvent;
-import ws.isak.memgamev.events.EventObserver;
+import ws.isak.bridge.events.AbstractEvent;
+import ws.isak.bridge.events.EventObserver;
 
 /**
  * Class PlayCardAudioEvent contains the methods that trigger a playCardAudio event which occurs

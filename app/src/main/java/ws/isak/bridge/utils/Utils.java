@@ -1,4 +1,4 @@
-package ws.isak.memgamev.utils;
+package ws.isak.bridge.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,7 +8,7 @@ import android.media.ThumbnailUtils;
 
 import android.util.Log;
 
-import ws.isak.memgamev.common.Shared;
+import ws.isak.bridge.common.Shared;
 
 /*
  * Class Utils contains methods for manipulating and scaling bitmaps based on the dimensions of the

@@ -1,4 +1,4 @@
-package ws.isak.memgamev.ui;
+package ws.isak.bridge.ui;
 
 import java.util.Locale;
 import android.util.Log;
@@ -9,8 +9,8 @@ import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import ws.isak.memgamev.R;
-import ws.isak.memgamev.common.Shared;
+import ws.isak.bridge.R;
+import ws.isak.bridge.common.Shared;
 
 /*
  * Class DifficultyView creates the view for the match difficulty screen

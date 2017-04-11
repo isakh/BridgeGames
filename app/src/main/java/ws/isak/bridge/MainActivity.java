@@ -1,4 +1,4 @@
-package ws.isak.memgamev;
+package ws.isak.bridge;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -10,22 +10,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
-import ws.isak.memgamev.common.CardData;
-import ws.isak.memgamev.common.Audio;
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.common.UserData;
-import ws.isak.memgamev.database.CardDataORM;
-import ws.isak.memgamev.database.MemGameDataORM;
-import ws.isak.memgamev.engine.Engine;
-import ws.isak.memgamev.engine.ScreenController;
-import ws.isak.memgamev.engine.ScreenController.Screen;
-import ws.isak.memgamev.events.EventBus;
-import ws.isak.memgamev.events.ui.MatchBackGameEvent;
-import ws.isak.memgamev.model.MemGameData;
-import ws.isak.memgamev.ui.PopupManager;
-import ws.isak.memgamev.utils.Utils;
-import ws.isak.memgamev.database.DatabaseWrapper;
-import ws.isak.memgamev.database.UserDataORM;
+import ws.isak.bridge.common.CardData;
+import ws.isak.bridge.common.Audio;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.common.UserData;
+import ws.isak.bridge.database.CardDataORM;
+import ws.isak.bridge.database.MemGameDataORM;
+import ws.isak.bridge.engine.Engine;
+import ws.isak.bridge.engine.ScreenController;
+import ws.isak.bridge.engine.ScreenController.Screen;
+import ws.isak.bridge.events.EventBus;
+import ws.isak.bridge.events.ui.MatchBackGameEvent;
+import ws.isak.bridge.model.MemGameData;
+import ws.isak.bridge.ui.PopupManager;
+import ws.isak.bridge.utils.Utils;
+import ws.isak.bridge.database.DatabaseWrapper;
+import ws.isak.bridge.database.UserDataORM;
 
 /*
  * The main activity class of the app.  This activity class is called from the AndroidManifest.xml

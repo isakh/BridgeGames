@@ -1,4 +1,4 @@
-package ws.isak.memgamev.ui;
+package ws.isak.bridge.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -9,11 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.util.Log;
 
-import ws.isak.memgamev.R;
-import ws.isak.memgamev.common.Audio;
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.utils.FontLoader;
-import ws.isak.memgamev.utils.FontLoader.Font;
+import ws.isak.bridge.R;
+import ws.isak.bridge.common.Audio;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.utils.FontLoader;
+import ws.isak.bridge.utils.FontLoader.Font;
 
 /*
  * The class MatchPopupSettingsView defines the settings popup for the matching game.

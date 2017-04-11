@@ -1,9 +1,9 @@
-package ws.isak.memgamev.events.engine;
+package ws.isak.bridge.events.engine;
 
 import android.util.Log;
 
-import ws.isak.memgamev.events.AbstractEvent;
-import ws.isak.memgamev.events.EventObserver;
+import ws.isak.bridge.events.AbstractEvent;
+import ws.isak.bridge.events.EventObserver;
 
 /**
  * This method is called when the cards in the match game need to be flipped down

@@ -1,10 +1,10 @@
-package ws.isak.memgamev.model;
+package ws.isak.bridge.model;
 
 import android.util.Log;
 
 import java.util.ArrayList;
 
-import ws.isak.memgamev.common.Shared;
+import ws.isak.bridge.common.Shared;
 
 /*
  * The SwapGameData class hold information about each swap game played

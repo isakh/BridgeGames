@@ -1,4 +1,4 @@
-package ws.isak.memgamev.ui;
+package ws.isak.bridge.ui;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -18,18 +18,18 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import ws.isak.memgamev.R;
-import ws.isak.memgamev.common.Audio;
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.engine.ScreenController;
-import ws.isak.memgamev.events.ui.MatchBackGameEvent;
-import ws.isak.memgamev.events.ui.MatchNextGameEvent;
-import ws.isak.memgamev.events.ui.MatchStartEvent;
-import ws.isak.memgamev.model.GameState;
-import ws.isak.memgamev.utils.Clock;
-import ws.isak.memgamev.utils.Clock.OnTimerCount;
-import ws.isak.memgamev.utils.FontLoader;
-import ws.isak.memgamev.utils.FontLoader.Font;
+import ws.isak.bridge.R;
+import ws.isak.bridge.common.Audio;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.engine.ScreenController;
+import ws.isak.bridge.events.ui.MatchBackGameEvent;
+import ws.isak.bridge.events.ui.MatchNextGameEvent;
+import ws.isak.bridge.events.ui.MatchStartEvent;
+import ws.isak.bridge.model.GameState;
+import ws.isak.bridge.utils.Clock;
+import ws.isak.bridge.utils.Clock.OnTimerCount;
+import ws.isak.bridge.utils.FontLoader;
+import ws.isak.bridge.utils.FontLoader.Font;
 
 /*
  * Class PopupsWonView provides a RelativeLayout that describes the popup created via the

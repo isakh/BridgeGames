@@ -1,8 +1,8 @@
-package ws.isak.memgamev.model;
+package ws.isak.bridge.model;
 
 import java.util.ArrayList;
 
-import ws.isak.memgamev.common.Shared;
+import ws.isak.bridge.common.Shared;
 
 
 /*

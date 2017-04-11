@@ -1,14 +1,14 @@
-package ws.isak.memgamev.model;
+package ws.isak.bridge.model;
 
 import java.util.Map;
 
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.themes.MatchThemes;
-import ws.isak.memgamev.utils.Utils;
-import ws.isak.memgamev.common.CardData;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.themes.MatchThemes;
+import ws.isak.bridge.utils.Utils;
+import ws.isak.bridge.common.CardData;
 
 /**
  * Before game starts, engine builds a new board - this involves setting up the mappings for tiles

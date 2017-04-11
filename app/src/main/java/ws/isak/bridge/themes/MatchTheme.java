@@ -1,8 +1,8 @@
-package ws.isak.memgamev.themes;
+package ws.isak.bridge.themes;
 
 import java.util.ArrayList;
 
-import ws.isak.memgamev.common.CardData;
+import ws.isak.bridge.common.CardData;
 
 /*
  * Class MatchTheme contains the information about an abstract match game matchTheme

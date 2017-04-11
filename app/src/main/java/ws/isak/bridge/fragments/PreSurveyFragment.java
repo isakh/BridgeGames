@@ -1,4 +1,4 @@
-package ws.isak.memgamev.fragments;
+package ws.isak.bridge.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,11 +14,11 @@ import android.widget.RadioGroup;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import ws.isak.memgamev.R;
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.database.UserDataORM;
-import ws.isak.memgamev.engine.ScreenController;
-import ws.isak.memgamev.engine.ScreenController.Screen;
+import ws.isak.bridge.R;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.database.UserDataORM;
+import ws.isak.bridge.engine.ScreenController;
+import ws.isak.bridge.engine.ScreenController.Screen;
 
 /*
  * Class PreSurveyFragment defines the information found in the Pre-Survey screen and the behavior

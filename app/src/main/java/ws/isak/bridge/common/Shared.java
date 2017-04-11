@@ -1,4 +1,4 @@
-package ws.isak.memgamev.common;
+package ws.isak.bridge.common;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
@@ -6,12 +6,12 @@ import android.util.Log;
 
 import java.util.List;
 
-import ws.isak.memgamev.engine.Engine;
-import ws.isak.memgamev.events.EventBus;
-import ws.isak.memgamev.database.DatabaseWrapper;
-import ws.isak.memgamev.model.MatchGame;
-import ws.isak.memgamev.model.MemGameData;
-import ws.isak.memgamev.model.SwapGameData;
+import ws.isak.bridge.engine.Engine;
+import ws.isak.bridge.events.EventBus;
+import ws.isak.bridge.database.DatabaseWrapper;
+import ws.isak.bridge.model.MatchGame;
+import ws.isak.bridge.model.MemGameData;
+import ws.isak.bridge.model.SwapGameData;
 
 /*
  * Class Shared

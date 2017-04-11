@@ -1,15 +1,14 @@
-package ws.isak.memgamev.common;
+package ws.isak.bridge.common;
 
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
-import android.widget.Toast;
 import android.util.Log;
 import android.net.Uri;
 
 import java.io.File;
 
-import ws.isak.memgamev.R;
+import ws.isak.bridge.R;
 
 
 //TODO remove? import android.provider.MediaStore;

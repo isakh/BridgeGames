@@ -1,10 +1,10 @@
-package ws.isak.memgamev.events.engine;
+package ws.isak.bridge.events.engine;
 
 import android.util.Log;
 
-import ws.isak.memgamev.events.AbstractEvent;
-import ws.isak.memgamev.events.EventObserver;
-import ws.isak.memgamev.model.GameState;
+import ws.isak.bridge.events.AbstractEvent;
+import ws.isak.bridge.events.EventObserver;
+import ws.isak.bridge.model.GameState;
 
 /*
  * This event is called when the matching game is won

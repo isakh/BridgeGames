@@ -1,4 +1,4 @@
-package ws.isak.memgamev.fragments;
+package ws.isak.bridge.fragments;
 
 import java.util.Locale;
 
@@ -13,12 +13,12 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.util.Log;
 
-import ws.isak.memgamev.R;
-import ws.isak.memgamev.common.Memory;
-import ws.isak.memgamev.common.Shared;
-import ws.isak.memgamev.events.ui.MatchThemeSelectedEvent;
-import ws.isak.memgamev.themes.MatchTheme;
-import ws.isak.memgamev.themes.MatchThemes;
+import ws.isak.bridge.R;
+import ws.isak.bridge.common.Memory;
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.events.ui.MatchThemeSelectedEvent;
+import ws.isak.bridge.themes.MatchTheme;
+import ws.isak.bridge.themes.MatchThemes;
 
 /*
  * Class MatchThemeSelectFragment defines the view and behavior of the match matchTheme select fragment

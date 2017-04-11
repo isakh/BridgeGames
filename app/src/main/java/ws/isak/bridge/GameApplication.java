@@ -1,8 +1,8 @@
-package ws.isak.memgamev;
+package ws.isak.bridge;
 
 import android.app.Application;
 
-import ws.isak.memgamev.utils.FontLoader;
+import ws.isak.bridge.utils.FontLoader;
 
 public class GameApplication extends Application {
 

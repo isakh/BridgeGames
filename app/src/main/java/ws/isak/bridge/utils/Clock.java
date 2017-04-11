@@ -1,4 +1,4 @@
-package ws.isak.memgamev.utils;
+package ws.isak.bridge.utils;
 
 import android.util.Log;
 

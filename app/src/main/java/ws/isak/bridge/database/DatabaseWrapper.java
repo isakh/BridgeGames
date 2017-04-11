@@ -1,4 +1,4 @@
-package ws.isak.memgamev.database;
+package ws.isak.bridge.database;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -7,8 +7,7 @@ import android.util.Log;
 
 import java.io.File;
 
-import ws.isak.memgamev.common.CardData;
-import ws.isak.memgamev.common.Shared;
+import ws.isak.bridge.common.Shared;
 
 
 /*
