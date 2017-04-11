@@ -65,7 +65,7 @@ public class SwapMenuFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d (TAG, "method onCreateView: swapStartGameButton: onClick");
-                // animate match_menu_title from place and navigation buttons from place
+                // animate swap_menu_title from place and navigation buttons from place
                 animateAllAssetsOff(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
@@ -85,7 +85,7 @@ public class SwapMenuFragment extends Fragment {
     }
 
     protected void animateAllAssetsOff(AnimatorListenerAdapter adapter) {
-        // match_menu_title
+        // swap_menu_title
         // 120dp + 50dp + buffer(30dp)
         ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(swapTitle, "translationY", Utils.px(-200));  //TODO constant to variable
         titleAnimator.setInterpolator(new AccelerateInterpolator(2));

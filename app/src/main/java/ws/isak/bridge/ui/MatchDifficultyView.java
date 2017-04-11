@@ -39,7 +39,7 @@ public class MatchDifficultyView extends LinearLayout {
         Log.d (TAG, "overloaded constructor, includes AttributeSet");
 		LayoutInflater.from(context).inflate(R.layout.match_difficulty_view, this, true);
 		setOrientation(LinearLayout.VERTICAL);
-		mTitle = (ImageView) findViewById(R.id.match_menu_title);
+		mTitle = (ImageView) findViewById(R.id.match_difficulty_title);
 	}
 
     /*

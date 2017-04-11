@@ -89,7 +89,7 @@
     <!-- *************************** -->
     <dimen name="match_popup_settings_width">300dp</dimen>
     <dimen name="match_popup_settings_height">200dp</dimen>
-    <!-- match_menu_title section -->
+    <!-- title section -->
     <dimen name="match_popup_settings_title_height">75dp</dimen>
     <dimen name="match_popup_won_title_text_size">60.0sp</dimen>
     <!-- sound on/off section -->
@@ -119,7 +119,7 @@
     <!-- ********************* -->
     <dimen name="popup_won_width">420dp</dimen>                 <!-- -->
     <dimen name="popup_won_height">420dp</dimen>                <!-- -->
-    <!-- match_menu_title section -->
+    <!-- title section -->
     <dimen name="popup_won_title_height">70dp</dimen>           <!-- height for text + margins -->
     <dimen name="popup_won_title_text_size">60.0sp</dimen>
     <!-- stars section -->
@@ -140,7 +140,7 @@
     <!-- =============================================================================== -->
     <!-- Layout: user_setup_fragment -->
     <!-- *************************** -->
-    <!-- match_menu_title -->
+    <!-- title -->
     <dimen name="user_setup_frag_title_text_size">20.0sp</dimen>
     <dimen name="user_setup_frag_title_margin_bottom">20dp</dimen>
     <!-- login section -->
