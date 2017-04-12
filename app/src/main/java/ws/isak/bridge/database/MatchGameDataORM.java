@@ -11,20 +11,20 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import ws.isak.bridge.common.Shared;
-import ws.isak.bridge.model.MemGameData;
+import ws.isak.bridge.model.MatchGameData;
 
 /*
  *
  * @author isak
  */
 
-public class MemGameDataORM {
+public class MatchGameDataORM {
 
-    private static final String TAG="MemGameDataORM";
+    private static final String TAG="MatchGameDataORM";
 
     private static final String DELIMITER=", ";
 
-    private static final String TABLE_NAME="mem_game_data";
+    private static final String TABLE_NAME="match_game_data";
     private static final String COMMA_SEP= ", ";
 
     private static final String COLUMN_GAME_START_TIMESTAMP_TYPE = "INTEGER PRIMARY KEY";
@@ -55,7 +55,7 @@ public class MemGameDataORM {
     private static final String COLUMN_TURN_DURATIONS_TYPE = "STRING";
     private static final String COLUMN_TURN_DURATIONS = "turnDurations";
 
-    private static final String COLUMN_CARD_SELECTED_ORDER_TYPE = "STRING";       //FIXME is BLOB ok since this is an array of CardData objects?
+    private static final String COLUMN_CARD_SELECTED_ORDER_TYPE = "STRING";       //FIXME is BLOB ok since this is an array of MatchCardData objects?
     private static final String COLUMN_CARD_SELECTED_ORDER = "cardSelectedOrder";
 
     private static final String COLUMN_NUM_TURNS_TAKEN_IN_GAME_TYPE = "INTEGER";
@@ -83,10 +83,10 @@ public class MemGameDataORM {
 
     //public methods for interacting with tables in the database:
 
-    // method recordsInDatabase returns true if there are records of type MemGameData
+    // method recordsInDatabase returns true if there are records of type MatchGameData
     // in the DB, otherwise, false
-    public static boolean memGameRecordsInDatabase (Context context) {
-        //Log.d (TAG, "method memGameRecordsInDatabase");
+    public static boolean matchGameRecordsInDatabase (Context context) {
+        //Log.d (TAG, "method matchGameRecordsInDatabase");
 
         DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
@@ -94,8 +94,8 @@ public class MemGameDataORM {
         boolean recordsExist = false;
 
         if (database != null) {
-            Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME, null);     //FIXME was MemGameDataORM.TABLE_NAME
-            Log.d(TAG, "method recordsInDatabase: Checked " + cursor.getCount() + " MemGameData records...");
+            Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME, null);     //FIXME was MatchGameDataORM.TABLE_NAME
+            Log.d(TAG, "method recordsInDatabase: Checked " + cursor.getCount() + " MatchGameData records...");
 
             if (cursor.getCount() > 0) {
                 recordsExist = true;
@@ -107,7 +107,7 @@ public class MemGameDataORM {
     }
 
 
-    // method numRecordsInDatabase returns the number of records in the MemGameDataORM table
+    // method numRecordsInDatabase returns the number of records in the MatchGameDataORM table
     // in the DB, otherwise, false
     public static int numMemGameRecordsInDatabase (Context context) {
         //Log.d (TAG, "method numMemGameRecordsInDatabase");
@@ -118,8 +118,8 @@ public class MemGameDataORM {
         int numRecords = 0;
 
         if (database != null) {
-            Cursor cursor = database.rawQuery("SELECT * FROM " + MemGameDataORM.TABLE_NAME, null);
-            Log.d(TAG, "method numMemGameRecordsInDatabase: There are: " + cursor.getCount() + " MemGameData records...");
+            Cursor cursor = database.rawQuery("SELECT * FROM " + MatchGameDataORM.TABLE_NAME, null);
+            Log.d(TAG, "method numMemGameRecordsInDatabase: There are: " + cursor.getCount() + " MatchGameData records...");
 
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();
@@ -134,49 +134,49 @@ public class MemGameDataORM {
         return numRecords;
     }
 
-    //return all of the MemGameData rows for the targetUser, sorted by TimeStamp
-    public static ArrayList<MemGameData> getMemGameData (String targetUser) {
-        Log.d (TAG, "method getMemGameData returns a list of MemGameData objects with type " + targetUser);
+    //return all of the MatchGameData rows for the targetUser, sorted by TimeStamp
+    public static ArrayList<MatchGameData> getMemGameData (String targetUser) {
+        Log.d (TAG, "method getMemGameData returns a list of MatchGameData objects with type " + targetUser);
 
         DatabaseWrapper databaseWrapper =  Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
 
-        ArrayList <MemGameData> memGameDataList = null;
+        ArrayList <MatchGameData> matchGameDataList = null;
 
         if (database !=  null) {
-        Cursor cursor = database.rawQuery("SELECT * FROM " + MemGameDataORM.TABLE_NAME + " WHERE " + MemGameDataORM.COLUMN_PLAYER_USERNAME + " ='" + targetUser + "'", null);
+        Cursor cursor = database.rawQuery("SELECT * FROM " + MatchGameDataORM.TABLE_NAME + " WHERE " + MatchGameDataORM.COLUMN_PLAYER_USERNAME + " ='" + targetUser + "'", null);
             //FIXME - this prevent's SQL injection: Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " =?", userName);
 
             Log.d (TAG, "method getUserData: Loaded " + cursor.getCount() + " UserData records...");
-            if (memGameRecordsInDatabase(Shared.context)) {
-                memGameDataList = new ArrayList<MemGameData>(numMemGameRecordsInDatabase(Shared.context));
+            if (matchGameRecordsInDatabase(Shared.context)) {
+                matchGameDataList = new ArrayList<MatchGameData>(numMemGameRecordsInDatabase(Shared.context));
                 cursor.moveToFirst();
                 int rowCount = 0;
                 while (!cursor.isAfterLast()) {
-                    MemGameData memGameDataAtCursor = cursorToMemGameData(cursor);
-                    //Check the state of all MemGameData fields here
+                    MatchGameData matchGameDataAtCursor = cursorToMemGameData(cursor);
+                    //Check the state of all MatchGameData fields here
                     Log.d (TAG, "... PARSE: Database row: " + rowCount +
-                                " | gameStartTimestamp: " + memGameDataAtCursor.getGameStartTimestamp() +
-                                " | playerUserName: " + memGameDataAtCursor.getUserPlayingName() +
-                                " | themeID: " + memGameDataAtCursor.getThemeID() +
-                                " | difficulty: " + memGameDataAtCursor.getGameDifficulty() +
-                                " | gameDurationAllocated: " + memGameDataAtCursor.getGameDurationAllocated() +
-                                " | mixerState: " + memGameDataAtCursor.getMixerState() +
-                                " | gameStarted: " + memGameDataAtCursor.isGameStarted() +
-                                " | numTurnsTakenInGame: "+ memGameDataAtCursor.getNumTurnsTaken());
-                    if (memGameDataAtCursor.sizeOfPlayDurationsArray() != memGameDataAtCursor.sizeOfTurnDurationsArray()) {
+                                " | gameStartTimestamp: " + matchGameDataAtCursor.getGameStartTimestamp() +
+                                " | playerUserName: " + matchGameDataAtCursor.getUserPlayingName() +
+                                " | themeID: " + matchGameDataAtCursor.getThemeID() +
+                                " | difficulty: " + matchGameDataAtCursor.getGameDifficulty() +
+                                " | gameDurationAllocated: " + matchGameDataAtCursor.getGameDurationAllocated() +
+                                " | mixerState: " + matchGameDataAtCursor.getMixerState() +
+                                " | gameStarted: " + matchGameDataAtCursor.isGameStarted() +
+                                " | numTurnsTakenInGame: "+ matchGameDataAtCursor.getNumTurnsTaken());
+                    if (matchGameDataAtCursor.sizeOfPlayDurationsArray() != matchGameDataAtCursor.sizeOfTurnDurationsArray()) {
                         //TODO extend to compare with cardObjects array size as well
                         Log.d (TAG, " ***** ERROR! Size of play durations and turn durations not returned as equal");
                     }
-                    for (int i = 0; i < memGameDataAtCursor.sizeOfPlayDurationsArray(); i++) {
+                    for (int i = 0; i < matchGameDataAtCursor.sizeOfPlayDurationsArray(); i++) {
                         Log.d(TAG, " ... PARSE ARRAYS in Database row " + rowCount +
                                 " | current array element i: " + i +
-                                " | gamePlayDuration(i): " + memGameDataAtCursor.queryGamePlayDurations(i) +
-                                " | turnDurations(i): " + memGameDataAtCursor.queryTurnDurationsArray(i) +
-                                " | cardSelectedOrder: " + memGameDataAtCursor.queryCardsSelectedArray(i));
+                                " | gamePlayDuration(i): " + matchGameDataAtCursor.queryGamePlayDurations(i) +
+                                " | turnDurations(i): " + matchGameDataAtCursor.queryTurnDurationsArray(i) +
+                                " | cardSelectedOrder: " + matchGameDataAtCursor.queryCardsSelectedArray(i));
                     }
-                    memGameDataList.add(memGameDataAtCursor);
-                    Log.d (TAG, "!!! userDataList.get(rowCount) userData Object @: " + memGameDataList.get(rowCount));
+                    matchGameDataList.add(matchGameDataAtCursor);
+                    Log.d (TAG, "!!! userDataList.get(rowCount) userData Object @: " + matchGameDataList.get(rowCount));
                     //move cursor to start of next row
                     rowCount++;
                     cursor.moveToNext();
@@ -185,17 +185,17 @@ public class MemGameDataORM {
                 database.close();
             }
         }
-        return  memGameDataList;
+        return matchGameDataList;
     }
 
     //method insertMemGameData inserts a new UserData object into the database if it doesn't already exist
-    public static boolean insertMemGameData (MemGameData memGameData) {
-        Log.d (TAG, "method insertMemGameData tries to insert a new MemGameData object into the database");
+    public static boolean insertMemGameData (MatchGameData matchGameData) {
+        Log.d (TAG, "method insertMemGameData tries to insert a new MatchGameData object into the database");
 
         boolean success = false;
 
         Log.d(TAG, "method insertMemGameData: creating ContentValues");
-        ContentValues values = memGameDataToContentValues(memGameData);
+        ContentValues values = matchGameDataToContentValues(matchGameData);
 
         DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
@@ -203,11 +203,11 @@ public class MemGameDataORM {
         try {
             if (database != null) {
                 long rowID = database.insert(TABLE_NAME, "null", values);
-                Log.d(TAG, "method insertMemGameData: Inserted new MemGameData into rowID: " + rowID);
+                Log.d(TAG, "method insertMemGameData: Inserted new MatchGameData into rowID: " + rowID);
                 success = true;
             }
         } catch (SQLiteException sqlex) {
-            Log.e(TAG, "method insertMemGameData: Failed to insert MemGameData[" + memGameData.getGameStartTimestamp() + "] due to: " + sqlex);
+            Log.e(TAG, "method insertMemGameData: Failed to insert MatchGameData[" + matchGameData.getGameStartTimestamp() + "] due to: " + sqlex);
             sqlex.printStackTrace();
         } finally {
             if (database != null) {
@@ -217,86 +217,86 @@ public class MemGameDataORM {
         return success;
     }
 
-    //method memGameDataToContentValues packs a MemGame object into a ContentValues map for
+    //method matchGameDataToContentValues packs a MemGame object into a ContentValues map for
     //use with SQL inserts
-    private static ContentValues memGameDataToContentValues (MemGameData memGameData) {
-        Log.d (TAG, "private method memGameDataToContentValues");
+    private static ContentValues matchGameDataToContentValues (MatchGameData matchGameData) {
+        Log.d (TAG, "private method matchGameDataToContentValues");
         ContentValues values = new ContentValues();
 
-        values.put (COLUMN_PLAYER_USERNAME, memGameData.getUserPlayingName());
-        values.put (COLUMN_GAME_START_TIMESTAMP, memGameData.getGameStartTimestamp());
-        values.put (COLUMN_THEME_ID, memGameData.getThemeID());
-        values.put (COLUMN_DIFFICULTY, memGameData.getGameDifficulty());
-        values.put (COLUMN_GAME_DURATION_ALLOCATED, memGameData.getGameDurationAllocated());
+        values.put (COLUMN_PLAYER_USERNAME, matchGameData.getUserPlayingName());
+        values.put (COLUMN_GAME_START_TIMESTAMP, matchGameData.getGameStartTimestamp());
+        values.put (COLUMN_THEME_ID, matchGameData.getThemeID());
+        values.put (COLUMN_DIFFICULTY, matchGameData.getGameDifficulty());
+        values.put (COLUMN_GAME_DURATION_ALLOCATED, matchGameData.getGameDurationAllocated());
 
-        if (!memGameData.getMixerState()) values.put (COLUMN_MIXER_STATE, 0);
+        if (!matchGameData.getMixerState()) values.put (COLUMN_MIXER_STATE, 0);
         else values.put (COLUMN_MIXER_STATE, 1);
-        if (!memGameData.isGameStarted()) values.put (COLUMN_GAME_STARTED, 0);
+        if (!matchGameData.isGameStarted()) values.put (COLUMN_GAME_STARTED, 0);
         else values.put (COLUMN_GAME_STARTED, 1);
 
         StringBuilder gamePlayDurationsString = new StringBuilder();
-        for (Long elementInGamePlayDurationsArrayList : memGameData.getGamePlayDurations()) {
+        for (Long elementInGamePlayDurationsArrayList : matchGameData.getGamePlayDurations()) {
             gamePlayDurationsString.append(elementInGamePlayDurationsArrayList);
             gamePlayDurationsString.append(DELIMITER);
             }
         values.put (COLUMN_GAME_PLAY_DURATIONS, gamePlayDurationsString.toString());
 
         StringBuilder turnDurationsString = new StringBuilder();
-        for (Long elementInTurnDurationsArrayList : memGameData.getTurnDurationsArray()) {
+        for (Long elementInTurnDurationsArrayList : matchGameData.getTurnDurationsArray()) {
             turnDurationsString.append(elementInTurnDurationsArrayList);
             turnDurationsString.append(DELIMITER);
         }
         values.put (COLUMN_TURN_DURATIONS, turnDurationsString.toString());
 
         StringBuilder cardSelectionOrderString = new StringBuilder();
-        for (Integer elementInCardSelectionOrderArrayList : memGameData.getCardsSelectedArray()) {
-            //Log.d (TAG, "*******: method memGameDataToContentValues: iterating on memGameData.getCardsSelectedArray: elementInCardSelectionOrderArrayList: " + elementInCardSelectionOrderArrayList);
+        for (Integer elementInCardSelectionOrderArrayList : matchGameData.getCardsSelectedArray()) {
+            //Log.d (TAG, "*******: method matchGameDataToContentValues: iterating on matchGameData.getCardsSelectedArray: elementInCardSelectionOrderArrayList: " + elementInCardSelectionOrderArrayList);
             cardSelectionOrderString.append(elementInCardSelectionOrderArrayList);
             cardSelectionOrderString.append(DELIMITER);
         }
         Log.d (TAG, "******** setting cardSelectionOrderString: " + cardSelectionOrderString);
         values.put (COLUMN_CARD_SELECTED_ORDER, cardSelectionOrderString.toString());
 
-        values.put (COLUMN_NUM_TURNS_TAKEN_IN_GAME, memGameData.getNumTurnsTaken());
+        values.put (COLUMN_NUM_TURNS_TAKEN_IN_GAME, matchGameData.getNumTurnsTaken());
         return values;
     }
 
 
     //method cursorToUserData populates a UserData object with data from the cursor
-    private static MemGameData cursorToMemGameData (Cursor cursor) {
+    private static MatchGameData cursorToMemGameData (Cursor cursor) {
         Log.d (TAG, "method cursorToMemGameData");
-        MemGameData cursorAtMemGameData = new MemGameData();
+        MatchGameData cursorAtMatchGameData = new MatchGameData();
 
-        cursorAtMemGameData.setUserPlayingName(cursor.getString(cursor.getColumnIndex(COLUMN_PLAYER_USERNAME)));
-        cursorAtMemGameData.setGameStartTimestamp ((long) cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_START_TIMESTAMP)));
-        cursorAtMemGameData.setThemeID(cursor.getInt(cursor.getColumnIndex(COLUMN_THEME_ID)));
-        cursorAtMemGameData.setGameDifficulty(cursor.getInt(cursor.getColumnIndex(COLUMN_DIFFICULTY)));
-        cursorAtMemGameData.setGameDurationAllocated((long) cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_DURATION_ALLOCATED)));
+        cursorAtMatchGameData.setUserPlayingName(cursor.getString(cursor.getColumnIndex(COLUMN_PLAYER_USERNAME)));
+        cursorAtMatchGameData.setGameStartTimestamp ((long) cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_START_TIMESTAMP)));
+        cursorAtMatchGameData.setThemeID(cursor.getInt(cursor.getColumnIndex(COLUMN_THEME_ID)));
+        cursorAtMatchGameData.setGameDifficulty(cursor.getInt(cursor.getColumnIndex(COLUMN_DIFFICULTY)));
+        cursorAtMatchGameData.setGameDurationAllocated((long) cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_DURATION_ALLOCATED)));
 
-        if (cursor.getInt(cursor.getColumnIndex(COLUMN_MIXER_STATE)) == 1) { cursorAtMemGameData.setMixerState(true); }
-        else if (cursor.getInt(cursor.getColumnIndex(COLUMN_MIXER_STATE)) == 0) { cursorAtMemGameData.setMixerState(false); }
+        if (cursor.getInt(cursor.getColumnIndex(COLUMN_MIXER_STATE)) == 1) { cursorAtMatchGameData.setMixerState(true); }
+        else if (cursor.getInt(cursor.getColumnIndex(COLUMN_MIXER_STATE)) == 0) { cursorAtMatchGameData.setMixerState(false); }
         else {
-            Log.d (TAG, "ERROR: method cursorAtMemGameData: mixerState: " + cursor.getInt(cursor.getColumnIndex(COLUMN_MIXER_STATE)));
+            Log.d (TAG, "ERROR: method cursorAtMatchGameData: mixerState: " + cursor.getInt(cursor.getColumnIndex(COLUMN_MIXER_STATE)));
         }
-        if (cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)) == 1) { cursorAtMemGameData.setGameStarted(true); }
-        else if (cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)) == 0) { cursorAtMemGameData.setGameStarted(false); }
+        if (cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)) == 1) { cursorAtMatchGameData.setGameStarted(true); }
+        else if (cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)) == 0) { cursorAtMatchGameData.setGameStarted(false); }
         else {
-            Log.d (TAG, "ERROR: method cursorAtMemGameData: isGameStarted: " + cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)));
+            Log.d (TAG, "ERROR: method cursorAtMatchGameData: isGameStarted: " + cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)));
         }
 
         String gamePlayDurationsString = cursor.getString(cursor.getColumnIndex(COLUMN_GAME_PLAY_DURATIONS));
-        for (String s : gamePlayDurationsString.split(DELIMITER)) cursorAtMemGameData.appendToGamePlayDurations(Long.valueOf(s));
+        for (String s : gamePlayDurationsString.split(DELIMITER)) cursorAtMatchGameData.appendToGamePlayDurations(Long.valueOf(s));
 
         String turnDurationsString = cursor.getString(cursor.getColumnIndex(COLUMN_TURN_DURATIONS));
         //Log.d (TAG, "******** method cursorToMemGameData: turnDurationsString: " + turnDurationsString);
-        for (String s : turnDurationsString.split(DELIMITER)) cursorAtMemGameData.appendToTurnDurations(Long.valueOf(s));
+        for (String s : turnDurationsString.split(DELIMITER)) cursorAtMatchGameData.appendToTurnDurations(Long.valueOf(s));
 
         String cardSelectionOrderString = cursor.getString(cursor.getColumnIndex(COLUMN_CARD_SELECTED_ORDER));
         Log.d (TAG, "******** method cursorToMemGameData: cardSelectionOrderString: " + cardSelectionOrderString);
         for (String s : cardSelectionOrderString.split(DELIMITER)) {
-            cursorAtMemGameData.appendToCardsSelected(Integer.valueOf(s));
+            cursorAtMatchGameData.appendToCardsSelected(Integer.valueOf(s));
         }
-        cursorAtMemGameData.setNumTurnsTaken(cursor.getInt(cursor.getColumnIndex(COLUMN_NUM_TURNS_TAKEN_IN_GAME)));
-        return  cursorAtMemGameData;
+        cursorAtMatchGameData.setNumTurnsTaken(cursor.getInt(cursor.getColumnIndex(COLUMN_NUM_TURNS_TAKEN_IN_GAME)));
+        return cursorAtMatchGameData;
     }
 }

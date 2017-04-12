@@ -15,7 +15,7 @@
         android:gravity="center"
         android:orientation="vertical" >
 
-        <ws.isak.bridge.ui.swapDifficultyView
+        <ws.isak.bridge.ui.SwapDifficultyView
             android:id="@+id/select_swap_difficulty_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -30,7 +30,7 @@
         android:gravity="center"
         android:orientation="vertical" >
 
-        <ws.isak.bridge.ui.swapDifficultyView
+        <ws.isak.bridge.ui.SwapDifficultyView
             android:id="@+id/select_swap_difficulty_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -45,7 +45,7 @@
         android:gravity="center"
         android:orientation="vertical" >
 
-        <ws.isak.bridge.ui.swapDifficultyView
+        <ws.isak.bridge.ui.SwapDifficultyView
             android:id="@+id/select_swap_difficulty_3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

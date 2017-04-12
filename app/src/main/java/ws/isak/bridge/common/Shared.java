@@ -10,7 +10,7 @@ import ws.isak.bridge.engine.Engine;
 import ws.isak.bridge.events.EventBus;
 import ws.isak.bridge.database.DatabaseWrapper;
 import ws.isak.bridge.model.MatchGame;
-import ws.isak.bridge.model.MemGameData;
+import ws.isak.bridge.model.MatchGameData;
 import ws.isak.bridge.model.SwapGameData;
 
 /*
@@ -37,10 +37,10 @@ public class Shared {
     //data classes / methods    FIXME - should these be static???
     public static UserData userData;        //This holds the current active UserData
     public static List <UserData> userDataList;
-    public static MemGameData memGameData;  //FIXME - is this necessary? we can generally access the current memGameData from userData.getCurMemGameData()
-    public static List <MemGameData> memGameDataList;
-    public static CardData cardData;        //placeholder cardData for return from database call
-    public static List <CardData> cardDataList;
+    public static MatchGameData matchGameData;  //FIXME - is this necessary? we can generally access the current matchGameData from userData.getCurMemGameData()
+    public static List <MatchGameData> matchGameDataList;
+    public static MatchCardData matchCardData;        //placeholder matchCardData for return from database call
+    public static List <MatchCardData> matchCardDataList;
     public static SwapGameData swapGameData;
     public static List <SwapGameData> swapGameDataList;
     

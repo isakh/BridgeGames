@@ -5,9 +5,9 @@ import java.util.Collections;
 
 import android.graphics.Bitmap;
 
+import ws.isak.bridge.common.MatchCardData;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.utils.Utils;
-import ws.isak.bridge.common.CardData;
 import ws.isak.bridge.R;
 
 /*
@@ -35,8 +35,8 @@ public class MatchThemes {
         matchTheme.name = Shared.context.getString(R.string.match_themes_blank_name);
         matchTheme.pairedImagesDiffer = false;
         matchTheme.backgroundImageUrl = URI_DRAWABLE + "back_blank";
-        matchTheme.cardObjs = new ArrayList<CardData>();
-        Collections.copy(Shared.cardDataList, matchTheme.cardObjs);      //FIXME this isn't necessary - can replace all instances of matchTheme.cardObjs with Shared.cardDataList
+        matchTheme.cardObjs = new ArrayList<MatchCardData>();
+        Collections.copy(Shared.matchCardDataList, matchTheme.cardObjs);      //FIXME this isn't necessary - can replace all instances of matchTheme.cardObjs with Shared.matchCardDataList
         return matchTheme;
     }
 
@@ -46,8 +46,8 @@ public class MatchThemes {
 		matchTheme.name = Shared.context.getString(R.string.match_themes_birds_name);
 		matchTheme.pairedImagesDiffer = true;
 		matchTheme.backgroundImageUrl = URI_DRAWABLE + "back_birds";
-		matchTheme.cardObjs = new ArrayList<CardData>();		//ArrayList of type CardData
-        Collections.copy(Shared.cardDataList, matchTheme.cardObjs);
+		matchTheme.cardObjs = new ArrayList<MatchCardData>();		//ArrayList of type MatchCardData
+        Collections.copy(Shared.matchCardDataList, matchTheme.cardObjs);
 		return matchTheme;
 	}
 
@@ -57,8 +57,8 @@ public class MatchThemes {
 		matchTheme.name = Shared.context.getString(R.string.match_themes_spectrograms_name);
 		matchTheme.pairedImagesDiffer = false;
 		matchTheme.backgroundImageUrl = URI_DRAWABLE + "back_spectrograms";
-		matchTheme.cardObjs = new ArrayList<CardData>();		//ArrayList of CardData objects
-        Collections.copy(Shared.cardDataList, matchTheme.cardObjs);
+		matchTheme.cardObjs = new ArrayList<MatchCardData>();		//ArrayList of MatchCardData objects
+        Collections.copy(Shared.matchCardDataList, matchTheme.cardObjs);
 		return matchTheme;
 	}
 	

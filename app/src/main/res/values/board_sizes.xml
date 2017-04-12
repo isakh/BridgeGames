@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- board sizes in tiles for varying difficulty levels -->
+    <!-- board sizes in tiles for varying difficulty levels of the matching game -->
     <integer name="match_board_size_easy">12</integer>
     <integer name="match_board_size_intermediate">16</integer>
-    <integer name="match_board_size_hard">18</integer>
+    <integer name="match_board_size_hard">20</integer>
+
+    <!-- board sizes in tiles for varying difficulty levels of the swapping game -->
+    <integer name="swap_board_num_tiles_in_row">4</integer>
+    <integer name="swap_board_size_easy">8</integer>
+    <integer name="swap_board_size_intermediate">12</integer>
+    <integer name="swap_board_size_hard">16</integer>
+
 
     <!-- number of tiles associated with varying difficulties... TODO is this necessary or always 1/2 of board size? -->
 </resources>

@@ -8,16 +8,16 @@ import ws.isak.bridge.common.Shared;
 /*
  * The NenGameData class contains information about each specific game played by the user including
  * the difficulty level and a list of the timings and cards selected on each move.  It includes
- * methods for constructing the MemGameData object at the beginning of each game being played which
+ * methods for constructing the MatchGameData object at the beginning of each game being played which
  * contains the difficulty of the game, the duration of the game (based on the difficulty of the game
  * and the duration of the samples placed on the board)
  *
  * @author isak
  */
 
-public class MemGameData {
+public class MatchGameData {
 
-    private final String TAG = "MemGameData";
+    private final String TAG = "MatchGameData";
 
     private MatchGame mPlayingMatchGame;
     //Parameters to be saved for database matching game to user
@@ -34,11 +34,11 @@ public class MemGameData {
     private int numTurnsTakenInGame;        //Initialize number of turns in game to 0 and increment on each click.
     private ArrayList <Long> gamePlayDurations;  //Time the player spent on the game so far (sum of turnDurations) at each turn (can it be greater than allocated time?)
     private ArrayList <Long> turnDurations;      //a list of durations of each turn - a turn is defined as a single click, implemented as ArrayList //TODO should we also have a measure of paired click turns?
-    private ArrayList <Integer> cardSelectedOrder;   //a list of cardData object IDs selected on each turn, implemented as ArrayList
+    private ArrayList <Integer> cardSelectedOrder;   //a list of matchCardData object IDs selected on each turn, implemented as ArrayList
     //TODO should/could we add a array of booleans that tracks whether a match that could be made has been missed? (For now keep this in post)
 
     //constructor method describes the information that is stored about each game played
-    public MemGameData () {
+    public MatchGameData() {
         //Log.d (TAG, "Constructor: initializing game data fields");
         setUserPlayingName(Shared.userData.getUserName());
         //setNumGamesUserPlayed(Shared.userData.sizeOfMemGameDataList());     //FIXME, should this include the current game?, do we need this? or is timestamp enough to solve game play order??
@@ -54,7 +54,7 @@ public class MemGameData {
         initTurnDurationsArray();       //null array at start
         initCardsSelectedArray();       //null array at start
         initGamePlayDurationsArray();   //null array at start
-        //update before closing and returning MemGameData to UserData
+        //update before closing and returning MatchGameData to UserData
     }
 
     /*

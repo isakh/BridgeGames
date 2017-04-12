@@ -29,7 +29,7 @@ public class SwapGameData {
     private int numTurnsTakenInGame;        //Initialize number of turns in game to 0 and increment on each click.
     private ArrayList<Long> gamePlayDurations;  //Time the player spent on the game so far (sum of turnDurations) at each turn (can it be greater than allocated time?)
     private ArrayList <Long> turnDurations;      //a list of durations of each turn - a turn is defined as a single click, implemented as ArrayList //TODO should we also have a measure of paired click turns?
-    private ArrayList <Integer> cardSelectedOrder;   //a list of cardData object IDs selected on each turn, implemented as ArrayList
+    private ArrayList <Integer> cardSelectedOrder;   //a list of matchCardData object IDs selected on each turn, implemented as ArrayList
 
 
     //constructor method describes the information that is stored about each game played

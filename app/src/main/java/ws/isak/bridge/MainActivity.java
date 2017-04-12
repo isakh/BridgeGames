@@ -10,18 +10,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
-import ws.isak.bridge.common.CardData;
+import ws.isak.bridge.common.MatchCardData;
 import ws.isak.bridge.common.Audio;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.common.UserData;
-import ws.isak.bridge.database.CardDataORM;
-import ws.isak.bridge.database.MemGameDataORM;
+import ws.isak.bridge.database.MatchCardDataORM;
+import ws.isak.bridge.database.MatchGameDataORM;
 import ws.isak.bridge.engine.Engine;
 import ws.isak.bridge.engine.ScreenController;
 import ws.isak.bridge.engine.ScreenController.Screen;
 import ws.isak.bridge.events.EventBus;
 import ws.isak.bridge.events.ui.MatchBackGameEvent;
-import ws.isak.bridge.model.MemGameData;
+import ws.isak.bridge.model.MatchGameData;
 import ws.isak.bridge.ui.PopupManager;
 import ws.isak.bridge.utils.Utils;
 import ws.isak.bridge.database.DatabaseWrapper;
@@ -72,7 +72,7 @@ public class  MainActivity extends FragmentActivity {
         Shared.engine.start();
         Shared.engine.setBackgroundImageView(mBackgroundImage);
 
-        //build the list of CardData objects based on resources
+        //build the list of MatchCardData objects based on resources
         // TODO can this become dynamic if I can load variable resources?
         buildCardDataList();
 
@@ -118,7 +118,7 @@ public class  MainActivity extends FragmentActivity {
         Log.d(TAG, "overriding method onBackPressed: produces various events based on game state");
         if (PopupManager.isShown()) {
             PopupManager.closePopup();
-            if (ScreenController.getLastScreen() == Screen.GAME_MEM) {
+            if (ScreenController.getLastScreen() == Screen.GAME_MATCH) {
                 Shared.eventBus.notify(new MatchBackGameEvent());
             }
         } else if (ScreenController.getInstance().onBack()) {
@@ -126,12 +126,12 @@ public class  MainActivity extends FragmentActivity {
         }
     }
 
-    //build the cardData list in for access by themes
+    //build the matchCardData list in for access by themes
     private void buildCardDataList () {
-        Shared.cardDataList = new ArrayList<CardData>();
+        Shared.matchCardDataList = new ArrayList<MatchCardData>();
 
         for (int i = 1; i <= 10; i++) {                             //FIXME - make this constant into a variable
-            CardData curCard = new CardData();
+            MatchCardData curCard = new MatchCardData();
             curCard.setCardID(i);
             curCard.setSpeciesName(curCard.getCardID());
             curCard.setPairedImageDiffer(false);
@@ -142,10 +142,10 @@ public class  MainActivity extends FragmentActivity {
             curCard.setImageURI3(URI_DRAWABLE + String.format(Locale.ENGLISH, "spectrogram_%d", i));
             curCard.setAudioURI(URI_AUDIO + String.format(Locale.ENGLISH, "example%d", i));
             curCard.setSampleDuration(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
-            //insert cardData object into Database and local storage
-            Shared.cardDataList.add(curCard);
-            if (!CardDataORM.isCardDataInDB(curCard)) {
-                CardDataORM.insertCardData(curCard);
+            //insert matchCardData object into Database and local storage
+            Shared.matchCardDataList.add(curCard);
+            if (!MatchCardDataORM.isCardDataInDB(curCard)) {
+                MatchCardDataORM.insertCardData(curCard);
             }
         }
     }
@@ -160,7 +160,7 @@ public class  MainActivity extends FragmentActivity {
 
 
     //private methods check that the ORM's have correctly populated the  shared data records of prior
-    //users and their games from the database with a cardData for each
+    //users and their games from the database with a matchCardData for each
 
     private void loadDatabase() {
         if (UserDataORM.userDataRecordsInDatabase(Shared.context)) {
@@ -194,75 +194,75 @@ public class  MainActivity extends FragmentActivity {
     }
 
     private void loadUsersMemGameDataRecords(UserData userData) {
-        if (MemGameDataORM.memGameRecordsInDatabase(Shared.context)) {
-            int dbLength = MemGameDataORM.numMemGameRecordsInDatabase(Shared.context);
-            Shared.memGameDataList = new ArrayList<MemGameData>(dbLength);
-            while (Shared.memGameDataList.size() < dbLength) {
-                Shared.memGameDataList.add(new MemGameData());
+        if (MatchGameDataORM.matchGameRecordsInDatabase(Shared.context)) {
+            int dbLength = MatchGameDataORM.numMemGameRecordsInDatabase(Shared.context);
+            Shared.matchGameDataList = new ArrayList<MatchGameData>(dbLength);
+            while (Shared.matchGameDataList.size() < dbLength) {
+                Shared.matchGameDataList.add(new MatchGameData());
             }
-            Log.d(TAG, "**** Shared.memGameDataList.size(): " + Shared.memGameDataList.size() +
-                    " | MemGameDataORM.getMemGameData(Shared.context).size(): " + dbLength);
-            Collections.copy(Shared.memGameDataList, MemGameDataORM.getMemGameData(userData.getUserName()));
-            Log.d(TAG, "... Shared.memGameDataList.size(): " + Shared.memGameDataList.size() + " | @: " + Shared.memGameDataList);
-            if (Shared.memGameDataList != null) {
-                for (int i = 0; i < Shared.memGameDataList.size(); i++) {
-                    Log.d(TAG, "... MAIN: MemGameData table: Database row: " + i +
-                            " | gameStartTimestamp: " + Shared.memGameDataList.get(i).getGameStartTimestamp() +
-                            " | playerUserName: " + Shared.memGameDataList.get(i).getUserPlayingName() +
-                            " | themeID: " + Shared.memGameDataList.get(i).getThemeID() +
-                            " | difficulty: " + Shared.memGameDataList.get(i).getGameDifficulty() +
-                            " | gameDurationAllocated: " + Shared.memGameDataList.get(i).getGameDurationAllocated() +
-                            " | mixerState: " + Shared.memGameDataList.get(i).getMixerState() +
-                            " | gameStarted: " + Shared.memGameDataList.get(i).isGameStarted() +
-                            " | numTurnsTakenInGame: " + Shared.memGameDataList.get(i).getNumTurnsTaken());
-                    if (Shared.memGameDataList.get(i).sizeOfPlayDurationsArray() == Shared.memGameDataList.get(i).sizeOfTurnDurationsArray()) {
-                        for (int j = 0; j < Shared.memGameDataList.get(i).sizeOfPlayDurationsArray(); j++) {
+            Log.d(TAG, "**** Shared.matchGameDataList.size(): " + Shared.matchGameDataList.size() +
+                    " | MatchGameDataORM.getMemGameData(Shared.context).size(): " + dbLength);
+            Collections.copy(Shared.matchGameDataList, MatchGameDataORM.getMemGameData(userData.getUserName()));
+            Log.d(TAG, "... Shared.matchGameDataList.size(): " + Shared.matchGameDataList.size() + " | @: " + Shared.matchGameDataList);
+            if (Shared.matchGameDataList != null) {
+                for (int i = 0; i < Shared.matchGameDataList.size(); i++) {
+                    Log.d(TAG, "... MAIN: MatchGameData table: Database row: " + i +
+                            " | gameStartTimestamp: " + Shared.matchGameDataList.get(i).getGameStartTimestamp() +
+                            " | playerUserName: " + Shared.matchGameDataList.get(i).getUserPlayingName() +
+                            " | themeID: " + Shared.matchGameDataList.get(i).getThemeID() +
+                            " | difficulty: " + Shared.matchGameDataList.get(i).getGameDifficulty() +
+                            " | gameDurationAllocated: " + Shared.matchGameDataList.get(i).getGameDurationAllocated() +
+                            " | mixerState: " + Shared.matchGameDataList.get(i).getMixerState() +
+                            " | gameStarted: " + Shared.matchGameDataList.get(i).isGameStarted() +
+                            " | numTurnsTakenInGame: " + Shared.matchGameDataList.get(i).getNumTurnsTaken());
+                    if (Shared.matchGameDataList.get(i).sizeOfPlayDurationsArray() == Shared.matchGameDataList.get(i).sizeOfTurnDurationsArray()) {
+                        for (int j = 0; j < Shared.matchGameDataList.get(i).sizeOfPlayDurationsArray(); j++) {
                             Log.d(TAG, " ... MAIN: GAME ARRAYS in MemGame Table, " + j +
                                     " | current array element i: " + j +
-                                    " | gamePlayDuration(i): " + Shared.memGameDataList.get(i).queryGamePlayDurations(j) +
-                                    " | turnDurations(i): " + Shared.memGameDataList.get(i).queryTurnDurationsArray(j) +
-                                    " | cardsSelected(i): " + Shared.memGameDataList.get(i).queryCardsSelectedArray(j));
-                            loadCardSelectedData (Shared.memGameDataList.get(i).queryCardsSelectedArray(j));
+                                    " | gamePlayDuration(i): " + Shared.matchGameDataList.get(i).queryGamePlayDurations(j) +
+                                    " | turnDurations(i): " + Shared.matchGameDataList.get(i).queryTurnDurationsArray(j) +
+                                    " | cardsSelected(i): " + Shared.matchGameDataList.get(i).queryCardsSelectedArray(j));
+                            loadCardSelectedData (Shared.matchGameDataList.get(i).queryCardsSelectedArray(j));
                         }
                     } else {
                         Log.d(TAG, " ***** ERROR! Size of play durations and turn durations not returned as equal");
                     }
-                    Shared.userData.appendMemGameData(Shared.memGameDataList.get(i));
+                    Shared.userData.appendMemGameData(Shared.matchGameDataList.get(i));
                 }
-            } else if (MemGameDataORM.getMemGameData(userData.getUserName()) == null) {
+            } else if (MatchGameDataORM.getMemGameData(userData.getUserName()) == null) {
                 //
-                Log.d(TAG, "*!*!* no MemGameData objects for userData.getUserName: " + userData.getUserName());
+                Log.d(TAG, "*!*!* no MatchGameData objects for userData.getUserName: " + userData.getUserName());
             }
         }
     }
 
-    //this should print out the information associated with the cardData object with id cardID
+    //this should print out the information associated with the matchCardData object with id cardID
     private void loadCardSelectedData (int cardID) {
-        if (CardDataORM.cardDataRecordsInDatabase(Shared.context)) {
-            int dbLength = CardDataORM.numCardDataRecordsInDatabase(Shared.context);
-            Shared.cardDataList = new ArrayList<CardData>(dbLength);
-            while (Shared.cardDataList.size() < dbLength) {
-                Shared.cardDataList.add(new CardData());
+        if (MatchCardDataORM.cardDataRecordsInDatabase(Shared.context)) {
+            int dbLength = MatchCardDataORM.numCardDataRecordsInDatabase(Shared.context);
+            Shared.matchCardDataList = new ArrayList<MatchCardData>(dbLength);
+            while (Shared.matchCardDataList.size() < dbLength) {
+                Shared.matchCardDataList.add(new MatchCardData());
             }
-            //Log.d(TAG, "**** Shared.cardDataList.size(): " + Shared.cardDataList.size() +
-            //           " | CardDataORM.getCardData(Shared.context).size(): " + dbLength);
-            Shared.cardData = CardDataORM.getCardData(cardID);
-            //Log.d(TAG, "... Shared.cardDataList.size(): " + Shared.cardDataList.size() + " | @: " + Shared.cardDataList);
-            if (Shared.cardDataList != null) {
-                Log.d (TAG, "... PARSE: CardData table: " +
-                        " | cardID: " + Shared.cardData.getCardID() +
-                        " | speciesName: " + Shared.cardData.getSpeciesName() +
-                        " | pairedImagesDiffer: " + Shared.cardData.getPairedImageDiffer() +
-                        " | firstImageUsed: " + Shared.cardData.getFirstImageUsed() +
-                        " | imageURI0: " + Shared.cardData.getImageURI0() +
-                        " | imageURI1: " + Shared.cardData.getImageURI1() +
-                        " | imageURI2: " + Shared.cardData.getImageURI2() +
-                        " | imageURI3: " + Shared.cardData.getImageURI3() +
-                        " | audioURI: " + Shared.cardData.getAudioURI() +
-                        " | sampleDuration: "+ Shared.cardData.getSampleDuration());
-            } else if (CardDataORM.getCardData(cardID) == null) {
+            //Log.d(TAG, "**** Shared.matchCardDataList.size(): " + Shared.matchCardDataList.size() +
+            //           " | MatchCardDataORM.getCardData(Shared.context).size(): " + dbLength);
+            Shared.matchCardData = MatchCardDataORM.getCardData(cardID);
+            //Log.d(TAG, "... Shared.matchCardDataList.size(): " + Shared.matchCardDataList.size() + " | @: " + Shared.matchCardDataList);
+            if (Shared.matchCardDataList != null) {
+                Log.d (TAG, "... PARSE: MatchCardData table: " +
+                        " | cardID: " + Shared.matchCardData.getCardID() +
+                        " | speciesName: " + Shared.matchCardData.getSpeciesName() +
+                        " | pairedImagesDiffer: " + Shared.matchCardData.getPairedImageDiffer() +
+                        " | firstImageUsed: " + Shared.matchCardData.getFirstImageUsed() +
+                        " | imageURI0: " + Shared.matchCardData.getImageURI0() +
+                        " | imageURI1: " + Shared.matchCardData.getImageURI1() +
+                        " | imageURI2: " + Shared.matchCardData.getImageURI2() +
+                        " | imageURI3: " + Shared.matchCardData.getImageURI3() +
+                        " | audioURI: " + Shared.matchCardData.getAudioURI() +
+                        " | sampleDuration: "+ Shared.matchCardData.getSampleDuration());
+            } else if (MatchCardDataORM.getCardData(cardID) == null) {
                 //
-                Log.d(TAG, "*!*!* no CardData object for cardID: " + cardID);
+                Log.d(TAG, "*!*!* no MatchCardData object for cardID: " + cardID);
             }
         }
     }

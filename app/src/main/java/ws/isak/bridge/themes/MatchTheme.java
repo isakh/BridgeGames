@@ -2,7 +2,7 @@ package ws.isak.bridge.themes;
 
 import java.util.ArrayList;
 
-import ws.isak.bridge.common.CardData;
+import ws.isak.bridge.common.MatchCardData;
 
 /*
  * Class MatchTheme contains the information about an abstract match game matchTheme
@@ -16,7 +16,7 @@ public class MatchTheme {
 	public String name;						//and each MatchTheme has a name
 	public String backgroundImageUrl;		//this is the board background image for the matchTheme
 	public boolean pairedImagesDiffer;		//this boolean tracks whether paired images are identical
-	public ArrayList<CardData> cardObjs;	//MatchTheme contains a list of card objects where each of
+	public ArrayList<MatchCardData> cardObjs;	//MatchTheme contains a list of card objects where each of
 											//the card objects links for all possible image urls and an audio url
 											//as well as flags for the current state of the card
 }

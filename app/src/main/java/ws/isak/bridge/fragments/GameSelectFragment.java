@@ -32,14 +32,14 @@ public class GameSelectFragment extends Fragment implements  View.OnClickListene
         Log.d(TAG, "overriding method onCreateView");
         View view = LayoutInflater.from(Shared.context).inflate(R.layout.match_game_select_fragment, container, false);
 
-        //creating views for memGameLaunch and swapGameLaunch
-        Log.d (TAG, "       : creating views for memGameLaunch and swapGameLaunch");
-        View memGameLaunch = view.findViewById(R.id.game_memory_container);
+        //creating views for matchGameLaunch and swapGameLaunch
+        Log.d (TAG, "       : creating views for matchGameLaunch and swapGameLaunch");
+        View matchGameLaunch = view.findViewById(R.id.game_match_container);
         View swapGameLaunch = view.findViewById(R.id.game_swap_container);
 
         //setting click listeners for game launch views
         Log.d (TAG, "setting click listeners for game launch views");
-        memGameLaunch.setOnClickListener(this);
+        matchGameLaunch.setOnClickListener(this);
         swapGameLaunch.setOnClickListener(this);
 
         return view;
@@ -50,10 +50,10 @@ public class GameSelectFragment extends Fragment implements  View.OnClickListene
     public void onClick (View view) {
         Log.d (TAG, "overriding method onClick: game launch buttons animate and move to appropriate subsequent screen");
         switch (view.getId()) {
-            case R.id.game_memory_container:
-                Log.d(TAG, "overridden method onClick: case game_memory: switch to MENU_MEM screen");
+            case R.id.game_match_container:
+                Log.d(TAG, "overridden method onClick: case game_match: switch to MENU_MATCH screen");
                 animateShow(view);
-                ScreenController.getInstance().openScreen(Screen.MENU_MEM);
+                ScreenController.getInstance().openScreen(Screen.MENU_MATCH);
                 break;
             case R.id.game_swap_container:
                 Log.d(TAG, "overridden method onClick: case game_swap: switch to MENU_SWAP screen");

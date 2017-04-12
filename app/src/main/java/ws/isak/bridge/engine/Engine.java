@@ -9,45 +9,55 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+
 import android.media.MediaPlayer;
+
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.widget.ImageView;
+
 import android.util.Log;
+
 import android.widget.Toast;
+import android.widget.ImageView;
 
 import ws.isak.bridge.R;
 
 import ws.isak.bridge.common.Audio;
+import ws.isak.bridge.common.MatchCardData;
 import ws.isak.bridge.common.Memory;
 import ws.isak.bridge.common.Shared;
-import ws.isak.bridge.common.CardData;
 
 import ws.isak.bridge.engine.ScreenController.Screen;
+
+import ws.isak.bridge.events.EventObserverAdapter;
+
 import ws.isak.bridge.events.engine.MatchFlipDownCardsEvent;
 import ws.isak.bridge.events.engine.MatchGameWonEvent;
 import ws.isak.bridge.events.engine.PlayCardAudioEvent;
+import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
+
+import ws.isak.bridge.events.ui.MatchStartEvent;
+import ws.isak.bridge.events.ui.SwapStartEvent;
+
 import ws.isak.bridge.events.ui.MatchDifficultySelectedEvent;
 import ws.isak.bridge.events.ui.SwapDifficultySelectedEvent;
+
 import ws.isak.bridge.events.ui.MatchNextGameEvent;
 import ws.isak.bridge.events.ui.MatchResetBackgroundEvent;
 import ws.isak.bridge.events.ui.MatchThemeSelectedEvent;
-import ws.isak.bridge.events.ui.SwapStartEvent;
-import ws.isak.bridge.model.MatchBoardConfiguration;
-import ws.isak.bridge.model.MatchGame;
-import ws.isak.bridge.model.MatchBoardArrangement;
+import ws.isak.bridge.events.ui.MatchBackGameEvent;
+import ws.isak.bridge.events.ui.MatchFlipCardEvent;
+
 import ws.isak.bridge.themes.MatchTheme;
 import ws.isak.bridge.themes.MatchThemes;
 import ws.isak.bridge.ui.PopupManager;
 
-import ws.isak.bridge.events.EventObserverAdapter;
-import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
-import ws.isak.bridge.events.ui.MatchBackGameEvent;
-import ws.isak.bridge.events.ui.MatchFlipCardEvent;
-import ws.isak.bridge.events.ui.MatchStartEvent;
-
 import ws.isak.bridge.model.GameState;
-import ws.isak.bridge.model.MemGameData;
+import ws.isak.bridge.model.MatchGameData;
+import ws.isak.bridge.model.MatchBoardConfiguration;
+import ws.isak.bridge.model.MatchGame;
+import ws.isak.bridge.model.MatchBoardArrangement;
+import ws.isak.bridge.model.SwapGameData;
 
 import ws.isak.bridge.utils.Clock;
 import ws.isak.bridge.utils.Utils;
@@ -63,8 +73,9 @@ public class Engine extends EventObserverAdapter {
 	private static final String TAG = "Engine";
 	private static Engine mInstance = null;			//instance of Engine for current use of app
 	private MatchGame mPlayingMatchGame = null;				//instance of MatchGame for current game being played
-    private MemGameData currentGameData;
-	private int mFlippedId = -1;					//id of the tile (? or event?) with the card being flipped
+    private MatchGameData currentMatchGameData;
+	private SwapGameData currentSwapGameData;
+    private int mFlippedId = -1;					//id of the tile (? or event?) with the card being flipped
 	private int mToFlip = -1;
 	private ScreenController mScreenController;
 	private MatchTheme mSelectedMatchTheme;
@@ -89,9 +100,14 @@ public class Engine extends EventObserverAdapter {
 	public void start() {
         Log.d (TAG, "method start");
         Log.d (TAG, " *******: Shared.eventBus @: " + Shared.eventBus);
+        //start event listeners
+        Shared.eventBus.listen(MatchStartEvent.TYPE, this);
+        Shared.eventBus.listen(SwapStartEvent.TYPE, this);
+        //difficulty select event listeners
 		Shared.eventBus.listen(MatchDifficultySelectedEvent.TYPE, this);
-		Shared.eventBus.listen(MatchFlipCardEvent.TYPE, this);
-		Shared.eventBus.listen(MatchStartEvent.TYPE, this);
+		Shared.eventBus.listen(SwapDifficultySelectedEvent.TYPE, this);
+
+        Shared.eventBus.listen(MatchFlipCardEvent.TYPE, this);
 		Shared.eventBus.listen(MatchThemeSelectedEvent.TYPE, this);
 		Shared.eventBus.listen(MatchBackGameEvent.TYPE, this);
 		Shared.eventBus.listen(MatchNextGameEvent.TYPE, this);
@@ -106,9 +122,14 @@ public class Engine extends EventObserverAdapter {
 		mHandler.removeCallbacksAndMessages(null);
 		mHandler = null;
 
-		Shared.eventBus.unlisten(MatchDifficultySelectedEvent.TYPE, this);
+        //start event unlisten
+        Shared.eventBus.unlisten(MatchStartEvent.TYPE, this);
+        Shared.eventBus.unlisten(SwapStartEvent.TYPE, this);
+        //difficulty select event unlisten
+        Shared.eventBus.unlisten(MatchDifficultySelectedEvent.TYPE, this);
+        Shared.eventBus.unlisten(SwapDifficultySelectedEvent.TYPE, this);
+
 		Shared.eventBus.unlisten(MatchFlipCardEvent.TYPE, this);
-		Shared.eventBus.unlisten(MatchStartEvent.TYPE, this);
 		Shared.eventBus.unlisten(MatchThemeSelectedEvent.TYPE, this);
 		Shared.eventBus.unlisten(MatchBackGameEvent.TYPE, this);
 		Shared.eventBus.unlisten(MatchNextGameEvent.TYPE, this);
@@ -141,41 +162,22 @@ public class Engine extends EventObserverAdapter {
 
 	@Override
 	public void onEvent(MatchStartEvent event) {
-        Log.d (TAG, "override onEvent for MatchStartEvent: calling screen controller to open THEME_SELECT_MEM screen");
+        Log.d (TAG, "override onEvent for MatchStartEvent: calling screen controller to open THEME_SELECT_MATCH screen");
         PopupManager.closePopup();
-		mScreenController.openScreen(Screen.THEME_SELECT_MEM);
+		mScreenController.openScreen(Screen.THEME_SELECT_MATCH);
 	}
 
 	@Override
     public void onEvent (SwapStartEvent event) {
-        Log.d (TAG, "override inEvent for SwapStarEvent: Calling screen controller to open DIFFICULTY_SWAP");
+        Log.d (TAG, "override onEvent for SwapStarEvent: Calling screen controller to open DIFFICULTY_SWAP");
         PopupManager.closePopup();
         mScreenController.openScreen(Screen.DIFFICULTY_SWAP);
     }
 
 	@Override
-	public void onEvent(MatchNextGameEvent event) {
-		PopupManager.closePopup();
-		int difficulty = mPlayingMatchGame.matchMatchBoardConfiguration.difficulty;
-		if (mPlayingMatchGame.gameState.achievedStars == 3 && difficulty < 3) {  //TODO set these numbers in values.xml?
-			difficulty++;
-		}
-		Shared.eventBus.notify(new MatchDifficultySelectedEvent(difficulty));
-	}
-
-	@Override
-	public void onEvent(MatchBackGameEvent event) {
-		PopupManager.closePopup();
-		mScreenController.openScreen(Screen.DIFFICULTY_MEM);
-        //TODO verify that adding the following lines to reset the difficulty on backGameEvent worked [initially yes]
-        int difficulty = mPlayingMatchGame.matchMatchBoardConfiguration.difficulty;
-        Shared.eventBus.notify (new MatchDifficultySelectedEvent(difficulty));
-	}
-
-	@Override
 	public void onEvent(MatchThemeSelectedEvent event) {
 		mSelectedMatchTheme = event.matchTheme;
-		mScreenController.openScreen(Screen.DIFFICULTY_MEM);
+		mScreenController.openScreen(Screen.DIFFICULTY_MATCH);
 		AsyncTask<Void, Void, TransitionDrawable> task = new AsyncTask<Void, Void, TransitionDrawable>() {
 
 			@Override
@@ -212,39 +214,39 @@ public class Engine extends EventObserverAdapter {
 		// arrange board
 		arrangeMatchBoard();
 
-        //instantiating the currentGameData object - some fields default to 0 || null
-        currentGameData = new MemGameData();
-        currentGameData.setThemeID(Shared.currentMatchGame.matchTheme.themeID);
-        currentGameData.setGameDifficulty(Shared.currentMatchGame.matchMatchBoardConfiguration.difficulty);
-        currentGameData.setGameDurationAllocated(Shared.currentMatchGame.matchMatchBoardConfiguration.time);
-        currentGameData.setMixerState(Audio.MIX);
-        //check setup of memGameData - these should return current states
-        Log.d (TAG, "******* New MemGameData Instantiated *******");
-        Log.d (TAG, "event MatchDifficultySelectedEvent: create currentGameData: currentGameData.getUserPlayingName : " + currentGameData.getUserPlayingName());
-        Log.d (TAG, "                                                     : currentGameData.getThemeID : " + currentGameData.getThemeID());
-        Log.d (TAG, "                                                     : currentGameData.getGameDifficulty: " + currentGameData.getGameDifficulty());
-        Log.d (TAG, "                                                     : currentGameData.getGameDurationAllocated: " + currentGameData.getGameDurationAllocated());
-        Log.d (TAG, "                                                     : currentGameData.getMixerState : " + currentGameData.getMixerState());
+        //instantiating the currentMatchGameData object - some fields default to 0 || null
+        currentMatchGameData = new MatchGameData();
+        currentMatchGameData.setThemeID(Shared.currentMatchGame.matchTheme.themeID);
+        currentMatchGameData.setGameDifficulty(Shared.currentMatchGame.matchMatchBoardConfiguration.difficulty);
+        currentMatchGameData.setGameDurationAllocated(Shared.currentMatchGame.matchMatchBoardConfiguration.time);
+        currentMatchGameData.setMixerState(Audio.MIX);
+        //check setup of matchGameData - these should return current states
+        Log.d (TAG, "******* New MatchGameData Instantiated *******");
+        Log.d (TAG, "event MatchDifficultySelectedEvent: create currentMatchGameData: currentMatchGameData.getUserPlayingName : " + currentMatchGameData.getUserPlayingName());
+        Log.d (TAG, "                                                     : currentMatchGameData.getThemeID : " + currentMatchGameData.getThemeID());
+        Log.d (TAG, "                                                     : currentMatchGameData.getGameDifficulty: " + currentMatchGameData.getGameDifficulty());
+        Log.d (TAG, "                                                     : currentMatchGameData.getGameDurationAllocated: " + currentMatchGameData.getGameDurationAllocated());
+        Log.d (TAG, "                                                     : currentMatchGameData.getMixerState : " + currentMatchGameData.getMixerState());
         //these should reflect that the game is not yet started (don't check start timeStamp as it hasn't been used?)
-        Log.d (TAG, "                             			              : currentGameData.isGameStarted: " + currentGameData.isGameStarted());
-        Log.d (TAG, "                                                     : currentGameData.getGameStartTimestamp: " + currentGameData.getGameStartTimestamp());
-        Log.d (TAG, "                                                     : currentGameData.numPlayDurationsRecorded: " + currentGameData.sizeOfPlayDurationsArray());
-        Log.d (TAG, "                                                     : currentGameData.numTurnDurationsRecorded: " + currentGameData.sizeOfTurnDurationsArray());
-        Log.d (TAG, "                                                     : currentGameData.numCardSelectionsRecorded: " + currentGameData.sizeOfCardSelectionArray());
-        Log.d (TAG, "                             			              : currentGameData.getNumTurnsTaken: " + currentGameData.getNumTurnsTaken());
+        Log.d (TAG, "                             			              : currentMatchGameData.isGameStarted: " + currentMatchGameData.isGameStarted());
+        Log.d (TAG, "                                                     : currentMatchGameData.getGameStartTimestamp: " + currentMatchGameData.getGameStartTimestamp());
+        Log.d (TAG, "                                                     : currentMatchGameData.numPlayDurationsRecorded: " + currentMatchGameData.sizeOfPlayDurationsArray());
+        Log.d (TAG, "                                                     : currentMatchGameData.numTurnDurationsRecorded: " + currentMatchGameData.sizeOfTurnDurationsArray());
+        Log.d (TAG, "                                                     : currentMatchGameData.numCardSelectionsRecorded: " + currentMatchGameData.sizeOfCardSelectionArray());
+        Log.d (TAG, "                             			              : currentMatchGameData.getNumTurnsTaken: " + currentMatchGameData.getNumTurnsTaken());
 
         //debug Shared.userData
         Log.d (TAG, " ******* : Shared.userData @ : " + Shared.userData);
         Log.d (TAG, " ******* : userData.getCurMemGame @ : " + Shared.userData.getCurMemGame());
 
-        Shared.userData.setCurMemGame(currentGameData);
+        Shared.userData.setCurMemGame(currentMatchGameData);
         // start the screen - This call to screen controller causes the screen controller to select
         // a new MatchGameFragment from the screen controller.  Opening the new MatchGameFragment leads to a
         // call to buildBoard() a private method in the MatchGame Fragment. buildBoard calls setBoard in
         // the BoardView ui class. setBoard in BoardView propagates through a local buildBoard method
         // and eventually calls addTile for each of the tiles on the board to be built.   This leads
         // to a thread for each tile which calls getTileBitmap.
-		mScreenController.openScreen(Screen.GAME_MEM);
+		mScreenController.openScreen(Screen.GAME_MATCH);
     }
 
 	private void arrangeMatchBoard() {
@@ -262,7 +264,7 @@ public class Engine extends EventObserverAdapter {
 
 		// map the paired tiles to each other as well as the card for each pair of tiles
 		matchBoardArrangement.pairs = new HashMap<Integer, Integer>();
-		matchBoardArrangement.cardObjs = new HashMap<Integer, CardData>();
+		matchBoardArrangement.cardObjs = new HashMap<Integer, MatchCardData>();
 		int j = 0;
 		for (int i = 0; i < tileIDs.size(); i++) {		//Iterate over all of the tiles
 			if (i + 1 < tileIDs.size()) {				//check that we haven't filled all tile pairs
@@ -271,10 +273,10 @@ public class Engine extends EventObserverAdapter {
 				// and ensure that the mapping is bi-directional
 				matchBoardArrangement.pairs.put(tileIDs.get(i + 1), tileIDs.get(i));
 				// map each of the paired tile IDs to the same card object ID
-				matchBoardArrangement.cardObjs.put(tileIDs.get(i), Shared.cardDataList.get(j));
-				matchBoardArrangement.cardObjs.put(tileIDs.get(i + 1), Shared.cardDataList.get(j));
+				matchBoardArrangement.cardObjs.put(tileIDs.get(i), Shared.matchCardDataList.get(j));
+				matchBoardArrangement.cardObjs.put(tileIDs.get(i + 1), Shared.matchCardDataList.get(j));
 				//debug report: state of tile id's paired on board, and card id for the tile pair
-				Log.d (TAG, "method arrangeBoard: Map Tile Pairs: Tile id1: " + tileIDs.get(i) + " |  Tile id2: " + tileIDs.get(i + 1) + " | Mapped Card id: " + Shared.cardDataList.get(j).getCardID());
+				Log.d (TAG, "method arrangeBoard: Map Tile Pairs: Tile id1: " + tileIDs.get(i) + " |  Tile id2: " + tileIDs.get(i + 1) + " | Mapped Card id: " + Shared.matchCardDataList.get(j).getCardID());
 				//Log.d (TAG, "method arrangeBoard: Mapping cardObjs to IDs: ID is: " + tileIDs.get(i) + " | Card Object ID is: " + mSelectedMatchTheme.cardObjs.get(j).getCardID());
 				//Log.d (TAG, "method arrangeBoard: 		Card Object Image URI 1 is : " + mSelectedMatchTheme.cardObjs.get(j).getImageURI1());
 				//Log.d (TAG, "method arrangeBoard: 		Card Object Image URI 2 is : " + mSelectedMatchTheme.cardObjs.get(j).getImageURI2());
@@ -419,9 +421,28 @@ public class Engine extends EventObserverAdapter {
 		}
 		else {
 			Toast.makeText(Shared.context, "Please turn on game audio to play in this mode, you can do this under settings", Toast.LENGTH_SHORT).show();
-            mScreenController.openScreen(Screen.MENU_MEM);
+            mScreenController.openScreen(Screen.MENU_MATCH);
 		}
 	}
+
+    @Override
+    public void onEvent(MatchNextGameEvent event) {
+        PopupManager.closePopup();
+        int difficulty = mPlayingMatchGame.matchMatchBoardConfiguration.difficulty;
+        if (mPlayingMatchGame.gameState.achievedStars == 3 && difficulty < 3) {  //TODO set these numbers in values.xml?
+            difficulty++;
+        }
+        Shared.eventBus.notify(new MatchDifficultySelectedEvent(difficulty));
+    }
+
+    @Override
+    public void onEvent(MatchBackGameEvent event) {
+        PopupManager.closePopup();
+        mScreenController.openScreen(Screen.DIFFICULTY_MATCH);
+        //TODO verify that adding the following lines to reset the difficulty on backGameEvent worked [initially yes]
+        int difficulty = mPlayingMatchGame.matchMatchBoardConfiguration.difficulty;
+        Shared.eventBus.notify (new MatchDifficultySelectedEvent(difficulty));
+    }
 
 	public MatchGame getActiveGame() {
 		//Log.d (TAG, "method getActiveGame");

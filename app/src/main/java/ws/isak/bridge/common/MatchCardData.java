@@ -4,16 +4,16 @@ import ws.isak.bridge.R;
 
 
 /*
- * Class TileData constructs the object that comprises one tile element in a matchTheme.  This is one
+ * Class MatchCardData constructs the object that comprises one tile element in a matchTheme.  This is one
  * or more image files (pairs of images are needed for the birds matchTheme, currently the spectrograms
  * matchTheme will only ask users to match identical spectrograms) and an audio file.
  *
  * @author isak
  */
 
-public class CardData
+public class MatchCardData
 {
-    private final String TAG = "CardData";
+    private final String TAG = "MatchCardData";
 
     private int cardID;                     //FIXME Private Key? Tile ID between 1 and the number of tiles objects in resources
     private String speciesName;             //this string stores the species name from R.strings.species_bird_% FIXME make dynamic?

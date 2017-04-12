@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 import android.util.Log;
 
-import ws.isak.bridge.model.MemGameData;
+import ws.isak.bridge.model.MatchGameData;
+import ws.isak.bridge.model.SwapGameData;
 
 /*
  * The UserData class contains creation and accessor methods for the data collected about a particular
@@ -40,12 +41,13 @@ public class UserData {
     private static int hearIsSeeLikert;
     private static int hearIsPredictLikert;
 
-    //data from memory games played
-    private MemGameData curMemGame;
-    private ArrayList<MemGameData> memGameDataList;
+    //data from match games played
+    private MatchGameData curMemGame;
+    private ArrayList<MatchGameData> matchGameDataList;
 
     //data from swap games played
-    //TODO private List swapGameDataList<SwapGameData>;   this will cover when the user plays the tile swapping game
+    private SwapGameData curSwapGame;
+    private ArrayList<SwapGameData> swapGameDataList;  
 
 
     // Constructor - this should be called once when a userData object instance needs to be instantiated
@@ -72,6 +74,7 @@ public class UserData {
         setSpectrogramFamiliar(false);
         //set game data lists
         initMemGameDataList();
+        initSwapGameDataList();
     }
 
     /*
@@ -216,38 +219,76 @@ public class UserData {
     //***** MEMORY GAME DATA *****
 
     /*
-     * MemGameData constructor, accessor, mutator follow:
+     * MatchGameData constructor, accessor, mutator follow:
      */
     public void initMemGameDataList() {
         Log.d(TAG, "method initMemGameDataList");
-        memGameDataList = new ArrayList<MemGameData>();
+        matchGameDataList = new ArrayList<MatchGameData>();
     }
 
-    public void appendMemGameData(MemGameData game) {
+    public void appendMemGameData(MatchGameData game) {
         Log.d(TAG, "method addToGameDataList: adding game data to list");
-        memGameDataList.add(game);        //TODO add try/catch block here
+        matchGameDataList.add(game);        //TODO add try/catch block here
     }
 
     /*
-     * Method queryMemGameData returns a GameData object at position in the list gameDataRecord.
+     * Method queryMemGameData returns a MatchGameData object at position in the list gameDataRecord.
      */
-    public MemGameData queryMemGameDataList(int gameDataRecord) {
+    public MatchGameData queryMemGameDataList(int gameDataRecord) {
         Log.d(TAG, "method queryMemGameDataList");
-        return memGameDataList.get(gameDataRecord);
+        return matchGameDataList.get(gameDataRecord);
     }
 
-    public void setCurMemGame(MemGameData gameData) {
+    public void setCurMemGame(MatchGameData gameData) {
         Log.d(TAG, "method setCurMemGame");
         curMemGame = gameData;
     }
 
-    public MemGameData getCurMemGame() {
+    public MatchGameData getCurMemGame() {
         //Log.d(TAG, "method getCurMemGame");
         return curMemGame;
     }
 
     public int sizeOfMemGameDataList () {
         //
-        return memGameDataList.size();
+        return matchGameDataList.size();
+    }
+
+    //***** SWAP GAME DATA *****
+
+    /*
+     * SwapGameData constructor, accessor, mutator follow:
+     */
+    public void initSwapGameDataList() {
+        Log.d(TAG, "method initSwapGameDataList");
+        swapGameDataList = new ArrayList<SwapGameData>();
+    }
+
+    public void appendSwapGameData(SwapGameData game) {
+        Log.d(TAG, "method addToGameDataList: adding game data to list");
+        swapGameDataList.add(game);        //TODO add try/catch block here
+    }
+
+    /*
+     * Method querySwapGameData returns a SwapGameData object at position in the list gameDataRecord.
+     */
+    public SwapGameData querySwapGameDataList(int gameDataRecord) {
+        Log.d(TAG, "method querySwapGameDataList");
+        return swapGameDataList.get(gameDataRecord);
+    }
+
+    public void setCurSwapGame(SwapGameData gameData) {
+        Log.d(TAG, "method setCurSwapGame");
+        curSwapGame = gameData;
+    }
+
+    public SwapGameData getCurSwapGame() {
+        //Log.d(TAG, "method getCurSwapGame");
+        return curSwapGame;
+    }
+
+    public int sizeOfSwapGameDataList () {
+        //
+        return swapGameDataList.size();
     }
 }

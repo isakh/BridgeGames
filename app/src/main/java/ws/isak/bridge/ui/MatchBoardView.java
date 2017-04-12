@@ -183,10 +183,10 @@ public class MatchBoardView extends LinearLayout {
                     Log.d(TAG, " 			   : curCardOnTile.getFirstImageUsed is: " + mMatchBoardArrangement.cardObjs.get(curTileOnBoard).getFirstImageUsed());
                     Log.d(TAG, " 			   : curCardOnTile.getImageURI2 is: " + mMatchBoardArrangement.cardObjs.get(curTileOnBoard).getImageURI2());
 
-                    //If this is the first tile being clicked, we need to change the state of MemGameData.isGameStarted()
-                    //If this is the first tile we need to set the MemGameData.setGameStartTimeStamp()
+                    //If this is the first tile being clicked, we need to change the state of MatchGameData.isGameStarted()
+                    //If this is the first tile we need to set the MatchGameData.setGameStartTimeStamp()
                     //Whether this is not the first tile or not, we need to record that click has been made, it's time, and update accordingly
-                    Log.d(TAG, "**** Update MemGameData with current timing information (and card info) ****");
+                    Log.d(TAG, "**** Update MatchGameData with current timing information (and card info) ****");
                     //do the following if it is the first click in a game
                     if (!Shared.userData.getCurMemGame().isGameStarted()) {     //if this is the first card being flipped
                         Log.d (TAG, "This is the First Tile Flipped In MatchGame");

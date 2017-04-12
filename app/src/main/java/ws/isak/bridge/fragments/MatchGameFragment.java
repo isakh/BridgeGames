@@ -13,7 +13,7 @@ import java.util.Locale;
 
 import ws.isak.bridge.R;
 import ws.isak.bridge.common.Shared;
-import ws.isak.bridge.database.MemGameDataORM;
+import ws.isak.bridge.database.MatchGameDataORM;
 import ws.isak.bridge.events.engine.MatchFlipDownCardsEvent;
 import ws.isak.bridge.events.engine.MatchGameWonEvent;
 import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
@@ -156,11 +156,11 @@ public class MatchGameFragment extends BaseFragment {
         //end validation block
         */
 
-        //append MemGameData to userData array
-        Shared.userData.appendMemGameData(Shared.userData.getCurMemGame());     //append the MemGameData for completed game to
+        //append MatchGameData to userData array
+        Shared.userData.appendMemGameData(Shared.userData.getCurMemGame());     //append the MatchGameData for completed game to
 
-        //insert current memGameData into database
-        MemGameDataORM.insertMemGameData(Shared.userData.getCurMemGame());
+        //insert current matchGameData into database
+        MatchGameDataORM.insertMemGameData(Shared.userData.getCurMemGame());
 
         //reset flags
         Shared.userData.getCurMemGame().setGameStarted(false);                  //reset the gameStarted boolean to false

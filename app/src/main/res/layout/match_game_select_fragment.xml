@@ -9,14 +9,14 @@
     android:paddingRight="@dimen/theme_padding" >
 
     <RelativeLayout
-        android:id="@+id/game_memory_container"
+        android:id="@+id/game_match_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginRight="@dimen/theme_margin"
         android:layout_weight="1" >
 
         <ImageView
-            android:id="@+id/game_memory"
+            android:id="@+id/game_match"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:adjustViewBounds="true"

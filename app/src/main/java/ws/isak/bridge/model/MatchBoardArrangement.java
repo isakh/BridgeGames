@@ -5,10 +5,10 @@ import java.util.Map;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import ws.isak.bridge.common.MatchCardData;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.themes.MatchThemes;
 import ws.isak.bridge.utils.Utils;
-import ws.isak.bridge.common.CardData;
 
 /**
  * Before game starts, engine builds a new board - this involves setting up the mappings for tiles
@@ -25,7 +25,7 @@ public class MatchBoardArrangement {
 	// like {0-2, 4-3, 1-(n-1}
 	public Map<Integer, Integer> pairs;		//This shows where the matched pairs are
 	//Map tile IDs to card data objects
-	public Map <Integer, CardData> cardObjs;
+	public Map <Integer, MatchCardData> cardObjs;
 
 	/**
 	 * Method getTileBitmap returns a bitmap from a URI associated with a card ID and the settings of
@@ -45,7 +45,7 @@ public class MatchBoardArrangement {
 
 		Log.d (TAG, "method getTileBitmap: *** ADDING NEW BITMAP ***");
 		Log.d (TAG, "                    : curTileID: " + curTileID + " tile image size: " + size);
-		CardData cardOnTile = cardObjs.get(curTileID);
+		MatchCardData cardOnTile = cardObjs.get(curTileID);
 		Log.d (TAG, "                    : cardOnTile id: " + cardOnTile.getCardID());
 		Log.d (TAG, "					 : cardOnTile.getPairedImagedDiffer: " + cardOnTile.getPairedImageDiffer());
 		Log.d (TAG, " 					 : cardOnTile.getFirstImageUsed: " + cardOnTile.getFirstImageUsed());

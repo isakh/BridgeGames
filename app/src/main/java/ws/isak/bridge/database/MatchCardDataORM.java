@@ -9,16 +9,16 @@ import android.util.Log;
 import android.widget.Toast;
 
 import ws.isak.bridge.common.Shared;
-import ws.isak.bridge.common.CardData;
+import ws.isak.bridge.common.MatchCardData;
 
 /*
  *
  * @author isak
  */
 
-public class CardDataORM {
+public class MatchCardDataORM {
 
-    private static final String TAG="CardDataORM";
+    private static final String TAG="MatchCardDataORM";
 
     private static final String TABLE_NAME = "card_data";
 
@@ -85,7 +85,7 @@ public class CardDataORM {
 
         if (database != null) {
             Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-            Log.d(TAG, "method cardDataRecordsInDatabase: Checked " + cursor.getCount() + " CardData records...");
+            Log.d(TAG, "method cardDataRecordsInDatabase: Checked " + cursor.getCount() + " MatchCardData records...");
 
             if (cursor.getCount() > 0) {
                 recordsExist = true;
@@ -107,7 +107,7 @@ public class CardDataORM {
 
         if (database != null) {
             Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-            Log.d(TAG, "method numCardDataRecordsInDatabase: There are: " + cursor.getCount() + " CardData records...");
+            Log.d(TAG, "method numCardDataRecordsInDatabase: There are: " + cursor.getCount() + " MatchCardData records...");
 
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();
@@ -122,9 +122,9 @@ public class CardDataORM {
         return numRecords;
     }
 
-    //method isCardDataInDB takes a CardData object and checks whether it has been used as a
+    //method isCardDataInDB takes a MatchCardData object and checks whether it has been used as a
     //primary key yet in the database - used to check existence and uniqueness when loading cards.
-    public static boolean isCardDataInDB (CardData cardToCheck) {
+    public static boolean isCardDataInDB (MatchCardData cardToCheck) {
         Log.d (TAG, "method isCardDataInDB: check cardToCheck: " + cardToCheck);
         DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
@@ -148,52 +148,52 @@ public class CardDataORM {
     }
 
 
-    public static CardData getCardData (int cardID) {
-        Log.d (TAG, "method getMemGameData returns a list of cardData objects with cardID " + cardID);
+    public static MatchCardData getCardData (int cardID) {
+        Log.d (TAG, "method getMemGameData returns a list of matchCardData objects with cardID " + cardID);
 
         DatabaseWrapper databaseWrapper =  Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
 
-        CardData cardDataToReturn = null;
+        MatchCardData matchCardDataToReturn = null;
 
         if (database !=  null) {
             Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_CARD_ID + " ='" + cardID + "'", null);
             //FIXME - this prevent's SQL injection: Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " =?", userName);
-            Log.d (TAG, "method getCardData: Loaded " + cursor.getCount() + " CardData records... this should always only be 1");
+            Log.d (TAG, "method getCardData: Loaded " + cursor.getCount() + " MatchCardData records... this should always only be 1");
             if (cardDataRecordsInDatabase(Shared.context)) {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
-                    CardData cardDataAtCursor = cursorToCardData(cursor);
-                    //Check the state of all CardData fields here
-                    Log.d (TAG, "... PARSE: CardData object to return:" +
-                            " | cardID: " + cardDataAtCursor.getCardID() +
-                            " | speciesName: " + cardDataAtCursor.getSpeciesName() +
-                            " | pairedImagesDiffer: " + cardDataAtCursor.getPairedImageDiffer() +
-                            " | firstImageUsed: " + cardDataAtCursor.getFirstImageUsed() +
-                            " | imageURI0: " + cardDataAtCursor.getImageURI0() +
-                            " | imageURI1: " + cardDataAtCursor.getImageURI1() +
-                            " | imageURI2: " + cardDataAtCursor.getImageURI2() +
-                            " | imageURI3: " + cardDataAtCursor.getImageURI3() +
-                            " | audioURI: " + cardDataAtCursor.getAudioURI() +
-                            " | sampleDuration: "+ cardDataAtCursor.getSampleDuration());
-                    cardDataToReturn = cardDataAtCursor;
+                    MatchCardData matchCardDataAtCursor = cursorToCardData(cursor);
+                    //Check the state of all MatchCardData fields here
+                    Log.d (TAG, "... PARSE: MatchCardData object to return:" +
+                            " | cardID: " + matchCardDataAtCursor.getCardID() +
+                            " | speciesName: " + matchCardDataAtCursor.getSpeciesName() +
+                            " | pairedImagesDiffer: " + matchCardDataAtCursor.getPairedImageDiffer() +
+                            " | firstImageUsed: " + matchCardDataAtCursor.getFirstImageUsed() +
+                            " | imageURI0: " + matchCardDataAtCursor.getImageURI0() +
+                            " | imageURI1: " + matchCardDataAtCursor.getImageURI1() +
+                            " | imageURI2: " + matchCardDataAtCursor.getImageURI2() +
+                            " | imageURI3: " + matchCardDataAtCursor.getImageURI3() +
+                            " | audioURI: " + matchCardDataAtCursor.getAudioURI() +
+                            " | sampleDuration: "+ matchCardDataAtCursor.getSampleDuration());
+                    matchCardDataToReturn = matchCardDataAtCursor;
                     cursor.moveToNext();
                 }
                 cursor.close();
                 database.close();
             }
         }
-        return  cardDataToReturn;
+        return matchCardDataToReturn;
     }
 
 
-    public static boolean insertCardData (CardData cardData){
-        Log.d (TAG, "method insertCardData tries to insert a new CardData object into the database");
+    public static boolean insertCardData (MatchCardData matchCardData){
+        Log.d (TAG, "method insertCardData tries to insert a new MatchCardData object into the database");
 
         boolean success = false;
 
         Log.d(TAG, "method insertCardData: creating ContentValues");
-        ContentValues values = cardDataToContentValues(cardData);
+        ContentValues values = cardDataToContentValues(matchCardData);
 
         DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
@@ -201,11 +201,11 @@ public class CardDataORM {
         try {
             if (database != null) {
                 long rowID = database.insert(TABLE_NAME, "null", values);
-                Log.d(TAG, "method insertCardData: Inserted new CardData into rowID: " + rowID);
+                Log.d(TAG, "method insertCardData: Inserted new MatchCardData into rowID: " + rowID);
                 success = true;
             }
         } catch (SQLiteException sqlex) {
-            Log.e(TAG, "method insertCardData: Failed to insert CardData[" + cardData.getCardID() + "] due to: " + sqlex);
+            Log.e(TAG, "method insertCardData: Failed to insert MatchCardData[" + matchCardData.getCardID() + "] due to: " + sqlex);
             sqlex.printStackTrace();
         } finally {
             if (database != null) {
@@ -218,55 +218,55 @@ public class CardDataORM {
 
         //method cardDataToContentValues packs a UserData object into a ContentValues map for
     //use with SQL inserts
-    private static ContentValues cardDataToContentValues (CardData cardData) {
+    private static ContentValues cardDataToContentValues (MatchCardData matchCardData) {
         Log.d (TAG, "private method cardDataToContentValues");
         ContentValues values = new ContentValues();
 
-        values.put (COLUMN_CARD_ID, cardData.getCardID());
-        values.put (COLUMN_SPECIES_NAME, cardData.getSpeciesName());
+        values.put (COLUMN_CARD_ID, matchCardData.getCardID());
+        values.put (COLUMN_SPECIES_NAME, matchCardData.getSpeciesName());
 
-        if (!cardData.getPairedImageDiffer()) { values.put (COLUMN_PAIRED_IMAGES_DIFFER, 0);}       //TODO Check logic
+        if (!matchCardData.getPairedImageDiffer()) { values.put (COLUMN_PAIRED_IMAGES_DIFFER, 0);}       //TODO Check logic
         else{ values.put (COLUMN_PAIRED_IMAGES_DIFFER, 1); }
-        if (!cardData.getFirstImageUsed()) { values.put (COLUMN_FIRST_IMAGE_USED, 0); }             //TODO Check logic
+        if (!matchCardData.getFirstImageUsed()) { values.put (COLUMN_FIRST_IMAGE_USED, 0); }             //TODO Check logic
         else { values.put (COLUMN_FIRST_IMAGE_USED, 1); }
 
-        values.put (COLUMN_IMAGE_URI0, cardData.getImageURI0());
-        values.put (COLUMN_IMAGE_URI1, cardData.getImageURI1());
-        values.put (COLUMN_IMAGE_URI2, cardData.getImageURI2());
-        values.put (COLUMN_IMAGE_URI3, cardData.getImageURI3());
-        values.put (COLUMN_AUDIO_URI, cardData.getAudioURI());
-        values.put (COLUMN_SAMPLE_DURATION, cardData.getSampleDuration());
+        values.put (COLUMN_IMAGE_URI0, matchCardData.getImageURI0());
+        values.put (COLUMN_IMAGE_URI1, matchCardData.getImageURI1());
+        values.put (COLUMN_IMAGE_URI2, matchCardData.getImageURI2());
+        values.put (COLUMN_IMAGE_URI3, matchCardData.getImageURI3());
+        values.put (COLUMN_AUDIO_URI, matchCardData.getAudioURI());
+        values.put (COLUMN_SAMPLE_DURATION, matchCardData.getSampleDuration());
         return values;
     }
 
 
     //method cursorToUserData populates a UserData object with data from the cursor
-    private static CardData cursorToCardData (Cursor cursor) {
+    private static MatchCardData cursorToCardData (Cursor cursor) {
         Log.d (TAG, "method cursorToCardData");
-        CardData cursorAtCardData = new CardData();
+        MatchCardData cursorAtMatchCardData = new MatchCardData();
 
-        cursorAtCardData.setCardID (cursor.getInt(cursor.getColumnIndex(COLUMN_CARD_ID)));
-        cursorAtCardData.setSpeciesName(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIES_NAME)));      //FIXME solve string approach to species loading - currently overloading constructor
+        cursorAtMatchCardData.setCardID (cursor.getInt(cursor.getColumnIndex(COLUMN_CARD_ID)));
+        cursorAtMatchCardData.setSpeciesName(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIES_NAME)));      //FIXME solve string approach to species loading - currently overloading constructor
 
-        if (cursor.getInt(cursor.getColumnIndex(COLUMN_PAIRED_IMAGES_DIFFER)) == 1) { cursorAtCardData.setPairedImageDiffer(true); }
-        else if (cursor.getInt(cursor.getColumnIndex(COLUMN_PAIRED_IMAGES_DIFFER)) == 0) { cursorAtCardData.setPairedImageDiffer(false); }
+        if (cursor.getInt(cursor.getColumnIndex(COLUMN_PAIRED_IMAGES_DIFFER)) == 1) { cursorAtMatchCardData.setPairedImageDiffer(true); }
+        else if (cursor.getInt(cursor.getColumnIndex(COLUMN_PAIRED_IMAGES_DIFFER)) == 0) { cursorAtMatchCardData.setPairedImageDiffer(false); }
         else {
-            Log.d (TAG, "ERROR: method cursorAtCardData: mixerState: " + cursor.getInt(cursor.getColumnIndex(COLUMN_PAIRED_IMAGES_DIFFER)));
+            Log.d (TAG, "ERROR: method cursorAtMatchCardData: mixerState: " + cursor.getInt(cursor.getColumnIndex(COLUMN_PAIRED_IMAGES_DIFFER)));
         }
-        if (cursor.getInt(cursor.getColumnIndex(COLUMN_FIRST_IMAGE_USED)) == 1) { cursorAtCardData.setFirstImageUsed(true); }
-        else if (cursor.getInt(cursor.getColumnIndex(COLUMN_FIRST_IMAGE_USED)) == 0) { cursorAtCardData.setFirstImageUsed(false); }
+        if (cursor.getInt(cursor.getColumnIndex(COLUMN_FIRST_IMAGE_USED)) == 1) { cursorAtMatchCardData.setFirstImageUsed(true); }
+        else if (cursor.getInt(cursor.getColumnIndex(COLUMN_FIRST_IMAGE_USED)) == 0) { cursorAtMatchCardData.setFirstImageUsed(false); }
         else {
-            Log.d (TAG, "ERROR: method cursorAtCardData: isFirstImageUsed: " + cursor.getInt(cursor.getColumnIndex(COLUMN_FIRST_IMAGE_USED)));
+            Log.d (TAG, "ERROR: method cursorAtMatchCardData: isFirstImageUsed: " + cursor.getInt(cursor.getColumnIndex(COLUMN_FIRST_IMAGE_USED)));
         }
 
-        cursorAtCardData.setImageURI0(cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI0)));
-        cursorAtCardData.setImageURI1(cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI1)));
-        cursorAtCardData.setImageURI2(cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI2)));
-        cursorAtCardData.setImageURI3(cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI3)));
-        cursorAtCardData.setAudioURI(cursor.getString(cursor.getColumnIndex(COLUMN_AUDIO_URI)));
-        cursorAtCardData.setSampleDuration((long) cursor.getInt(cursor.getColumnIndex(COLUMN_SAMPLE_DURATION)));
+        cursorAtMatchCardData.setImageURI0(cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI0)));
+        cursorAtMatchCardData.setImageURI1(cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI1)));
+        cursorAtMatchCardData.setImageURI2(cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI2)));
+        cursorAtMatchCardData.setImageURI3(cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI3)));
+        cursorAtMatchCardData.setAudioURI(cursor.getString(cursor.getColumnIndex(COLUMN_AUDIO_URI)));
+        cursorAtMatchCardData.setSampleDuration((long) cursor.getInt(cursor.getColumnIndex(COLUMN_SAMPLE_DURATION)));
 
-        return  cursorAtCardData;
+        return cursorAtMatchCardData;
     }
 
 }

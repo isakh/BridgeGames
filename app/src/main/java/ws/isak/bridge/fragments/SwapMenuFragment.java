@@ -36,7 +36,7 @@ import ws.isak.bridge.utils.Utils;
 
 public class SwapMenuFragment extends Fragment {
 
-    private static final String TAG = "MatchMenuFragment";
+    private static final String TAG = "SwapMenuFragment";
 
     private ImageView swapTitle;
     private ImageView swapStartGameButton;
