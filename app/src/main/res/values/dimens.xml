@@ -18,6 +18,11 @@
     <!-- ****************** -->
     <dimen name="match_board_padding">10dp</dimen>
 
+    <!-- =============================================================================== -->
+    <!-- Layout: swap_board_view -->
+    <!-- ****************** -->
+    <dimen name="swap_board_padding">1dp</dimen>
+
     <!-- ================================================================================-->
     <!-- Layout: match_difficulty_select_fragment -->
     <!-- ********************************** -->
@@ -50,7 +55,7 @@
     <dimen name="match_clock_text_size">20dp</dimen>
 
     <!-- =============================================================================== -->
-    <!-- Layout: match_game_select_fragment && Layout: match_theme_select_fragment -->
+    <!-- Layout: game_select_fragment && Layout: match_theme_select_fragment -->
     <!-- ************************************************************* -->
     <dimen name="theme_padding">40dp</dimen>
     <dimen name="theme_margin">20dp</dimen>
