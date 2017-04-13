@@ -54,13 +54,16 @@ import ws.isak.bridge.ui.PopupManager;
 
 import ws.isak.bridge.model.GameState;
 import ws.isak.bridge.model.MatchGameData;
-import ws.isak.bridge.model.MatchBoardConfiguration;
-import ws.isak.bridge.model.MatchGame;
-import ws.isak.bridge.model.MatchBoardArrangement;
 import ws.isak.bridge.model.SwapGameData;
+import ws.isak.bridge.model.MatchBoardConfiguration;
+import ws.isak.bridge.model.SwapBoardConfiguration;
+import ws.isak.bridge.model.MatchGame;
+import ws.isak.bridge.model.SwapGame;
+import ws.isak.bridge.model.MatchBoardArrangement;
+import ws.isak.bridge.model.SwapBoardArrangement;
 
 import ws.isak.bridge.utils.Clock;
-import ws.isak.bridge.utils.Utils;
+import ws.isak.bridge.utils.ImageScaling;
 
 /*
  * Class Engine contains the core behavior of the app.
@@ -72,7 +75,8 @@ public class Engine extends EventObserverAdapter {
 
 	private static final String TAG = "Engine";
 	private static Engine mInstance = null;			//instance of Engine for current use of app
-	private MatchGame mPlayingMatchGame = null;				//instance of MatchGame for current game being played
+	private MatchGame mPlayingMatchGame = null;		//instance of MatchGame for current game being played
+    private SwapGame mPlayingSwapGame = null;
     private MatchGameData currentMatchGameData;
 	private SwapGameData currentSwapGameData;
     private int mFlippedId = -1;					//id of the tile (? or event?) with the card being flipped
@@ -149,7 +153,7 @@ public class Engine extends EventObserverAdapter {
 
 				@Override
 				protected Bitmap doInBackground(Void... params) {
-					Bitmap bitmap = Utils.scaleDown(R.drawable.background, Utils.screenWidth(), Utils.screenHeight());
+					Bitmap bitmap = ImageScaling.scaleDown(R.drawable.background, ImageScaling.screenWidth(), ImageScaling.screenHeight());
 					return bitmap;
 				}
 				protected void onPostExecute(Bitmap bitmap) {
@@ -182,9 +186,9 @@ public class Engine extends EventObserverAdapter {
 
 			@Override
 			protected TransitionDrawable doInBackground(Void... params) {
-				Bitmap bitmap = Utils.scaleDown(R.drawable.background, Utils.screenWidth(), Utils.screenHeight());
+				Bitmap bitmap = ImageScaling.scaleDown(R.drawable.background, ImageScaling.screenWidth(), ImageScaling.screenHeight());
 				Bitmap backgroundImage = MatchThemes.getBackgroundImage(mSelectedMatchTheme);
-				backgroundImage = Utils.crop(backgroundImage, Utils.screenHeight(), Utils.screenWidth());
+				backgroundImage = ImageScaling.crop(backgroundImage, ImageScaling.screenHeight(), ImageScaling.screenWidth());
 				Drawable backgrounds[] = new Drawable[2];
 				backgrounds[0] = new BitmapDrawable(Shared.context.getResources(), bitmap);
 				backgrounds[1] = new BitmapDrawable(Shared.context.getResources(), backgroundImage);
@@ -237,15 +241,15 @@ public class Engine extends EventObserverAdapter {
 
         //debug Shared.userData
         Log.d (TAG, " ******* : Shared.userData @ : " + Shared.userData);
-        Log.d (TAG, " ******* : userData.getCurMemGame @ : " + Shared.userData.getCurMemGame());
+        Log.d (TAG, " ******* : userData.getCurMatchGame @ : " + Shared.userData.getCurMatchGame());
 
-        Shared.userData.setCurMemGame(currentMatchGameData);
+        Shared.userData.setCurMatchGame(currentMatchGameData);
         // start the screen - This call to screen controller causes the screen controller to select
         // a new MatchGameFragment from the screen controller.  Opening the new MatchGameFragment leads to a
         // call to buildBoard() a private method in the MatchGame Fragment. buildBoard calls setBoard in
         // the BoardView ui class. setBoard in BoardView propagates through a local buildBoard method
         // and eventually calls addTile for each of the tiles on the board to be built.   This leads
-        // to a thread for each tile which calls getTileBitmap.
+        // to a thread for each tile which calls getMatchTileBitmap.
 		mScreenController.openScreen(Screen.GAME_MATCH);
     }
 
@@ -363,7 +367,7 @@ public class Engine extends EventObserverAdapter {
 				Log.d(TAG, "onEvent MatchFlipCardEvent: mFlippedID != -1: and !isPair: mFlippedID is:  " + mFlippedId);
 				Log.d(TAG, "onEvent: MatchFlipCardEvent: Flip: all down");
 				// send event - flip all down
-				Shared.eventBus.notify(new MatchFlipDownCardsEvent(), 1000);
+				Shared.eventBus.notify(new MatchFlipDownCardsEvent(), 1000);        //TODO ∆1000 to xml - what does this do?
 			}
 			mFlippedId = -1;
 			Log.d(TAG, "onEvent MatchFlipCardEvent: reset mFlippedId to -1 check: " + mFlippedId);
@@ -448,6 +452,11 @@ public class Engine extends EventObserverAdapter {
 		//Log.d (TAG, "method getActiveGame");
 		return mPlayingMatchGame;
 	}
+
+	public SwapGame getActiveSwapGame() {
+        Log.d (TAG, "method getActiveSwapGame");
+        return mPlayingSwapGame;
+    }
 
 	public MatchTheme getSelectedTheme() {
 		//Log.d (TAG, "method getSelectedTheme);

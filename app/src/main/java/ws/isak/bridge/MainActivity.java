@@ -23,7 +23,7 @@ import ws.isak.bridge.events.EventBus;
 import ws.isak.bridge.events.ui.MatchBackGameEvent;
 import ws.isak.bridge.model.MatchGameData;
 import ws.isak.bridge.ui.PopupManager;
-import ws.isak.bridge.utils.Utils;
+import ws.isak.bridge.utils.ImageScaling;
 import ws.isak.bridge.database.DatabaseWrapper;
 import ws.isak.bridge.database.UserDataORM;
 
@@ -152,9 +152,9 @@ public class  MainActivity extends FragmentActivity {
 
     private void setBackgroundImage() {
         Log.d(TAG, "method setBackgroundImage");
-        Bitmap bitmap = Utils.scaleDown(R.drawable.background, Utils.screenWidth(), Utils.screenHeight());
-        bitmap = Utils.crop(bitmap, Utils.screenHeight(), Utils.screenWidth());
-        bitmap = Utils.downscaleBitmap(bitmap, 2);
+        Bitmap bitmap = ImageScaling.scaleDown(R.drawable.background, ImageScaling.screenWidth(), ImageScaling.screenHeight());
+        bitmap = ImageScaling.crop(bitmap, ImageScaling.screenHeight(), ImageScaling.screenWidth());
+        bitmap = ImageScaling.downscaleBitmap(bitmap, 2);
         mBackgroundImage.setImageBitmap(bitmap);
     }
 
@@ -195,14 +195,14 @@ public class  MainActivity extends FragmentActivity {
 
     private void loadUsersMemGameDataRecords(UserData userData) {
         if (MatchGameDataORM.matchGameRecordsInDatabase(Shared.context)) {
-            int dbLength = MatchGameDataORM.numMemGameRecordsInDatabase(Shared.context);
+            int dbLength = MatchGameDataORM.numMatchGameRecordsInDatabase(Shared.context);
             Shared.matchGameDataList = new ArrayList<MatchGameData>(dbLength);
             while (Shared.matchGameDataList.size() < dbLength) {
                 Shared.matchGameDataList.add(new MatchGameData());
             }
             Log.d(TAG, "**** Shared.matchGameDataList.size(): " + Shared.matchGameDataList.size() +
-                    " | MatchGameDataORM.getMemGameData(Shared.context).size(): " + dbLength);
-            Collections.copy(Shared.matchGameDataList, MatchGameDataORM.getMemGameData(userData.getUserName()));
+                    " | MatchGameDataORM.getMatchGameData(Shared.context).size(): " + dbLength);
+            Collections.copy(Shared.matchGameDataList, MatchGameDataORM.getMatchGameData(userData.getUserName()));
             Log.d(TAG, "... Shared.matchGameDataList.size(): " + Shared.matchGameDataList.size() + " | @: " + Shared.matchGameDataList);
             if (Shared.matchGameDataList != null) {
                 for (int i = 0; i < Shared.matchGameDataList.size(); i++) {
@@ -227,9 +227,9 @@ public class  MainActivity extends FragmentActivity {
                     } else {
                         Log.d(TAG, " ***** ERROR! Size of play durations and turn durations not returned as equal");
                     }
-                    Shared.userData.appendMemGameData(Shared.matchGameDataList.get(i));
+                    Shared.userData.appendMatchGameData(Shared.matchGameDataList.get(i));
                 }
-            } else if (MatchGameDataORM.getMemGameData(userData.getUserName()) == null) {
+            } else if (MatchGameDataORM.getMatchGameData(userData.getUserName()) == null) {
                 //
                 Log.d(TAG, "*!*!* no MatchGameData objects for userData.getUserName: " + userData.getUserName());
             }

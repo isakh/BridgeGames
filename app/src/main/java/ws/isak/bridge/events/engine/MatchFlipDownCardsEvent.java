@@ -31,5 +31,4 @@ public class MatchFlipDownCardsEvent extends AbstractEvent {
         //Log.d (TAG, "");
 		return TYPE;
 	}
-
 }

@@ -120,52 +120,52 @@ public class MatchGameFragment extends BaseFragment {
 	public void onEvent(MatchGameWonEvent event) {
         //Log.d (TAG, "overriding method onEvent (MatchGameWonEvent)");
         //We print out all of the collected array data here?
-        for (int i = 0; i < Shared.userData.getCurMemGame().getNumTurnsTaken(); i++) {
+        for (int i = 0; i < Shared.userData.getCurMatchGame().getNumTurnsTaken(); i++) {
             if (i < 10) {
-                Log.d(TAG, "*****| Turn: 0" + i + " | Turn Time: " + Shared.userData.getCurMemGame().queryTurnDurationsArray(i) +
-                        " | Play Duration: " + Shared.userData.getCurMemGame().queryGamePlayDurations(i) +
-                        " | CardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i));
-                        //" | Species on Card: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i).getSpeciesName());
+                Log.d(TAG, "*****| Turn: 0" + i + " | Turn Time: " + Shared.userData.getCurMatchGame().queryTurnDurationsArray(i) +
+                        " | Play Duration: " + Shared.userData.getCurMatchGame().queryGamePlayDurations(i) +
+                        " | CardID: " + Shared.userData.getCurMatchGame().queryCardsSelectedArray(i));
+                        //" | Species on Card: " + Shared.userData.getCurMatchGame().queryCardsSelectedArray(i).getSpeciesName());
             } else {
-                Log.d(TAG, "*****| Turn: " + i + " | Turn Time: " + Shared.userData.getCurMemGame().queryTurnDurationsArray(i) +
-                        " | Play Duration: " + Shared.userData.getCurMemGame().queryGamePlayDurations(i) +
-                        " | CardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i));
-                        //" | Species on Card: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i).getSpeciesName());
+                Log.d(TAG, "*****| Turn: " + i + " | Turn Time: " + Shared.userData.getCurMatchGame().queryTurnDurationsArray(i) +
+                        " | Play Duration: " + Shared.userData.getCurMatchGame().queryGamePlayDurations(i) +
+                        " | CardID: " + Shared.userData.getCurMatchGame().queryCardsSelectedArray(i));
+                        //" | Species on Card: " + Shared.userData.getCurMatchGame().queryCardsSelectedArray(i).getSpeciesName());
             }
         }
 
         /*
         //this can be removed once validated
-        Log.d (TAG, "... Shared.curMemGameData: themeID: " + Shared.userData.getCurMemGame().getThemeID() +
-                " | difficulty selected: " + Shared.userData.getCurMemGame().getGameDifficulty() +
-                " | gameDurationAllocated: " + Shared.userData.getCurMemGame().getGameDurationAllocated() +
-                " | mixerState: " + Shared.userData.getCurMemGame().getMixerState() +
-                " | gameStarted: " + Shared.userData.getCurMemGame().isGameStarted() +
-                " | gameStartTimeStamp: " + Shared.userData.getCurMemGame().getGameStartTimestamp() +
-                " | numPlayDurationsRecorded: " + Shared.userData.getCurMemGame().sizeOfTurnDurationsArray() +
-                " | numTurnDurationsRecorded: " + Shared.userData.getCurMemGame().sizeOfTurnDurationsArray() +
-                " | numCardsSelectionsRecorded: " + Shared.userData.getCurMemGame().sizeOfCardSelectionArray() +
-                " | numTurnsTaken:  " + Shared.userData.getCurMemGame().getNumTurnsTaken());
+        Log.d (TAG, "... Shared.curMemGameData: themeID: " + Shared.userData.getCurMatchGame().getThemeID() +
+                " | difficulty selected: " + Shared.userData.getCurMatchGame().getGameDifficulty() +
+                " | gameDurationAllocated: " + Shared.userData.getCurMatchGame().getGameDurationAllocated() +
+                " | mixerState: " + Shared.userData.getCurMatchGame().getMixerState() +
+                " | gameStarted: " + Shared.userData.getCurMatchGame().isGameStarted() +
+                " | gameStartTimeStamp: " + Shared.userData.getCurMatchGame().getGameStartTimestamp() +
+                " | numPlayDurationsRecorded: " + Shared.userData.getCurMatchGame().sizeOfTurnDurationsArray() +
+                " | numTurnDurationsRecorded: " + Shared.userData.getCurMatchGame().sizeOfTurnDurationsArray() +
+                " | numCardsSelectionsRecorded: " + Shared.userData.getCurMatchGame().sizeOfCardSelectionArray() +
+                " | numTurnsTaken:  " + Shared.userData.getCurMatchGame().getNumTurnsTaken());
         //TODO validation block doesn't include information from playDurationArray
-        for (int i = 0; i < Shared.userData.getCurMemGame().sizeOfTurnDurationsArray(); i++ ) {
-            Log.d(TAG, "... turnDurations[" + i + "] : " + Shared.userData.getCurMemGame().queryTurnDurationsArray(i));
+        for (int i = 0; i < Shared.userData.getCurMatchGame().sizeOfTurnDurationsArray(); i++ ) {
+            Log.d(TAG, "... turnDurations[" + i + "] : " + Shared.userData.getCurMatchGame().queryTurnDurationsArray(i));
         }
-        for (int i = 0; i < Shared.userData.getCurMemGame().sizeOfCardSelectionArray(); i++ ) {
-            Log.d(TAG, "... cardSelections[" + i + "].getCardId(): " + Shared.userData.getCurMemGame().queryCardsSelectedArray(i));
+        for (int i = 0; i < Shared.userData.getCurMatchGame().sizeOfCardSelectionArray(); i++ ) {
+            Log.d(TAG, "... cardSelections[" + i + "].getCardId(): " + Shared.userData.getCurMatchGame().queryCardsSelectedArray(i));
         }
         //end validation block
         */
 
         //append MatchGameData to userData array
-        Shared.userData.appendMemGameData(Shared.userData.getCurMemGame());     //append the MatchGameData for completed game to
+        Shared.userData.appendMatchGameData(Shared.userData.getCurMatchGame());     //append the MatchGameData for completed game to
 
         //insert current matchGameData into database
-        MatchGameDataORM.insertMemGameData(Shared.userData.getCurMemGame());
+        MatchGameDataORM.insertMatchGameData(Shared.userData.getCurMatchGame());
 
         //reset flags
-        Shared.userData.getCurMemGame().setGameStarted(false);                  //reset the gameStarted boolean to false
+        Shared.userData.getCurMatchGame().setGameStarted(false);                  //reset the gameStarted boolean to false
         //null the pointer to curMemGame once it has been appended to the UserData array
-        Shared.userData.setCurMemGame(null);
+        Shared.userData.setCurMatchGame(null);
 		mTime.setVisibility(View.GONE);
 		mTimeImage.setVisibility(View.GONE);
 		PopupManager.showPopupWon(event.gameState);

@@ -73,7 +73,7 @@ public class UserData {
             //post
         setSpectrogramFamiliar(false);
         //set game data lists
-        initMemGameDataList();
+        initMatchGameDataList();
         initSwapGameDataList();
     }
 
@@ -216,17 +216,17 @@ public class UserData {
         return hearIsPredictLikert;
     }
 
-    //***** MEMORY GAME DATA *****
+    //***** Match GAME DATA *****
 
     /*
      * MatchGameData constructor, accessor, mutator follow:
      */
-    public void initMemGameDataList() {
-        Log.d(TAG, "method initMemGameDataList");
+    public void initMatchGameDataList() {
+        Log.d(TAG, "method initMatchGameDataList");
         matchGameDataList = new ArrayList<MatchGameData>();
     }
 
-    public void appendMemGameData(MatchGameData game) {
+    public void appendMatchGameData(MatchGameData game) {
         Log.d(TAG, "method addToGameDataList: adding game data to list");
         matchGameDataList.add(game);        //TODO add try/catch block here
     }
@@ -234,22 +234,22 @@ public class UserData {
     /*
      * Method queryMemGameData returns a MatchGameData object at position in the list gameDataRecord.
      */
-    public MatchGameData queryMemGameDataList(int gameDataRecord) {
-        Log.d(TAG, "method queryMemGameDataList");
+    public MatchGameData queryMatchGameDataList(int gameDataRecord) {
+        Log.d(TAG, "method queryMatchGameDataList");
         return matchGameDataList.get(gameDataRecord);
     }
 
-    public void setCurMemGame(MatchGameData gameData) {
-        Log.d(TAG, "method setCurMemGame");
+    public void setCurMatchGame(MatchGameData gameData) {
+        Log.d(TAG, "method setCurMatchGame");
         curMemGame = gameData;
     }
 
-    public MatchGameData getCurMemGame() {
-        //Log.d(TAG, "method getCurMemGame");
+    public MatchGameData getCurMatchGame() {
+        //Log.d(TAG, "method getCurMatchGame");
         return curMemGame;
     }
 
-    public int sizeOfMemGameDataList () {
+    public int sizeOfMatchGameDataList () {
         //
         return matchGameDataList.size();
     }

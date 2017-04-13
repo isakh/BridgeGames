@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ws.isak.bridge.ui.SwapTileView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/swap_tile_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/tile"
+        android:scaleType="centerCrop" />
+
+</ws.isak.bridge.ui.SwapTileView>

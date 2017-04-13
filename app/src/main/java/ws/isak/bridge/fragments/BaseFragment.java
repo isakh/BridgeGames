@@ -8,6 +8,9 @@ import ws.isak.bridge.events.EventObserver;
 import ws.isak.bridge.events.engine.MatchFlipDownCardsEvent;
 import ws.isak.bridge.events.engine.MatchGameWonEvent;
 import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
+import ws.isak.bridge.events.engine.SwapSelectedCardsEvent;
+import ws.isak.bridge.events.engine.SwapUnselectCardsEvent;
+import ws.isak.bridge.events.engine.SwapGameWonEvent;
 import ws.isak.bridge.events.engine.PlayCardAudioEvent;
 
 import ws.isak.bridge.events.ui.MatchBackGameEvent;
@@ -30,6 +33,8 @@ public class BaseFragment extends Fragment implements EventObserver {
 
     private static final String TAG = "BaseFragment";
 
+    //Match Game Events
+
 	@Override
 	public void onEvent(MatchFlipCardEvent event) {
         Log.d (TAG, "method onEvent: MatchFlipCardEvent");
@@ -41,12 +46,6 @@ public class BaseFragment extends Fragment implements EventObserver {
         //Log.d (TAG, "");
         throw new UnsupportedOperationException();
 	}
-
-    @Override
-    public void onEvent(SwapDifficultySelectedEvent event) {
-        //Log.d (TAG, "");
-        throw new UnsupportedOperationException();
-    }
 
 	@Override
 	public void onEvent(MatchHidePairCardsEvent event) {
@@ -65,12 +64,6 @@ public class BaseFragment extends Fragment implements EventObserver {
         //Log.d (TAG, "");
         throw new UnsupportedOperationException();
 	}
-
-    @Override
-    public void onEvent(SwapStartEvent event) {
-        //Log.d (TAG, "");
-        throw new UnsupportedOperationException();
-    }
 
 	@Override
 	public void onEvent(MatchThemeSelectedEvent event) {
@@ -102,7 +95,39 @@ public class BaseFragment extends Fragment implements EventObserver {
         throw new UnsupportedOperationException();
 	}
 
-	@Override
+	//Swap Game Events
+
+    public void onEvent(SwapSelectedCardsEvent event) {
+        Log.d (TAG, "method onEvent: MatchFlipCardEvent");
+        throw new UnsupportedOperationException();
+    }
+
+    public void onEvent(SwapUnselectCardsEvent event) {
+        //Log.d (TAG, "");
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void onEvent(SwapGameWonEvent event) {
+        //Log.d (TAG, "");
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void onEvent(SwapStartEvent event) {
+        //Log.d (TAG, "");
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void onEvent(SwapDifficultySelectedEvent event) {
+        //Log.d (TAG, "");
+        throw new UnsupportedOperationException();
+    }
+
+    //Audio Playback Events
+
+    @Override
 	public void onEvent(PlayCardAudioEvent event) {
         //Log.d (TAG, "");
         throw new UnsupportedOperationException();

@@ -21,7 +21,7 @@ import ws.isak.bridge.common.Audio;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.events.ui.MatchStartEvent;
 import ws.isak.bridge.ui.PopupManager;
-import ws.isak.bridge.utils.Utils;
+import ws.isak.bridge.utils.ImageScaling;
 
 /*
  * Class MatchMenuFragment sets up the fragment that allows the user to either choose settings for
@@ -85,7 +85,7 @@ public class MatchMenuFragment extends Fragment {
 	protected void animateAllAssetsOff(AnimatorListenerAdapter adapter) {
 		// match_menu_title
 		// 120dp + 50dp + buffer(30dp)
-		ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTitle, "translationY", Utils.px(-200));  //TODO constant to variable
+		ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTitle, "translationY", ImageScaling.px(-200));  //TODO constant to variable
 		titleAnimator.setInterpolator(new AccelerateInterpolator(2));
 		titleAnimator.setDuration(300);
 
@@ -98,12 +98,12 @@ public class MatchMenuFragment extends Fragment {
 		tooltipAnimator.setDuration(100);
 
 		// settings button
-		ObjectAnimator settingsAnimator = ObjectAnimator.ofFloat(mSettingsGameButton, "translationY", Utils.px(120));
+		ObjectAnimator settingsAnimator = ObjectAnimator.ofFloat(mSettingsGameButton, "translationY", ImageScaling.px(120));
 		settingsAnimator.setInterpolator(new AccelerateInterpolator(2));
 		settingsAnimator.setDuration(300);
 
 		// start button
-		ObjectAnimator startButtonAnimator = ObjectAnimator.ofFloat(mStartGameButton, "translationY", Utils.px(130));
+		ObjectAnimator startButtonAnimator = ObjectAnimator.ofFloat(mStartGameButton, "translationY", ImageScaling.px(130));
 		startButtonAnimator.setInterpolator(new AccelerateInterpolator(2));
 		startButtonAnimator.setDuration(300);
 

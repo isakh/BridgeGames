@@ -11,15 +11,15 @@ import android.util.Log;
 import ws.isak.bridge.common.Shared;
 
 /*
- * Class Utils contains methods for manipulating and scaling bitmaps based on the dimensions of the
+ * Class ImageScaling contains methods for manipulating and scaling bitmaps based on the dimensions of the
  * device screen and the dimensions of the image resource files.
  *
  * @author isak
  */
 
-public class Utils {
+public class ImageScaling {
 
-    private static final String TAG = "Utils";
+    private static final String TAG = "ImageScaling";
 
 	public static int px(int dp) {
         Log.d (TAG, "method px converts dp to px: dp: " + dp);

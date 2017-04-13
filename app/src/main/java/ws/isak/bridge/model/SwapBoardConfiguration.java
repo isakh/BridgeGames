@@ -28,10 +28,11 @@ public class SwapBoardConfiguration {
     public final long time;					//TODO this will include sample duration variables so will be in millis - need to use floor (time/1000) for timer in UI
 
     /*
-     * Constructor SwapBoardConfiguration sets up a board with a given difficulty.  For the time being
-     * this includes a call to CalculateSwapGameDuration which queries the number of tiles on the board
-     * and determines how many pairs of cards are place and the duration of the samples associated
-     * with those cards.
+     * Constructor SwapBoardConfiguration sets up a blank board with a given difficulty (i.e. defines
+     * the number of spaces on the board where tiles will go, additionally difficulty can be used to
+     * define the number of species of interest.  For the time being this includes a call to
+     * CalculateSwapGameDuration which queries the number of tiles on the board and determines how
+     * many sets of cards are place and the duration of the samples associated with those cards.
      */
     public SwapBoardConfiguration(int difficulty) {
         Log.d (TAG, "constructor: difficulty: " + difficulty);
@@ -54,7 +55,7 @@ public class SwapBoardConfiguration {
                 break;
 
             default:
-                throw new IllegalArgumentException("Select one of predefined sizes");
+                throw new IllegalArgumentException("Select one of the predefined sizes");
         }
     }
 

@@ -5,21 +5,17 @@ import android.util.Log;
 import android.util.AttributeSet;
 
 import android.graphics.Bitmap;
-import android.graphics.Camera;		//Used to calculate 3D transforms to be applied to animations
-import android.graphics.Matrix;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import ws.isak.bridge.R;
+import ws.isak.bridge.utils.FlipAnimation;
 
 /**
  * Class TileView contains the code for generating a single tile in the match board array.
@@ -30,7 +26,7 @@ import ws.isak.bridge.R;
 
 public class MatchTileView extends FrameLayout {
 
-	public final String TAG = "TileView";
+	public final String TAG = "MatchTileView";
 
 	private RelativeLayout mTopImage;
 	private ImageView mTileImage;
@@ -53,8 +49,8 @@ public class MatchTileView extends FrameLayout {
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
-		mTopImage = (RelativeLayout) findViewById(R.id.image_top);
-		mTileImage = (ImageView) findViewById(R.id.image);
+		mTopImage = (RelativeLayout) findViewById(R.id.match_image_top);
+		mTileImage = (ImageView) findViewById(R.id.match_image);
 	}
 
 	public void setTileImage(Bitmap bitmap) {
@@ -84,82 +80,5 @@ public class MatchTileView extends FrameLayout {
 
 	public boolean isFlippedDown() {
 		return mFlippedDown;
-	}
-
-
-    // **************************************************************************************
-
-	public class FlipAnimation extends Animation {
-		private Camera camera;
-
-		private View fromView;
-		private View toView;
-
-		private float centerX;
-		private float centerY;
-
-		private boolean forward = true;
-
-		/**
-		 * Creates a 3D flip animation between two views.
-		 * 
-		 * @param fromView
-		 *            First view in the transition.
-		 * @param toView
-		 *            Second view in the transition.
-		 */
-		public FlipAnimation(View fromView, View toView) {
-			this.fromView = fromView;
-			this.toView = toView;
-
-			setDuration(1000);			//TODO was 700 - try various durations for the animation and amend game time accordingly
-			setFillAfter(false);
-			setInterpolator(new AccelerateDecelerateInterpolator());
-		}
-
-		public void reverse() {
-			forward = false;
-			View switchView = toView;
-			toView = fromView;
-			fromView = switchView;
-		}
-
-		@Override
-		public void initialize(int width, int height, int parentWidth, int parentHeight) {
-			super.initialize(width, height, parentWidth, parentHeight);
-			centerX = width / 2;
-			centerY = height / 2;
-			camera = new Camera();
-		}
-
-		@Override
-		protected void applyTransformation(float interpolatedTime, Transformation t) {
-			// Angle around the y-axis of the rotation at the given time
-			// calculated both in radians and degrees.
-			final double radians = Math.PI * interpolatedTime;
-			float degrees = (float) (180.0 * radians / Math.PI);
-
-			// Once we reach the midpoint in the animation, we need to hide the
-			// source view and show the destination view. We also need to change
-			// the angle by 180 degrees so that the destination does not come in
-			// flipped around
-			if (interpolatedTime >= 0.5f) {
-				degrees -= 180.f;
-				fromView.setVisibility(View.GONE);
-				toView.setVisibility(View.VISIBLE);
-			}
-
-			if (forward)
-				degrees = -degrees; // determines direction of rotation when
-									// flip begins
-
-			final Matrix matrix = t.getMatrix();
-			camera.save();
-			camera.rotateY(degrees);
-			camera.getMatrix(matrix);
-			camera.restore();
-			matrix.preTranslate(-centerX, -centerY);
-			matrix.postTranslate(centerX, centerY);
-		}
 	}
 }

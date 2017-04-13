@@ -7,7 +7,7 @@ import android.graphics.Bitmap;
 
 import ws.isak.bridge.common.MatchCardData;
 import ws.isak.bridge.common.Shared;
-import ws.isak.bridge.utils.Utils;
+import ws.isak.bridge.utils.ImageScaling;
 import ws.isak.bridge.R;
 
 /*
@@ -65,7 +65,7 @@ public class MatchThemes {
 	public static Bitmap getBackgroundImage(MatchTheme matchTheme) {
 		String drawableResourceName = matchTheme.backgroundImageUrl.substring(MatchThemes.URI_DRAWABLE.length());
 		int drawableResourceId = Shared.context.getResources().getIdentifier(drawableResourceName, "drawable", Shared.context.getPackageName());
-		Bitmap bitmap = Utils.scaleDown(drawableResourceId, Utils.screenWidth(), Utils.screenHeight());
+		Bitmap bitmap = ImageScaling.scaleDown(drawableResourceId, ImageScaling.screenWidth(), ImageScaling.screenHeight());
 		return bitmap;
 	}
 }

@@ -8,7 +8,7 @@ import android.util.Log;
 import ws.isak.bridge.common.MatchCardData;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.themes.MatchThemes;
-import ws.isak.bridge.utils.Utils;
+import ws.isak.bridge.utils.ImageScaling;
 
 /**
  * Before game starts, engine builds a new board - this involves setting up the mappings for tiles
@@ -28,7 +28,7 @@ public class MatchBoardArrangement {
 	public Map <Integer, MatchCardData> cardObjs;
 
 	/**
-	 * Method getTileBitmap returns a bitmap from a URI associated with a card ID and the settings of
+	 * Method getMatchTileBitmap returns a bitmap from a URI associated with a card ID and the settings of
 	 * flags which check whether we want the first or second image associated with the card based on
      * the current matchTheme being played.
 	 *
@@ -39,31 +39,31 @@ public class MatchBoardArrangement {
 	 * @return A Bitmap from the card to be placed on the tile
 	 */
 
-	public Bitmap getTileBitmap(int curTileID, int size) {
+	public Bitmap getMatchTileBitmap(int curTileID, int size) {
 
 		String imageUri = null;		//string to store image uri, varies depending on whether first or second if necessary
 
-		Log.d (TAG, "method getTileBitmap: *** ADDING NEW BITMAP ***");
+		Log.d (TAG, "method getMatchTileBitmap: *** ADDING NEW BITMAP ***");
 		Log.d (TAG, "                    : curTileID: " + curTileID + " tile image size: " + size);
 		MatchCardData cardOnTile = cardObjs.get(curTileID);
 		Log.d (TAG, "                    : cardOnTile id: " + cardOnTile.getCardID());
 		Log.d (TAG, "					 : cardOnTile.getPairedImagedDiffer: " + cardOnTile.getPairedImageDiffer());
 		Log.d (TAG, " 					 : cardOnTile.getFirstImageUsed: " + cardOnTile.getFirstImageUsed());
 
-        switch (Shared.userData.getCurMemGame().getThemeID()) {
+        switch (Shared.userData.getCurMatchGame().getThemeID()) {
             case 0:                                                                         //MatchTheme is blank
-                Log.d (TAG, "method getTileBitmap: switch themeID: " + Shared.userData.getCurMemGame().getThemeID());
+                Log.d (TAG, "method getMatchTileBitmap: switch themeID: " + Shared.userData.getCurMatchGame().getThemeID());
                 imageUri = cardOnTile.getImageURI0();
                 break;
             case 1:                                                                         //MatchTheme is birds
                 if (cardOnTile.getPairedImageDiffer() && cardOnTile.getFirstImageUsed()) {  //first card used
-                    Log.d (TAG, "method getTileBitmap: switch themeID: " + Shared.userData.getCurMemGame().getThemeID() +
+                    Log.d (TAG, "method getMatchTileBitmap: switch themeID: " + Shared.userData.getCurMatchGame().getThemeID() +
                             " pairedImagesDiffer: " + cardOnTile.getPairedImageDiffer() +
                             " firstImageUsed: " + cardOnTile.getFirstImageUsed());
                     imageUri = cardOnTile.getImageURI2();
                 }
                 else {
-                    Log.d (TAG, "method getTileBitmap: switch themeID: " + Shared.userData.getCurMemGame().getThemeID() +
+                    Log.d (TAG, "method getMatchTileBitmap: switch themeID: " + Shared.userData.getCurMatchGame().getThemeID() +
                             " pairedImagesDiffer: " + cardOnTile.getPairedImageDiffer() +
                             " firstImageUsed: " + cardOnTile.getFirstImageUsed());
                     imageUri = cardOnTile.getImageURI1();                                   //use second card
@@ -71,7 +71,7 @@ public class MatchBoardArrangement {
                 }
                 break;
             case 2:                                                                         //MatchTheme is spectrograms
-                Log.d (TAG, "method getTileBitmap: switch themeID: " + Shared.userData.getCurMemGame().getThemeID());
+                Log.d (TAG, "method getMatchTileBitmap: switch themeID: " + Shared.userData.getCurMatchGame().getThemeID());
                 imageUri = cardOnTile.getImageURI3();
                 break;
         }
@@ -82,8 +82,8 @@ public class MatchBoardArrangement {
 			Log.d (TAG, "                : drawableResourceName: " + drawableResourceName);
 			int drawableResourceId = Shared.context.getResources().getIdentifier(drawableResourceName, "drawable", Shared.context.getPackageName());
 			Log.d (TAG, "                : drawableResourceID: " + drawableResourceId);
-			Bitmap bitmap = Utils.scaleDown(drawableResourceId, size, size);
-			return Utils.crop(bitmap, size, size);
+			Bitmap bitmap = ImageScaling.scaleDown(drawableResourceId, size, size);
+			return ImageScaling.crop(bitmap, size, size);
 		}
 		return null;
 	}

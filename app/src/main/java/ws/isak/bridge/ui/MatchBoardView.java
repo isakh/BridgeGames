@@ -34,7 +34,7 @@ import ws.isak.bridge.events.engine.PlayCardAudioEvent;
 import ws.isak.bridge.model.MatchBoardConfiguration;
 import ws.isak.bridge.model.MatchGame;
 import ws.isak.bridge.model.MatchBoardArrangement;
-import ws.isak.bridge.utils.Utils;
+import ws.isak.bridge.utils.ImageScaling;
 
 /*
  * Class MatchBoardView comprises the code which builds the match game board according to the dimensions
@@ -72,7 +72,7 @@ public class MatchBoardView extends LinearLayout {
 		int margin = getResources().getDimensionPixelSize(R.dimen.match_margin_top);
 		int padding = getResources().getDimensionPixelSize(R.dimen.match_board_padding);
 		mScreenHeight = getResources().getDisplayMetrics().heightPixels - margin - padding*2;
-		mScreenWidth = getResources().getDisplayMetrics().widthPixels - padding*2 - Utils.px(20);
+		mScreenWidth = getResources().getDisplayMetrics().widthPixels - padding*2 - ImageScaling.px(20);
 		mViewReference = new HashMap<Integer, MatchTileView>();
 		setClipToPadding(false);
 	}
@@ -157,8 +157,8 @@ public class MatchBoardView extends LinearLayout {
 
 			@Override
 			protected Bitmap doInBackground(Void... params) {
-				//Log.d (TAG, "*** method: addTile: new AsyncTask: override doInBackground: calling getTileBitmap: curTileOnBoard is: " + curTileOnBoard + " mSize is: " + mSize);
-				return mMatchBoardArrangement.getTileBitmap(curTileOnBoard, mSize);  //this gets one of two bitmaps depending on flags
+				//Log.d (TAG, "*** method: addTile: new AsyncTask: override doInBackground: calling getMatchTileBitmap: curTileOnBoard is: " + curTileOnBoard + " mSize is: " + mSize);
+				return mMatchBoardArrangement.getMatchTileBitmap(curTileOnBoard, mSize);  //this gets one of two bitmaps depending on flags
 			}
 			
 			@Override
@@ -189,40 +189,40 @@ public class MatchBoardView extends LinearLayout {
                     //Whether this is not the first tile or not, we need to record that click has been made, it's time, and update accordingly
                     Log.d(TAG, "**** Update MatchGameData with current timing information (and card info) ****");
                     //do the following if it is the first click in a game
-                    if (!Shared.userData.getCurMemGame().isGameStarted()) {     //if this is the first card being flipped
+                    if (!Shared.userData.getCurMatchGame().isGameStarted()) {     //if this is the first card being flipped
                         Log.d (TAG, "This is the First Tile Flipped In MatchGame");
-                        Shared.userData.getCurMemGame().setGameStarted(true);
-                        Log.d (TAG, "   ***: getGameStarted: " + Shared.userData.getCurMemGame().isGameStarted());
-                        Shared.userData.getCurMemGame().setGameStartTimestamp(now);
-                        Log.d (TAG, "   ***: getGameStartTimestamp: " + Shared.userData.getCurMemGame().getGameStartTimestamp());
+                        Shared.userData.getCurMatchGame().setGameStarted(true);
+                        Log.d (TAG, "   ***: getGameStarted: " + Shared.userData.getCurMatchGame().isGameStarted());
+                        Shared.userData.getCurMatchGame().setGameStartTimestamp(now);
+                        Log.d (TAG, "   ***: getGameStartTimestamp: " + Shared.userData.getCurMatchGame().getGameStartTimestamp());
                     }
                     //do the following on each click:
                     //  - set the gamePlayDuration to (now - startTimeStamp)
-                    Shared.userData.getCurMemGame().appendToGamePlayDurations(now - Shared.userData.getCurMemGame().getGameStartTimestamp());
-                    Log.d (TAG, "   ***: queryGamePlayDuration @ array location numTurnsTaken: " + Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken()));
+                    Shared.userData.getCurMatchGame().appendToGamePlayDurations(now - Shared.userData.getCurMatchGame().getGameStartTimestamp());
+                    Log.d (TAG, "   ***: queryGamePlayDuration @ array location numTurnsTaken: " + Shared.userData.getCurMatchGame().queryGamePlayDurations(Shared.userData.getCurMatchGame().getNumTurnsTaken()));
                     //  - time to append is (current time - queryGamePlayDuration[numTurns - 1] unless first turn in which case 0))
-                    if (Shared.userData.getCurMemGame().getNumTurnsTaken() == 0) {
-                        Shared.userData.getCurMemGame().appendToTurnDurations(0);
+                    if (Shared.userData.getCurMatchGame().getNumTurnsTaken() == 0) {
+                        Shared.userData.getCurMatchGame().appendToTurnDurations(0);
                         Log.d(TAG, " *****: | System time: " + now +
-                                " | gameStartTimeStamp: " + Shared.userData.getCurMemGame().getGameStartTimestamp() +
-                                " | numTurnsTaken: " + Shared.userData.getCurMemGame().getNumTurnsTaken() +
-                                " | gamePlayDuration @ numTurnsTaken: " + Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken()) +
-                                " | elapsed turn time: " + (Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken())));
+                                " | gameStartTimeStamp: " + Shared.userData.getCurMatchGame().getGameStartTimestamp() +
+                                " | numTurnsTaken: " + Shared.userData.getCurMatchGame().getNumTurnsTaken() +
+                                " | gamePlayDuration @ numTurnsTaken: " + Shared.userData.getCurMatchGame().queryGamePlayDurations(Shared.userData.getCurMatchGame().getNumTurnsTaken()) +
+                                " | elapsed turn time: " + (Shared.userData.getCurMatchGame().queryGamePlayDurations(Shared.userData.getCurMatchGame().getNumTurnsTaken())));
                     }
                     else {
-                        Shared.userData.getCurMemGame().appendToTurnDurations(now - (Shared.userData.getCurMemGame().getGameStartTimestamp() + Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken() - 1)));
+                        Shared.userData.getCurMatchGame().appendToTurnDurations(now - (Shared.userData.getCurMatchGame().getGameStartTimestamp() + Shared.userData.getCurMatchGame().queryGamePlayDurations(Shared.userData.getCurMatchGame().getNumTurnsTaken() - 1)));
                         Log.d(TAG, " *****: | System time: " + now +
-                                " | gameStartTimeStamp: " + Shared.userData.getCurMemGame().getGameStartTimestamp() +
-                                " | numTurnsTaken: " + Shared.userData.getCurMemGame().getNumTurnsTaken() +
-                                " | gamePlayDuration @ numTurnsTaken: " + Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken()) +
-                                " | elapsed turn time: " + (Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken()) - Shared.userData.getCurMemGame().queryGamePlayDurations(Shared.userData.getCurMemGame().getNumTurnsTaken() - 1)));
+                                " | gameStartTimeStamp: " + Shared.userData.getCurMatchGame().getGameStartTimestamp() +
+                                " | numTurnsTaken: " + Shared.userData.getCurMatchGame().getNumTurnsTaken() +
+                                " | gamePlayDuration @ numTurnsTaken: " + Shared.userData.getCurMatchGame().queryGamePlayDurations(Shared.userData.getCurMatchGame().getNumTurnsTaken()) +
+                                " | elapsed turn time: " + (Shared.userData.getCurMatchGame().queryGamePlayDurations(Shared.userData.getCurMatchGame().getNumTurnsTaken()) - Shared.userData.getCurMatchGame().queryGamePlayDurations(Shared.userData.getCurMatchGame().getNumTurnsTaken() - 1)));
                     }
                     //  - append the clicked card to array
-                    Shared.userData.getCurMemGame().appendToCardsSelected(mMatchBoardArrangement.cardObjs.get(curTileOnBoard).getCardID());
-                    Log.d (TAG, "   ***: method addTile:  appended to cards selected array: cardObjArray[numTurnsTaken].cardID: " + Shared.userData.getCurMemGame().queryCardsSelectedArray(Shared.userData.getCurMemGame().getNumTurnsTaken()));
+                    Shared.userData.getCurMatchGame().appendToCardsSelected(mMatchBoardArrangement.cardObjs.get(curTileOnBoard).getCardID());
+                    Log.d (TAG, "   ***: method addTile:  appended to cards selected array: cardObjArray[numTurnsTaken].cardID: " + Shared.userData.getCurMatchGame().queryCardsSelectedArray(Shared.userData.getCurMatchGame().getNumTurnsTaken()));
                     //  - update the number of turns taken
-                    Shared.userData.getCurMemGame().incrementNumTurnsTaken();
-                    Log.d (TAG, "   ***: numTurnsTaken postIncrement: " + Shared.userData.getCurMemGame().getNumTurnsTaken());
+                    Shared.userData.getCurMatchGame().incrementNumTurnsTaken();
+                    Log.d (TAG, "   ***: numTurnsTaken postIncrement: " + Shared.userData.getCurMatchGame().getNumTurnsTaken());
 
                     //flip the current tile up
                     matchTileView.flipUp();

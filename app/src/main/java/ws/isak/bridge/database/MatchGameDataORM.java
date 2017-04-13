@@ -109,8 +109,8 @@ public class MatchGameDataORM {
 
     // method numRecordsInDatabase returns the number of records in the MatchGameDataORM table
     // in the DB, otherwise, false
-    public static int numMemGameRecordsInDatabase (Context context) {
-        //Log.d (TAG, "method numMemGameRecordsInDatabase");
+    public static int numMatchGameRecordsInDatabase(Context context) {
+        //Log.d (TAG, "method numMatchGameRecordsInDatabase");
 
         DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
@@ -119,7 +119,7 @@ public class MatchGameDataORM {
 
         if (database != null) {
             Cursor cursor = database.rawQuery("SELECT * FROM " + MatchGameDataORM.TABLE_NAME, null);
-            Log.d(TAG, "method numMemGameRecordsInDatabase: There are: " + cursor.getCount() + " MatchGameData records...");
+            Log.d(TAG, "method numMatchGameRecordsInDatabase: There are: " + cursor.getCount() + " MatchGameData records...");
 
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();
@@ -135,8 +135,8 @@ public class MatchGameDataORM {
     }
 
     //return all of the MatchGameData rows for the targetUser, sorted by TimeStamp
-    public static ArrayList<MatchGameData> getMemGameData (String targetUser) {
-        Log.d (TAG, "method getMemGameData returns a list of MatchGameData objects with type " + targetUser);
+    public static ArrayList<MatchGameData> getMatchGameData(String targetUser) {
+        Log.d (TAG, "method getMatchGameData returns a list of MatchGameData objects with type " + targetUser);
 
         DatabaseWrapper databaseWrapper =  Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
@@ -149,11 +149,11 @@ public class MatchGameDataORM {
 
             Log.d (TAG, "method getUserData: Loaded " + cursor.getCount() + " UserData records...");
             if (matchGameRecordsInDatabase(Shared.context)) {
-                matchGameDataList = new ArrayList<MatchGameData>(numMemGameRecordsInDatabase(Shared.context));
+                matchGameDataList = new ArrayList<MatchGameData>(numMatchGameRecordsInDatabase(Shared.context));
                 cursor.moveToFirst();
                 int rowCount = 0;
                 while (!cursor.isAfterLast()) {
-                    MatchGameData matchGameDataAtCursor = cursorToMemGameData(cursor);
+                    MatchGameData matchGameDataAtCursor = cursorToMatchGameData(cursor);
                     //Check the state of all MatchGameData fields here
                     Log.d (TAG, "... PARSE: Database row: " + rowCount +
                                 " | gameStartTimestamp: " + matchGameDataAtCursor.getGameStartTimestamp() +
@@ -188,13 +188,13 @@ public class MatchGameDataORM {
         return matchGameDataList;
     }
 
-    //method insertMemGameData inserts a new UserData object into the database if it doesn't already exist
-    public static boolean insertMemGameData (MatchGameData matchGameData) {
-        Log.d (TAG, "method insertMemGameData tries to insert a new MatchGameData object into the database");
+    //method insertMatchGameData inserts a new UserData object into the database if it doesn't already exist
+    public static boolean insertMatchGameData(MatchGameData matchGameData) {
+        Log.d (TAG, "method insertMatchGameData tries to insert a new MatchGameData object into the database");
 
         boolean success = false;
 
-        Log.d(TAG, "method insertMemGameData: creating ContentValues");
+        Log.d(TAG, "method insertMatchGameData: creating ContentValues");
         ContentValues values = matchGameDataToContentValues(matchGameData);
 
         DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
@@ -203,11 +203,11 @@ public class MatchGameDataORM {
         try {
             if (database != null) {
                 long rowID = database.insert(TABLE_NAME, "null", values);
-                Log.d(TAG, "method insertMemGameData: Inserted new MatchGameData into rowID: " + rowID);
+                Log.d(TAG, "method insertMatchGameData: Inserted new MatchGameData into rowID: " + rowID);
                 success = true;
             }
         } catch (SQLiteException sqlex) {
-            Log.e(TAG, "method insertMemGameData: Failed to insert MatchGameData[" + matchGameData.getGameStartTimestamp() + "] due to: " + sqlex);
+            Log.e(TAG, "method insertMatchGameData: Failed to insert MatchGameData[" + matchGameData.getGameStartTimestamp() + "] due to: " + sqlex);
             sqlex.printStackTrace();
         } finally {
             if (database != null) {
@@ -263,8 +263,8 @@ public class MatchGameDataORM {
 
 
     //method cursorToUserData populates a UserData object with data from the cursor
-    private static MatchGameData cursorToMemGameData (Cursor cursor) {
-        Log.d (TAG, "method cursorToMemGameData");
+    private static MatchGameData cursorToMatchGameData(Cursor cursor) {
+        Log.d (TAG, "method cursorToMatchGameData");
         MatchGameData cursorAtMatchGameData = new MatchGameData();
 
         cursorAtMatchGameData.setUserPlayingName(cursor.getString(cursor.getColumnIndex(COLUMN_PLAYER_USERNAME)));
@@ -288,11 +288,11 @@ public class MatchGameDataORM {
         for (String s : gamePlayDurationsString.split(DELIMITER)) cursorAtMatchGameData.appendToGamePlayDurations(Long.valueOf(s));
 
         String turnDurationsString = cursor.getString(cursor.getColumnIndex(COLUMN_TURN_DURATIONS));
-        //Log.d (TAG, "******** method cursorToMemGameData: turnDurationsString: " + turnDurationsString);
+        //Log.d (TAG, "******** method cursorToMatchGameData: turnDurationsString: " + turnDurationsString);
         for (String s : turnDurationsString.split(DELIMITER)) cursorAtMatchGameData.appendToTurnDurations(Long.valueOf(s));
 
         String cardSelectionOrderString = cursor.getString(cursor.getColumnIndex(COLUMN_CARD_SELECTED_ORDER));
-        Log.d (TAG, "******** method cursorToMemGameData: cardSelectionOrderString: " + cardSelectionOrderString);
+        Log.d (TAG, "******** method cursorToMatchGameData: cardSelectionOrderString: " + cardSelectionOrderString);
         for (String s : cardSelectionOrderString.split(DELIMITER)) {
             cursorAtMatchGameData.appendToCardsSelected(Integer.valueOf(s));
         }

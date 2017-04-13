@@ -1,19 +1,32 @@
 package ws.isak.bridge.events;
 
 import ws.isak.bridge.events.engine.MatchFlipDownCardsEvent;
+import ws.isak.bridge.events.engine.SwapSelectedCardsEvent;
+import ws.isak.bridge.events.engine.SwapUnselectCardsEvent;
+
 import ws.isak.bridge.events.engine.MatchGameWonEvent;
+import ws.isak.bridge.events.engine.SwapGameWonEvent;
+
 import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
 import ws.isak.bridge.events.engine.PlayCardAudioEvent;
 
 import ws.isak.bridge.events.ui.MatchBackGameEvent;
+//TODO SwapBackGameEvent
 import ws.isak.bridge.events.ui.MatchDifficultySelectedEvent;
 import ws.isak.bridge.events.ui.SwapDifficultySelectedEvent;
+
 import ws.isak.bridge.events.ui.MatchFlipCardEvent;
+
 import ws.isak.bridge.events.ui.MatchNextGameEvent;
+//TODO SwapNextGameEvent
+
 import ws.isak.bridge.events.ui.MatchResetBackgroundEvent;
+//TODO ?? SwapResetBackgroundEvent
+
 import ws.isak.bridge.events.ui.MatchStartEvent;
-import ws.isak.bridge.events.ui.MatchThemeSelectedEvent;
 import ws.isak.bridge.events.ui.SwapStartEvent;
+
+import ws.isak.bridge.events.ui.MatchThemeSelectedEvent;
 
 
 /*
@@ -27,6 +40,8 @@ public interface EventObserver {
 
 	void onEvent(MatchFlipCardEvent event);
 
+    void onEvent(SwapSelectedCardsEvent event);
+
 	void onEvent(MatchDifficultySelectedEvent event);
 
     void onEvent(SwapDifficultySelectedEvent event);
@@ -35,6 +50,8 @@ public interface EventObserver {
 
 	void onEvent(MatchFlipDownCardsEvent event);
 
+    void onEvent(SwapUnselectCardsEvent event);
+
 	void onEvent(MatchStartEvent event);
 
     void onEvent(SwapStartEvent event);
@@ -42,6 +59,8 @@ public interface EventObserver {
 	void onEvent(MatchThemeSelectedEvent event);
 
 	void onEvent(MatchGameWonEvent event);
+
+    void onEvent(SwapGameWonEvent event);
 
 	void onEvent(MatchBackGameEvent event);
 

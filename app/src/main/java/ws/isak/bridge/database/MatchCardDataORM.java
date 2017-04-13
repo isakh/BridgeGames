@@ -149,7 +149,7 @@ public class MatchCardDataORM {
 
 
     public static MatchCardData getCardData (int cardID) {
-        Log.d (TAG, "method getMemGameData returns a list of matchCardData objects with cardID " + cardID);
+        Log.d (TAG, "method getMatchGameData returns a list of matchCardData objects with cardID " + cardID);
 
         DatabaseWrapper databaseWrapper =  Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();

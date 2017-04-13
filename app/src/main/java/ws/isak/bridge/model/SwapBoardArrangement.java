@@ -2,7 +2,13 @@ package ws.isak.bridge.model;
 
 import java.util.Map;
 
-import ws.isak.bridge.common.MatchCardData;
+import android.util.Log;
+
+import android.graphics.Bitmap;
+
+import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.common.SwapCardData;
+import ws.isak.bridge.utils.ImageScaling;
 import ws.isak.bridge.utils.SwapTileCoordinates;
 
 /**
@@ -15,11 +21,43 @@ import ws.isak.bridge.utils.SwapTileCoordinates;
 
 public class SwapBoardArrangement {
 
-    public final String TAG = "MatchBoardArrangement";
+    public final String TAG = "SwapBoardArrangement";
+    public static String URI_DRAWABLE = "drawable://";
+
 
     //Map of Coordinates objects to card data objects: this tells us where each card is on the board
-    //TODO update MatchCardData to contain 4 audio and 4 image files for swap game
-    public Map <SwapTileCoordinates, MatchCardData> cardObjs;
+    //TODO update SwapCardData to contain 4 audio and 4 image files for swap game
+    public Map <SwapTileCoordinates, SwapCardData> cardObjs;
 
-
+    //return the bitmap at location on board with given size
+    public Bitmap getSwapTileBitmap (SwapTileCoordinates loc, int size) {
+        Log.d (TAG, "method getSwapTileBitmap");
+        String imageURI = null;
+        SwapCardData cardOnTile = cardObjs.get(loc);
+        int activeSegment = cardOnTile.getSegmentActive();
+        switch (activeSegment) {
+            case 0:
+                imageURI = cardOnTile.getSpectroURI0();
+                break;
+            case 1:
+                imageURI = cardOnTile.getSpectroURI1();
+                break;
+            case 2:
+                imageURI = cardOnTile.getSpectroURI2();
+                break;
+            case 3:
+                imageURI = cardOnTile.getSpectroURI3();
+                break;
+        }
+        Log.d (TAG, "method getSwapTileBitmap: imageURI: " + imageURI);
+        if (imageURI.contains(URI_DRAWABLE)) {
+            String drawableResourceName = imageURI.substring(URI_DRAWABLE.length());
+            Log.d (TAG, "                       : drawableResourceName: " + drawableResourceName);
+            int drawableResourceID = Shared.context.getResources().getIdentifier(drawableResourceName, "drawable", Shared.context.getPackageName());
+            Log.d (TAG, "                       : drawableResourceID: " + drawableResourceID);
+            Bitmap bitmap = ImageScaling.scaleDown(drawableResourceID, size, size);
+            return ImageScaling.crop(bitmap, size, size);
+        }
+        return null;
+    }
 }

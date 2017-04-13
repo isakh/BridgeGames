@@ -21,7 +21,7 @@ import ws.isak.bridge.common.Audio;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.events.ui.SwapStartEvent;
 import ws.isak.bridge.ui.PopupManager;
-import ws.isak.bridge.utils.Utils;
+import ws.isak.bridge.utils.ImageScaling;
 
 /*
  * Class SwapMenuFragment sets up the fragment that allows the user to either choose settings for
@@ -87,7 +87,7 @@ public class SwapMenuFragment extends Fragment {
     protected void animateAllAssetsOff(AnimatorListenerAdapter adapter) {
         // swap_menu_title
         // 120dp + 50dp + buffer(30dp)
-        ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(swapTitle, "translationY", Utils.px(-200));  //TODO constant to variable
+        ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(swapTitle, "translationY", ImageScaling.px(-200));  //TODO constant to variable
         titleAnimator.setInterpolator(new AccelerateInterpolator(2));
         titleAnimator.setDuration(300);
 
@@ -100,12 +100,12 @@ public class SwapMenuFragment extends Fragment {
         tooltipAnimator.setDuration(100);
 
         // settings button
-        ObjectAnimator settingsAnimator = ObjectAnimator.ofFloat(swapSettingsButton, "translationY", Utils.px(120));
+        ObjectAnimator settingsAnimator = ObjectAnimator.ofFloat(swapSettingsButton, "translationY", ImageScaling.px(120));
         settingsAnimator.setInterpolator(new AccelerateInterpolator(2));
         settingsAnimator.setDuration(300);
 
         // start button
-        ObjectAnimator startButtonAnimator = ObjectAnimator.ofFloat(swapStartGameButton, "translationY", Utils.px(130));
+        ObjectAnimator startButtonAnimator = ObjectAnimator.ofFloat(swapStartGameButton, "translationY", ImageScaling.px(130));
         startButtonAnimator.setInterpolator(new AccelerateInterpolator(2));
         startButtonAnimator.setDuration(300);
 
