@@ -45,12 +45,12 @@ public class MatchGameFragment extends BaseFragment {
         Log.d (TAG, "method onCreateView");
 		ViewGroup view = (ViewGroup) inflater.inflate(R.layout.match_game_fragment, container, false);
 		view.setClipChildren(false);
-		((ViewGroup)view.findViewById(R.id.game_board)).setClipChildren(false);
+		((ViewGroup)view.findViewById(R.id.match_game_board)).setClipChildren(false);
 		mTime = (TextView) view.findViewById(R.id.time_bar_text);                       //FIXME is this id right?
 		mTimeImage = (ImageView) view.findViewById(R.id.time_bar_image);
 		FontLoader.setTypeface(Shared.context, new TextView[] {mTime}, Font.ANGRYBIRDS);
 		mMatchBoardView = MatchBoardView.fromXml(getActivity().getApplicationContext(), view);
-		FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.game_container);
+		FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.match_game_container);
 		frameLayout.addView(mMatchBoardView);
 		frameLayout.setClipChildren(false);
 
@@ -72,8 +72,8 @@ public class MatchGameFragment extends BaseFragment {
 	}
 
 	private void buildBoard() {
-		MatchGame matchGame = Shared.engine.getActiveGame();
-		long time = matchGame.matchMatchBoardConfiguration.time;
+		MatchGame matchGame = Shared.engine.getActiveMatchGame();
+		long time = matchGame.matchBoardConfiguration.time;
 		setTime(time);
 		mMatchBoardView.setBoard(matchGame);
 		

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <LinearLayout
-        android:id="@+id/game_board"
+        android:id="@+id/match_game_board"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
@@ -35,14 +36,14 @@
                 android:shadowDx="4"
                 android:shadowDy="4"
                 android:shadowRadius="4"
-                android:text="00:60"
+                android:text="@string/match_game_timebar_text_init"
                 android:textColor="@color/colorText"
                 android:textSize="@dimen/match_clock_text_size" />
 
         </RelativeLayout>
 
         <FrameLayout
-            android:id="@+id/game_container"
+            android:id="@+id/match_game_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1" >

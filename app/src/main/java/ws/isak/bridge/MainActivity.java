@@ -74,7 +74,7 @@ public class  MainActivity extends FragmentActivity {
 
         //build the list of MatchCardData objects based on resources
         // TODO can this become dynamic if I can load variable resources?
-        buildCardDataList();
+        buildMatchCardDataList();
 
         // set background
         setBackgroundImage();
@@ -127,7 +127,7 @@ public class  MainActivity extends FragmentActivity {
     }
 
     //build the matchCardData list in for access by themes
-    private void buildCardDataList () {
+    private void buildMatchCardDataList() {
         Shared.matchCardDataList = new ArrayList<MatchCardData>();
 
         for (int i = 1; i <= 10; i++) {                             //FIXME - make this constant into a variable
@@ -137,10 +137,10 @@ public class  MainActivity extends FragmentActivity {
             curCard.setPairedImageDiffer(false);
             curCard.setFirstImageUsed(false);
             curCard.setImageURI0(URI_DRAWABLE + "blank_card");
-            curCard.setImageURI1(URI_DRAWABLE + String.format(Locale.ENGLISH, "bird_%d", i) + "a");
-            curCard.setImageURI2(URI_DRAWABLE + String.format(Locale.ENGLISH, "bird_%d", i) + "b");
-            curCard.setImageURI3(URI_DRAWABLE + String.format(Locale.ENGLISH, "spectrogram_%d", i));
-            curCard.setAudioURI(URI_AUDIO + String.format(Locale.ENGLISH, "example%d", i));
+            curCard.setImageURI1(URI_DRAWABLE + String.format(Locale.ENGLISH, "match_bird_%d", i) + "_a");
+            curCard.setImageURI2(URI_DRAWABLE + String.format(Locale.ENGLISH, "match_bird_%d", i) + "_b");
+            curCard.setImageURI3(URI_DRAWABLE + String.format(Locale.ENGLISH, "match_spectrogram_%d", i));
+            curCard.setAudioURI(URI_AUDIO + String.format(Locale.ENGLISH, "match_audio_%d", i));
             curCard.setSampleDuration(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
             //insert matchCardData object into Database and local storage
             Shared.matchCardDataList.add(curCard);

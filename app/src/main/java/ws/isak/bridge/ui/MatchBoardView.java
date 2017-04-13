@@ -37,9 +37,9 @@ import ws.isak.bridge.model.MatchBoardArrangement;
 import ws.isak.bridge.utils.Utils;
 
 /*
- * Class BoardView comprises the code which builds the match game board according to the dimensions
- * found in the xml dimens file according to the the ratios of tiles to rows/columns that is defined
- * in the MatchBoardConfiguration class given users' difficulty selection.  The board is a 2D array
+ * Class MatchBoardView comprises the code which builds the match game board according to the dimensions
+ * found in the xml dimens file and according to the the ratios of tiles to rows/columns that is defined
+ * in the MatchBoardConfiguration class given the users' difficulty selection.  The board is a 2D array
  * of tiles each tile mapped to a card object.
  *
  * @author isak
@@ -53,7 +53,7 @@ public class MatchBoardView extends LinearLayout {
 	private LinearLayout.LayoutParams mTileLayoutParams;
 	private int mScreenWidth;
 	private int mScreenHeight;
-	private MatchBoardConfiguration mMatchMatchBoardConfiguration;				//an instance of the board configuration for the current game
+	private MatchBoardConfiguration mMatchBoardConfiguration;				//an instance of the board configuration for the current game
 	private MatchBoardArrangement mMatchBoardArrangement;					//an instance of the board arrangement for the current game
 	private Map<Integer, MatchTileView> mViewReference;				//a mapping of each tile ID (integer curTileOnBoard) to a view TileView
 	private List<Integer> flippedUp = new ArrayList<Integer>();		//an array list to hold the id's of the currently flipped up cards
@@ -86,20 +86,21 @@ public class MatchBoardView extends LinearLayout {
 		return (MatchBoardView) LayoutInflater.from(context).inflate(R.layout.match_board_view, parent, false);
 	}
 
+	//method setBoard is called from MatchGameFragment method buildBoard
 	public void setBoard(MatchGame matchGame) {
 		Log.d (TAG, "method setBoard ... at start");
-		mMatchMatchBoardConfiguration = matchGame.matchMatchBoardConfiguration;
+		mMatchBoardConfiguration = matchGame.matchBoardConfiguration;
 		mMatchBoardArrangement = matchGame.matchBoardArrangement;
-		// calc prefered tiles in width and height
+		// calc preferred tiles' width and height based on display size
 		int singleMargin = getResources().getDimensionPixelSize(R.dimen.match_card_margin);
 		float density = getResources().getDisplayMetrics().density;
-		singleMargin = Math.max((int) (1 * density), (int) (singleMargin - mMatchMatchBoardConfiguration.difficulty * 2 * density));
+		singleMargin = Math.max((int) (1 * density), (int) (singleMargin - mMatchBoardConfiguration.difficulty * 2 * density));
 		int sumMargin = 0;
-		for (int row = 0; row < mMatchMatchBoardConfiguration.numRows; row++) {
+		for (int row = 0; row < mMatchBoardConfiguration.numRows; row++) {
 			sumMargin += singleMargin * 2;
 		}
-		int tilesHeight = (mScreenHeight - sumMargin) / mMatchMatchBoardConfiguration.numRows;
-		int tilesWidth = (mScreenWidth - sumMargin) / mMatchMatchBoardConfiguration.numTilesInRow;
+		int tilesHeight = (mScreenHeight - sumMargin) / mMatchBoardConfiguration.numRows;
+		int tilesWidth = (mScreenWidth - sumMargin) / mMatchBoardConfiguration.numTilesInRow;
 		mSize = Math.min(tilesHeight, tilesWidth);
 
 		mTileLayoutParams = new LinearLayout.LayoutParams(mSize, mSize);
@@ -115,7 +116,7 @@ public class MatchBoardView extends LinearLayout {
 	 */
 	private void buildBoard() {
 		//Log.d (TAG, "method: buildBoard");
-		for (int row = 0; row < mMatchMatchBoardConfiguration.numRows; row++) {
+		for (int row = 0; row < mMatchBoardConfiguration.numRows; row++) {
 			// add row
 			addBoardRow(row);
 		}
@@ -132,8 +133,8 @@ public class MatchBoardView extends LinearLayout {
 		linearLayout.setOrientation(LinearLayout.HORIZONTAL);
 		linearLayout.setGravity(Gravity.CENTER);
 
-		for (int curTileInRow = 0; curTileInRow < mMatchMatchBoardConfiguration.numTilesInRow; curTileInRow++) {
-			addTile(rowNum * mMatchMatchBoardConfiguration.numTilesInRow + curTileInRow, linearLayout);
+		for (int curTileInRow = 0; curTileInRow < mMatchBoardConfiguration.numTilesInRow; curTileInRow++) {
+			addTile(rowNum * mMatchBoardConfiguration.numTilesInRow + curTileInRow, linearLayout);
 		}
 
 		// add to this view

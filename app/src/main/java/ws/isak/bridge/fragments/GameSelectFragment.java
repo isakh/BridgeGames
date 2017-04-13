@@ -30,7 +30,7 @@ public class GameSelectFragment extends Fragment implements  View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "overriding method onCreateView");
-        View view = LayoutInflater.from(Shared.context).inflate(R.layout.match_game_select_fragment, container, false);
+        View view = LayoutInflater.from(Shared.context).inflate(R.layout.game_select_fragment, container, false);
 
         //creating views for matchGameLaunch and swapGameLaunch
         Log.d (TAG, "       : creating views for matchGameLaunch and swapGameLaunch");

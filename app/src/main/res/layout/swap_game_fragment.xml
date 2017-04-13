@@ -36,26 +36,25 @@
                 android:shadowDx="4"
                 android:shadowDy="4"
                 android:shadowRadius="4"
-                android:text="00:60"
+                android:text="@string/swap_game_timebar_text_init"
                 android:textColor="@color/colorText"
-                android:textSize="@dimen/swap_clock_text_size" />
+                android:textSize="@dimen/swap_clock_text_size" /> <!-- TODO set numbers in xml -->
 
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content" >
 
             <FrameLayout
                 android:id="@+id/swap_game_controls_container"
                 android:layout_width="@dimen/swap_game_controls_container_width"
-                android:layout_height="match_parent" >
+                android:layout_height="match_parent" />
 
             <FrameLayout
                 android:id="@+id/swap_game_play_container"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp" >
-            </FrameLayout>
+                android:layout_height="0dp" />
 
         </RelativeLayout>
 

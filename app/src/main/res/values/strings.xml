@@ -183,4 +183,16 @@
     <string name="user_setup_register_hint">New User Name</string>
     <string name="user_setup_register_button">REGISTER</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- Layout: match_board_fragment -->
+    <!-- *************************** -->
+    <string name="match_game_timebar_text_init">01:00</string>
+
+    <!-- =================================================================================== -->
+    <!-- Layout: swap_game_fragment -->
+    <!-- *************************** -->
+    <string name="swap_game_timebar_text_init">00:00</string>
+
+
 </resources>

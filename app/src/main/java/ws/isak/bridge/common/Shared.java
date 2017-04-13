@@ -6,10 +6,14 @@ import android.util.Log;
 
 import java.util.List;
 
+import ws.isak.bridge.R;
+
 import ws.isak.bridge.engine.Engine;
 import ws.isak.bridge.events.EventBus;
 import ws.isak.bridge.database.DatabaseWrapper;
+
 import ws.isak.bridge.model.MatchGame;
+import ws.isak.bridge.model.SwapGame;
 import ws.isak.bridge.model.MatchGameData;
 import ws.isak.bridge.model.SwapGameData;
 
@@ -28,10 +32,10 @@ public class Shared {
 	public static Engine engine;
 	public static EventBus eventBus;
     public static MatchGame currentMatchGame;
+    public static SwapGame currentSwapGame;
 
     //database
-    //FIXME - can't use context here why? public static final String DATABASE_NAME = context.getResources().getString(R.string.database_name);
-    public static final String DATABASE_NAME = "bridge.db";
+    public static final String DATABASE_NAME = context.getResources().getString(R.string.database_name);
     public static DatabaseWrapper databaseWrapper;
 
     //data classes / methods    FIXME - should these be static???
@@ -41,6 +45,8 @@ public class Shared {
     public static List <MatchGameData> matchGameDataList;
     public static MatchCardData matchCardData;        //placeholder matchCardData for return from database call
     public static List <MatchCardData> matchCardDataList;
+    public static SwapCardData swapCardData;
+    public static List <SwapCardData> swapCardDataList;
     public static SwapGameData swapGameData;
     public static List <SwapGameData> swapGameDataList;
     

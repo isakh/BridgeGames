@@ -207,8 +207,8 @@ public class Engine extends EventObserverAdapter {
 		mFlippedId = -1;
 		mPlayingMatchGame = new MatchGame();
         mPlayingMatchGame.matchTheme = mSelectedMatchTheme;
-		mPlayingMatchGame.matchMatchBoardConfiguration = new MatchBoardConfiguration(event.difficulty, mSelectedMatchTheme);
-		mToFlip = mPlayingMatchGame.matchMatchBoardConfiguration.numTiles;
+		mPlayingMatchGame.matchBoardConfiguration = new MatchBoardConfiguration(event.difficulty, mSelectedMatchTheme);
+		mToFlip = mPlayingMatchGame.matchBoardConfiguration.numTiles;
         Shared.currentMatchGame = mPlayingMatchGame;
 
 		// arrange board
@@ -217,8 +217,8 @@ public class Engine extends EventObserverAdapter {
         //instantiating the currentMatchGameData object - some fields default to 0 || null
         currentMatchGameData = new MatchGameData();
         currentMatchGameData.setThemeID(Shared.currentMatchGame.matchTheme.themeID);
-        currentMatchGameData.setGameDifficulty(Shared.currentMatchGame.matchMatchBoardConfiguration.difficulty);
-        currentMatchGameData.setGameDurationAllocated(Shared.currentMatchGame.matchMatchBoardConfiguration.time);
+        currentMatchGameData.setGameDifficulty(Shared.currentMatchGame.matchBoardConfiguration.difficulty);
+        currentMatchGameData.setGameDurationAllocated(Shared.currentMatchGame.matchBoardConfiguration.time);
         currentMatchGameData.setMixerState(Audio.MIX);
         //check setup of matchGameData - these should return current states
         Log.d (TAG, "******* New MatchGameData Instantiated *******");
@@ -250,7 +250,7 @@ public class Engine extends EventObserverAdapter {
     }
 
 	private void arrangeMatchBoard() {
-		MatchBoardConfiguration matchMatchBoardConfiguration = mPlayingMatchGame.matchMatchBoardConfiguration;
+		MatchBoardConfiguration matchMatchBoardConfiguration = mPlayingMatchGame.matchBoardConfiguration;
 		MatchBoardArrangement matchBoardArrangement = new MatchBoardArrangement();
 
 		// list all n tiles  {0,1,2,...n-1} /
@@ -338,7 +338,7 @@ public class Engine extends EventObserverAdapter {
 				if (mToFlip == 0) {		//when this gets to 0, we have flipped all pairs and can compute the score
 					int passedSeconds = (int) (Clock.getInstance().getPassedTime() / 1000);
 					Clock.getInstance().pause();
-					long totalTimeInMillis = mPlayingMatchGame.matchMatchBoardConfiguration.time;
+					long totalTimeInMillis = mPlayingMatchGame.matchBoardConfiguration.time;
                     int totalTime = (int) Math.ceil((double) totalTimeInMillis / 1000); //TODO is this enough or should we convert all to long ms
 					GameState gameState = new GameState();
 					mPlayingMatchGame.gameState = gameState;
@@ -353,9 +353,9 @@ public class Engine extends EventObserverAdapter {
 					else if (passedSeconds < totalTime) {gameState.achievedStars = 1; }
 					else {gameState.achievedStars = 0;}
 					// calculate the score
-					gameState.achievedScore = mPlayingMatchGame.matchMatchBoardConfiguration.difficulty * gameState.remainingTimeInSeconds * mPlayingMatchGame.matchTheme.themeID;
+					gameState.achievedScore = mPlayingMatchGame.matchBoardConfiguration.difficulty * gameState.remainingTimeInSeconds * mPlayingMatchGame.matchTheme.themeID;
 					// save to memory
-					Memory.saveMatch(mPlayingMatchGame.matchTheme.themeID, mPlayingMatchGame.matchMatchBoardConfiguration.difficulty, gameState.achievedStars);
+					Memory.saveMatch(mPlayingMatchGame.matchTheme.themeID, mPlayingMatchGame.matchBoardConfiguration.difficulty, gameState.achievedStars);
 					//trigger the MatchGameWonEvent
 					Shared.eventBus.notify(new MatchGameWonEvent(gameState), 1200);
 				}
@@ -428,7 +428,7 @@ public class Engine extends EventObserverAdapter {
     @Override
     public void onEvent(MatchNextGameEvent event) {
         PopupManager.closePopup();
-        int difficulty = mPlayingMatchGame.matchMatchBoardConfiguration.difficulty;
+        int difficulty = mPlayingMatchGame.matchBoardConfiguration.difficulty;
         if (mPlayingMatchGame.gameState.achievedStars == 3 && difficulty < 3) {  //TODO set these numbers in values.xml?
             difficulty++;
         }
@@ -440,11 +440,11 @@ public class Engine extends EventObserverAdapter {
         PopupManager.closePopup();
         mScreenController.openScreen(Screen.DIFFICULTY_MATCH);
         //TODO verify that adding the following lines to reset the difficulty on backGameEvent worked [initially yes]
-        int difficulty = mPlayingMatchGame.matchMatchBoardConfiguration.difficulty;
+        int difficulty = mPlayingMatchGame.matchBoardConfiguration.difficulty;
         Shared.eventBus.notify (new MatchDifficultySelectedEvent(difficulty));
     }
 
-	public MatchGame getActiveGame() {
+	public MatchGame getActiveMatchGame() {
 		//Log.d (TAG, "method getActiveGame");
 		return mPlayingMatchGame;
 	}
