@@ -14,11 +14,16 @@ import java.util.Locale;
 import ws.isak.bridge.R;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.database.SwapGameDataORM;
+
 import ws.isak.bridge.events.engine.SwapSelectedCardsEvent;
 import ws.isak.bridge.events.engine.SwapUnselectCardsEvent;
 import ws.isak.bridge.events.engine.SwapGameWonEvent;
+import ws.isak.bridge.events.engine.SwapPlayRowAudioEvent;
+import ws.isak.bridge.events.engine.SwapPauseRowAudioEvent;
+
 import ws.isak.bridge.model.SwapGame;
 import ws.isak.bridge.ui.SwapBoardView;
+import ws.isak.bridge.ui.SwapBoardControlsView;
 import ws.isak.bridge.ui.PopupManager;
 import ws.isak.bridge.utils.Clock;
 import ws.isak.bridge.utils.Clock.OnTimerCount;
@@ -37,29 +42,44 @@ public class SwapGameFragment extends BaseFragment {
 
     public final String TAG = "SwapGameFragment";
 
+
     private SwapBoardView mSwapBoardView;
+    private SwapBoardControlsView mSwapBoardControllerView;
     private TextView mTime;
     private ImageView mTimeImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d (TAG, "method onCreateView");
+        //create the view for the swap game fragment
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.swap_game_fragment, container, false);
         view.setClipChildren(false);
+        //
         ((ViewGroup)view.findViewById(R.id.swap_game_board)).setClipChildren(false);
         mTime = (TextView) view.findViewById(R.id.time_bar_text);                       //FIXME is this id right?
         mTimeImage = (ImageView) view.findViewById(R.id.time_bar_image);
         FontLoader.setTypeface(Shared.context, new TextView[] {mTime}, Font.ANGRYBIRDS);
+        //the swap game play container
         mSwapBoardView = SwapBoardView.fromXml(getActivity().getApplicationContext(), view);
-        FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.match_game_container);
-        frameLayout.addView(mSwapBoardView);
-        frameLayout.setClipChildren(false);
+        FrameLayout playFrameLayout = (FrameLayout) view.findViewById(R.id.swap_game_play_container);
+        playFrameLayout.addView(mSwapBoardView);
+        playFrameLayout.setClipChildren(false);
+        //TODO the swap game controls container
+        mSwapBoardControllerView = SwapBoardControlsView.fromXml (getActivity().getApplicationContext(), view);
+        FrameLayout controlsFrameLayout = (FrameLayout) view.findViewById(R.id.swap_game_controls_container);
+        controlsFrameLayout.addView(mSwapBoardControllerView);
+        controlsFrameLayout.setClipChildren(false);
 
         // build board
         buildBoard();
         Shared.eventBus.listen(SwapSelectedCardsEvent.TYPE, this);
         Shared.eventBus.listen(SwapGameWonEvent.TYPE, this);
         Shared.eventBus.listen(SwapUnselectCardsEvent.TYPE, this);
+
+        //TODO build audio controls
+        Shared.eventBus.listen(SwapPlayRowAudioEvent.TYPE, this);
+        Shared.eventBus.listen(SwapPauseRowAudioEvent.TYPE, this);
+
         return view;
     }
 
