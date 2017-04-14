@@ -7,6 +7,9 @@ import ws.isak.bridge.events.engine.SwapUnselectCardsEvent;
 import ws.isak.bridge.events.engine.MatchGameWonEvent;
 import ws.isak.bridge.events.engine.SwapGameWonEvent;
 
+import ws.isak.bridge.events.engine.SwapPlayRowAudioEvent;
+import ws.isak.bridge.events.engine.SwapPauseRowAudioEvent;
+
 import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
 import ws.isak.bridge.events.engine.PlayCardAudioEvent;
 
@@ -40,27 +43,17 @@ public interface EventObserver {
 
 	void onEvent(MatchFlipCardEvent event);
 
-    void onEvent(SwapSelectedCardsEvent event);
-
 	void onEvent(MatchDifficultySelectedEvent event);
-
-    void onEvent(SwapDifficultySelectedEvent event);
 
 	void onEvent(MatchHidePairCardsEvent event);
 
 	void onEvent(MatchFlipDownCardsEvent event);
 
-    void onEvent(SwapUnselectCardsEvent event);
-
 	void onEvent(MatchStartEvent event);
-
-    void onEvent(SwapStartEvent event);
 
 	void onEvent(MatchThemeSelectedEvent event);
 
 	void onEvent(MatchGameWonEvent event);
-
-    void onEvent(SwapGameWonEvent event);
 
 	void onEvent(MatchBackGameEvent event);
 
@@ -68,6 +61,20 @@ public interface EventObserver {
 
 	void onEvent(MatchResetBackgroundEvent event);
 
-	void onEvent(PlayCardAudioEvent event);
+    void onEvent(SwapSelectedCardsEvent event);
+
+    void onEvent(SwapGameWonEvent event);
+
+    void onEvent(SwapStartEvent event);
+
+    void onEvent(SwapUnselectCardsEvent event);
+
+    void onEvent(SwapDifficultySelectedEvent event);
+
+    void onEvent(SwapPlayRowAudioEvent event);
+
+    void onEvent(SwapPauseRowAudioEvent event);
+
+    void onEvent(PlayCardAudioEvent event);
 
 }

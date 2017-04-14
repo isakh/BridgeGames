@@ -8,6 +8,8 @@ import ws.isak.bridge.events.EventObserver;
 import ws.isak.bridge.events.engine.MatchFlipDownCardsEvent;
 import ws.isak.bridge.events.engine.MatchGameWonEvent;
 import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
+import ws.isak.bridge.events.engine.SwapPauseRowAudioEvent;
+import ws.isak.bridge.events.engine.SwapPlayRowAudioEvent;
 import ws.isak.bridge.events.engine.SwapSelectedCardsEvent;
 import ws.isak.bridge.events.engine.SwapUnselectCardsEvent;
 import ws.isak.bridge.events.engine.SwapGameWonEvent;
@@ -126,6 +128,18 @@ public class BaseFragment extends Fragment implements EventObserver {
     }
 
     //Audio Playback Events
+
+    @Override
+    public void onEvent(SwapPauseRowAudioEvent event) {
+        //Log.d (TAG, "");
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void onEvent(SwapPlayRowAudioEvent event) {
+        //Log.d (TAG, "");
+        throw new UnsupportedOperationException();
+    }
 
     @Override
 	public void onEvent(PlayCardAudioEvent event) {
