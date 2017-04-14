@@ -5,6 +5,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.utils.SwapCardID;
 
 /*
  * The SwapGameData class hold information about each swap game played
@@ -29,7 +30,7 @@ public class SwapGameData {
     private int numTurnsTakenInGame;        //Initialize number of turns in game to 0 and increment on each click.
     private ArrayList<Long> gamePlayDurations;  //Time the player spent on the game so far (sum of turnDurations) at each turn (can it be greater than allocated time?)
     private ArrayList <Long> turnDurations;      //a list of durations of each turn - a turn is defined as a single click, implemented as ArrayList //TODO should we also have a measure of paired click turns?
-    private ArrayList <Integer> cardSelectedOrder;   //a list of matchCardData object IDs selected on each turn, implemented as ArrayList
+    private ArrayList <SwapCardID> cardSelectedOrder;   //a list of swapCardData object IDs selected on each turn, implemented as ArrayList
 
 
     //constructor method describes the information that is stored about each game played
@@ -159,15 +160,15 @@ public class SwapGameData {
     //[5] control methods for the cardsSelectedArray
     private void initCardsSelectedArray () {
         //Log.d (TAG, "method initCardsSelectedOrderArray array list");
-        cardSelectedOrder = new ArrayList<Integer>();
+        cardSelectedOrder = new ArrayList<SwapCardID>();
     }
 
-    public void appendToCardsSelected (int cardId) {
+    public void appendToCardsSelected (SwapCardID cardId) {
         //Log.d (TAG, "method addCardToCardsSelectedArray");
         cardSelectedOrder.add(cardId);
     }
 
-    public int queryCardsSelectedArray (int locToQuery) {
+    public SwapCardID queryCardsSelectedArray (int locToQuery) {
         //Log.d (TAG, "method queryCardsSelectedArray");
         return cardSelectedOrder.get(locToQuery);
     }
@@ -177,7 +178,7 @@ public class SwapGameData {
         return cardSelectedOrder.size();
     }
 
-    public ArrayList <Integer> getCardsSelectedArray () {
+    public ArrayList <SwapCardID> getCardsSelectedArray () {
         //
         return cardSelectedOrder;
     }

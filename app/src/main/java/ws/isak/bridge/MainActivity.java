@@ -13,6 +13,7 @@ import java.util.Locale;
 import ws.isak.bridge.common.MatchCardData;
 import ws.isak.bridge.common.Audio;
 import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.common.SwapCardData;
 import ws.isak.bridge.common.UserData;
 import ws.isak.bridge.database.MatchCardDataORM;
 import ws.isak.bridge.database.MatchGameDataORM;
@@ -24,6 +25,7 @@ import ws.isak.bridge.events.ui.MatchBackGameEvent;
 import ws.isak.bridge.model.MatchGameData;
 import ws.isak.bridge.ui.PopupManager;
 import ws.isak.bridge.utils.ImageScaling;
+import ws.isak.bridge.utils.SwapCardID;
 import ws.isak.bridge.database.DatabaseWrapper;
 import ws.isak.bridge.database.UserDataORM;
 
@@ -75,6 +77,9 @@ public class  MainActivity extends FragmentActivity {
         //build the list of MatchCardData objects based on resources
         // TODO can this become dynamic if I can load variable resources?
         buildMatchCardDataList();
+
+        //build the list of SwapCardData objects based on resources
+        buildSwapCardDataList();
 
         // set background
         setBackgroundImage();
@@ -146,6 +151,94 @@ public class  MainActivity extends FragmentActivity {
             Shared.matchCardDataList.add(curCard);
             if (!MatchCardDataORM.isCardDataInDB(curCard)) {
                 MatchCardDataORM.insertCardData(curCard);
+            }
+        }
+    }
+
+    private void buildSwapCardDataList() {
+        Shared.swapCardDataList = new ArrayList<SwapCardData>();
+
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 4; j++) {
+                SwapCardData curCard = new SwapCardData();
+                curCard.setCardID(new SwapCardID(i, j));
+                curCard.setSpeciesName(curCard.getCardID().getSwapCardSpeciesID());
+                switch (j) {
+                    case 0:
+                        //set audio
+                        curCard.setAudioURI0(URI_AUDIO + String.format(Locale.ENGLISH, "swap_audio_%d", i) + "_a");
+                        curCard.setAudioURI1(null);
+                        curCard.setAudioURI2(null);
+                        curCard.setAudioURI3(null);
+                        //set images
+                        curCard.setspectroURI0(URI_DRAWABLE + String.format(Locale.ENGLISH, "swap_spectro_%d", i) + "_a");
+                        curCard.setspectroURI1(null);
+                        curCard.setspectroURI2(null);
+                        curCard.setspectroURI3(null);
+                        //set duration
+                        curCard.setSampleDuration0(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI0().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
+                        curCard.setSampleDuration1(0);
+                        curCard.setSampleDuration2(0);
+                        curCard.setSampleDuration3(0);
+                        break;
+                    case 1:
+                        //set audio
+                        curCard.setAudioURI0(null);
+                        curCard.setAudioURI1(URI_AUDIO + String.format(Locale.ENGLISH, "swap_audio_%d", i) + "_b");
+                        curCard.setAudioURI2(null);
+                        curCard.setAudioURI3(null);
+                        //set images
+                        curCard.setspectroURI0(null);
+                        curCard.setspectroURI1(URI_DRAWABLE + String.format(Locale.ENGLISH, "swap_spectro_%d", i) + "_b");
+                        curCard.setspectroURI2(null);
+                        curCard.setspectroURI3(null);
+                        //set duration
+                        curCard.setSampleDuration0(0);
+                        curCard.setSampleDuration1(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI1().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
+                        curCard.setSampleDuration2(0);
+                        curCard.setSampleDuration3(0);
+                        break;
+                    case 2:
+                        //set audio
+                        curCard.setAudioURI0(null);
+                        curCard.setAudioURI1(null);
+                        curCard.setAudioURI2(URI_AUDIO + String.format(Locale.ENGLISH, "swap_audio_%d", i) + "_c");
+                        curCard.setAudioURI3(null);
+                        //set images
+                        curCard.setspectroURI0(null);
+                        curCard.setspectroURI1(null);
+                        curCard.setspectroURI2(URI_DRAWABLE + String.format(Locale.ENGLISH, "swap_spectro_%d", i) + "_c");
+                        curCard.setspectroURI3(null);
+                        //set duration
+                        curCard.setSampleDuration0(0);
+                        curCard.setSampleDuration1(0);
+                        curCard.setSampleDuration2(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI2().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
+                        curCard.setSampleDuration3(0);
+                        break;
+                    case 3:
+                        //set audio
+                        curCard.setAudioURI0(null);
+                        curCard.setAudioURI1(null);
+                        curCard.setAudioURI2(null);
+                        curCard.setAudioURI3(URI_AUDIO + String.format(Locale.ENGLISH, "swap_audio_%d", i) + "_d");
+                        //set images
+                        curCard.setspectroURI0(null);
+                        curCard.setspectroURI1(null);
+                        curCard.setspectroURI2(null);
+                        curCard.setspectroURI3(URI_DRAWABLE + String.format(Locale.ENGLISH, "swap_spectro_%d", i) + "_d");
+                        //set duration
+                        curCard.setSampleDuration0(0);
+                        curCard.setSampleDuration1(0);
+                        curCard.setSampleDuration2(0);
+                        curCard.setSampleDuration3(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI3().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
+                        break;
+                }
+                Shared.swapCardDataList.add(curCard);
+                Log.d(TAG, "method buildSwapCardDataList: added: cardID.species: " + curCard.getCardID().getSwapCardSpeciesID() + " | species: " + curCard.getSpeciesName() + " | active segment: " + curCard.getCardID().getSwapCardSegmentID());
+                Log.d(TAG, "                            : audio0: " + curCard.getAudioURI0() + " | audio1: " + curCard.getAudioURI1() + " | audio2: " + curCard.getAudioURI2() + " | audio3" + curCard.getAudioURI3());
+                Log.d(TAG, "                            : dur0: " + curCard.getSampleDuration0() + " | dur1: " + curCard.getSampleDuration1() + " | dur2: " + curCard.getSampleDuration2() + " | dur3: " + curCard.getSampleDuration3());
+                Log.d(TAG, "                            : image0: " + curCard.getSpectroURI0() + " | image1: " + curCard.getSpectroURI1() + " | image2: " + curCard.getSpectroURI2() + " | image3: " + curCard.getSpectroURI3());
+                //TODO check if card is in DB
             }
         }
     }

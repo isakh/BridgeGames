@@ -229,7 +229,7 @@ public class SwapBoardView extends LinearLayout {
                     swapTileView.select();
                     selectedTiles.add(curTileOnBoard);
                     if (selectedTiles.size() == 2) {        //change 2 to xml num tiles to select as for swapping?
-                        //TODO set a boolena here so no more cards can be selected!
+                        //TODO set a boolean here so no more cards can be selected!
                         //FIXME method swapTiles ... should it go here?
                         // no need to call, will be called by event SwapSelectedCardsEvent swapTiles (selectedTiles.get(0), selectedTiles.get(1));
                     }
@@ -268,10 +268,5 @@ public class SwapBoardView extends LinearLayout {
         }
         selectedTiles.clear();
         mSelected = false;
-    }
-
-    public void swapTiles (SwapTileCoordinates tile1, SwapTileCoordinates tile2) {
-        //TODO
-        //ALL THE WORK
     }
 }

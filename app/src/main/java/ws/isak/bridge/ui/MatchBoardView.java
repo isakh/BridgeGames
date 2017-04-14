@@ -279,17 +279,17 @@ public class MatchBoardView extends LinearLayout {
 		mLocked = false;
 	}
 
-	protected void animateHide(final MatchTileView v) {
-		ObjectAnimator animator = ObjectAnimator.ofFloat(v, "alpha", 0f);
+	protected void animateHide(final MatchTileView view) {
+		ObjectAnimator animator = ObjectAnimator.ofFloat(view, "alpha", 0f);
 		animator.addListener(new AnimatorListenerAdapter() {
 			@Override
 			public void onAnimationEnd(Animator animation) {
-				v.setLayerType(View.LAYER_TYPE_NONE, null);
-				v.setVisibility(View.INVISIBLE);
+				view.setLayerType(View.LAYER_TYPE_NONE, null);
+				view.setVisibility(View.INVISIBLE);
 			}
 		});
-		animator.setDuration(100);
-		v.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+		animator.setDuration(100);                          //TODO set this duration in xml
+		view.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 		animator.start();
 	}
 }

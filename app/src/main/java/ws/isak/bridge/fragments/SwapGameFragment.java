@@ -153,9 +153,4 @@ public class SwapGameFragment extends BaseFragment {
         //Log.d (TAG, "overriding method onEvent (MatchFlipDownCardsEvent)");
         mSwapBoardView.unSelectAll();
     }
-    @Override
-    public void onEvent(SwapSelectedCardsEvent event) {
-        //Log.d (TAG, "overriding method onEvent (MatchHidePairCardsEvent)");
-        mSwapBoardView.swapTiles (event.id1, event.id2);
-    }
 }

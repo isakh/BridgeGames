@@ -22,7 +22,7 @@ public class SwapBoardConfiguration {
 
     public static final int swapNumTilesInRow = Shared.context.getResources().getInteger(R.integer.swap_board_num_tiles_in_row);
 
-    public final int difficulty;
+    public int difficulty;
     public final int numTiles;
     public final int numRows;
     public final long time;					//TODO this will include sample duration variables so will be in millis - need to use floor (time/1000) for timer in UI
@@ -36,8 +36,8 @@ public class SwapBoardConfiguration {
      */
     public SwapBoardConfiguration(int difficulty) {
         Log.d (TAG, "constructor: difficulty: " + difficulty);
-        this.difficulty = difficulty;
-        switch (difficulty) {
+        setSwapDifficulty (difficulty);
+        switch (getSwapDifficulty()) {
             case 1:
                 numTiles = easy;
                 numRows = 2;
@@ -58,6 +58,15 @@ public class SwapBoardConfiguration {
                 throw new IllegalArgumentException("Select one of the predefined sizes");
         }
     }
+
+    public void setSwapDifficulty (int diff) {
+        difficulty = diff;
+    }
+
+    public int getSwapDifficulty () {
+        return difficulty;
+    }
+
 
     //FIXME - this needs to reflect the limitation that the sum of tiles in a row is fixed - so constant
     private long CalculateSwapGameDuration (int numTiles, int difficultyBaseline) {

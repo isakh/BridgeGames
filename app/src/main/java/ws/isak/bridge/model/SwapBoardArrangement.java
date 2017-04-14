@@ -27,15 +27,27 @@ public class SwapBoardArrangement {
 
     //Map of Coordinates objects to card data objects: this tells us where each card is on the board
     //TODO update SwapCardData to contain 4 audio and 4 image files for swap game
+
     public Map <SwapTileCoordinates, SwapCardData> cardObjs;
+
+    public void setCardOnBoard (SwapTileCoordinates coords, SwapCardData card) {
+        cardObjs.put(coords, card);
+    }
+
+    public SwapCardData getSwapCardDataFromCoords (SwapTileCoordinates coords) {
+        SwapCardData cardData = cardObjs.get (coords);
+        if (cardData == null) {
+            Log.d (TAG, "method getSwapCardDataFromCardObjs: no cardData at coord: " + coords);
+        }
+        return cardData;
+    }
 
     //return the bitmap at location on board with given size
     public Bitmap getSwapTileBitmap (SwapTileCoordinates loc, int size) {
         Log.d (TAG, "method getSwapTileBitmap");
         String imageURI = null;
         SwapCardData cardOnTile = cardObjs.get(loc);
-        int activeSegment = cardOnTile.getSegmentActive();
-        switch (activeSegment) {
+        switch (cardOnTile.getCardID().getSwapCardSegmentID()) {
             case 0:
                 imageURI = cardOnTile.getSpectroURI0();
                 break;

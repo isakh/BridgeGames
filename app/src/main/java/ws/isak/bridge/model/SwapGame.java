@@ -13,5 +13,4 @@ public class SwapGame {
     public SwapBoardConfiguration swapBoardConfiguration;
     public SwapBoardArrangement swapBoardArrangement;
     public GameState gameState;
-
 }

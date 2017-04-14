@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -24,6 +25,7 @@ import ws.isak.bridge.R;
 
 import ws.isak.bridge.common.Audio;
 import ws.isak.bridge.common.MatchCardData;
+import ws.isak.bridge.common.SwapCardData;
 import ws.isak.bridge.common.Memory;
 import ws.isak.bridge.common.Shared;
 
@@ -36,6 +38,8 @@ import ws.isak.bridge.events.engine.MatchGameWonEvent;
 import ws.isak.bridge.events.engine.PlayCardAudioEvent;
 import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
 
+import ws.isak.bridge.events.engine.SwapGameWonEvent;
+import ws.isak.bridge.events.engine.SwapSelectedCardsEvent;
 import ws.isak.bridge.events.ui.MatchStartEvent;
 import ws.isak.bridge.events.ui.SwapStartEvent;
 
@@ -64,6 +68,7 @@ import ws.isak.bridge.model.SwapBoardArrangement;
 
 import ws.isak.bridge.utils.Clock;
 import ws.isak.bridge.utils.ImageScaling;
+import ws.isak.bridge.utils.SwapTileCoordinates;
 
 /*
  * Class Engine contains the core behavior of the app.
@@ -81,10 +86,14 @@ public class Engine extends EventObserverAdapter {
 	private SwapGameData currentSwapGameData;
     private int mFlippedId = -1;					//id of the tile (? or event?) with the card being flipped
 	private int mToFlip = -1;
+
+    private int mSelectedID = -1;
+
 	private ScreenController mScreenController;
 	private MatchTheme mSelectedMatchTheme;
 	private ImageView mBackgroundImage;
 	private Handler mHandler;
+    private Random randomIndex;
 
 	private Engine() {
         Log.d (TAG, "***** Constructor *****");
@@ -254,12 +263,12 @@ public class Engine extends EventObserverAdapter {
     }
 
 	private void arrangeMatchBoard() {
-		MatchBoardConfiguration matchMatchBoardConfiguration = mPlayingMatchGame.matchBoardConfiguration;
+		MatchBoardConfiguration matchBoardConfiguration = mPlayingMatchGame.matchBoardConfiguration;
 		MatchBoardArrangement matchBoardArrangement = new MatchBoardArrangement();
 
 		// list all n tiles  {0,1,2,...n-1} /
 		List<Integer> tileIDs = new ArrayList<Integer>();
-		for (int i = 0; i < matchMatchBoardConfiguration.numTiles; i++) {
+		for (int i = 0; i < matchBoardConfiguration.numTiles; i++) {
 			tileIDs.add(i);
 		}
 		// shuffle
@@ -294,16 +303,70 @@ public class Engine extends EventObserverAdapter {
 
     @Override
     public void onEvent(SwapDifficultySelectedEvent event) {
-        //TODO
-        //TODO
-        //TODO
-        mScreenController.openScreen(Screen.FINISHED); //FIXME to GAME_SWAP when ready
+        mSelectedID = -1;
+        mPlayingSwapGame = new SwapGame();
+        mPlayingSwapGame.swapBoardConfiguration = new SwapBoardConfiguration(event.difficulty);
+
+        Shared.currentSwapGame = mPlayingSwapGame;
+
+        // arrange board
+        arrangeSwapBoard();
+
+        //instantiating the currentSwapGameData object - some fields default to 0 || null
+        currentSwapGameData = new SwapGameData();
+        currentSwapGameData.setGameDifficulty(Shared.currentSwapGame.swapBoardConfiguration.difficulty);
+        currentSwapGameData.setGameDurationAllocated(Shared.currentSwapGame.swapBoardConfiguration.time);
+        Shared.userData.setCurSwapGame(currentSwapGameData);
+        mScreenController.openScreen(Screen.FINISHED); //FIXME to POST_SURVEY? or PopupWon when ready
+    }
+
+    private void arrangeSwapBoard() {
+        SwapBoardConfiguration swapBoardConfiguration = mPlayingSwapGame.swapBoardConfiguration;
+        SwapBoardArrangement swapBoardArrangement = new SwapBoardArrangement();
+
+        // select Shared.currentSwapGame.difficulty number of species without duplicates
+        List <Integer> targetSpeciesIDs = new ArrayList<Integer>(Shared.currentSwapGame.swapBoardConfiguration.difficulty);
+        for (int i = 0; i < Shared.currentSwapGame.swapBoardConfiguration.difficulty; i++) {
+            int  tempIndex = randomIndex.nextInt(10);       //10 is currently the max number of species
+            for (int j = 0; j < i; j++) {
+                if (targetSpeciesIDs.get(j) == tempIndex) {
+                    i--;
+                    break;
+                }
+            }
+            targetSpeciesIDs.add(tempIndex);
+            Log.d (TAG, "method arrangeSwapBoard: @ position i: " + i + " targetSpeciesID: " + targetSpeciesIDs.get(i));
+        }
+        List <SwapCardData> activeCardList = new ArrayList<SwapCardData>(Shared.currentSwapGame.swapBoardConfiguration.difficulty * 4);
+        //iterate over Shared.swapCardDataList and
+        for (int i = 0; i < Shared.swapCardDataList.size(); i++) {
+            // iterate over targetSpecies ID list
+            for (int j = 0; j < targetSpeciesIDs.size(); j++) {
+                //if the current card in the data list has the same ID as we are looking for in the species list
+                if (Shared.swapCardDataList.get(i).getCardID().getSwapCardSpeciesID() == targetSpeciesIDs.get(j)) {
+                    //append that card to the active list
+                    activeCardList.add(Shared.swapCardDataList.get(i));
+                }
+            }
+        }
+        //shuffle all the active cards
+        Collections.shuffle (activeCardList);
+        //iterate over numTiles
+        for (int i = 0; i < swapBoardConfiguration.numTiles; i++) {
+            //a SwapTileCoordinates object
+            SwapTileCoordinates tileCoords = null;
+            tileCoords.setSwapCoordRow ((int) Math.floor(swapBoardConfiguration.numTiles / Shared.currentSwapGame.swapBoardConfiguration.difficulty));
+            tileCoords.setSwapCoordCol (swapBoardConfiguration.numTiles % Shared.currentSwapGame.swapBoardConfiguration.difficulty);
+            //having set the Row and Column coordinates print them out
+            Log.d (TAG, "method arrangeSwapBoard: inserted tileCoords: i: " + i + " row: " + tileCoords.getSwapCoordRow() + " col: " + tileCoords.getSwapCoordCol());
+            //create the Mapping between tileCoords and the SwapCard object in the activeCardList.
+            swapBoardArrangement.setCardOnBoard (tileCoords, activeCardList.get(i));
+        }
+        mPlayingSwapGame.swapBoardArrangement = swapBoardArrangement;
 
     }
 
-	/*
-	 * Override method onEvent when the event being passed is a MatchFlipCardEvent.
-	 */
+	// Override method onEvent when the event being passed is a MatchFlipCardEvent.
 	@Override
 	public void onEvent(MatchFlipCardEvent event) {
 
@@ -357,11 +420,11 @@ public class Engine extends EventObserverAdapter {
 					else if (passedSeconds < totalTime) {gameState.achievedStars = 1; }
 					else {gameState.achievedStars = 0;}
 					// calculate the score
-					gameState.achievedScore = mPlayingMatchGame.matchBoardConfiguration.difficulty * gameState.remainingTimeInSeconds * mPlayingMatchGame.matchTheme.themeID;
+					gameState.achievedScore = mPlayingMatchGame.matchBoardConfiguration.difficulty * gameState.remainingTimeInSeconds * mPlayingMatchGame.matchTheme.themeID; //FIXME - what is themeID doing here??
 					// save to memory
 					Memory.saveMatch(mPlayingMatchGame.matchTheme.themeID, mPlayingMatchGame.matchBoardConfiguration.difficulty, gameState.achievedStars);
 					//trigger the MatchGameWonEvent
-					Shared.eventBus.notify(new MatchGameWonEvent(gameState), 1200);
+					Shared.eventBus.notify(new MatchGameWonEvent(gameState), 1200);     //TODO what is 1200 doing here? convert to xml
 				}
 			} else {
 				Log.d(TAG, "onEvent MatchFlipCardEvent: mFlippedID != -1: and !isPair: mFlippedID is:  " + mFlippedId);
@@ -373,6 +436,76 @@ public class Engine extends EventObserverAdapter {
 			Log.d(TAG, "onEvent MatchFlipCardEvent: reset mFlippedId to -1 check: " + mFlippedId);
 		}
 	}
+
+	public void onEvent (SwapSelectedCardsEvent event) {
+
+        // start of SwapSelectedCardsEvent
+        Log.d (TAG, "onEvent SwapSelectedCardsEvent: event.id1: " + event.id1 + " event.id2: " + event.id2 + " *** AT START OF method ***");
+        SwapTileCoordinates card1Coords = event.id1;
+        SwapTileCoordinates card2Coords = event.id2;
+        SwapCardData card1Data = mPlayingSwapGame.swapBoardArrangement.getSwapCardDataFromCoords(card1Coords);
+        SwapCardData card2Data = mPlayingSwapGame.swapBoardArrangement.getSwapCardDataFromCoords(card2Coords);
+        Log.d (TAG, "onEventSwapSelectedCardsEvent: card1Coords: " + card1Coords + " | card2Coords: " + card2Coords + " | card1Data ID: " + card1Data.getCardID() + " | card2Data ID: " + card2Data.getCardID());
+
+        //Swap the coordinates associated with the two SwapCardData objects
+        switchTileCoordinates(card1Coords, card2Coords);
+
+        //push the new cards back into the Map
+        mPlayingSwapGame.swapBoardArrangement.setCardOnBoard(card1Coords, card1Data);
+        mPlayingSwapGame.swapBoardArrangement.setCardOnBoard(card2Coords, card2Data);
+
+        //TODO what do I need to do to either animate their swapping or at least redraw all the cards on the board?
+
+        //Check if game is won
+        boolean winning = true;     //TODO is this safe to default to true?
+        for (int i = 0; i < mPlayingSwapGame.swapBoardConfiguration.getSwapDifficulty(); i++ ) {        //for each row on the board
+            for (int j = 0; j < 4; j++) {       //for each tile in row
+                SwapTileCoordinates targetCoords = new SwapTileCoordinates(i, j);
+                SwapCardData cardOnTile = mPlayingSwapGame.swapBoardArrangement.getSwapCardDataFromCoords(targetCoords);
+                if (cardOnTile.getCardID().getSwapCardSpeciesID() != i || cardOnTile.getCardID().getSwapCardSegmentID() != j) {
+                    winning = false;
+                }
+            }
+        }
+        if (winning) {
+            int passedSeconds = (int) (Clock.getInstance().getPassedTime() / 1000);
+            Clock.getInstance().pause();
+            long totalTimeInMillis = mPlayingSwapGame.swapBoardConfiguration.time;
+            int totalTime = (int) Math.ceil((double) totalTimeInMillis / 1000); //TODO is this enough or should we convert all to long ms
+            GameState gameState = new GameState();
+            mPlayingSwapGame.gameState = gameState;
+            // remained seconds
+            gameState.remainingTimeInSeconds = totalTime - passedSeconds;
+
+            // calculate stars and score from the amount of time that has elapsed as a ratio
+            // of total time allotted for the game.  When calculating this we still have incorporated
+            // the time based on the difficulty as well as the time to play back the samples
+            if (passedSeconds <= totalTime / 2) {gameState.achievedStars = 3; }
+            else if (passedSeconds <= totalTime - totalTime / 5) {gameState.achievedStars = 2; }
+            else if (passedSeconds < totalTime) {gameState.achievedStars = 1; }
+            else {gameState.achievedStars = 0;}
+            // calculate the score
+            gameState.achievedScore = mPlayingSwapGame.swapBoardConfiguration.difficulty * gameState.remainingTimeInSeconds;
+            // save to memory
+            Memory.saveSwap(mPlayingSwapGame.swapBoardConfiguration.difficulty, gameState.achievedStars);
+            //trigger the MatchGameWonEvent
+            Shared.eventBus.notify(new SwapGameWonEvent(gameState), 1200);      //TODO what is 1200 doing here? convert to xml
+        }
+	}
+
+    private void switchTileCoordinates (SwapTileCoordinates tile1, SwapTileCoordinates tile2) {
+        //create temp coordinates, initialized to off the board
+        SwapTileCoordinates temp = new SwapTileCoordinates(-1, -1);
+        //copy tile 2 to temp
+        temp.setSwapCoordRow (tile2.getSwapCoordRow());
+        temp.setSwapCoordCol (tile2.getSwapCoordCol());
+        //copy tile 1 to tile 2
+        tile2.setSwapCoordRow (tile1.getSwapCoordRow());
+        tile2.setSwapCoordCol (tile1.getSwapCoordCol());
+        //copy temp to tile 1
+        tile1.setSwapCoordRow (temp.getSwapCoordRow());
+        tile1.setSwapCoordCol (temp.getSwapCoordCol());
+    }
 
 	public void onEvent (PlayCardAudioEvent event) {
 		int id = event.id;
