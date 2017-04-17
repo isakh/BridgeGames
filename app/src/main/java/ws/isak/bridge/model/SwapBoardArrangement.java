@@ -1,5 +1,6 @@
 package ws.isak.bridge.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import android.util.Log;
@@ -28,9 +29,12 @@ public class SwapBoardArrangement {
     //Map of Coordinates objects to card data objects: this tells us where each card is on the board
     //TODO update SwapCardData to contain 4 audio and 4 image files for swap game
 
-    public Map <SwapTileCoordinates, SwapCardData> cardObjs;
+    public Map <SwapTileCoordinates, SwapCardData> cardObjs = new HashMap<>();
 
     public void setCardOnBoard (SwapTileCoordinates coords, SwapCardData card) {
+        Log.d (TAG, "method setCardOnBoard: tile coords: < " + coords.getSwapCoordRow() + " ,  " +
+                    coords.getSwapCoordCol() + " > | cardID: < " + card.getCardID().getSwapCardSpeciesID() +
+                    " , " + card.getCardID().getSwapCardSegmentID() + " >");
         cardObjs.put(coords, card);
     }
 

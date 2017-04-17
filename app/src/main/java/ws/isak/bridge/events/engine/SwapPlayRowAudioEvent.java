@@ -33,6 +33,4 @@ public class SwapPlayRowAudioEvent extends AbstractEvent {
     public String getType() {
         return TYPE;
     }
-
 }
-

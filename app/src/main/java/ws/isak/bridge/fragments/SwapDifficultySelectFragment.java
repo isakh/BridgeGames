@@ -18,7 +18,7 @@ import ws.isak.bridge.events.ui.SwapDifficultySelectedEvent;
 import ws.isak.bridge.ui.SwapDifficultyView;
 
 /*
- * Class SwapDifficultySelectFragment creates the view for selecting the difficulty for the swapping game.
+ * Class SwapDifficultySelectFragment creates the view for selecting the difficultyLevel for the swapping game.
  * See SwapDifficultyView for more.
  *
  * @author isak
@@ -29,7 +29,7 @@ public class SwapDifficultySelectFragment extends Fragment {
     public static final String TAG="DifficultySelect";
 
 
-    //FIXME - make constant values for difficulty xml references?
+    //FIXME - make constant values for difficultyLevel xml references?
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = LayoutInflater.from(Shared.context).inflate(R.layout.swap_difficulty_select_fragment, container, false);

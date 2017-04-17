@@ -86,7 +86,8 @@ public class  MainActivity extends FragmentActivity {
 
         // open to User setup screen
         //Log.d(TAG, "               : get instance of user setup screen");
-        ScreenController.getInstance().openScreen(Screen.USER_SETUP);
+        //FIXME revert to this for app: testing with below ScreenController.getInstance().openScreen(Screen.USER_SETUP);
+        ScreenController.getInstance().openScreen(Screen.MENU_SWAP);
     }
 
     @Override
@@ -158,7 +159,7 @@ public class  MainActivity extends FragmentActivity {
     private void buildSwapCardDataList() {
         Shared.swapCardDataList = new ArrayList<SwapCardData>();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i <= 10; i++) {
             for (int j = 0; j < 4; j++) {
                 SwapCardData curCard = new SwapCardData();
                 curCard.setCardID(new SwapCardID(i, j));
@@ -176,6 +177,7 @@ public class  MainActivity extends FragmentActivity {
                         curCard.setspectroURI2(null);
                         curCard.setspectroURI3(null);
                         //set duration
+                        Log.d (TAG, "method buildSwapCardDataList: curCard.getAudioURI0: " + curCard.getAudioURI0());
                         curCard.setSampleDuration0(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI0().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
                         curCard.setSampleDuration1(0);
                         curCard.setSampleDuration2(0);
@@ -303,7 +305,7 @@ public class  MainActivity extends FragmentActivity {
                             " | gameStartTimestamp: " + Shared.matchGameDataList.get(i).getGameStartTimestamp() +
                             " | playerUserName: " + Shared.matchGameDataList.get(i).getUserPlayingName() +
                             " | themeID: " + Shared.matchGameDataList.get(i).getThemeID() +
-                            " | difficulty: " + Shared.matchGameDataList.get(i).getGameDifficulty() +
+                            " | difficultyLevel: " + Shared.matchGameDataList.get(i).getGameDifficulty() +
                             " | gameDurationAllocated: " + Shared.matchGameDataList.get(i).getGameDurationAllocated() +
                             " | mixerState: " + Shared.matchGameDataList.get(i).getMixerState() +
                             " | gameStarted: " + Shared.matchGameDataList.get(i).isGameStarted() +

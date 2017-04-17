@@ -13,7 +13,7 @@ import java.util.Locale;
  * TODO based on a user name setup in a UserSetup Fragment?
  * 			TODO How to organize the user data storage on device
  * 			TODO what information is to be collected for each game played?:
- *				TODO Total time for given game (function of samples selected + difficulty constants)
+ *				TODO Total time for given game (function of samples selected + difficultyLevel constants)
  *				TODO Total number of moves for completion (e.g. num tiles would be 'perfect' game, any additional of interest
  *				TODO keep track of the sample time for duplicate tiles heard so we can see whether longer or shorter samples are more error prone
  *				TODO ??? WHAT ADDITIONAL INFORMATION NEEDS TO BE STORED

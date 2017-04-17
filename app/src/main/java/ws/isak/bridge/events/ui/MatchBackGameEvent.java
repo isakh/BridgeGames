@@ -7,7 +7,7 @@ import ws.isak.bridge.events.EventObserver;
 
 /*
  * This event is triggered when the player wants to replay a matching game
- * TODO check that this is called when difficulty and matchTheme are kept the same?
+ * TODO check that this is called when difficultyLevel and matchTheme are kept the same?
  *
  * @author isak
  */

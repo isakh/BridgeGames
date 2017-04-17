@@ -73,7 +73,7 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
 		mStar1 = (ImageView) findViewById(R.id.popup_won_star_1);
 		mStar2 = (ImageView) findViewById(R.id.popup_won_star_2);
 		mStar3 = (ImageView) findViewById(R.id.popup_won_star_3);
-		//Load image and text buttons for replaying game/ playing next difficulty/ and finishing play
+		//Load image and text buttons for replaying game/ playing next difficultyLevel/ and finishing play
         mTryAgainButton = (ImageView) findViewById(R.id.popup_won_view_button_try_again);
 		mNextLevelButton = (ImageView) findViewById(R.id.popup_won_view_button_next_level);
         mChangeThemeButton = (ImageView) findViewById(R.id.popup_won_view_button_change_theme);

@@ -64,11 +64,6 @@ public class SwapGameFragment extends BaseFragment {
         FrameLayout playFrameLayout = (FrameLayout) view.findViewById(R.id.swap_game_play_container);
         playFrameLayout.addView(mSwapBoardView);
         playFrameLayout.setClipChildren(false);
-        //TODO the swap game controls container
-        mSwapBoardControllerView = SwapBoardControlsView.fromXml (getActivity().getApplicationContext(), view);
-        FrameLayout controlsFrameLayout = (FrameLayout) view.findViewById(R.id.swap_game_controls_container);
-        controlsFrameLayout.addView(mSwapBoardControllerView);
-        controlsFrameLayout.setClipChildren(false);
 
         // build board
         buildBoard();
@@ -77,8 +72,8 @@ public class SwapGameFragment extends BaseFragment {
         Shared.eventBus.listen(SwapUnselectCardsEvent.TYPE, this);
 
         //TODO build audio controls
-        Shared.eventBus.listen(SwapPlayRowAudioEvent.TYPE, this);
-        Shared.eventBus.listen(SwapPauseRowAudioEvent.TYPE, this);
+        //Shared.eventBus.listen(SwapPlayRowAudioEvent.TYPE, this);
+        //Shared.eventBus.listen(SwapPauseRowAudioEvent.TYPE, this);
 
         return view;
     }

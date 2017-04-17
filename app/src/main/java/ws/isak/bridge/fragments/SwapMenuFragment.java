@@ -25,7 +25,7 @@ import ws.isak.bridge.utils.ImageScaling;
 
 /*
  * Class SwapMenuFragment sets up the fragment that allows the user to either choose settings for
- * the swapping game, or to launch the difficulty selection fragment prior to starting game play.  It
+ * the swapping game, or to launch the difficultyLevel selection fragment prior to starting game play.  It
  * contains the swap_menu_title, start game button/lights/tooltip and the settings button and includes the methods
  * for animating them.  When this fragment is open, the background music is playing.
  * 

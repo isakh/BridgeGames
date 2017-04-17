@@ -35,7 +35,7 @@ public class Shared {
     public static SwapGame currentSwapGame;
 
     //database
-    public static final String DATABASE_NAME = context.getResources().getString(R.string.database_name);
+    public static final String DATABASE_NAME = "bridge.db";  //FIXME context.getResources().getString(R.string.database_name);
     public static DatabaseWrapper databaseWrapper;
 
     //data classes / methods    FIXME - should these be static???

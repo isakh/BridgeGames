@@ -13,7 +13,7 @@ import ws.isak.bridge.R;
 import ws.isak.bridge.common.Shared;
 
 /*
- * Class MatchDifficultyView creates the view for the match difficulty screen
+ * Class MatchDifficultyView creates the view for the match difficultyLevel screen
  *
  * @author isak
  */

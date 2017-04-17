@@ -33,6 +33,4 @@ public class PlayCardAudioEvent extends AbstractEvent {
     public String getType() {
         return TYPE;
     }
-
 }
-

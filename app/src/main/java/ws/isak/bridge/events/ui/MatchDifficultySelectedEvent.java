@@ -6,7 +6,7 @@ import ws.isak.bridge.events.AbstractEvent;
 import ws.isak.bridge.events.EventObserver;
 
 /*
- * This event triggers when the difficulty of the matching game is selected
+ * This event triggers when the difficultyLevel of the matching game is selected
  *
  * @author isak
  */

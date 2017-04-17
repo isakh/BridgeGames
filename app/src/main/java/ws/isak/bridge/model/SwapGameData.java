@@ -23,7 +23,7 @@ public class SwapGameData {
     private String userPlayingName;         //FIXME database foreign key?
     //Parameters to be saved for analysis:
     //defined at SwapDifficultySelectedEvent - the following are fixed for the duration of the game
-    private int difficulty;                 //difficulty level for the current game
+    private int difficulty;                 //difficultyLevel level for the current game
     private long gameDurationAllocated;     //This is the fixed time allocated for playing the game
     private boolean gameStarted;            //Set to Boolean false, becomes true when first card is clicked - triggers gameStarTimeStamp
     //the following respond to user input during the game

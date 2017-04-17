@@ -39,6 +39,8 @@ import ws.isak.bridge.events.engine.PlayCardAudioEvent;
 import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
 
 import ws.isak.bridge.events.engine.SwapGameWonEvent;
+import ws.isak.bridge.events.engine.SwapPauseRowAudioEvent;
+import ws.isak.bridge.events.engine.SwapPlayRowAudioEvent;
 import ws.isak.bridge.events.engine.SwapSelectedCardsEvent;
 import ws.isak.bridge.events.ui.MatchStartEvent;
 import ws.isak.bridge.events.ui.SwapStartEvent;
@@ -93,7 +95,7 @@ public class Engine extends EventObserverAdapter {
 	private MatchTheme mSelectedMatchTheme;
 	private ImageView mBackgroundImage;
 	private Handler mHandler;
-    private Random randomIndex;
+    private Random randomIndex = new Random();
 
 	private Engine() {
         Log.d (TAG, "***** Constructor *****");
@@ -111,12 +113,11 @@ public class Engine extends EventObserverAdapter {
 	}
 
 	public void start() {
-        Log.d (TAG, "method start");
-        Log.d (TAG, " *******: Shared.eventBus @: " + Shared.eventBus);
+        Log.d (TAG, " *******: method start: Shared.eventBus @: " + Shared.eventBus);
         //start event listeners
         Shared.eventBus.listen(MatchStartEvent.TYPE, this);
         Shared.eventBus.listen(SwapStartEvent.TYPE, this);
-        //difficulty select event listeners
+        //difficultyLevel select event listeners
 		Shared.eventBus.listen(MatchDifficultySelectedEvent.TYPE, this);
 		Shared.eventBus.listen(SwapDifficultySelectedEvent.TYPE, this);
 
@@ -138,7 +139,7 @@ public class Engine extends EventObserverAdapter {
         //start event unlisten
         Shared.eventBus.unlisten(MatchStartEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapStartEvent.TYPE, this);
-        //difficulty select event unlisten
+        //difficultyLevel select event unlisten
         Shared.eventBus.unlisten(MatchDifficultySelectedEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapDifficultySelectedEvent.TYPE, this);
 
@@ -314,7 +315,7 @@ public class Engine extends EventObserverAdapter {
 
         //instantiating the currentSwapGameData object - some fields default to 0 || null
         currentSwapGameData = new SwapGameData();
-        currentSwapGameData.setGameDifficulty(Shared.currentSwapGame.swapBoardConfiguration.difficulty);
+        currentSwapGameData.setGameDifficulty(Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty());
         currentSwapGameData.setGameDurationAllocated(Shared.currentSwapGame.swapBoardConfiguration.time);
         Shared.userData.setCurSwapGame(currentSwapGameData);
         mScreenController.openScreen(Screen.FINISHED); //FIXME to POST_SURVEY? or PopupWon when ready
@@ -324,43 +325,77 @@ public class Engine extends EventObserverAdapter {
         SwapBoardConfiguration swapBoardConfiguration = mPlayingSwapGame.swapBoardConfiguration;
         SwapBoardArrangement swapBoardArrangement = new SwapBoardArrangement();
 
-        // select Shared.currentSwapGame.difficulty number of species without duplicates
-        List <Integer> targetSpeciesIDs = new ArrayList<Integer>(Shared.currentSwapGame.swapBoardConfiguration.difficulty);
-        for (int i = 0; i < Shared.currentSwapGame.swapBoardConfiguration.difficulty; i++) {
-            int  tempIndex = randomIndex.nextInt(10);       //10 is currently the max number of species
+        // select Shared.currentSwapGame.difficultyLevel number of species without duplicates
+        List <Integer> targetSpeciesIDs = new ArrayList<Integer>(swapBoardConfiguration.getSwapDifficulty());
+        for (int i = 0; i < swapBoardConfiguration.getNumSpecies(); i++) {
+            Log.d (TAG, "method arrangeSwapBoard: i: " + i + " | difficultyLevel = numSpecies: " + swapBoardConfiguration.getSwapDifficulty());
+            int  tempSpeciesIndex = randomIndex.nextInt(10);       //10 is currently the max number of species - TODO set in xml
+            Log.d (TAG, "method arrangeSwapBoard:" + " tempSpeciesIndex: " + tempSpeciesIndex);
             for (int j = 0; j < i; j++) {
-                if (targetSpeciesIDs.get(j) == tempIndex) {
+                if (targetSpeciesIDs.get(j) == tempSpeciesIndex) {
+                    Log.d (TAG, "... targetSpeciesID.get(j): " + targetSpeciesIDs.get(j) +
+                            " == tempSpeciesIndex: " + tempSpeciesIndex +
+                            " | NOT ADDING DUPLICATE TARGET SPECIES");
                     i--;
                     break;
                 }
             }
-            targetSpeciesIDs.add(tempIndex);
+            targetSpeciesIDs.add(tempSpeciesIndex);
             Log.d (TAG, "method arrangeSwapBoard: @ position i: " + i + " targetSpeciesID: " + targetSpeciesIDs.get(i));
         }
-        List <SwapCardData> activeCardList = new ArrayList<SwapCardData>(Shared.currentSwapGame.swapBoardConfiguration.difficulty * 4);
+        Log.d (TAG, "method arrangeSwapBoard: Target Species Selected: ");
+        for (int k = 0; k < targetSpeciesIDs.size(); k++) {
+            Log.d (TAG, "                   : k: " + k + " | targetSpeciesID(k): " + targetSpeciesIDs.get(k));
+        }
+        //create a list for the active cards (all cards for each target species)
+        List <SwapCardData> activeCardList = new ArrayList<SwapCardData>(swapBoardConfiguration.difficultyLevel * 4);
         //iterate over Shared.swapCardDataList and
-        for (int i = 0; i < Shared.swapCardDataList.size(); i++) {
+        for (int l = 0; l < Shared.swapCardDataList.size(); l++) {
             // iterate over targetSpecies ID list
-            for (int j = 0; j < targetSpeciesIDs.size(); j++) {
+            for (int m = 0; m < targetSpeciesIDs.size(); m++) {
                 //if the current card in the data list has the same ID as we are looking for in the species list
-                if (Shared.swapCardDataList.get(i).getCardID().getSwapCardSpeciesID() == targetSpeciesIDs.get(j)) {
+                if (Shared.swapCardDataList.get(l).getCardID().getSwapCardSpeciesID() == targetSpeciesIDs.get(m)) {
                     //append that card to the active list
-                    activeCardList.add(Shared.swapCardDataList.get(i));
+                    Log.d (TAG, "method arrangeSwapBoard: adding card to active list: l: " + l + " | m: " + m +
+                            " | Shared.swapCardDataList.get(i).getCardID(): < " +
+                            Shared.swapCardDataList.get(l).getCardID().getSwapCardSpeciesID() + " , " +
+                            Shared.swapCardDataList.get(l).getCardID().getSwapCardSegmentID() +
+                            " > | targetSpeciesID.get(m): " + targetSpeciesIDs.get(m) + "| Adding card to active list...");
+                    activeCardList.add(Shared.swapCardDataList.get(l));
                 }
             }
         }
+        Log.d (TAG, " method arrangeSwapBoard: activeCardList prior to shuffling...");
+        for (int n = 0; n < activeCardList.size(); n++) {
+            Log.d (TAG, "                    : n: " + n + " | activeCardList(n) cardID: < " +
+                    activeCardList.get(n).getCardID().getSwapCardSpeciesID() + " , " +
+                    activeCardList.get(n).getCardID().getSwapCardSegmentID() + " >");
+        }
         //shuffle all the active cards
         Collections.shuffle (activeCardList);
+        Log.d (TAG, " method arrangeSwapBoard: activeCardList after shuffling...");
+        for (int p = 0; p < activeCardList.size(); p++) {
+            Log.d (TAG, "                    : p: " + p + " | activeCardList(p) cardID: < " +
+                    activeCardList.get(p).getCardID().getSwapCardSpeciesID() + " , " +
+                    activeCardList.get(p).getCardID().getSwapCardSegmentID() + " >");
+        }
         //iterate over numTiles
-        for (int i = 0; i < swapBoardConfiguration.numTiles; i++) {
+        for (int q = 0; q < swapBoardConfiguration.numTiles; q++) {
+            Log.d (TAG, "method arrangeSwapBoard: iterating to place cards: i: " + q + " | numTiles: " +
+                    swapBoardConfiguration.numTiles + " | difficultyLevel: " + swapBoardConfiguration.difficultyLevel);
             //a SwapTileCoordinates object
-            SwapTileCoordinates tileCoords = null;
-            tileCoords.setSwapCoordRow ((int) Math.floor(swapBoardConfiguration.numTiles / Shared.currentSwapGame.swapBoardConfiguration.difficulty));
-            tileCoords.setSwapCoordCol (swapBoardConfiguration.numTiles % Shared.currentSwapGame.swapBoardConfiguration.difficulty);
+            SwapTileCoordinates tileCoords = new SwapTileCoordinates(-1 ,-1); //FIXME make less of a kludge - these coords are off the board
+            tileCoords.setSwapCoordRow ((int) Math.floor(q / swapBoardConfiguration.swapNumTilesInRow));
+            tileCoords.setSwapCoordCol (q % swapBoardConfiguration.swapNumTilesInRow);
             //having set the Row and Column coordinates print them out
-            Log.d (TAG, "method arrangeSwapBoard: inserted tileCoords: i: " + i + " row: " + tileCoords.getSwapCoordRow() + " col: " + tileCoords.getSwapCoordCol());
+            Log.d (TAG, "method arrangeSwapBoard: inserted tileCoords: i: " + q + " row: " +
+                    tileCoords.getSwapCoordRow() + " col: " + tileCoords.getSwapCoordCol());
             //create the Mapping between tileCoords and the SwapCard object in the activeCardList.
-            swapBoardArrangement.setCardOnBoard (tileCoords, activeCardList.get(i));
+            Log.d (TAG, "method arrangeSwapBoard: tileCoords: < " + tileCoords.getSwapCoordRow() + " , " +
+                    tileCoords.getSwapCoordCol() + " > | activeCardList.get(i): " + activeCardList.get(q) +
+                    " | cardID <species, segment>: < " + activeCardList.get(q).getCardID().getSwapCardSpeciesID() +
+                    " , " + activeCardList.get(q).getCardID().getSwapCardSegmentID() + " >");
+            swapBoardArrangement.setCardOnBoard (tileCoords, activeCardList.get(q));
         }
         mPlayingSwapGame.swapBoardArrangement = swapBoardArrangement;
 
@@ -414,7 +449,7 @@ public class Engine extends EventObserverAdapter {
 
 					// calculate stars and score from the amount of time that has elapsed as a ratio
 					// of total time allotted for the game.  When calculating this we still have incorporated
-                    // the time based on the difficulty as well as the time to play back the samples
+                    // the time based on the difficultyLevel as well as the time to play back the samples
 					if (passedSeconds <= totalTime / 2) {gameState.achievedStars = 3; }
 					else if (passedSeconds <= totalTime - totalTime / 5) {gameState.achievedStars = 2; }
 					else if (passedSeconds < totalTime) {gameState.achievedStars = 1; }
@@ -479,15 +514,15 @@ public class Engine extends EventObserverAdapter {
 
             // calculate stars and score from the amount of time that has elapsed as a ratio
             // of total time allotted for the game.  When calculating this we still have incorporated
-            // the time based on the difficulty as well as the time to play back the samples
+            // the time based on the difficultyLevel as well as the time to play back the samples
             if (passedSeconds <= totalTime / 2) {gameState.achievedStars = 3; }
             else if (passedSeconds <= totalTime - totalTime / 5) {gameState.achievedStars = 2; }
             else if (passedSeconds < totalTime) {gameState.achievedStars = 1; }
             else {gameState.achievedStars = 0;}
             // calculate the score
-            gameState.achievedScore = mPlayingSwapGame.swapBoardConfiguration.difficulty * gameState.remainingTimeInSeconds;
+            gameState.achievedScore = mPlayingSwapGame.swapBoardConfiguration.difficultyLevel * gameState.remainingTimeInSeconds;
             // save to memory
-            Memory.saveSwap(mPlayingSwapGame.swapBoardConfiguration.difficulty, gameState.achievedStars);
+            Memory.saveSwap(mPlayingSwapGame.swapBoardConfiguration.difficultyLevel, gameState.achievedStars);
             //trigger the MatchGameWonEvent
             Shared.eventBus.notify(new SwapGameWonEvent(gameState), 1200);      //TODO what is 1200 doing here? convert to xml
         }
@@ -562,6 +597,18 @@ public class Engine extends EventObserverAdapter {
 		}
 	}
 
+	@Override
+    public void onEvent(SwapPauseRowAudioEvent event) {
+        //FIXME - all the work
+
+    }
+
+    @Override
+    public void onEvent(SwapPlayRowAudioEvent event) {
+        //FIXME - all the work
+
+    }
+
     @Override
     public void onEvent(MatchNextGameEvent event) {
         PopupManager.closePopup();
@@ -576,7 +623,7 @@ public class Engine extends EventObserverAdapter {
     public void onEvent(MatchBackGameEvent event) {
         PopupManager.closePopup();
         mScreenController.openScreen(Screen.DIFFICULTY_MATCH);
-        //TODO verify that adding the following lines to reset the difficulty on backGameEvent worked [initially yes]
+        //TODO verify that adding the following lines to reset the difficultyLevel on backGameEvent worked [initially yes]
         int difficulty = mPlayingMatchGame.matchBoardConfiguration.difficulty;
         Shared.eventBus.notify (new MatchDifficultySelectedEvent(difficulty));
     }

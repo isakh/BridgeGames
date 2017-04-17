@@ -39,7 +39,7 @@ import ws.isak.bridge.utils.ImageScaling;
 /*
  * Class MatchBoardView comprises the code which builds the match game board according to the dimensions
  * found in the xml dimens file and according to the the ratios of tiles to rows/columns that is defined
- * in the MatchBoardConfiguration class given the users' difficulty selection.  The board is a 2D array
+ * in the MatchBoardConfiguration class given the users' difficultyLevel selection.  The board is a 2D array
  * of tiles each tile mapped to a card object.
  *
  * @author isak

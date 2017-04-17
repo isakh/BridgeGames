@@ -40,8 +40,8 @@ import ws.isak.bridge.utils.SwapTileCoordinates;
 
 /*
  * Class SwapBoardView comprises the code which builds the swap game board according to the 
- * dimensions found in the xml dimens file, the the ratios of tiles to rows/columns that is defined
- * in the MatchBoardConfiguration class given the users' difficulty selection, and the size of the 
+ * dimensions found in the xml dimens file, the ratio of tiles to rows/columns that is defined
+ * in the MatchBoardConfiguration class given the users' difficultyLevel selection, and the size of the
  * screen of the device.  The board is a 2D array of tiles, each tile mapped to a card object.
  *
  * @author isak
@@ -79,8 +79,8 @@ public class SwapBoardView extends LinearLayout {
         setGravity(Gravity.CENTER);
         int margin = getResources().getDimensionPixelSize(R.dimen.swap_margin_top);
         int padding = getResources().getDimensionPixelSize(R.dimen.swap_board_padding);
-        mScreenHeight = getResources().getDisplayMetrics().heightPixels - margin - padding*2;
-        mScreenWidth = getResources().getDisplayMetrics().widthPixels - padding*2 - ImageScaling.px(20);
+        mScreenHeight = getResources().getDisplayMetrics().heightPixels - margin - padding*2;               //TODO * proportion of screen for view
+        mScreenWidth = getResources().getDisplayMetrics().widthPixels - padding*2 - ImageScaling.px(20);    //TODO * proportion of screen for view
         mTileViewReference = new HashMap<SwapTileCoordinates, SwapTileView>();
         setClipToPadding(false);
     }
@@ -102,7 +102,7 @@ public class SwapBoardView extends LinearLayout {
         // calc preferred tiles' width and height based on display size
         int singleMargin = getResources().getDimensionPixelSize(R.dimen.swap_card_margin);
         float density = getResources().getDisplayMetrics().density;
-        singleMargin = Math.max((int) (1 * density), (int) (singleMargin - mSwapBoardConfiguration.difficulty * 2 * density));
+        singleMargin = Math.max((int) (1 * density), (int) (singleMargin - mSwapBoardConfiguration.difficultyLevel * 2 * density));
         int sumMargin = 0;
         for (int row = 0; row < mSwapBoardConfiguration.numRows; row++) {
             sumMargin += singleMargin * 2;
@@ -140,6 +140,8 @@ public class SwapBoardView extends LinearLayout {
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER);
+
+        //TODO!!! addRowControls();
 
         for (int curTileInRow = 0; curTileInRow < SwapBoardConfiguration.swapNumTilesInRow; curTileInRow++) {
             addTile (new SwapTileCoordinates(rowNum, curTileInRow), linearLayout);

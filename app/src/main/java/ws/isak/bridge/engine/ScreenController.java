@@ -59,7 +59,7 @@ public class ScreenController {
         MENU_MATCH,               //menu allows choices of audio playback
         MENU_SWAP,              //audio playback is required - mixer & looper for now: TODO maybe some resolution parameters?
         THEME_SELECT_MATCH,
-        DIFFICULTY_MATCH,         //three levels of difficulty available
+        DIFFICULTY_MATCH,         //three levels of difficultyLevel available
         DIFFICULTY_SWAP,        //three levels 2x4, 3x4, 4x4 [species x chunks in sample]
         GAME_MATCH,
         GAME_SWAP,              //TODO
@@ -99,7 +99,7 @@ public class ScreenController {
 			Screen screen = openedScreens.get(openedScreens.size() - 1);
 			openedScreens.remove(openedScreens.size() - 1);
 			openScreen(screen);
-			//menu/theme select is where we go back to when at difficulty select/game for matching game
+			//menu/theme select is where we go back to when at difficultyLevel select/game for matching game
             if ((screen == Screen.THEME_SELECT_MATCH || screen == Screen.MENU_MATCH) && (screenToRemove == Screen.DIFFICULTY_MATCH || screenToRemove == Screen.GAME_MATCH)) {
 				Shared.eventBus.notify(new MatchResetBackgroundEvent());
             }

@@ -37,7 +37,7 @@ public class MatchGameDataORM {
     private static final String COLUMN_THEME_ID = "themeID";
 
     private static final String COLUMN_DIFFICULTY_TYPE = "INTEGER";
-    private static final String COLUMN_DIFFICULTY = "difficulty";
+    private static final String COLUMN_DIFFICULTY = "difficultyLevel";
 
     private static final String COLUMN_GAME_DURATION_ALLOCATED_TYPE = "INTEGER";
     private static final String COLUMN_GAME_DURATION_ALLOCATED = "gameDurationAllocated";
@@ -159,7 +159,7 @@ public class MatchGameDataORM {
                                 " | gameStartTimestamp: " + matchGameDataAtCursor.getGameStartTimestamp() +
                                 " | playerUserName: " + matchGameDataAtCursor.getUserPlayingName() +
                                 " | themeID: " + matchGameDataAtCursor.getThemeID() +
-                                " | difficulty: " + matchGameDataAtCursor.getGameDifficulty() +
+                                " | difficultyLevel: " + matchGameDataAtCursor.getGameDifficulty() +
                                 " | gameDurationAllocated: " + matchGameDataAtCursor.getGameDurationAllocated() +
                                 " | mixerState: " + matchGameDataAtCursor.getMixerState() +
                                 " | gameStarted: " + matchGameDataAtCursor.isGameStarted() +

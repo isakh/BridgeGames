@@ -19,7 +19,7 @@ import ws.isak.bridge.themes.MatchTheme;
 import ws.isak.bridge.ui.MatchDifficultyView;
 
 /*
- * Class MatchDifficultySelectFragment creates the view for selecting the difficulty for the matching game.
+ * Class MatchDifficultySelectFragment creates the view for selecting the difficultyLevel for the matching game.
  * See MatchDifficultyView for more.
  *
  * @author isak

@@ -7,9 +7,9 @@ import ws.isak.bridge.common.Shared;
 
 /*
  * The NenGameData class contains information about each specific game played by the user including
- * the difficulty level and a list of the timings and cards selected on each move.  It includes
+ * the difficultyLevel level and a list of the timings and cards selected on each move.  It includes
  * methods for constructing the MatchGameData object at the beginning of each game being played which
- * contains the difficulty of the game, the duration of the game (based on the difficulty of the game
+ * contains the difficultyLevel of the game, the duration of the game (based on the difficultyLevel of the game
  * and the duration of the samples placed on the board)
  *
  * @author isak
@@ -26,7 +26,7 @@ public class MatchGameData {
     //Parameters to be saved for analysis:
     //defined at MatchDifficultySelectedEvent - the following are fixed for the duration of the game
     private int themeID;                    //set/get string from selection
-    private int difficulty;                 //difficulty level for the current game
+    private int difficulty;                 //difficultyLevel level for the current game
     private long gameDurationAllocated;     //This is the fixed time allocated for playing the game
     private boolean mixerState;             //keep track of mix state for each game,
     private boolean gameStarted;            //Set to Boolean false, becomes true when first card is clicked - triggers gameStarTimeStamp
@@ -81,12 +81,12 @@ public class MatchGameData {
 
     //[2] set/get gameDifficulty
     public void setGameDifficulty (int diff) {
-        //Log.d (TAG, "Overloaded method setGameDifficulty: difficulty: " + diff);
+        //Log.d (TAG, "Overloaded method setGameDifficulty: difficultyLevel: " + diff);
         difficulty = diff;
     }
 
     public int getGameDifficulty () {
-        //Log.d (TAG, "method getGameDifficulty: difficulty: " + difficulty);
+        //Log.d (TAG, "method getGameDifficulty: difficultyLevel: " + difficultyLevel);
         return difficulty;
     }
 

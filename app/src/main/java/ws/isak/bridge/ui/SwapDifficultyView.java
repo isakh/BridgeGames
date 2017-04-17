@@ -13,7 +13,7 @@ import ws.isak.bridge.R;
 import ws.isak.bridge.common.Shared;
 
 /*
- * Class SwapDifficultyView creates the view for the swap difficulty screen
+ * Class SwapDifficultyView creates the view for the swap difficultyLevel screen
  *
  * @author isak
  */

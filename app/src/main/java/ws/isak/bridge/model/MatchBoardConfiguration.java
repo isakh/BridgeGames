@@ -7,7 +7,7 @@ import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.themes.MatchTheme;
 
 /**
- * Class MatchBoardConfiguration provides a switch for the three difficulty levels and the corresponding
+ * Class MatchBoardConfiguration provides a switch for the three difficultyLevel levels and the corresponding
  * number of tiles that are displayed for each.
  *
  * @author isak
@@ -28,13 +28,13 @@ public class MatchBoardConfiguration {
 	public final long time;					//TODO this will include sample duration variables so will be in millis - need to use floor (time/1000) for timer in UI
 
 	/*
-	 * Constructor MatchBoardConfiguration sets up a board with a given difficulty.  For the time being
+	 * Constructor MatchBoardConfiguration sets up a board with a given difficultyLevel.  For the time being
 	 * this includes a call to CalculateMatchGameDuration which queries the number of tiles on the board
 	 * and determines how many pairs of cards are place and the duration of the samples associated
 	 * with those cards.
 	 */
 	public MatchBoardConfiguration(int difficulty, MatchTheme matchTheme) {
-        Log.d (TAG, "constructor: difficulty: " + difficulty + " | matchTheme.name: " + matchTheme.name);
+        Log.d (TAG, "constructor: difficultyLevel: " + difficulty + " | matchTheme.name: " + matchTheme.name);
 		this.difficulty = difficulty;
 		switch (difficulty) {
 		case 1:

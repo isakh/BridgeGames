@@ -137,7 +137,7 @@ public class MatchGameFragment extends BaseFragment {
         /*
         //this can be removed once validated
         Log.d (TAG, "... Shared.curMemGameData: themeID: " + Shared.userData.getCurMatchGame().getThemeID() +
-                " | difficulty selected: " + Shared.userData.getCurMatchGame().getGameDifficulty() +
+                " | difficultyLevel selected: " + Shared.userData.getCurMatchGame().getGameDifficulty() +
                 " | gameDurationAllocated: " + Shared.userData.getCurMatchGame().getGameDurationAllocated() +
                 " | mixerState: " + Shared.userData.getCurMatchGame().getMixerState() +
                 " | gameStarted: " + Shared.userData.getCurMatchGame().isGameStarted() +
