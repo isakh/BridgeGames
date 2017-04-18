@@ -60,7 +60,7 @@ public class Shared {
         return userData;
     }
 
-    //TODO make sense of static initialization blocks! see http://softwareengineering.stackexchange.com/questions/228242/working-with-static-constructor-in-java
+    //TODO make sense of static initialization blocks!?! see http://softwareengineering.stackexchange.com/questions/228242/working-with-static-constructor-in-java
     static {
         Log.d (TAG, "static initialization block");
     }

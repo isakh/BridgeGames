@@ -87,6 +87,7 @@ public class SwapGameFragment extends BaseFragment {
     }
 
     private void buildBoard() {
+        Log.d (TAG, "method buildBoard");
         SwapGame swapGame = Shared.engine.getActiveSwapGame();
         long time = swapGame.swapBoardConfiguration.time;
         setTime(time);

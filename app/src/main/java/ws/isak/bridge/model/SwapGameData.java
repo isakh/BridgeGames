@@ -3,9 +3,14 @@ package ws.isak.bridge.model;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import ws.isak.bridge.common.Shared;
-import ws.isak.bridge.utils.SwapCardID;
+import ws.isak.bridge.common.SwapCardData;
+import ws.isak.bridge.utils.SwapTileCoordinates;
 
 /*
  * The SwapGameData class hold information about each swap game played
@@ -18,6 +23,9 @@ public class SwapGameData {
     private static final String TAG = "SwapGameData";
 
     //TODO: private SwapGame mPlayingSwapGame;
+
+    //a Map variable holds the Map representing the current game board - NOTE: not to be stored in database
+    private Map <SwapTileCoordinates, SwapCardData> curSwapGameMap;
     //Parameters to be saved for database matching game to user
     private long gameStartTimestamp;        //keep track of the timestamp for the start of the game - database primary key
     private String userPlayingName;         //FIXME database foreign key?
@@ -30,12 +38,13 @@ public class SwapGameData {
     private int numTurnsTakenInGame;        //Initialize number of turns in game to 0 and increment on each click.
     private ArrayList<Long> gamePlayDurations;  //Time the player spent on the game so far (sum of turnDurations) at each turn (can it be greater than allocated time?)
     private ArrayList <Long> turnDurations;      //a list of durations of each turn - a turn is defined as a single click, implemented as ArrayList //TODO should we also have a measure of paired click turns?
-    private ArrayList <SwapCardID> cardSelectedOrder;   //a list of swapCardData object IDs selected on each turn, implemented as ArrayList
+    private ArrayList <Map <SwapTileCoordinates, SwapCardData>> swapGameMapList;   //a list of Map objects showing the remapping of the board on each swap
 
 
     //constructor method describes the information that is stored about each game played
     public SwapGameData () {
         Log.d (TAG, "Constructor: initializing game data fields");
+        setSwapGameMap (Shared.currentSwapGame.swapBoardArrangement.cardObjs);
         setUserPlayingName(Shared.userData.getUserName());
         setGameDifficulty(-1);
         setGameDurationAllocated(0);
@@ -44,8 +53,75 @@ public class SwapGameData {
         setGameStartTimestamp(0);
         setNumTurnsTaken(0);
         initTurnDurationsArray();       //null array at start
-        initCardsSelectedArray();       //null array at start
         initGamePlayDurationsArray();   //null array at start
+        initSwapGameMapList();
+    }
+
+    //[0] for now this is a deep copy (?) of the map 'cardObjs' initially set up in SwapBoardArrangment
+    // this gets updated on each turn of the game so that it always holds the current Map of the board
+    public void setSwapGameMap (Map curBoardMap) {
+        curSwapGameMap = new HashMap<>();
+        Iterator iterator = curBoardMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry pair = (Map.Entry) iterator.next();
+            //System.out.println(pair.getKey() + " maps to " + pair.getValue());
+            SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
+            SwapCardData cardData = (SwapCardData) pair.getValue();
+            Log.d(TAG, "method setSwapGameMap: Copying... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
+                    " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
+                    cardData.getCardID().getSwapCardSegmentID() + " >");
+            curSwapGameMap.put(coords, cardData);
+            iterator.remove(); // avoids a ConcurrentModificationException
+        }
+        //create a set view for the map
+        Set set = curSwapGameMap.entrySet();
+        //check set values TODO remove
+        System.out.println("Set values: " + set);
+    }
+
+    //return a pointer to the local deep copy of the map
+    public Map <SwapTileCoordinates, SwapCardData> getSwapGameMap () {
+        return curSwapGameMap;
+    }
+
+    //get a pointer to a SwapTileCoordinates key from a SwapCardData value in swapGameMap
+    public SwapTileCoordinates getSwapTileCoordinatesFromSwapBoardMap (SwapCardData card) {
+        SwapTileCoordinates coordsToReturn = new SwapTileCoordinates(-1, -1);
+        Iterator iterator = curSwapGameMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry pair = (Map.Entry) iterator.next();
+            //System.out.println(pair.getKey() + " maps to " + pair.getValue());
+            SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
+            SwapCardData cardData = (SwapCardData) pair.getValue();
+            Log.d(TAG, "method getSwapTileCoordinatesFromSwapBoardMap: Searching... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
+                    " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
+                    cardData.getCardID().getSwapCardSegmentID() + " >");
+            if (cardData == card) {
+                coordsToReturn = coords;
+            }
+            iterator.remove(); // avoids a ConcurrentModificationException
+        }
+        return coordsToReturn;
+    }
+
+    //get a pointer to a SwapCardData value from a SwapTileCoordinates key in swapGameMap
+    public SwapCardData getSwapCardDataFromSwapBoardMap (SwapTileCoordinates targetCoords) {
+        SwapCardData cardToReturn = new SwapCardData();
+        Iterator iterator = curSwapGameMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry pair = (Map.Entry) iterator.next();
+            //System.out.println(pair.getKey() + " maps to " + pair.getValue());
+            SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
+            SwapCardData cardData = (SwapCardData) pair.getValue();
+            Log.d(TAG, "method getSwapCardDataFromSwapBoardMap: Searching... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
+                    " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
+                    cardData.getCardID().getSwapCardSegmentID() + " >");
+            if (targetCoords == coords) {
+                cardToReturn = cardData;
+            }
+            iterator.remove(); // avoids a ConcurrentModificationException
+        }
+        return cardToReturn;
     }
 
     //[1]
@@ -157,30 +233,30 @@ public class SwapGameData {
         return turnDurations;
     }
 
-    //[5] control methods for the cardsSelectedArray
-    private void initCardsSelectedArray () {
+    //[5] control methods for the swapGameMapList
+    private void initSwapGameMapList () {
         //Log.d (TAG, "method initCardsSelectedOrderArray array list");
-        cardSelectedOrder = new ArrayList<SwapCardID>();
+        swapGameMapList = new ArrayList<Map<SwapTileCoordinates, SwapCardData>>();
     }
 
-    public void appendToCardsSelected (SwapCardID cardId) {
-        //Log.d (TAG, "method addCardToCardsSelectedArray");
-        cardSelectedOrder.add(cardId);
+    public void appendToSwapGameMapList (Map <SwapTileCoordinates, SwapCardData> curSwapGameMap) {
+        //Log.d (TAG, "method appendToSwapGameMapList");
+        swapGameMapList.add(curSwapGameMap);
     }
 
-    public SwapCardID queryCardsSelectedArray (int locToQuery) {
+    public Map <SwapTileCoordinates, SwapCardData> querySwapGameMapList (int locToQuery) {
         //Log.d (TAG, "method queryCardsSelectedArray");
-        return cardSelectedOrder.get(locToQuery);
+        return swapGameMapList.get(locToQuery);
     }
 
-    public int sizeOfCardSelectionArray () {
+    public int sizeOfSwapGameMapList () {
         //Log.d (TAG, "method sizeOfCardSelectionArray);
-        return cardSelectedOrder.size();
+        return swapGameMapList.size();
     }
 
-    public ArrayList <SwapCardID> getCardsSelectedArray () {
+    public ArrayList <Map <SwapTileCoordinates, SwapCardData>> getSwapGameMapList () {
         //
-        return cardSelectedOrder;
+        return swapGameMapList;
     }
 
     //[6] set/get/increment numTurnsTaken
@@ -199,5 +275,4 @@ public class SwapGameData {
         //Log.d (TAG, "method getNumTurnsTaken");
         return numTurnsTakenInGame;
     }
-
 }

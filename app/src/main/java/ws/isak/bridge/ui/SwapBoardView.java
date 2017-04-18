@@ -94,7 +94,7 @@ public class SwapBoardView extends LinearLayout {
         return (SwapBoardView) LayoutInflater.from(context).inflate(R.layout.swap_board_view, parent, false);
     }
 
-    //method setBoard is called from MatchGameFragment method buildBoard
+    //method setBoard is called from SwapGameFragment method buildBoard
     public void setBoard(SwapGame swapGame) {
         Log.d (TAG, "method setBoard ... at start");
         mSwapBoardConfiguration = swapGame.swapBoardConfiguration;
@@ -136,12 +136,12 @@ public class SwapBoardView extends LinearLayout {
      * Add each row to the board.
      */
     private void addBoardRow(int rowNum) {
-        //Log.d (TAG, "method: addBoardRow");
+        Log.d (TAG, "method: addBoardRow");
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER);
 
-        //TODO!!! addRowControls();
+        //TODO!!! addRowControls();     //this method will draw a pair of buttons to the left of each row (play/pause?)
 
         for (int curTileInRow = 0; curTileInRow < SwapBoardConfiguration.swapNumTilesInRow; curTileInRow++) {
             addTile (new SwapTileCoordinates(rowNum, curTileInRow), linearLayout);
@@ -154,7 +154,7 @@ public class SwapBoardView extends LinearLayout {
 
     // Add each tile to the board at position curTileOnBoard
     private void addTile(final SwapTileCoordinates curTileOnBoard, ViewGroup parent) {
-        //Log.d (TAG, "method addTile init");
+        Log.d (TAG, "method addTile init: curTileOnBoard: < " + curTileOnBoard.getSwapCoordRow() + "," + curTileOnBoard.getSwapCoordCol() + " >");
         final SwapTileView swapTileView = SwapTileView.fromXml(getContext(), parent);
         swapTileView.setLayoutParams(mTileLayoutParams);
         parent.addView(swapTileView);
@@ -165,8 +165,10 @@ public class SwapBoardView extends LinearLayout {
 
             @Override
             protected Bitmap doInBackground(Void... params) {
-                //Log.d (TAG, "*** method: addTile: new AsyncTask: override doInBackground: calling getMatchTileBitmap: curTileOnBoard is: " + curTileOnBoard + " mSize is: " + mSize);
-                return mSwapBoardArrangement.getSwapTileBitmap(curTileOnBoard, mSize);  //this gets one of four bitmaps depending on flags
+                Log.d (TAG, "*** method: addTile: new AsyncTask: override doInBackground: calling getSwapTileBitmap: curTileOnBoard is: "
+                        + curTileOnBoard + " mSize is: " + mSize);
+                //gets one of four bitmaps depending on flags at current coordinates
+                return mSwapBoardArrangement.getSwapTileBitmap(curTileOnBoard, mSize);
             }
 
             @Override

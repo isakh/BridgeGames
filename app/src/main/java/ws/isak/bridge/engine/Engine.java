@@ -3,8 +3,10 @@ package ws.isak.bridge.engine;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Random;
+import java.util.Iterator;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -307,7 +309,7 @@ public class Engine extends EventObserverAdapter {
         mSelectedID = -1;
         mPlayingSwapGame = new SwapGame();
         mPlayingSwapGame.swapBoardConfiguration = new SwapBoardConfiguration(event.difficulty);
-
+        //set and share the current swap game
         Shared.currentSwapGame = mPlayingSwapGame;
 
         // arrange board
@@ -318,7 +320,7 @@ public class Engine extends EventObserverAdapter {
         currentSwapGameData.setGameDifficulty(Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty());
         currentSwapGameData.setGameDurationAllocated(Shared.currentSwapGame.swapBoardConfiguration.time);
         Shared.userData.setCurSwapGame(currentSwapGameData);
-        mScreenController.openScreen(Screen.FINISHED); //FIXME to POST_SURVEY? or PopupWon when ready
+        mScreenController.openScreen(Screen.GAME_SWAP);
     }
 
     private void arrangeSwapBoard() {
@@ -329,7 +331,8 @@ public class Engine extends EventObserverAdapter {
         List <Integer> targetSpeciesIDs = new ArrayList<Integer>(swapBoardConfiguration.getSwapDifficulty());
         for (int i = 0; i < swapBoardConfiguration.getNumSpecies(); i++) {
             Log.d (TAG, "method arrangeSwapBoard: i: " + i + " | difficultyLevel = numSpecies: " + swapBoardConfiguration.getSwapDifficulty());
-            int  tempSpeciesIndex = randomIndex.nextInt(10);       //10 is currently the max number of species - TODO set in xml
+            int  tempSpeciesIndex = randomIndex.nextInt(9);       //10 is currently the max number of species - TODO set in xml
+            tempSpeciesIndex++;                                   //set range 0-9 to range 1-10 FIXME check?!
             Log.d (TAG, "method arrangeSwapBoard:" + " tempSpeciesIndex: " + tempSpeciesIndex);
             for (int j = 0; j < i; j++) {
                 if (targetSpeciesIDs.get(j) == tempSpeciesIndex) {
@@ -381,14 +384,14 @@ public class Engine extends EventObserverAdapter {
         }
         //iterate over numTiles
         for (int q = 0; q < swapBoardConfiguration.numTiles; q++) {
-            Log.d (TAG, "method arrangeSwapBoard: iterating to place cards: i: " + q + " | numTiles: " +
-                    swapBoardConfiguration.numTiles + " | difficultyLevel: " + swapBoardConfiguration.difficultyLevel);
+            //Log.d (TAG, "method arrangeSwapBoard: iterating to place cards: q: " + q + " | numTiles: " +
+            //        swapBoardConfiguration.numTiles + " | difficultyLevel: " + swapBoardConfiguration.difficultyLevel);
             //a SwapTileCoordinates object
             SwapTileCoordinates tileCoords = new SwapTileCoordinates(-1 ,-1); //FIXME make less of a kludge - these coords are off the board
             tileCoords.setSwapCoordRow ((int) Math.floor(q / swapBoardConfiguration.swapNumTilesInRow));
             tileCoords.setSwapCoordCol (q % swapBoardConfiguration.swapNumTilesInRow);
             //having set the Row and Column coordinates print them out
-            Log.d (TAG, "method arrangeSwapBoard: inserted tileCoords: i: " + q + " row: " +
+            Log.d (TAG, "method arrangeSwapBoard: insert tileCoords: q: " + q + " row: " +
                     tileCoords.getSwapCoordRow() + " col: " + tileCoords.getSwapCoordCol());
             //create the Mapping between tileCoords and the SwapCard object in the activeCardList.
             Log.d (TAG, "method arrangeSwapBoard: tileCoords: < " + tileCoords.getSwapCoordRow() + " , " +
@@ -399,6 +402,24 @@ public class Engine extends EventObserverAdapter {
         }
         mPlayingSwapGame.swapBoardArrangement = swapBoardArrangement;
 
+        //***** DEBUGGING CODE - comment out when working:
+        Log.d (TAG, "***** method arrangeSwapBoard: set mPlayingSwapGame.swapBoardArrangement: CHECK VALID BOARD ... iterate over cardObjs:");
+        //Log.d (TAG, "       Shared.currentSwapGame: " + Shared.currentSwapGame);
+        //Log.d (TAG, "       Shared.currentSwapGame.swapBoardArrangement: " + Shared.currentSwapGame.swapBoardArrangement);
+        //Log.d (TAG, "       Shared.currentSwapGame.swapBoardArrangement.cardObjs: " + Shared.currentSwapGame.swapBoardArrangement.cardObjs);
+        //Log.d (TAG, "       Shared.currentSwapGame.swapBoardArrangement.cardObjs.size(): " + Shared.currentSwapGame.swapBoardArrangement.cardObjs.size());
+        Iterator iterator = Shared.currentSwapGame.swapBoardArrangement.cardObjs.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry pair = (Map.Entry)iterator.next();
+            //System.out.println(pair.getKey() + " maps to " + pair.getValue());
+            SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
+            SwapCardData cardData = (SwapCardData) pair.getValue();
+            Log.d (TAG, "   coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
+                        " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
+                        cardData.getCardID().getSwapCardSegmentID() + " >");
+            iterator.remove(); // avoids a ConcurrentModificationException
+        }
+        //*****
     }
 
 	// Override method onEvent when the event being passed is a MatchFlipCardEvent.

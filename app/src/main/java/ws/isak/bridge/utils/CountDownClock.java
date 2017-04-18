@@ -92,7 +92,7 @@ public abstract class CountDownClock {
             Log.d (TAG, "             : set millisOnTimer to pauseTimeRemaining: " + mPauseTimeRemaining);
 			mMillisOnTimer = mPauseTimeRemaining;
             Log.d (TAG, "             : SystemClock.elapsedRealTime(): " + SystemClock.elapsedRealtime());
-            Log.d (TAG, "             : set stopTimeInFuture to SystemClock.elapsedRealTime() + millisOnTimer: " + SystemClock.elapsedRealtime() + mMillisOnTimer);
+            Log.d (TAG, "             : set stopTimeInFuture to SystemClock.elapsedRealTime() + millisOnTimer: " + (SystemClock.elapsedRealtime() + mMillisOnTimer));
 			mStopTimeInFuture = SystemClock.elapsedRealtime() + mMillisOnTimer;
             Log.d (TAG, "             : ***CHECK*** system call delay reflects difference with stopTimeInFuture: " + mStopTimeInFuture);
 			mHandler.sendMessage(mHandler.obtainMessage(MSG));

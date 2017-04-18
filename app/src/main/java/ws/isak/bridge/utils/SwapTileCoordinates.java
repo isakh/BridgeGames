@@ -16,7 +16,7 @@ public class SwapTileCoordinates {
     private int col;
 
     public SwapTileCoordinates (int row, int col) {
-        Log.d (TAG, "constructor");
+        //Log.d (TAG, "constructor");
         this.row = row;
         this.col = col;
     }

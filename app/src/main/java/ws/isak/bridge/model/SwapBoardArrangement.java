@@ -1,6 +1,7 @@
 package ws.isak.bridge.model;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import android.util.Log;
@@ -38,19 +39,38 @@ public class SwapBoardArrangement {
         cardObjs.put(coords, card);
     }
 
-    public SwapCardData getSwapCardDataFromCoords (SwapTileCoordinates coords) {
-        SwapCardData cardData = cardObjs.get (coords);
-        if (cardData == null) {
-            Log.d (TAG, "method getSwapCardDataFromCardObjs: no cardData at coord: " + coords);
+    public SwapCardData getSwapCardDataFromCoords (SwapTileCoordinates loc) {
+        Log.d (TAG, "method getSwapCardDataFromCoords: key loc: < " + loc.getSwapCoordRow() + "," + loc.getSwapCoordCol() + " >");
+        SwapCardData cardOnTile = null;
+        Iterator iterator = Shared.currentSwapGame.swapBoardArrangement.cardObjs.entrySet().iterator();
+        Log.d (TAG, "   created Iterator");
+        while (iterator.hasNext()) {
+            Log.d (TAG, "   Iterating over cardObjs to find match");
+            Map.Entry pair = (Map.Entry)iterator.next();
+            System.out.println(pair.getKey() + " maps to " + pair.getValue());
+            SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
+            Log.d (TAG, "           key coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() + " >");
+            SwapCardData cardData = (SwapCardData) pair.getValue();
+            Log.d (TAG, "           value card ID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," + cardData.getCardID().getSwapCardSegmentID() + " >");
+            if (coords == loc) {
+                Log.d (TAG, "   *** coords == loc *** ");
+                cardOnTile = cardData;
+            }
+            iterator.remove(); // avoids a ConcurrentModificationException
         }
-        return cardData;
+        Log.d (TAG, "       : returning cardOnTile: < " + cardOnTile.getCardID().getSwapCardSpeciesID() +
+                    "," + cardOnTile.getCardID().getSwapCardSegmentID() + " >");
+        return cardOnTile;
     }
 
     //return the bitmap at location on board with given size
     public Bitmap getSwapTileBitmap (SwapTileCoordinates loc, int size) {
-        Log.d (TAG, "method getSwapTileBitmap");
+        Log.d (TAG, "method getSwapTileBitmap: target location: <" + loc.getSwapCoordRow() +
+                    "," + loc.getSwapCoordCol() + " > | size: " + size );
         String imageURI = null;
-        SwapCardData cardOnTile = cardObjs.get(loc);
+        SwapCardData cardOnTile = getSwapCardDataFromCoords(loc);
+        Log.d (TAG, "method getSwapTileBitma: cardOnTile: < " + cardOnTile.getCardID().getSwapCardSpeciesID() +
+                    "," + cardOnTile.getCardID().getSwapCardSegmentID() + " >");
         switch (cardOnTile.getCardID().getSwapCardSegmentID()) {
             case 0:
                 imageURI = cardOnTile.getSpectroURI0();

@@ -16,6 +16,7 @@ import ws.isak.bridge.fragments.MatchDifficultySelectFragment;
 import ws.isak.bridge.fragments.SwapDifficultySelectFragment;
 import ws.isak.bridge.fragments.MatchGameFragment;
 import ws.isak.bridge.fragments.MatchMenuFragment;
+import ws.isak.bridge.fragments.SwapGameFragment;
 import ws.isak.bridge.fragments.SwapMenuFragment;
 import ws.isak.bridge.fragments.MatchThemeSelectFragment;
 import ws.isak.bridge.fragments.UserSetupFragment;
@@ -62,7 +63,7 @@ public class ScreenController {
         DIFFICULTY_MATCH,         //three levels of difficultyLevel available
         DIFFICULTY_SWAP,        //three levels 2x4, 3x4, 4x4 [species x chunks in sample]
         GAME_MATCH,
-        GAME_SWAP,              //TODO
+        GAME_SWAP,              //
         POST_SURVEY,             //FIXME should we have different ones for each game? and/or one for all?
         FINISHED
     }
@@ -144,8 +145,8 @@ public class ScreenController {
                 return new SwapDifficultySelectFragment();
             case GAME_MATCH:
 	    		return new MatchGameFragment();
-            //case GAME_SWAP:
-            //    return new SwapGameFragment();
+            case GAME_SWAP:
+                return new SwapGameFragment();
             case POST_SURVEY:
                 return new PostSurveyFragment();
             case FINISHED:

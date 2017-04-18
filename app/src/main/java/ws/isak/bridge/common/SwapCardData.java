@@ -20,7 +20,7 @@ public class SwapCardData
     private SwapCardID cardID;                  //cardID is a tuple built from <speciesID, segmentActive>
     private String speciesName;                 //this string stores the species name from R.strings.species_bird_% FIXME make dynamic?
 
-    private SwapTileCoordinates cardOnTileID;   //cardOnTileID is a tuple <row, col> of type SwapTileCoordinates
+    //FIXME remove: private SwapTileCoordinates cardOnTileID;   //cardOnTileID is a tuple <row, col> of type SwapTileCoordinates
 
     private String spectroURI0;
     private String spectroURI1;
@@ -130,11 +130,13 @@ public class SwapCardData
         }
     }
 
+    /* FIXME REMOVE - card doesn't need to know where it is, this is held in the Map in SwapGameData
     // [2]
     // methods to set and get the cardOnTileID which keeps track of which tile the card is currently on
     public void setCardOnTileID (SwapTileCoordinates tileID) { cardOnTileID = tileID; }
 
     public SwapTileCoordinates getCardOnTileID () { return cardOnTileID; }
+    FIXME end remove */
 
     // [3]
     // methods to get and set the URI for the 0th segment
