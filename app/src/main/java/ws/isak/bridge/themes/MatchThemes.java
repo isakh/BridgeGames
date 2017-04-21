@@ -36,7 +36,7 @@ public class MatchThemes {
         matchTheme.pairedImagesDiffer = false;
         matchTheme.backgroundImageUrl = URI_DRAWABLE + "back_blank";
         matchTheme.cardObjs = new ArrayList<MatchCardData>();
-        Collections.copy(Shared.matchCardDataList, matchTheme.cardObjs);      //FIXME this isn't necessary - can replace all instances of matchTheme.cardObjs with Shared.matchCardDataList
+        Collections.copy(Shared.matchCardDataList, matchTheme.cardObjs);      //FIXME this isn't necessary - can replace all instances of matchTheme.swapBoardMap with Shared.matchCardDataList
         return matchTheme;
     }
 

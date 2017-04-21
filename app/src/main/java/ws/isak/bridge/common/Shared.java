@@ -38,10 +38,10 @@ public class Shared {
     public static final String DATABASE_NAME = "bridge.db";  //FIXME context.getResources().getString(R.string.database_name);
     public static DatabaseWrapper databaseWrapper;
 
-    //data classes / methods    FIXME - should these be static???
+    //data classes / methods    FIXME - need these be static???
     public static UserData userData;        //This holds the current active UserData
     public static List <UserData> userDataList;
-    public static MatchGameData matchGameData;  //FIXME - is this necessary? we can generally access the current matchGameData from userData.getCurMemGameData()
+    public static MatchGameData matchGameData;  //FIXME - is this necessary? we can generally access the current matchGameData from userData.getCurMatchGameData()
     public static List <MatchGameData> matchGameDataList;
     public static MatchCardData matchCardData;        //placeholder matchCardData for return from database call
     public static List <MatchCardData> matchCardDataList;

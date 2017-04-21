@@ -293,10 +293,10 @@ public class Engine extends EventObserverAdapter {
 				matchBoardArrangement.cardObjs.put(tileIDs.get(i + 1), Shared.matchCardDataList.get(j));
 				//debug report: state of tile id's paired on board, and card id for the tile pair
 				Log.d (TAG, "method arrangeBoard: Map Tile Pairs: Tile id1: " + tileIDs.get(i) + " |  Tile id2: " + tileIDs.get(i + 1) + " | Mapped Card id: " + Shared.matchCardDataList.get(j).getCardID());
-				//Log.d (TAG, "method arrangeBoard: Mapping cardObjs to IDs: ID is: " + tileIDs.get(i) + " | Card Object ID is: " + mSelectedMatchTheme.cardObjs.get(j).getCardID());
-				//Log.d (TAG, "method arrangeBoard: 		Card Object Image URI 1 is : " + mSelectedMatchTheme.cardObjs.get(j).getImageURI1());
-				//Log.d (TAG, "method arrangeBoard: 		Card Object Image URI 2 is : " + mSelectedMatchTheme.cardObjs.get(j).getImageURI2());
-				//Log.d (TAG, "method arrangeBoard: 		Card Object Audio URI is : " + mSelectedMatchTheme.cardObjs.get(j).getAudioURI());
+				//Log.d (TAG, "method arrangeBoard: Mapping swapBoardMap to IDs: ID is: " + tileIDs.get(i) + " | Card Object ID is: " + mSelectedMatchTheme.swapBoardMap.get(j).getCardID());
+				//Log.d (TAG, "method arrangeBoard: 		Card Object Image URI 1 is : " + mSelectedMatchTheme.swapBoardMap.get(j).getImageURI1());
+				//Log.d (TAG, "method arrangeBoard: 		Card Object Image URI 2 is : " + mSelectedMatchTheme.swapBoardMap.get(j).getImageURI2());
+				//Log.d (TAG, "method arrangeBoard: 		Card Object Audio URI is : " + mSelectedMatchTheme.swapBoardMap.get(j).getAudioURI());
 				i++;
 				j++;
 			}
@@ -309,17 +309,13 @@ public class Engine extends EventObserverAdapter {
         mSelectedID = -1;
         mPlayingSwapGame = new SwapGame();
         mPlayingSwapGame.swapBoardConfiguration = new SwapBoardConfiguration(event.difficulty);
+
         //set and share the current swap game
         Shared.currentSwapGame = mPlayingSwapGame;
 
         // arrange board
         arrangeSwapBoard();
 
-        //instantiating the currentSwapGameData object - some fields default to 0 || null
-        currentSwapGameData = new SwapGameData();
-        currentSwapGameData.setGameDifficulty(Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty());
-        currentSwapGameData.setGameDurationAllocated(Shared.currentSwapGame.swapBoardConfiguration.time);
-        Shared.userData.setCurSwapGame(currentSwapGameData);
         mScreenController.openScreen(Screen.GAME_SWAP);
     }
 
@@ -353,13 +349,14 @@ public class Engine extends EventObserverAdapter {
         //create a list for the active cards (all cards for each target species)
         List <SwapCardData> activeCardList = new ArrayList<SwapCardData>(swapBoardConfiguration.difficultyLevel * 4);
         //iterate over Shared.swapCardDataList and
+        Log.d (TAG, " *** method arrangeSwapBoard: adding card to active list ...");
         for (int l = 0; l < Shared.swapCardDataList.size(); l++) {
             // iterate over targetSpecies ID list
             for (int m = 0; m < targetSpeciesIDs.size(); m++) {
                 //if the current card in the data list has the same ID as we are looking for in the species list
                 if (Shared.swapCardDataList.get(l).getCardID().getSwapCardSpeciesID() == targetSpeciesIDs.get(m)) {
                     //append that card to the active list
-                    Log.d (TAG, "method arrangeSwapBoard: adding card to active list: l: " + l + " | m: " + m +
+                    Log.d (TAG, "           l: " + l + " | m: " + m +
                             " | Shared.swapCardDataList.get(i).getCardID(): < " +
                             Shared.swapCardDataList.get(l).getCardID().getSwapCardSpeciesID() + " , " +
                             Shared.swapCardDataList.get(l).getCardID().getSwapCardSegmentID() +
@@ -368,7 +365,7 @@ public class Engine extends EventObserverAdapter {
                 }
             }
         }
-        Log.d (TAG, " method arrangeSwapBoard: activeCardList prior to shuffling...");
+        Log.d (TAG, " *** method arrangeSwapBoard: activeCardList prior to shuffling...");
         for (int n = 0; n < activeCardList.size(); n++) {
             Log.d (TAG, "                    : n: " + n + " | activeCardList(n) cardID: < " +
                     activeCardList.get(n).getCardID().getSwapCardSpeciesID() + " , " +
@@ -376,50 +373,67 @@ public class Engine extends EventObserverAdapter {
         }
         //shuffle all the active cards
         Collections.shuffle (activeCardList);
-        Log.d (TAG, " method arrangeSwapBoard: activeCardList after shuffling...");
+        Log.d (TAG, " *** method arrangeSwapBoard: activeCardList after shuffling...");
         for (int p = 0; p < activeCardList.size(); p++) {
             Log.d (TAG, "                    : p: " + p + " | activeCardList(p) cardID: < " +
                     activeCardList.get(p).getCardID().getSwapCardSpeciesID() + " , " +
                     activeCardList.get(p).getCardID().getSwapCardSegmentID() + " >");
         }
         //iterate over numTiles
+        Log.d (TAG, " *** method arrangeSwapBoard: iterate over numTiles and set cards on board ...");
         for (int q = 0; q < swapBoardConfiguration.numTiles; q++) {
             //Log.d (TAG, "method arrangeSwapBoard: iterating to place cards: q: " + q + " | numTiles: " +
             //        swapBoardConfiguration.numTiles + " | difficultyLevel: " + swapBoardConfiguration.difficultyLevel);
             //a SwapTileCoordinates object
-            SwapTileCoordinates tileCoords = new SwapTileCoordinates(-1 ,-1); //FIXME make less of a kludge - these coords are off the board
+            SwapTileCoordinates tileCoords = new SwapTileCoordinates(-1 ,-1); //FIXME make less of a kludge? - these coords are off the board
             tileCoords.setSwapCoordRow ((int) Math.floor(q / swapBoardConfiguration.swapNumTilesInRow));
             tileCoords.setSwapCoordCol (q % swapBoardConfiguration.swapNumTilesInRow);
             //having set the Row and Column coordinates print them out
-            Log.d (TAG, "method arrangeSwapBoard: insert tileCoords: q: " + q + " row: " +
-                    tileCoords.getSwapCoordRow() + " col: " + tileCoords.getSwapCoordCol());
+            //Log.d (TAG, "method arrangeSwapBoard: insert tileCoords: q: " + q + " row: " +
+            //        tileCoords.getSwapCoordRow() + " col: " + tileCoords.getSwapCoordCol());
             //create the Mapping between tileCoords and the SwapCard object in the activeCardList.
-            Log.d (TAG, "method arrangeSwapBoard: tileCoords: < " + tileCoords.getSwapCoordRow() + " , " +
-                    tileCoords.getSwapCoordCol() + " > | activeCardList.get(i): " + activeCardList.get(q) +
-                    " | cardID <species, segment>: < " + activeCardList.get(q).getCardID().getSwapCardSpeciesID() +
-                    " , " + activeCardList.get(q).getCardID().getSwapCardSegmentID() + " >");
+            //Log.d (TAG, "method arrangeSwapBoard: tileCoords @: " + tileCoords + " | coords < " +
+            //        tileCoords.getSwapCoordRow() + " , " + tileCoords.getSwapCoordCol() +
+            //        " > | activeCardList.get(i): " + activeCardList.get(q) +
+            //        " | cardID <species, segment>: < " +
+            //        activeCardList.get(q).getCardID().getSwapCardSpeciesID() +
+            //        " , " + activeCardList.get(q).getCardID().getSwapCardSegmentID() + " >");
             swapBoardArrangement.setCardOnBoard (tileCoords, activeCardList.get(q));
         }
         mPlayingSwapGame.swapBoardArrangement = swapBoardArrangement;
+        //Log.d (TAG, " * mPlayingSwapGame.swapBoardArrangement.swapBoardMap @: " + mPlayingSwapGame.swapBoardArrangement.swapBoardMap);
+        //Log.d (TAG, " * mPlayingSwapGame.swapBoardArrangement.swapBoardMap.size: " + mPlayingSwapGame.swapBoardArrangement.swapBoardMap.size());
+        Shared.currentSwapGame = mPlayingSwapGame;
 
-        //***** DEBUGGING CODE - comment out when working:
-        Log.d (TAG, "***** method arrangeSwapBoard: set mPlayingSwapGame.swapBoardArrangement: CHECK VALID BOARD ... iterate over cardObjs:");
-        //Log.d (TAG, "       Shared.currentSwapGame: " + Shared.currentSwapGame);
-        //Log.d (TAG, "       Shared.currentSwapGame.swapBoardArrangement: " + Shared.currentSwapGame.swapBoardArrangement);
-        //Log.d (TAG, "       Shared.currentSwapGame.swapBoardArrangement.cardObjs: " + Shared.currentSwapGame.swapBoardArrangement.cardObjs);
-        //Log.d (TAG, "       Shared.currentSwapGame.swapBoardArrangement.cardObjs.size(): " + Shared.currentSwapGame.swapBoardArrangement.cardObjs.size());
-        Iterator iterator = Shared.currentSwapGame.swapBoardArrangement.cardObjs.entrySet().iterator();
+        //instantiating the currentSwapGameData object - some fields default to 0 || null
+        currentSwapGameData = new SwapGameData();
+        currentSwapGameData.setGameDifficulty(Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty());
+        currentSwapGameData.setGameDurationAllocated(Shared.currentSwapGame.swapBoardConfiguration.time);
+        Shared.userData.setCurSwapGameData(currentSwapGameData);
+
+        //Log.d (TAG, " * Shared.userData.getCurSwapGameData().getSwapBoardMap() @: " + Shared.userData.getCurSwapGameData().getSwapBoardMap());
+        //Log.d (TAG, " * Shared.userData.getCurSwapGameData().getSwapBoardMap().size(): " + Shared.userData.getCurSwapGameData().getSwapBoardMap().size());
+
+
+        //***** DEBUGGING CODE *****
+
+        Log.d (TAG, " \n ***** method arrangeSwapBoard: CHECK VALID BOARD ... iterate over Shared.userData.getCurSwapGameData.swapBoardMap:");
+        Log.d (TAG, "       Shared.userData.getCurSwapGameData: " + Shared.userData.getCurSwapGameData());
+        Log.d (TAG, "       Shared.userData.getCurSwapGameData().getSwapBoardMap: " + Shared.userData.getCurSwapGameData().getSwapBoardMap());
+        Log.d (TAG, "       Shared.userData.getCurSwapGameData().getSwapBoardMap().size(): " + Shared.userData.getCurSwapGameData().getSwapBoardMap().size());
+
+        Iterator iterator = Shared.userData.getCurSwapGameData().getSwapBoardMap().entrySet().iterator();
+
         while (iterator.hasNext()) {
             Map.Entry pair = (Map.Entry)iterator.next();
             //System.out.println(pair.getKey() + " maps to " + pair.getValue());
             SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
             SwapCardData cardData = (SwapCardData) pair.getValue();
-            Log.d (TAG, "   coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
-                        " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
-                        cardData.getCardID().getSwapCardSegmentID() + " >");
-            iterator.remove(); // avoids a ConcurrentModificationException
+            Log.d (TAG, "... address of Map.entry: " + pair + " | coords: < " +
+                        coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
+                        " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() +
+                        "," + cardData.getCardID().getSwapCardSegmentID());
         }
-        //*****
     }
 
 	// Override method onEvent when the event being passed is a MatchFlipCardEvent.
@@ -499,14 +513,16 @@ public class Engine extends EventObserverAdapter {
         Log.d (TAG, "onEvent SwapSelectedCardsEvent: event.id1: " + event.id1 + " event.id2: " + event.id2 + " *** AT START OF method ***");
         SwapTileCoordinates card1Coords = event.id1;
         SwapTileCoordinates card2Coords = event.id2;
-        SwapCardData card1Data = mPlayingSwapGame.swapBoardArrangement.getSwapCardDataFromCoords(card1Coords);
-        SwapCardData card2Data = mPlayingSwapGame.swapBoardArrangement.getSwapCardDataFromCoords(card2Coords);
+        SwapCardData card1Data = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(card1Coords);
+        SwapCardData card2Data = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(card2Coords);
         Log.d (TAG, "onEventSwapSelectedCardsEvent: card1Coords: " + card1Coords + " | card2Coords: " + card2Coords + " | card1Data ID: " + card1Data.getCardID() + " | card2Data ID: " + card2Data.getCardID());
 
-        //Swap the coordinates associated with the two SwapCardData objects
+        //TODO prior to swap, append the current board Map to Shared.swapGameData.swapGameMapList
+        //TODO make a new copy of the board map
+        //FIXME: Swap the coordinates associated with the two SwapCardData objects
         switchTileCoordinates(card1Coords, card2Coords);
 
-        //push the new cards back into the Map
+        //FIXME - push the new cards back into the board on the new Map?
         mPlayingSwapGame.swapBoardArrangement.setCardOnBoard(card1Coords, card1Data);
         mPlayingSwapGame.swapBoardArrangement.setCardOnBoard(card2Coords, card2Data);
 
@@ -517,7 +533,7 @@ public class Engine extends EventObserverAdapter {
         for (int i = 0; i < mPlayingSwapGame.swapBoardConfiguration.getSwapDifficulty(); i++ ) {        //for each row on the board
             for (int j = 0; j < 4; j++) {       //for each tile in row
                 SwapTileCoordinates targetCoords = new SwapTileCoordinates(i, j);
-                SwapCardData cardOnTile = mPlayingSwapGame.swapBoardArrangement.getSwapCardDataFromCoords(targetCoords);
+                SwapCardData cardOnTile = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(targetCoords);
                 if (cardOnTile.getCardID().getSwapCardSpeciesID() != i || cardOnTile.getCardID().getSwapCardSegmentID() != j) {
                     winning = false;
                 }
@@ -581,12 +597,12 @@ public class Engine extends EventObserverAdapter {
 	private void playTileAudio(int tileID) {
 		/*
         Log.d (TAG, "method playTileAudio: tileID: " + tileID);
-		Log.d (TAG, "					 : curCardOnTile is: " + mPlayingMatchGame.matchBoardArrangement.cardObjs.get(tileID).getCardID());
-		Log.d (TAG, " 					 : curCardOnTile.getAudioURI is: " + mPlayingMatchGame.matchBoardArrangement.cardObjs.get(tileID).getAudioURI());
-		Log.d (TAG, " 					 : curCardOnTile.getImageURI1 is: " + mPlayingMatchGame.matchBoardArrangement.cardObjs.get(tileID).getImageURI1());
-		Log.d (TAG, " 					 : curCardOnTile.getPairedImageDiffer is: " + mPlayingMatchGame.matchBoardArrangement.cardObjs.get(tileID).getPairedImageDiffer());
-		Log.d (TAG, " 					 : curCardOnTile.getFirstImageUsed is: " + mPlayingMatchGame.matchBoardArrangement.cardObjs.get(tileID).getFirstImageUsed());
-		Log.d (TAG, " 					 : curCardOnTile.getImageURI2 is: " + mPlayingMatchGame.matchBoardArrangement.cardObjs.get(tileID).getImageURI2());
+		Log.d (TAG, "					 : curCardOnTile is: " + mPlayingMatchGame.matchBoardArrangement.swapBoardMap.get(tileID).getCardID());
+		Log.d (TAG, " 					 : curCardOnTile.getAudioURI is: " + mPlayingMatchGame.matchBoardArrangement.swapBoardMap.get(tileID).getAudioURI());
+		Log.d (TAG, " 					 : curCardOnTile.getImageURI1 is: " + mPlayingMatchGame.matchBoardArrangement.swapBoardMap.get(tileID).getImageURI1());
+		Log.d (TAG, " 					 : curCardOnTile.getPairedImageDiffer is: " + mPlayingMatchGame.matchBoardArrangement.swapBoardMap.get(tileID).getPairedImageDiffer());
+		Log.d (TAG, " 					 : curCardOnTile.getFirstImageUsed is: " + mPlayingMatchGame.matchBoardArrangement.swapBoardMap.get(tileID).getFirstImageUsed());
+		Log.d (TAG, " 					 : curCardOnTile.getImageURI2 is: " + mPlayingMatchGame.matchBoardArrangement.swapBoardMap.get(tileID).getImageURI2());
         */
         if (!Audio.OFF) {
             String audioResourceName = mPlayingMatchGame.matchBoardArrangement.cardObjs.get(tileID).getAudioURI().substring(MatchThemes.URI_AUDIO.length());

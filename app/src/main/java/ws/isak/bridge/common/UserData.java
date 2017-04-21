@@ -41,12 +41,12 @@ public class UserData {
     private static int hearIsSeeLikert;
     private static int hearIsPredictLikert;
 
-    //data from match games played
+    //data from match game/s played
     private MatchGameData curMemGame;
     private ArrayList<MatchGameData> matchGameDataList;
 
-    //data from swap games played
-    private SwapGameData curSwapGame;
+    //data from swap game/s played
+    private SwapGameData curSwapGameData;
     private ArrayList<SwapGameData> swapGameDataList;  
 
 
@@ -277,14 +277,14 @@ public class UserData {
         return swapGameDataList.get(gameDataRecord);
     }
 
-    public void setCurSwapGame(SwapGameData gameData) {
-        Log.d(TAG, "method setCurSwapGame");
-        curSwapGame = gameData;
+    public void setCurSwapGameData(SwapGameData gameData) {
+        Log.d(TAG, "method setCurSwapGameData");
+        curSwapGameData = gameData;
     }
 
-    public SwapGameData getCurSwapGame() {
-        //Log.d(TAG, "method getCurSwapGame");
-        return curSwapGame;
+    public SwapGameData getCurSwapGameData() {
+        //Log.d(TAG, "method getCurSwapGameData");
+        return curSwapGameData;
     }
 
     public int sizeOfSwapGameDataList () {

@@ -6,8 +6,10 @@ import ws.isak.bridge.R;
 import ws.isak.bridge.common.Shared;
 
 /**
- * Class SwapBoardConfiguration provides a switch for the three difficultyLevel levels and the corresponding
- * number of tiles that are displayed for each.
+ * Class SwapBoardConfiguration. It provides a switch for the three difficultyLevel levels and the
+ * corresponding number of tiles that are displayed for each. This class defines the configuration
+ * for the board for each game being played by the user.  It is initially set in the engine in method
+ * onEvent (SwapGameDifficultyEvent event) where it is passed the difficulty from the users' selection.
  *
  * @author isak
  */
@@ -83,9 +85,9 @@ public class SwapBoardConfiguration {
         Log.d (TAG, "method CalculateSwapGameDuration: numTiles: " + numTiles + " | difficultyBaseLine: " + difficultyBaseline);
         long cumulativeTime = (long) difficultyBaseline;
         for (int i = 0; i < numTiles/2; i++) {
-            //Log.d (TAG, "method CalculateSwapGameDuration: swapTheme.cardObjs.get(i).getCardId(): " + swapTheme.cardObjs.get(i).getCardID());
-            //long curCardDur = Shared.swapCardDataList.get(i).getSampleDuration();       //FIXME !!!!!!!!!! WAS swapTheme.cardObjs instead of Shared.matchCardDataList, if this works we can get rid of field in SwapTheme
-            //Log.d (TAG, "                            : swapTheme.cardObjs.get(i).getSampleDuration(): " + swapTheme.cardObjs.get(i).getSampleDuration());
+            //Log.d (TAG, "method CalculateSwapGameDuration: swapTheme.swapBoardMap.get(i).getCardId(): " + swapTheme.swapBoardMap.get(i).getCardID());
+            //long curCardDur = Shared.swapCardDataList.get(i).getSampleDuration();       //FIXME !!!!!!!!!! WAS swapTheme.swapBoardMap instead of Shared.matchCardDataList, if this works we can get rid of field in SwapTheme
+            //Log.d (TAG, "                            : swapTheme.swapBoardMap.get(i).getSampleDuration(): " + swapTheme.swapBoardMap.get(i).getSampleDuration());
             //cumulativeTime = cumulativeTime + (2 * curCardDur);
             //Log.d (TAG, "                            : cumulativeTime: " + cumulativeTime);
         }

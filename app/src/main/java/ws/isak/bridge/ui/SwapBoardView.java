@@ -2,6 +2,7 @@ package ws.isak.bridge.ui;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,7 @@ import ws.isak.bridge.R;
 import ws.isak.bridge.common.Audio;
 import ws.isak.bridge.common.Shared;
 
+import ws.isak.bridge.common.SwapCardData;
 import ws.isak.bridge.events.engine.SwapSelectedCardsEvent;
 
 import ws.isak.bridge.model.SwapBoardConfiguration;
@@ -49,7 +51,7 @@ import ws.isak.bridge.utils.SwapTileCoordinates;
 
 public class SwapBoardView extends LinearLayout {
 
-    public final String TAG = "BoardView";
+    public final String TAG = "SwapBoardView";
 
     private LinearLayout.LayoutParams mRowLayoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     private LinearLayout.LayoutParams mTileLayoutParams;
@@ -63,8 +65,9 @@ public class SwapBoardView extends LinearLayout {
     private Map<SwapTileCoordinates, SwapTileView> mTileViewReference;
     //an array list to hold the id's of the currently selected cards
     private List<SwapTileCoordinates> selectedTiles = new ArrayList<SwapTileCoordinates>();
-    //a flag to keep track of whether one or two cards has been selected already
-    private boolean mSelected = false;
+    //a flag to keep track of whether zero or one cards has been selected already
+    private boolean mSelected = false;      //false means that no card has been selected, true means one has
+    //TODO do we need another flag to prevent a card from being selected twice?
     //the dimension of the tile to be drawn
     private int mSize;
 
@@ -114,6 +117,21 @@ public class SwapBoardView extends LinearLayout {
         mTileLayoutParams = new LinearLayout.LayoutParams(mSize, mSize);
         mTileLayoutParams.setMargins(singleMargin, singleMargin, singleMargin, singleMargin);
 
+        //TODO REMOVE WHEN DONE ***** DEBUGGING CODE - comment out when working:
+        Log.d (TAG, "***** method setBoard: CHECK VALID BOARD ... iterate over swapBoardMap:");
+        Iterator iterator = Shared.userData.getCurSwapGameData().getSwapBoardMap().entrySet().iterator();
+        Log.d (TAG,  "*****             : iterator created: iterator.hasNext: " + iterator.hasNext());
+        while (iterator.hasNext()) {
+            Log.d (TAG, "*****              : inside iterator");
+            Map.Entry pair = (Map.Entry)iterator.next();
+            //System.out.println(pair.getKey() + " maps to " + pair.getValue());
+            SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
+            SwapCardData cardData = (SwapCardData) pair.getValue();
+            Log.d (TAG, "... address of Map.entry: " + pair + " | coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
+                    " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
+                    cardData.getCardID().getSwapCardSegmentID());
+        }
+        //*****
         // build the ui
         Log.d (TAG, "method setBoard ... calling method buildBoard");
         buildBoard();
@@ -142,9 +160,11 @@ public class SwapBoardView extends LinearLayout {
         linearLayout.setGravity(Gravity.CENTER);
 
         //TODO!!! addRowControls();     //this method will draw a pair of buttons to the left of each row (play/pause?)
+        Log.d (TAG, "method addBoardRow: Shared.userData.getCurSwapGameData.getSwapBoardMap @: " + Shared.userData.getCurSwapGameData().getSwapBoardMap());
 
         for (int curTileInRow = 0; curTileInRow < SwapBoardConfiguration.swapNumTilesInRow; curTileInRow++) {
-            addTile (new SwapTileCoordinates(rowNum, curTileInRow), linearLayout);
+            SwapTileCoordinates coords = Shared.userData.getCurSwapGameData().getMapSwapTileCoordinatesFromLoc(new SwapTileCoordinates(rowNum,curTileInRow));
+            addTile (coords, linearLayout);
         }
 
         // add to this view
@@ -154,7 +174,9 @@ public class SwapBoardView extends LinearLayout {
 
     // Add each tile to the board at position curTileOnBoard
     private void addTile(final SwapTileCoordinates curTileOnBoard, ViewGroup parent) {
-        Log.d (TAG, "method addTile init: curTileOnBoard: < " + curTileOnBoard.getSwapCoordRow() + "," + curTileOnBoard.getSwapCoordCol() + " >");
+        Log.d (TAG, "method addTile init: address of curTileOnBoard: " + curTileOnBoard +
+                " | curTileOnBoard coords: < " + curTileOnBoard.getSwapCoordRow() + "," +
+                curTileOnBoard.getSwapCoordCol() + " >");
         final SwapTileView swapTileView = SwapTileView.fromXml(getContext(), parent);
         swapTileView.setLayoutParams(mTileLayoutParams);
         parent.addView(swapTileView);
@@ -165,8 +187,9 @@ public class SwapBoardView extends LinearLayout {
 
             @Override
             protected Bitmap doInBackground(Void... params) {
-                Log.d (TAG, "*** method: addTile: new AsyncTask: override doInBackground: calling getSwapTileBitmap: curTileOnBoard is: "
-                        + curTileOnBoard + " mSize is: " + mSize);
+                Log.d (TAG, "*** method: addTile: new AsyncTask: override doInBackground: curTileOnBoard is: " +
+                        curTileOnBoard + "| coords are: < " + curTileOnBoard.getSwapCoordRow() +
+                        "," + curTileOnBoard.getSwapCoordCol() + " > | mSize is: " + mSize);
                 //gets one of four bitmaps depending on flags at current coordinates
                 return mSwapBoardArrangement.getSwapTileBitmap(curTileOnBoard, mSize);
             }
@@ -186,61 +209,65 @@ public class SwapBoardView extends LinearLayout {
                 // allow click in two instances: one with Mix ON vs one with Mix OFF and a check that no other audio is playing
                 if (!mSelected && !Audio.getIsAudioPlaying()) {         //if tile is selected can't select again? TODO maybe second click is unselect??
                     Log.d(TAG, "			   : curTileOnBoard is: " + curTileOnBoard);
-                    Log.d(TAG, "			   : curCardOnTile is: " + mSwapBoardArrangement.cardObjs.get(curTileOnBoard).getCardID());
-                    //FIXME Log.d(TAG, " 			   : curCardOnTile.segmentActive is: " + mSwapBoardArrangement.cardObjs.get(curTileOnBoard).getSegmentActive());
+                    Log.d(TAG, "			   : curCardOnTile is: " + mSwapBoardArrangement.swapBoardMap.get(curTileOnBoard).getCardID());
 
                     //If this is the first tile being clicked, we need to change the state of SwapGameData.isGameStarted()
                     //If this is the first tile we need to set the SwapGameData.setGameStartTimeStamp()
                     //Whether this is not the first tile or not, we need to record that click has been made, it's time, and update accordingly
-                    Log.d(TAG, "**** Update MatchGameData with current timing information (and card info) ****");
+                    Log.d(TAG, "**** Update SwapGameData with current timing information (and card info) ****");
                     //do the following if it is the first click in a game
-                    if (!Shared.userData.getCurSwapGame().isGameStarted()) {     //if this is the first card being flipped
-                        Log.d (TAG, "This is the First Tile Flipped In MatchGame");
-                        Shared.userData.getCurSwapGame().setGameStarted(true);
-                        Log.d (TAG, "   ***: getGameStarted: " + Shared.userData.getCurSwapGame().isGameStarted());
-                        Shared.userData.getCurSwapGame().setGameStartTimestamp(now);
-                        Log.d (TAG, "   ***: getGameStartTimestamp: " + Shared.userData.getCurSwapGame().getGameStartTimestamp());
+                    if (!Shared.userData.getCurSwapGameData().isGameStarted()) {     //if this is the first card being flipped
+                        Log.d (TAG, "This is the First Tile Flipped In SwapGame");
+                        Shared.userData.getCurSwapGameData().setGameStarted(true);
+                        Log.d (TAG, "   ***: getGameStarted: " + Shared.userData.getCurSwapGameData().isGameStarted());
+                        Shared.userData.getCurSwapGameData().setGameStartTimestamp(now);
+                        Log.d (TAG, "   ***: getGameStartTimestamp: " + Shared.userData.getCurSwapGameData().getGameStartTimestamp());
                     }
                     //do the following on each click:
                     //  - set the gamePlayDuration to (now - startTimeStamp)
-                    Shared.userData.getCurSwapGame().appendToGamePlayDurations(now - Shared.userData.getCurSwapGame().getGameStartTimestamp());
-                    Log.d (TAG, "   ***: queryGamePlayDuration @ array location numTurnsTaken: " + Shared.userData.getCurSwapGame().queryGamePlayDurations(Shared.userData.getCurSwapGame().getNumTurnsTaken()));
+                    Shared.userData.getCurSwapGameData().appendToGamePlayDurations(now - Shared.userData.getCurSwapGameData().getGameStartTimestamp());
+                    Log.d (TAG, "   ***: queryGamePlayDuration @ array location numTurnsTaken: " + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()));
                     //  - time to append is (current time - queryGamePlayDuration[numTurns - 1] unless first turn in which case 0))
-                    if (Shared.userData.getCurSwapGame().getNumTurnsTaken() == 0) {
-                        Shared.userData.getCurSwapGame().appendToTurnDurations(0);
+                    if (Shared.userData.getCurSwapGameData().getNumTurnsTaken() == 0) {
+                        Shared.userData.getCurSwapGameData().appendToTurnDurations(0);
                         Log.d(TAG, " *****: | System time: " + now +
-                                " | gameStartTimeStamp: " + Shared.userData.getCurSwapGame().getGameStartTimestamp() +
-                                " | numTurnsTaken: " + Shared.userData.getCurSwapGame().getNumTurnsTaken() +
-                                " | gamePlayDuration @ numTurnsTaken: " + Shared.userData.getCurSwapGame().queryGamePlayDurations(Shared.userData.getCurSwapGame().getNumTurnsTaken()) +
-                                " | elapsed turn time: " + (Shared.userData.getCurSwapGame().queryGamePlayDurations(Shared.userData.getCurSwapGame().getNumTurnsTaken())));
+                                " | gameStartTimeStamp: " + Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
+                                " | numTurnsTaken: " + Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
+                                " | gamePlayDuration @ numTurnsTaken: " + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()) +
+                                " | elapsed turn time: " + (Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken())));
                     }
                     else {
-                        Shared.userData.getCurSwapGame().appendToTurnDurations(now - (Shared.userData.getCurSwapGame().getGameStartTimestamp() + Shared.userData.getCurSwapGame().queryGamePlayDurations(Shared.userData.getCurSwapGame().getNumTurnsTaken() - 1)));
+                        Shared.userData.getCurSwapGameData().appendToTurnDurations(now - (Shared.userData.getCurSwapGameData().getGameStartTimestamp() + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken() - 1)));
                         Log.d(TAG, " *****: | System time: " + now +
-                                " | gameStartTimeStamp: " + Shared.userData.getCurSwapGame().getGameStartTimestamp() +
-                                " | numTurnsTaken: " + Shared.userData.getCurSwapGame().getNumTurnsTaken() +
-                                " | gamePlayDuration @ numTurnsTaken: " + Shared.userData.getCurSwapGame().queryGamePlayDurations(Shared.userData.getCurSwapGame().getNumTurnsTaken()) +
-                                " | elapsed turn time: " + (Shared.userData.getCurSwapGame().queryGamePlayDurations(Shared.userData.getCurSwapGame().getNumTurnsTaken()) - Shared.userData.getCurSwapGame().queryGamePlayDurations(Shared.userData.getCurSwapGame().getNumTurnsTaken() - 1)));
+                                " | gameStartTimeStamp: " + Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
+                                " | numTurnsTaken: " + Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
+                                " | gamePlayDuration @ numTurnsTaken: " + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()) +
+                                " | elapsed turn time: " + (Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()) - Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken() - 1)));
                     }
-                    //  - append the clicked card to array
-                    Shared.userData.getCurSwapGame().appendToCardsSelected(mSwapBoardArrangement.cardObjs.get(curTileOnBoard).getCardID());
-                    Log.d (TAG, "   ***: method addTile:  appended to cards selected array: cardObjArray[numTurnsTaken].cardID: " + Shared.userData.getCurSwapGame().queryCardsSelectedArray(Shared.userData.getCurSwapGame().getNumTurnsTaken()));
-                    //  - update the number of turns taken
-                    Shared.userData.getCurSwapGame().incrementNumTurnsTaken();
-                    Log.d (TAG, "   ***: numTurnsTaken postIncrement: " + Shared.userData.getCurSwapGame().getNumTurnsTaken());
 
-                    //select the current tile
-                    swapTileView.select();
-                    selectedTiles.add(curTileOnBoard);
-                    if (selectedTiles.size() == 2) {        //change 2 to xml num tiles to select as for swapping?
-                        //TODO set a boolean here so no more cards can be selected!
-                        //FIXME method swapTiles ... should it go here?
-                        // no need to call, will be called by event SwapSelectedCardsEvent swapTiles (selectedTiles.get(0), selectedTiles.get(1));
+                    //if this tile being clicked is the first tile to be clicked on the board
+                    if (mSelected == false) {
+                        mSelected = true;
+                        swapTileView.select();
+                        selectedTiles.add(curTileOnBoard);
                     }
-                    Log.d(TAG, "method addTile: tileView.setOnClickListener: Overriding onClick: new SwapSelectCardEvent");
-                    Shared.eventBus.notify(new SwapSelectedCardsEvent(selectedTiles.get(0), selectedTiles.get(1)));
+                    else {
+                        //TODO if one tile already selected - highlight second tile and animate swap (call engine via event)
+                        //FIXME - shall the swap event involve creating an updated map and pushing the old one to the SwapCardGameData list of Maps?
+                        swapTileView.select();
+                        Log.d(TAG, "method addTile: tileView.setOnClickListener: Overriding onClick: new SwapSelectCardEvent");
+                        Shared.eventBus.notify(new SwapSelectedCardsEvent(selectedTiles.get(0), selectedTiles.get(1)));
+                        mSelected = false;
+                        selectedTiles = null;
+                    }
+
+                    //  - update the number of turns taken
+                    Shared.userData.getCurSwapGameData().incrementNumTurnsTaken();
+                    Log.d (TAG, "   ***: numTurnsTaken postIncrement: " + Shared.userData.getCurSwapGameData().getNumTurnsTaken());
+
+
                     //TODO Remove this? or should it be an option: Shared.eventBus.notify(new PlayCardAudioEvent(curTileOnBoard));
-                } else if (mSelected) {                                     //error check if locked
+                } else if (1 ==2 ) { //TODO variable to check if card has been selected already //error check if locked
                     Log.d(TAG, "   : onClick Failed: the card has already been mSelected: " + mSelected); //TODO should we allow double click to be unselect?
                 } else if (!swapTileView.isSelected()) {                   //error check if card already selected
                     Log.d(TAG, "   : onClick Failed: !swapTileView.isSelected(): " + !swapTileView.isSelected());

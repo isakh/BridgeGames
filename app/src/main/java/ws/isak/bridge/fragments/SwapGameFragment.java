@@ -13,13 +13,10 @@ import java.util.Locale;
 
 import ws.isak.bridge.R;
 import ws.isak.bridge.common.Shared;
-import ws.isak.bridge.database.SwapGameDataORM;
 
 import ws.isak.bridge.events.engine.SwapSelectedCardsEvent;
 import ws.isak.bridge.events.engine.SwapUnselectCardsEvent;
 import ws.isak.bridge.events.engine.SwapGameWonEvent;
-import ws.isak.bridge.events.engine.SwapPlayRowAudioEvent;
-import ws.isak.bridge.events.engine.SwapPauseRowAudioEvent;
 
 import ws.isak.bridge.model.SwapGame;
 import ws.isak.bridge.ui.SwapBoardView;
@@ -136,29 +133,27 @@ public class SwapGameFragment extends BaseFragment {
     public void onEvent(SwapGameWonEvent event) {
         //Log.d (TAG, "overriding method onEvent (SwapGameWonEvent)");
         //We print out all of the collected array data here?
-        for (int i = 0; i < Shared.userData.getCurSwapGame().getNumTurnsTaken(); i++) {
+        for (int i = 0; i < Shared.userData.getCurSwapGameData().getNumTurnsTaken(); i++) {
             if (i < 10) {
-                Log.d(TAG, "*****| Turn: 0" + i + " | Turn Time: " + Shared.userData.getCurSwapGame().queryTurnDurationsArray(i) +
-                        " | Play Duration: " + Shared.userData.getCurSwapGame().queryGamePlayDurations(i) +
-                        " | CardID: " + Shared.userData.getCurSwapGame().queryCardsSelectedArray(i));
-                //" | Species on Card: " + Shared.userData.getCurSwapGame().queryCardsSelectedArray(i).getSpeciesName());
+                Log.d(TAG, "*****| Turn: 0" + i + " | Turn Time: " + Shared.userData.getCurSwapGameData().queryTurnDurationsArray(i) +
+                        " | Play Duration: " + Shared.userData.getCurSwapGameData().queryGamePlayDurations(i) +
+                        " | BoardMap: " + Shared.userData.getCurSwapGameData().querySwapGameMapList(i));
             } else {
-                Log.d(TAG, "*****| Turn: " + i + " | Turn Time: " + Shared.userData.getCurSwapGame().queryTurnDurationsArray(i) +
-                        " | Play Duration: " + Shared.userData.getCurSwapGame().queryGamePlayDurations(i) +
-                        " | CardID: " + Shared.userData.getCurSwapGame().queryCardsSelectedArray(i));
-                //" | Species on Card: " + Shared.userData.getCurSwapGame().queryCardsSelectedArray(i).getSpeciesName());
+                Log.d(TAG, "*****| Turn: " + i + " | Turn Time: " + Shared.userData.getCurSwapGameData().queryTurnDurationsArray(i) +
+                        " | Play Duration: " + Shared.userData.getCurSwapGameData().queryGamePlayDurations(i) +
+                        " | BoardMap: " + Shared.userData.getCurSwapGameData().querySwapGameMapList(i));
             }
         }
         //append SwapGameData to userData array
-        Shared.userData.appendSwapGameData(Shared.userData.getCurSwapGame());     //append the MatchGameData for completed game to
+        Shared.userData.appendSwapGameData(Shared.userData.getCurSwapGameData());     //append the MatchGameData for completed game to
 
         //TODO insert current swapGameData into database
-        //SwapGameDataORM.insertSwapGameData(Shared.userData.getCurSwapGame());
+        //SwapGameDataORM.insertSwapGameData(Shared.userData.getCurSwapGameData());
 
         //reset flags
-        Shared.userData.getCurSwapGame().setGameStarted(false);                  //reset the gameStarted boolean to false
-        //null the pointer to curMemGame once it has been appended to the UserData array
-        Shared.userData.setCurSwapGame(null);
+        Shared.userData.getCurSwapGameData().setGameStarted(false);                  //reset the gameStarted boolean to false
+        //null the pointer to curSwapGameData once it has been appended to the UserData array of SwapGameData objects
+        Shared.userData.setCurSwapGameData(null);
         mTime.setVisibility(View.GONE);
         mTimeImage.setVisibility(View.GONE);
         PopupManager.showPopupWon(event.gameState);

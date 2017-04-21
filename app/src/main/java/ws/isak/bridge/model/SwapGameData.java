@@ -22,10 +22,10 @@ public class SwapGameData {
 
     private static final String TAG = "SwapGameData";
 
-    //TODO: private SwapGame mPlayingSwapGame;
+    private SwapGame mPlayingSwapGame;
 
-    //a Map variable holds the Map representing the current game board - NOTE: not to be stored in database
-    private Map <SwapTileCoordinates, SwapCardData> curSwapGameMap;
+    // Map variable holds the Map representing the current game board - NOTE: not to be stored in database
+    private Map <SwapTileCoordinates, SwapCardData> curSwapBoardMap;
     //Parameters to be saved for database matching game to user
     private long gameStartTimestamp;        //keep track of the timestamp for the start of the game - database primary key
     private String userPlayingName;         //FIXME database foreign key?
@@ -43,8 +43,8 @@ public class SwapGameData {
 
     //constructor method describes the information that is stored about each game played
     public SwapGameData () {
-        Log.d (TAG, "Constructor: initializing game data fields");
-        setSwapGameMap (Shared.currentSwapGame.swapBoardArrangement.cardObjs);
+        //Log.d (TAG, "Constructor: initializing game data fields");
+        setSwapBoardMap (Shared.currentSwapGame.swapBoardArrangement.swapBoardMap);
         setUserPlayingName(Shared.userData.getUserName());
         setGameDifficulty(-1);
         setGameDurationAllocated(0);
@@ -57,37 +57,40 @@ public class SwapGameData {
         initSwapGameMapList();
     }
 
-    //[0] for now this is a deep copy (?) of the map 'cardObjs' initially set up in SwapBoardArrangment
+    //[0] for now this is a deep copy (?) of the map 'swapBoardMap' initially set up in SwapBoardArrangment
     // this gets updated on each turn of the game so that it always holds the current Map of the board
-    public void setSwapGameMap (Map curBoardMap) {
-        curSwapGameMap = new HashMap<>();
+    public void setSwapBoardMap (Map curBoardMap) {
+        curSwapBoardMap = new HashMap<>();
         Iterator iterator = curBoardMap.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry pair = (Map.Entry) iterator.next();
             //System.out.println(pair.getKey() + " maps to " + pair.getValue());
             SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
             SwapCardData cardData = (SwapCardData) pair.getValue();
-            Log.d(TAG, "method setSwapGameMap: Copying... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
+            Log.d(TAG, "method setSwapBoardMap: Copying... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
                     " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
-                    cardData.getCardID().getSwapCardSegmentID() + " >");
-            curSwapGameMap.put(coords, cardData);
-            iterator.remove(); // avoids a ConcurrentModificationException
+                    cardData.getCardID().getSwapCardSegmentID() + " > | coords @: " + coords +
+                    " | cardData @: " + cardData);
+            curSwapBoardMap.put(coords, cardData);
         }
         //create a set view for the map
-        Set set = curSwapGameMap.entrySet();
+        Set set = curSwapBoardMap.entrySet();
         //check set values TODO remove
-        System.out.println("Set values: " + set);
+        //System.out.println("Set values: " + set);
+        //Log.d (TAG, "method setSwapBoardMap: created Map curSwapBoardMap @: " + curSwapBoardMap);
     }
 
     //return a pointer to the local deep copy of the map
-    public Map <SwapTileCoordinates, SwapCardData> getSwapGameMap () {
-        return curSwapGameMap;
+    public Map <SwapTileCoordinates, SwapCardData> getSwapBoardMap () {
+        Log.d (TAG, "method getSwapBoardMap: curSwapBoardMap @: " + curSwapBoardMap +
+                " | curSwapBoardMap.size(): " + curSwapBoardMap.size());
+        return curSwapBoardMap;
     }
 
     //get a pointer to a SwapTileCoordinates key from a SwapCardData value in swapGameMap
     public SwapTileCoordinates getSwapTileCoordinatesFromSwapBoardMap (SwapCardData card) {
         SwapTileCoordinates coordsToReturn = new SwapTileCoordinates(-1, -1);
-        Iterator iterator = curSwapGameMap.entrySet().iterator();
+        Iterator iterator = curSwapBoardMap.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry pair = (Map.Entry) iterator.next();
             //System.out.println(pair.getKey() + " maps to " + pair.getValue());
@@ -99,7 +102,6 @@ public class SwapGameData {
             if (cardData == card) {
                 coordsToReturn = coords;
             }
-            iterator.remove(); // avoids a ConcurrentModificationException
         }
         return coordsToReturn;
     }
@@ -107,7 +109,7 @@ public class SwapGameData {
     //get a pointer to a SwapCardData value from a SwapTileCoordinates key in swapGameMap
     public SwapCardData getSwapCardDataFromSwapBoardMap (SwapTileCoordinates targetCoords) {
         SwapCardData cardToReturn = new SwapCardData();
-        Iterator iterator = curSwapGameMap.entrySet().iterator();
+        Iterator iterator = curSwapBoardMap.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry pair = (Map.Entry) iterator.next();
             //System.out.println(pair.getKey() + " maps to " + pair.getValue());
@@ -117,14 +119,34 @@ public class SwapGameData {
                     " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
                     cardData.getCardID().getSwapCardSegmentID() + " >");
             if (targetCoords == coords) {
+                Log.d (TAG, " *** returning card from targetCoords @: " + targetCoords + " | with coords @: " + coords);
                 cardToReturn = cardData;
             }
-            iterator.remove(); // avoids a ConcurrentModificationException
+            //iterator.remove(); // TODO remove from here as well: avoids a ConcurrentModificationException
         }
         return cardToReturn;
     }
 
-    //[1]
+    //get a pointer to a SwapTileCoordinates key in swapGameMap from a target loc
+    public SwapTileCoordinates getMapSwapTileCoordinatesFromLoc (SwapTileCoordinates loc) {
+        SwapTileCoordinates coordsToReturn = new SwapTileCoordinates(-1, -1);
+        Iterator iterator = curSwapBoardMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry pair = (Map.Entry) iterator.next();
+            //System.out.println(pair.getKey() + " maps to " + pair.getValue());
+            SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
+            SwapCardData cardData = (SwapCardData) pair.getValue();
+            Log.d(TAG, "method getSwapTileCoordinatesFromSwapBoardMap: Searching... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
+                    " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
+                    cardData.getCardID().getSwapCardSegmentID() + " >");
+            if (coords.getSwapCoordRow() == loc.getSwapCoordRow() && coords.getSwapCoordCol() == loc.getSwapCoordCol()) {
+                coordsToReturn = coords;
+            }
+        }
+        return coordsToReturn;
+    }
+
+    //[2]
     public void setUserPlayingName (String userName) {
         //Log.d (TAG, "");
         userPlayingName = userName;
@@ -135,7 +157,7 @@ public class SwapGameData {
         return userPlayingName;
     }
 
-    //[2]
+    //[3]
     public void setGameDifficulty (int diff) {
         //Log.d (TAG, "");
         difficulty = diff;
@@ -146,7 +168,7 @@ public class SwapGameData {
         return difficulty;
     }
 
-    //[3]
+    //[4]
     public void setGameDurationAllocated (long dur) {
         //Log.d (TAG, "");
         gameDurationAllocated = dur;

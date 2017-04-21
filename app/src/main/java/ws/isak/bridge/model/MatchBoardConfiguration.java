@@ -66,9 +66,9 @@ public class MatchBoardConfiguration {
         Log.d (TAG, "method CalculateMatchGameDuration: numTiles: " + numTiles + " | difficultyBaseLine: " + difficultyBaseline + "ms | matchTheme.name: " + matchTheme.name);
         long cumulativeTime = (long) difficultyBaseline;
         for (int i = 0; i < numTiles/2; i++) {
-            //Log.d (TAG, "method CalculateMatchGameDuration: matchTheme.cardObjs.get(i).getCardId(): " + matchTheme.cardObjs.get(i).getCardID());
-            long curCardDur = Shared.matchCardDataList.get(i).getSampleDuration();       //FIXME !!!!!!!!!! WAS matchTheme.cardObjs instead of Shared.matchCardDataList, if this works we can get rid of field in MatchTheme
-            //Log.d (TAG, "                            : matchTheme.cardObjs.get(i).getSampleDuration(): " + matchTheme.cardObjs.get(i).getSampleDuration());
+            //Log.d (TAG, "method CalculateMatchGameDuration: matchTheme.swapBoardMap.get(i).getCardId(): " + matchTheme.swapBoardMap.get(i).getCardID());
+            long curCardDur = Shared.matchCardDataList.get(i).getSampleDuration();       //FIXME !!!!!!!!!! WAS matchTheme.swapBoardMap instead of Shared.matchCardDataList, if this works we can get rid of field in MatchTheme
+            //Log.d (TAG, "                            : matchTheme.swapBoardMap.get(i).getSampleDuration(): " + matchTheme.swapBoardMap.get(i).getSampleDuration());
             cumulativeTime = cumulativeTime + (2 * curCardDur);
             //Log.d (TAG, "                            : cumulativeTime: " + cumulativeTime);
         }
