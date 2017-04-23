@@ -18,12 +18,13 @@
         android:background="@drawable/tile" >
 
         <ImageView
-            android:layout_width="50dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:layout_centerInParent="true"
             android:scaleType="centerCrop"
-            android:src="@drawable/tile_back_star" />   <!-- TODO make 50dp a linked value -->
+            android:src="@drawable/tile_back_question" />   <!-- TODO make 100dp (was 50dp) a linked value -->
+            <!-- TODO can we have different tile backs for different themes? maybe musical notes for audio only? -->
     </RelativeLayout>
 
 </ws.isak.bridge.ui.MatchTileView>

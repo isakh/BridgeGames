@@ -212,7 +212,7 @@ public class Engine extends EventObserverAdapter {
 			protected void onPostExecute(TransitionDrawable result) {
 				super.onPostExecute(result);
 				mBackgroundImage.setImageDrawable(result);
-				result.startTransition(2000);
+				result.startTransition(2000);                   //FIXME - make this a const in xml
 			}
 		};
 		task.execute();

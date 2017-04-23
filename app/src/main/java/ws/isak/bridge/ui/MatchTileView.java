@@ -49,12 +49,14 @@ public class MatchTileView extends FrameLayout {
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
+        Log.d (TAG, "method onFinishInflate");
 		mTopImage = (RelativeLayout) findViewById(R.id.match_image_top);
 		mTileImage = (ImageView) findViewById(R.id.match_image);
+        Log.d (TAG, " ... mTopImage: " + mTopImage + " | mTileImage: " + mTileImage);
 	}
 
 	public void setTileImage(Bitmap bitmap) {
-        //Log.d (TAG, "method setTileImage");
+        Log.d (TAG, "method setTileImage");
 		mTileImage.setImageBitmap(bitmap);
 	}
 

@@ -144,8 +144,10 @@ public class ScreenController {
                 Log.d (TAG, "method getFragment: case DIFFICULTY_SWAP");
                 return new SwapDifficultySelectFragment();
             case GAME_MATCH:
-	    		return new MatchGameFragment();
+                Log.d (TAG, "method getFragment: case GAME_MATCH");
+                return new MatchGameFragment();
             case GAME_SWAP:
+                Log.d (TAG, "method getFragment: case GAME_SWAP");
                 return new SwapGameFragment();
             case POST_SURVEY:
                 return new PostSurveyFragment();

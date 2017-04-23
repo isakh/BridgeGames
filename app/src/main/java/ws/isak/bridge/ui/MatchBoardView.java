@@ -47,7 +47,7 @@ import ws.isak.bridge.utils.ImageScaling;
 
 public class MatchBoardView extends LinearLayout {
 
-	public final String TAG = "BoardView";
+	public static final String TAG = "MatchBoardView";
 
 	private LinearLayout.LayoutParams mRowLayoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 	private LinearLayout.LayoutParams mTileLayoutParams;
@@ -80,9 +80,12 @@ public class MatchBoardView extends LinearLayout {
 	@Override
 	protected void onFinishInflate() {
 		super.onFinishInflate();
+        Log.d (TAG, "method onFinishInflate");
 	}
 
 	public static MatchBoardView fromXml(Context context, ViewGroup parent) {
+        Log.d (TAG, "(MatchBoardView) LayoutInflater.from(context).inflate(R.layout.match_board_view, parent, false): " +
+                LayoutInflater.from(context).inflate(R.layout.match_board_view, parent, false));
 		return (MatchBoardView) LayoutInflater.from(context).inflate(R.layout.match_board_view, parent, false);
 	}
 
@@ -146,7 +149,7 @@ public class MatchBoardView extends LinearLayout {
 	 * Add each tile to the row.
 	 */
 	private void addTile(final int curTileOnBoard, ViewGroup parent) {
-		//Log.d (TAG, "method addTile init");
+		Log.d (TAG, "method addTile init: parent.getVisibility: " + parent.getVisibility() + " | parent.isShown: " + parent.isShown());
 		final MatchTileView matchTileView = MatchTileView.fromXml(getContext(), parent);
 		matchTileView.setLayoutParams(mTileLayoutParams);
 		parent.addView(matchTileView);
@@ -164,6 +167,8 @@ public class MatchBoardView extends LinearLayout {
 			@Override
 			protected void onPostExecute(Bitmap result) {
 				matchTileView.setTileImage(result);
+                Log.d (TAG, "... addTile: onPostExecute: matchTileView.getVisibility: " +
+                        matchTileView.getVisibility() + " | matchTileView.isShown: " + matchTileView.isShown());
 			}
 		}.execute();
 		

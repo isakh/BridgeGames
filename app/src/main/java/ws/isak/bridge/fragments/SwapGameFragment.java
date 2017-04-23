@@ -64,6 +64,7 @@ public class SwapGameFragment extends BaseFragment {
 
         // build board
         buildBoard();
+
         Shared.eventBus.listen(SwapSelectedCardsEvent.TYPE, this);
         Shared.eventBus.listen(SwapGameWonEvent.TYPE, this);
         Shared.eventBus.listen(SwapUnselectCardsEvent.TYPE, this);
@@ -86,6 +87,7 @@ public class SwapGameFragment extends BaseFragment {
     private void buildBoard() {
         Log.d (TAG, "method buildBoard");
         SwapGame swapGame = Shared.engine.getActiveSwapGame();
+        Log.d (TAG, "method buildBoard: time: " + swapGame.swapBoardConfiguration.time);
         long time = swapGame.swapBoardConfiguration.time;
         setTime(time);
         mSwapBoardView.setBoard(swapGame);

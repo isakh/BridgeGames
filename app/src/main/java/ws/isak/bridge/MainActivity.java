@@ -87,7 +87,7 @@ public class  MainActivity extends FragmentActivity {
         // open to User setup screen
         //Log.d(TAG, "               : get instance of user setup screen");
         //FIXME revert to this for app: testing with below ScreenController.getInstance().openScreen(Screen.USER_SETUP);
-        ScreenController.getInstance().openScreen(Screen.MENU_SWAP);
+        ScreenController.getInstance().openScreen(Screen.SELECT_GAME);
     }
 
     @Override

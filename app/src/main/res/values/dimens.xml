@@ -26,7 +26,7 @@
     <!-- =============================================================================== -->
     <!-- Layout: swap_board_view -->
     <!-- *********************** -->
-    <dimen name="swap_board_padding">1dp</dimen>
+    <dimen name="swap_board_padding">10dp</dimen>
 
     <!-- ================================================================================-->
     <!-- Layout: match_difficulty_select_fragment -->

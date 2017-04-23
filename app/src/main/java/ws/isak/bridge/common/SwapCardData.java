@@ -20,8 +20,6 @@ public class SwapCardData
     private SwapCardID cardID;                  //cardID is a two-tuple built from <speciesID, segmentActiveID>
     private String speciesName;                 //this string stores the species name from R.strings.species_bird_% FIXME make dynamic?
 
-    //FIXME remove: private SwapTileCoordinates cardOnTileID;   //cardOnTileID is a tuple <row, col> of type SwapTileCoordinates
-
     private String spectroURI0;
     private String spectroURI1;
     private String spectroURI2;

@@ -118,11 +118,11 @@ public class SwapGameData {
             Log.d(TAG, "method getSwapCardDataFromSwapBoardMap: Searching... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
                     " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
                     cardData.getCardID().getSwapCardSegmentID() + " >");
-            if (targetCoords == coords) {
+            if (targetCoords.getSwapCoordRow() == coords.getSwapCoordRow() && targetCoords.getSwapCoordCol() == coords.getSwapCoordCol()) {
                 Log.d (TAG, " *** returning card from targetCoords @: " + targetCoords + " | with coords @: " + coords);
                 cardToReturn = cardData;
             }
-            //iterator.remove(); // TODO remove from here as well: avoids a ConcurrentModificationException
+            //iterator.remove(); // TODO remove from here as well: avoids a ConcurrentModificationException but is destructive of map
         }
         return cardToReturn;
     }

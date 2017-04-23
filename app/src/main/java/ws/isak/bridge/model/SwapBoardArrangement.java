@@ -49,7 +49,7 @@ public class SwapBoardArrangement {
         SwapCardData cardOnTile = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(loc);
         Log.d (TAG, "method getSwapTileBitmap: getSwapTileCoords from Map: " +
                     Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(loc) +
-                    " cardOnTile: " +cardOnTile + "cardOnTile IDs: < " +
+                    " | cardOnTile: " +cardOnTile + " | cardOnTile IDs: < " +
                     cardOnTile.getCardID().getSwapCardSpeciesID() +
                     "," + cardOnTile.getCardID().getSwapCardSegmentID() + " >");
 
@@ -74,8 +74,10 @@ public class SwapBoardArrangement {
             int drawableResourceID = Shared.context.getResources().getIdentifier(drawableResourceName, "drawable", Shared.context.getPackageName());
             Log.d (TAG, "                       : drawableResourceID: " + drawableResourceID);
             Bitmap bitmap = ImageScaling.scaleDown(drawableResourceID, size, size);
+            Log.d (TAG, "method getSwapTileBitmap: SUCCESS: returning a bitmap");
             return ImageScaling.crop(bitmap, size, size);
         }
+        Log.d (TAG, "method getSwapTileBitmap: ERROR: returning no bitmap");
         return null;
     }
 }

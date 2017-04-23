@@ -51,7 +51,7 @@ import ws.isak.bridge.utils.SwapTileCoordinates;
 
 public class SwapBoardView extends LinearLayout {
 
-    public final String TAG = "SwapBoardView";
+    public static final String TAG = "SwapBoardView";
 
     private LinearLayout.LayoutParams mRowLayoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     private LinearLayout.LayoutParams mTileLayoutParams;
@@ -61,8 +61,8 @@ public class SwapBoardView extends LinearLayout {
     private SwapBoardConfiguration mSwapBoardConfiguration;
     //an instance of the board arrangement for the current game
     private SwapBoardArrangement mSwapBoardArrangement;
-    //a mapping of each tile ID (integer curTileOnBoard) to a view TileView
-    private Map<SwapTileCoordinates, SwapTileView> mTileViewReference;
+    //a mapping of each tile ID to a view TileView
+    private Map<SwapTileCoordinates, SwapTileView> mTileViewMap;
     //an array list to hold the id's of the currently selected cards
     private List<SwapTileCoordinates> selectedTiles = new ArrayList<SwapTileCoordinates>();
     //a flag to keep track of whether zero or one cards has been selected already
@@ -78,22 +78,27 @@ public class SwapBoardView extends LinearLayout {
 
     public SwapBoardView(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
+        Log.d (TAG, "SwapBoardView constructor");
         setOrientation(LinearLayout.VERTICAL);
         setGravity(Gravity.CENTER);
         int margin = getResources().getDimensionPixelSize(R.dimen.swap_margin_top);
         int padding = getResources().getDimensionPixelSize(R.dimen.swap_board_padding);
         mScreenHeight = getResources().getDisplayMetrics().heightPixels - margin - padding*2;               //TODO * proportion of screen for view
         mScreenWidth = getResources().getDisplayMetrics().widthPixels - padding*2 - ImageScaling.px(20);    //TODO * proportion of screen for view
-        mTileViewReference = new HashMap<SwapTileCoordinates, SwapTileView>();
+        Log.d (TAG, " ... mScreenHeight: " + mScreenHeight + " | mScreenWidth: " + mScreenWidth);
+        mTileViewMap = new HashMap<SwapTileCoordinates, SwapTileView>();
         setClipToPadding(false);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        Log.d (TAG, "method onFinishInflate");
     }
 
     public static SwapBoardView fromXml(Context context, ViewGroup parent) {
+        Log.d (TAG, "method fromXml: inflating layout for swap_board_view" +
+                LayoutInflater.from(context).inflate(R.layout.swap_board_view, parent, false));
         return (SwapBoardView) LayoutInflater.from(context).inflate(R.layout.swap_board_view, parent, false);
     }
 
@@ -174,20 +179,35 @@ public class SwapBoardView extends LinearLayout {
 
     // Add each tile to the board at position curTileOnBoard
     private void addTile(final SwapTileCoordinates curTileOnBoard, ViewGroup parent) {
-        Log.d (TAG, "method addTile init: address of curTileOnBoard: " + curTileOnBoard +
+        Log.d (TAG, "method addTile: address of curTileOnBoard: " + curTileOnBoard +
                 " | curTileOnBoard coords: < " + curTileOnBoard.getSwapCoordRow() + "," +
-                curTileOnBoard.getSwapCoordCol() + " >");
+                curTileOnBoard.getSwapCoordCol() + " >" + " | parent.getVisibility: " + parent.getVisibility() +
+                " | parent.isShown: " + parent.isShown());
         final SwapTileView swapTileView = SwapTileView.fromXml(getContext(), parent);
         swapTileView.setLayoutParams(mTileLayoutParams);
         parent.addView(swapTileView);
         parent.setClipChildren(false);
-        mTileViewReference.put(curTileOnBoard, swapTileView);
+        mTileViewMap.put(curTileOnBoard, swapTileView);
+
+        //FIXME debugging code - remove when solved
+        Log.d (TAG, "... mTileViewMap @: " + mTileViewMap);
+        Iterator iterator = mTileViewMap.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry pair = (Map.Entry) iterator.next();
+            //System.out.println(pair.getKey() + " maps to " + pair.getValue());
+            SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
+            SwapTileView tileView = (SwapTileView) pair.getValue();
+            Log.d(TAG, "method getSwapCardDataFromSwapBoardMap: Searching... coords: < " +
+                    coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
+                    " > | MAPS TO | SwapTileView: " + tileView);
+        }
+        //TODO end debug block
 
         new AsyncTask<Void, Void, Bitmap>() {
 
             @Override
             protected Bitmap doInBackground(Void... params) {
-                Log.d (TAG, "*** method: addTile: new AsyncTask: override doInBackground: curTileOnBoard is: " +
+                Log.d (TAG, "*** method addTile: new AsyncTask: override doInBackground: curTileOnBoard is: " +
                         curTileOnBoard + "| coords are: < " + curTileOnBoard.getSwapCoordRow() +
                         "," + curTileOnBoard.getSwapCoordCol() + " > | mSize is: " + mSize);
                 //gets one of four bitmaps depending on flags at current coordinates
@@ -196,7 +216,13 @@ public class SwapBoardView extends LinearLayout {
 
             @Override
             protected void onPostExecute(Bitmap result) {
+                Log.d (TAG, "*** method addTile: Overriding onPostExecute: setting bitmap 'result'");
                 swapTileView.setTileImage(result);
+                Log.d (TAG, "... addTile: onPostExecute: swapTileView.getVisibility: " +
+                        swapTileView.getVisibility() + " | swapTileView.isShown: " + swapTileView.isShown());
+                swapTileView.setVisibility(VISIBLE);
+                Log.d (TAG, "... addTile: onPostExecute: set VISIBLE: swapTileView.getVisibility: " +
+                        swapTileView.getVisibility() + " | swapTileView.isShown: " + swapTileView.isShown());
             }
         }.execute();
 
@@ -267,14 +293,14 @@ public class SwapBoardView extends LinearLayout {
 
 
                     //TODO Remove this? or should it be an option: Shared.eventBus.notify(new PlayCardAudioEvent(curTileOnBoard));
-                } else if (1 ==2 ) { //TODO variable to check if card has been selected already //error check if locked
+                } else if (1 == 2 ) { //TODO variable to check if card has been selected already //error check if locked
                     Log.d(TAG, "   : onClick Failed: the card has already been mSelected: " + mSelected); //TODO should we allow double click to be unselect?
                 } else if (!swapTileView.isSelected()) {                   //error check if card already selected
                     Log.d(TAG, "   : onClick Failed: !swapTileView.isSelected(): " + !swapTileView.isSelected());
                     Toast.makeText(Shared.context, "cannot select card, already selected", Toast.LENGTH_SHORT).show(); //TODO should we allow double click to be unselect?
                 } else if (!Audio.MIX && Audio.getIsAudioPlaying()) {     //error mix is off and audio already playing
                     Log.d(TAG, "   : onClick Failed: Audio.Mix is: " + Audio.MIX + " & Audio.getIsAudioPlaying() is: " + Audio.getIsAudioPlaying());
-                    Toast.makeText(Shared.context, "cannot select card, wait for audio to finish or set mix ON in settings", Toast.LENGTH_SHORT).show();
+                    //TODO - does this make sense? Toast.makeText(Shared.context, "cannot select card, wait for audio to finish or set mix ON in settings", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -285,7 +311,7 @@ public class SwapBoardView extends LinearLayout {
         scaleYAnimator.setInterpolator(new BounceInterpolator());
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(scaleXAnimator, scaleYAnimator);
-        animatorSet.setDuration(500);
+        animatorSet.setDuration(500);                                   //FIXME - make this timing a const in xml
         swapTileView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
         animatorSet.start();
     }
@@ -294,7 +320,7 @@ public class SwapBoardView extends LinearLayout {
         Log.d (TAG, "method unSelectAll ... at start");
         for (SwapTileCoordinates id : selectedTiles) {
             //for (int id = 0; id < flippedUp.size(); id++) {
-            mTileViewReference.get(id).unSelect();
+            mTileViewMap.get(id).unSelect();
             Log.d (TAG, "method unSelectAll: current id in list selectedTiles is: " + id);
         }
         selectedTiles.clear();

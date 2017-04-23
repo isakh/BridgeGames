@@ -25,8 +25,9 @@ import ws.isak.bridge.R;
 
 public class SwapTileView extends FrameLayout {
 
-    public final String TAG = "SwapTileView";
+    public static final String TAG = "SwapTileView";
 
+    private RelativeLayout mTopImage;
     private ImageView mTileImage;
     private boolean mSelected = false;
 
@@ -37,35 +38,38 @@ public class SwapTileView extends FrameLayout {
 
     public SwapTileView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        //Log.d (TAG, "overloaded constructor");
+        Log.d (TAG, "overloaded constructor");
     }
 
     public static SwapTileView fromXml(Context context, ViewGroup parent) {
+        Log.d (TAG, "method fromXml: inflating swap_tile_view");
         return (SwapTileView) LayoutInflater.from(context).inflate(R.layout.swap_tile_view, parent, false);
     }
 
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        Log.d (TAG, "method onFinishInflate");
+        mTopImage = (RelativeLayout) findViewById(R.id.swap_image_top);
         mTileImage = (ImageView) findViewById(R.id.swap_tile_image);
+        Log.d (TAG, " ... mTopImage: " + mTopImage + " | mTileImage: " + mTileImage);
     }
 
     public void setTileImage(Bitmap bitmap) {
-        //Log.d (TAG, "method setTileImage");
+        Log.d (TAG, "method setTileImage");
         mTileImage.setImageBitmap(bitmap);
+        Log.d (TAG, "method setTileImage: mTileImage @: " + mTileImage + " | set with bitmap: " + bitmap);
     }
 
     public void select() {
-        //Log.d (TAG, "method flipUp ... at start");
+        Log.d (TAG, "method select ... at start");
         mSelected = true;
         //TODO addSelectionBounds();
     }
 
     public void unSelect() {
-        //Log.d (TAG, "method flipDown ... at start");
+        Log.d (TAG, "method unSelect ... at start");
         mSelected = false;
         //TODO removeSelectionBounds();
     }
-
-
 }
