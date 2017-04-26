@@ -333,8 +333,8 @@ public class Engine extends EventObserverAdapter {
         Clock clock = Clock.getInstance();
         clock.pauseClock();
         Shared.currentSwapGame.gameClock = clock;
-
-
+        Log.d (TAG, "onEvent(SwapDifficultySelectedEvent): Shared.currentSwapGame.gameClock.isClockPaused() : " +
+                Shared.currentSwapGame.gameClock.isClockPaused());
 
         // arrange board
         arrangeSwapBoard();

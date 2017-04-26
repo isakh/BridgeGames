@@ -42,7 +42,8 @@ public class SwapTileView extends FrameLayout {
     }
 
     public static SwapTileView fromXml(Context context, ViewGroup parent) {
-        Log.d (TAG, "method fromXml: inflating swap_tile_view");
+        Log.d (TAG, "method fromXml: inflating swap_tile_view: " +
+                LayoutInflater.from(context).inflate(R.layout.swap_tile_view, parent, false));
         return (SwapTileView) LayoutInflater.from(context).inflate(R.layout.swap_tile_view, parent, false);
     }
 

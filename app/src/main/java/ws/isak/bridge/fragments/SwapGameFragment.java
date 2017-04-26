@@ -21,7 +21,6 @@ import ws.isak.bridge.events.engine.SwapGameWonEvent;
 import ws.isak.bridge.model.SwapGame;
 import ws.isak.bridge.ui.SwapBoardView;
 import ws.isak.bridge.ui.PopupManager;
-import ws.isak.bridge.utils.Clock;
 import ws.isak.bridge.utils.TimerCountdown;
 import ws.isak.bridge.utils.FontLoader;
 import ws.isak.bridge.utils.FontLoader.Font;
@@ -116,6 +115,11 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         Shared.eventBus.unlisten(SwapSelectedCardsEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapGameWonEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapUnselectCardsEvent.TYPE, this);
+
+        //TODO build audio controls
+        //Shared.eventBus.unlisten(SwapPlayRowAudioEvent.TYPE, this);
+        //Shared.eventBus.unlisten(SwapPauseRowAudioEvent.TYPE, this);
+
         super.onDestroy();
     }
 
@@ -125,6 +129,8 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         Log.d (TAG, "method buildBoard: time: " + Shared.currentSwapGame.swapBoardConfiguration.getGameTime());
         long time = Shared.currentSwapGame.swapBoardConfiguration.getGameTime();
         setTime(time);
+        Log.d (TAG, "method buildBoard: check pointer to game: Shared.engine.getActiveSwapGame: " +
+                    Shared.engine.getActiveSwapGame() + " | Shared.currentSwapGame : " + Shared.currentSwapGame);
         mSwapBoardView.setBoard(swapGame);
         startClock(time);
     }
@@ -157,10 +163,11 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void onFinish() {
                 Log.d (TAG, "method startClock: overriding onFinish");
+                mTimerPlayPause.setVisibility(View.INVISIBLE);          //TODO - does this make controls disappear on finish?
+                mTimerRestart.setVisibility(View.INVISIBLE);
                 setTime(0);
             }
         });
-        //FIXME Shared.currentMatchGame.gameClock.pauseClock();
     }
 
     @Override

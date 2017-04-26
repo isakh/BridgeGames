@@ -146,25 +146,23 @@ public class SwapBoardView extends LinearLayout {
      * Build the board
      */
     private void buildBoard() {
-        //Log.d (TAG, "method: buildBoard");
+        Log.d (TAG, "method: buildBoard: mSwapBoardConfiguration.numRows: " + mSwapBoardConfiguration.numRows);
         for (int row = 0; row < mSwapBoardConfiguration.numRows; row++) {
             // add row
+            Log.d (TAG, "... calling addBoardRow");
             addBoardRow(row);
         }
-
         setClipChildren(false);
     }
 
-    /*
-     * Add each row to the board.
-     */
+    //Add each row to the board.
     private void addBoardRow(int rowNum) {
         Log.d (TAG, "method: addBoardRow");
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER);
 
-        //TODO!!! addRowControls();     //this method will draw a pair of buttons to the left of each row (play/pauseClock?)
+        addRowControls(linearLayout);     //this method will draw a pair of buttons to the left of each row (play/pauseClock?)
         Log.d (TAG, "method addBoardRow: Shared.userData.getCurSwapGameData.getSwapBoardMap @: " + Shared.userData.getCurSwapGameData().getSwapBoardMap());
 
         for (int curTileInRow = 0; curTileInRow < SwapBoardConfiguration.swapNumTilesInRow; curTileInRow++) {
@@ -175,6 +173,10 @@ public class SwapBoardView extends LinearLayout {
         // add to this view
         addView(linearLayout, mRowLayoutParams);
         linearLayout.setClipChildren(false);
+    }
+
+    private void addRowControls (LinearLayout rowLayout) {
+        final SwapControlsView swapControlsView = SwapControlsView.fromXml(getContext(), parent);
     }
 
     // Add each tile to the board at position curTileOnBoard

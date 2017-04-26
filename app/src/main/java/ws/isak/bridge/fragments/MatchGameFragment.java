@@ -148,6 +148,8 @@ public class MatchGameFragment extends BaseFragment implements View.OnClickListe
 			@Override
 			public void onFinish() {
                 Log.d (TAG, "method startClock: overriding onFinish");
+                mTimerPlayPause.setVisibility(View.INVISIBLE);          //TODO - does this make controls disappear on finish?
+                mTimerRestart.setVisibility(View.INVISIBLE);
 				setTime(0);
 			}
 		});
