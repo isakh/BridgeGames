@@ -129,6 +129,7 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
 
 	public void setGameState(final GameState gameState) {
 		Log.d (TAG, "method setGameState");
+        Log.d (TAG, " ... gameState: " + gameState + " | gameState.remainingTimeInSeconds: " + gameState.remainingTimeInSeconds);
 		int min = gameState.remainingTimeInSeconds / 60;
 		int sec = gameState.remainingTimeInSeconds - min * 60;
 		mTime.setText(" " + String.format(Locale.ENGLISH, "%02d", min) + ":" +
@@ -211,10 +212,11 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
 
 	private void animateScoreAndTime(final int remainingTimeInSeconds, final int achievedScore) {
 		Log.d (TAG, "method animateScoreAndTime: remainingTimeInSeconds: " + remainingTimeInSeconds + " | achievedScore: " + achievedScore);
-		final int totalAnimation = 1200;        //TODO change this to a variable? -
-
+		final int totalAnimation = 1000;        //TODO change this to a variable? -
+        final int timeTaken = (int) (Shared.currentMatchGame.gameClock.getPassedTime() / 1000);
+        Log.d (TAG, "animateScoreAndTime: timeTaken: " + timeTaken);
         Log.d (TAG, "method animateScoreAndTime: calling Clock.getInstance().startTimer");
-		Clock.getInstance().startClock(totalAnimation, 35, new TimerCountdown() {     //run through the clock at 35ms per second (just over 30fps so not video?)
+		Clock.getInstance().startClock(totalAnimation, 50, new TimerCountdown() {     //run through the clock at 35ms per second (just over 30fps so not video?)
 
 			@Override
 			public void onTick(long millisUntilFinished) {
@@ -224,15 +226,23 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
 				int timeToShow = (int) (remainingTimeInSeconds * factor);
 				int min = timeToShow / 60;
 				int sec = timeToShow - min * 60;
-				mTime.setText(" " + String.format("%02d", min) + ":" + String.format("%02d", sec));
+                Log.d (TAG, "animateScoreAndTime: factor: " + factor + " | min: " + min +
+                        " | sec: " + sec);
+                mTime.setText(" " + String.format(Locale.ENGLISH, "%02d", min) + ":" +
+                        String.format(Locale.ENGLISH, "%02d", sec));
 				mScore.setText("" + scoreToShow);
 			}
 
 			@Override
 			public void onFinish() {
                 Log.d (TAG, "method animateScoreAndTime: overriding onFinish");
-				mTime.setText(" " + String.format("%02d", 0) + ":" + String.format("%02d", 0));
-				mScore.setText("" + achievedScore);
+                int timeTakenMin = timeTaken / 60;
+                int timeTakenSec = timeTaken - timeTakenMin * 60;
+                Log.d (TAG, "animateScoreAndTime: final time | min: " + timeTakenMin +
+                        " | sec: " + timeTakenSec);
+                mTime.setText(" " + String.format(Locale.ENGLISH, "%02d", timeTakenMin) + ":" +
+                        String.format(Locale.ENGLISH, "%02d", timeTakenSec));
+                mScore.setText("" + achievedScore);
 			}
 		});
 	}

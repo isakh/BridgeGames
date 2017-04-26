@@ -74,13 +74,15 @@
             android:shadowDx="4"
             android:shadowDy="4"
             android:shadowRadius="4"
-            android:text="@string/popup_won_time_text"/>
+            android:text="@string/popup_won_time_text"
+            android:textSize="@dimen/popup_won_time_text_size"
+            android:textColor="#0e0e0e"/>
 
         <ImageView
             android:id="@+id/popup_won_time_clock_image"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.3"
+            android:layout_weight="0.2"
             android:gravity="center"
             android:src="@drawable/clock"/> <!-- clock image here 200x200px?-->
 
@@ -88,7 +90,7 @@
             android:id="@+id/popop_won_time_left_countdown"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.3"
+            android:layout_weight="0.4"
             android:gravity="center"
             android:shadowColor="#2eaed9"
             android:shadowDx="4"
@@ -116,13 +118,15 @@
             android:shadowDx="4"
             android:shadowDy="4"
             android:shadowRadius="4"
-            android:text="@string/popup_won_score_text"/>
+            android:text="@string/popup_won_score_text"
+            android:textSize="@dimen/popup_won_score_text_size"
+            android:textColor="#0e0e0e"/>
 
         <ImageView
             android:id="@+id/popup_won_score_star_image"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.3"
+            android:layout_weight="0.2"
             android:gravity="center"
             android:src="@drawable/level_complete_star"/>
 
@@ -130,7 +134,7 @@
             android:id="@+id/popup_won_score_bar_text"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.3"
+            android:layout_weight="0.4"
             android:gravity="center"
             android:shadowColor="#2eaed9"
             android:shadowDx="4"

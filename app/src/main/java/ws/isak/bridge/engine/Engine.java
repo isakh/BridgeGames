@@ -493,12 +493,13 @@ public class Engine extends EventObserverAdapter {
 						//play the correct match audio
                         Audio.playCorrect();
 					}
-				}, 1000);		//TODO instead of fixed delay 1000ms use duration of sample
+				}, 1000);		//TODO instead of fixed delay 1000ms use duration of sample?
 				mToFlip -= 2;			//remaining number of tiles to flip..
 				if (mToFlip == 0) {		//when this gets to 0, we have flipped all pairs and can compute the score
-					int passedSeconds = (int) (Clock.getInstance().getPassedTime() / 1000);
+					int passedSeconds = (int) (Shared.currentMatchGame.gameClock.getPassedTime() / 1000);
+                    Log.d (TAG, "onEvent MatchFlipCardsEvent: game has been won: passedSeconds: " + passedSeconds);
 					Clock.getInstance().pauseClock();           //FIXME could this be stop clock?
-					long totalTimeInMillis = mPlayingMatchGame.matchBoardConfiguration.time;
+					long totalTimeInMillis = mPlayingMatchGame.matchBoardConfiguration.getTime();
                     int totalTime = (int) Math.ceil((double) totalTimeInMillis / 1000); //TODO is this enough or should we convert all to long ms
 					GameState gameState = new GameState();
 					mPlayingMatchGame.gameState = gameState;
@@ -563,7 +564,8 @@ public class Engine extends EventObserverAdapter {
             }
         }
         if (winning) {
-            int passedSeconds = (int) (Clock.getInstance().getPassedTime() / 1000);
+            int passedSeconds = (int) (Shared.currentSwapGame.gameClock.getPassedTime() / 1000);
+            Log.d (TAG, "onEvent SwapSelectedCardsEvent: winning: " + winning);     //TODO check passed time is right
             Clock.getInstance().pauseClock();
             long totalTimeInMillis = mPlayingSwapGame.swapBoardConfiguration.time;
             int totalTime = (int) Math.ceil((double) totalTimeInMillis / 1000); //TODO is this enough or should we convert all to long ms

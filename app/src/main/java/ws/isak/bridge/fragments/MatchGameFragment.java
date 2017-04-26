@@ -151,7 +151,6 @@ public class MatchGameFragment extends BaseFragment implements View.OnClickListe
 				setTime(0);
 			}
 		});
-        //FIXME Shared.currentMatchGame.gameClock.pauseClock();
 	}
 
 	@Override
