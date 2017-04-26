@@ -1,6 +1,7 @@
 package ws.isak.bridge.model;
 
 import ws.isak.bridge.themes.MatchTheme;
+import ws.isak.bridge.utils.Clock;
 
 /**
  * This is the instance of an active playing match game.  A given game is comprised of: a board configuration
@@ -14,21 +15,10 @@ import ws.isak.bridge.themes.MatchTheme;
  */
 public class MatchGame {
 
-	/**
-	 * The board configuration
-	 */
 	public MatchBoardConfiguration matchBoardConfiguration;
-
-	/**
-	 * The board arrangement
-	 */
 	public MatchBoardArrangement matchBoardArrangement;
-
-	/**
-	 * The selected matchTheme
-	 */
 	public MatchTheme matchTheme;
-
 	public GameState gameState;
+    public Clock gameClock;
 
 }

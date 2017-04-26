@@ -20,10 +20,9 @@ import ws.isak.bridge.events.engine.SwapGameWonEvent;
 
 import ws.isak.bridge.model.SwapGame;
 import ws.isak.bridge.ui.SwapBoardView;
-import ws.isak.bridge.ui.SwapBoardControlsView;
 import ws.isak.bridge.ui.PopupManager;
 import ws.isak.bridge.utils.Clock;
-import ws.isak.bridge.utils.Clock.OnTimerCount;
+import ws.isak.bridge.utils.TimerCountdown;
 import ws.isak.bridge.utils.FontLoader;
 import ws.isak.bridge.utils.FontLoader.Font;
 
@@ -35,15 +34,17 @@ import ws.isak.bridge.utils.FontLoader.Font;
  * @author isak
  */
 
-public class SwapGameFragment extends BaseFragment {
+public class SwapGameFragment extends BaseFragment implements View.OnClickListener {
 
     public final String TAG = "SwapGameFragment";
 
 
     private SwapBoardView mSwapBoardView;
-    private SwapBoardControlsView mSwapBoardControllerView;
     private TextView mTime;
     private ImageView mTimeImage;
+    private ImageView mTimerPlayPause;
+    private ImageView mTimerRestart;        //TODO later, this functionality may not be necessary
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,10 +52,14 @@ public class SwapGameFragment extends BaseFragment {
         //create the view for the swap game fragment
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.swap_game_fragment, container, false);
         view.setClipChildren(false);
-        //
         ((ViewGroup)view.findViewById(R.id.swap_game_board)).setClipChildren(false);
-        mTime = (TextView) view.findViewById(R.id.time_bar_text);                       //FIXME is this id right?
+        mTime = (TextView) view.findViewById(R.id.time_bar_text_view);
         mTimeImage = (ImageView) view.findViewById(R.id.time_bar_image);
+        mTimerPlayPause = (ImageView) view.findViewById(R.id.time_bar_play_pause_button);
+        mTimerRestart = (ImageView) view.findViewById(R.id.time_bar_restart_button);
+        mTimerRestart.setVisibility(View.INVISIBLE);
+        mTimerPlayPause.setOnClickListener(this);
+        mTimerRestart.setOnClickListener(this);
         FontLoader.setTypeface(Shared.context, new TextView[] {mTime}, Font.ANGRYBIRDS);
         //the swap game play container
         mSwapBoardView = SwapBoardView.fromXml(getActivity().getApplicationContext(), view);
@@ -77,6 +82,36 @@ public class SwapGameFragment extends BaseFragment {
     }
 
     @Override
+    public void onClick (View view) {
+        switch (view.getId()) {
+            case R.id.time_bar_play_pause_button:
+                pauseTimerButton();
+                break;
+            case R.id.time_bar_restart_button:
+                restartGameButton();
+                break;
+        }
+    }
+
+    private void pauseTimerButton () {
+        if (!Shared.currentMatchGame.gameClock.isClockPaused()) {   //isClockPaused false means playing
+            mTimerRestart.setVisibility(View.VISIBLE);
+            Shared.currentMatchGame.gameClock.pauseClock();         //call pauseClock and make next button restart play
+            mTimerPlayPause.setImageResource(R.drawable.timer_play_button);
+        }
+        else {
+            mTimerRestart.setVisibility(View.INVISIBLE);
+            Shared.currentMatchGame.gameClock.resumeClock();
+            mTimerPlayPause.setImageResource(R.drawable.timer_pause_button);
+        }
+    }
+
+    private void restartGameButton () {
+        //TODO decide if this button should do anything - if so how does database handle incomplete games?
+        // - Shared.currentMatchGame.gameClock.cancelClock();
+    }
+
+    @Override
     public void onDestroy() {
         Shared.eventBus.unlisten(SwapSelectedCardsEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapGameWonEvent.TYPE, this);
@@ -87,11 +122,10 @@ public class SwapGameFragment extends BaseFragment {
     private void buildBoard() {
         Log.d (TAG, "method buildBoard");
         SwapGame swapGame = Shared.engine.getActiveSwapGame();
-        Log.d (TAG, "method buildBoard: time: " + swapGame.swapBoardConfiguration.time);
-        long time = swapGame.swapBoardConfiguration.time;
+        Log.d (TAG, "method buildBoard: time: " + Shared.currentSwapGame.swapBoardConfiguration.getGameTime());
+        long time = Shared.currentSwapGame.swapBoardConfiguration.getGameTime();
         setTime(time);
         mSwapBoardView.setBoard(swapGame);
-
         startClock(time);
     }
 
@@ -100,27 +134,24 @@ public class SwapGameFragment extends BaseFragment {
      * the countdown clock on the screen //TODO CHECK THIS IS TRUE?!
      */
     private void setTime(long time) {
-        //Log.d (TAG, "method setTime: input time (ms): " + time);
+        Log.d (TAG, "method setTime: input time (ms): " + time);
         int timeInSeconds = (int) Math.ceil ((double) time / 1000);
-        //Log.d (TAG, "              : timeInSeconds: " + timeInSeconds);
+        Log.d (TAG, "              : timeInSeconds: " + timeInSeconds);
         int min = timeInSeconds / 60;
-        //Log.d (TAG, "              : min: " + min);
+        Log.d (TAG, "              : min: " + min);
         int sec = timeInSeconds - min*60;
-        //Log.d (TAG, "              : sec: " + sec + " | calling mTime.setText");
+        Log.d (TAG, "              : sec: " + sec + " | calling mTime.setText");
         mTime.setText(" " + String.format(Locale.ENGLISH, "%02d", min) + ":" + String.format(Locale.ENGLISH, "%02d", sec));
     }
 
     private void startClock(long time) {
-        Log.d (TAG, "method startClock: intput time(ms): " + time);
-        //TODO remove int sec = (int) Math.ceil ((double) time / 1000);
-        Clock clock = Clock.getInstance();
-        //TODO remove clock.startTimer(sec*1000, 1000, new OnTimerCount() {
-        clock.startTimer(time, 1000, new OnTimerCount() {
+        Log.d (TAG, "method startClock: input time(ms): " + time);
+        Shared.currentSwapGame.gameClock.startClock(time, 1000, new TimerCountdown() {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                //Log.d (TAG, "method startClock: overriding onTick: input millisUntilFinished: " + millisUntilFinished);
-                setTime((int) (millisUntilFinished/1000));
+                Log.d (TAG, "Clock: onTick: millisUntilFinished: " + millisUntilFinished);
+                setTime (millisUntilFinished);
             }
 
             @Override
@@ -129,6 +160,7 @@ public class SwapGameFragment extends BaseFragment {
                 setTime(0);
             }
         });
+        //FIXME Shared.currentMatchGame.gameClock.pauseClock();
     }
 
     @Override

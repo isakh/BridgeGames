@@ -13,7 +13,27 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/match_margin_top" >
+            android:layout_height="@dimen/match_margin_top_timer" >
+
+            <ImageView
+                android:id="@+id/time_bar_play_pause_button"
+                android:layout_width="@dimen/match_timer_button_width"
+                android:layout_height="@dimen/match_timer_button_height"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/match_timer_pause_margin_right"
+                android:src="@drawable/timer_play_button"
+                android:onClick="pauseTimerButton"/>
+
+            <ImageView
+                android:id="@+id/time_bar_restart_button"
+                android:layout_width="@dimen/match_timer_button_width"
+                android:layout_height="@dimen/match_timer_button_height"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/match_timer_restart_margin_right"
+                android:src="@drawable/timer_restart_button"
+                android:onClick="restartGameButton"/>
 
             <ImageView
                 android:id="@+id/time_bar_image"
@@ -25,7 +45,7 @@
                 android:src="@drawable/time_bar" />
 
             <TextView
-                android:id="@+id/time_bar_text"
+                android:id="@+id/time_bar_text_view"
                 android:layout_width="@dimen/match_clock_width"
                 android:layout_height="@dimen/match_clock_height"
                 android:layout_alignParentRight="true"

@@ -34,7 +34,7 @@ public class MatchThemes {
         matchTheme.themeID = 0;
         matchTheme.name = Shared.context.getString(R.string.match_themes_blank_name);
         matchTheme.pairedImagesDiffer = false;
-        matchTheme.backgroundImageUrl = URI_DRAWABLE + "back_blank";
+        matchTheme.backgroundImageUrl = URI_DRAWABLE + "background_match_blank";
         matchTheme.cardObjs = new ArrayList<MatchCardData>();
         Collections.copy(Shared.matchCardDataList, matchTheme.cardObjs);      //FIXME this isn't necessary - can replace all instances of matchTheme.swapBoardMap with Shared.matchCardDataList
         return matchTheme;
@@ -45,7 +45,7 @@ public class MatchThemes {
 		matchTheme.themeID = 1;
 		matchTheme.name = Shared.context.getString(R.string.match_themes_birds_name);
 		matchTheme.pairedImagesDiffer = true;
-		matchTheme.backgroundImageUrl = URI_DRAWABLE + "back_birds";
+		matchTheme.backgroundImageUrl = URI_DRAWABLE + "background_match_birds";
 		matchTheme.cardObjs = new ArrayList<MatchCardData>();		//ArrayList of type MatchCardData
         Collections.copy(Shared.matchCardDataList, matchTheme.cardObjs);
 		return matchTheme;
@@ -56,7 +56,7 @@ public class MatchThemes {
 		matchTheme.themeID = 2;
 		matchTheme.name = Shared.context.getString(R.string.match_themes_spectrograms_name);
 		matchTheme.pairedImagesDiffer = false;
-		matchTheme.backgroundImageUrl = URI_DRAWABLE + "back_spectrograms";
+		matchTheme.backgroundImageUrl = URI_DRAWABLE + "background_match_spectrograms";
 		matchTheme.cardObjs = new ArrayList<MatchCardData>();		//ArrayList of MatchCardData objects
         Collections.copy(Shared.matchCardDataList, matchTheme.cardObjs);
 		return matchTheme;

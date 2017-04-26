@@ -58,7 +58,8 @@ public class MatchTileView extends FrameLayout {
 	public void setTileImage(Bitmap bitmap) {
         Log.d (TAG, "method setTileImage");
 		mTileImage.setImageBitmap(bitmap);
-	}
+        Log.d (TAG, "method setTileImage: mTileImage @: " + mTileImage + " | set with bitmap: " + bitmap);
+    }
 
 	public void flipUp() {
 		//Log.d (TAG, "method flipUp ... at start");

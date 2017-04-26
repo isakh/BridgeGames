@@ -3,6 +3,7 @@ package ws.isak.bridge.engine;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.List;
 import java.util.Random;
@@ -20,6 +21,8 @@ import android.os.Handler;
 
 import android.util.Log;
 
+import android.view.animation.AlphaAnimation;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ImageView;
 
@@ -73,6 +76,7 @@ import ws.isak.bridge.model.SwapBoardArrangement;
 import ws.isak.bridge.utils.Clock;
 import ws.isak.bridge.utils.ImageScaling;
 import ws.isak.bridge.utils.SwapTileCoordinates;
+import ws.isak.bridge.utils.TimerCountdown;
 
 /*
  * Class Engine contains the core behavior of the app.
@@ -94,7 +98,7 @@ public class Engine extends EventObserverAdapter {
     private int mSelectedID = -1;
 
 	private ScreenController mScreenController;
-	private MatchTheme mSelectedMatchTheme;
+	private MatchTheme mSelectedMatchTheme;         //only the matching game has themes for now...
 	private ImageView mBackgroundImage;
 	private Handler mHandler;
     private Random randomIndex = new Random();
@@ -165,12 +169,17 @@ public class Engine extends EventObserverAdapter {
 
 				@Override
 				protected Bitmap doInBackground(Void... params) {
-					Bitmap bitmap = ImageScaling.scaleDown(R.drawable.background, ImageScaling.screenWidth(), ImageScaling.screenHeight());
+					Bitmap bitmap = ImageScaling.scaleDown(R.drawable.background_match, ImageScaling.screenWidth(), ImageScaling.screenHeight());
 					return bitmap;
 				}
 				protected void onPostExecute(Bitmap bitmap) {
                     //
 					mBackgroundImage.setImageBitmap(bitmap);
+                    AlphaAnimation animation1 = new AlphaAnimation(0.1f, 0.5f);
+                    animation1.setDuration(500);
+                    mBackgroundImage.setAlpha(0f);
+                    mBackgroundImage.startAnimation(animation1);
+                    mBackgroundImage.setImageAlpha(128);
 				}
 			}.execute();
 		}
@@ -193,12 +202,11 @@ public class Engine extends EventObserverAdapter {
 	@Override
 	public void onEvent(MatchThemeSelectedEvent event) {
 		mSelectedMatchTheme = event.matchTheme;
-		mScreenController.openScreen(Screen.DIFFICULTY_MATCH);
 		AsyncTask<Void, Void, TransitionDrawable> task = new AsyncTask<Void, Void, TransitionDrawable>() {
 
 			@Override
 			protected TransitionDrawable doInBackground(Void... params) {
-				Bitmap bitmap = ImageScaling.scaleDown(R.drawable.background, ImageScaling.screenWidth(), ImageScaling.screenHeight());
+				Bitmap bitmap = ImageScaling.scaleDown(R.drawable.background_match, ImageScaling.screenWidth(), ImageScaling.screenHeight());
 				Bitmap backgroundImage = MatchThemes.getBackgroundImage(mSelectedMatchTheme);
 				backgroundImage = ImageScaling.crop(backgroundImage, ImageScaling.screenHeight(), ImageScaling.screenWidth());
 				Drawable backgrounds[] = new Drawable[2];
@@ -212,11 +220,16 @@ public class Engine extends EventObserverAdapter {
 			protected void onPostExecute(TransitionDrawable result) {
 				super.onPostExecute(result);
 				mBackgroundImage.setImageDrawable(result);
-				result.startTransition(2000);                   //FIXME - make this a const in xml
+                AlphaAnimation animation1 = new AlphaAnimation(0.1f, 0.5f);
+                animation1.setDuration(250);
+                mBackgroundImage.setAlpha(0f);
+                mBackgroundImage.startAnimation(animation1);
+				result.startTransition(1000);                   //FIXME - make this a const in xml
 			}
 		};
 		task.execute();
-	}
+        mScreenController.openScreen(Screen.DIFFICULTY_MATCH);
+    }
 
 	@Override
 	public void onEvent(MatchDifficultySelectedEvent event) {
@@ -256,6 +269,10 @@ public class Engine extends EventObserverAdapter {
         Log.d (TAG, " ******* : userData.getCurMatchGame @ : " + Shared.userData.getCurMatchGame());
 
         Shared.userData.setCurMatchGame(currentMatchGameData);
+
+        Clock clock = Clock.getInstance();
+        Shared.currentMatchGame.gameClock = clock;
+
         // start the screen - This call to screen controller causes the screen controller to select
         // a new MatchGameFragment from the screen controller.  Opening the new MatchGameFragment leads to a
         // call to buildBoard() a private method in the MatchGame Fragment. buildBoard calls setBoard in
@@ -312,6 +329,12 @@ public class Engine extends EventObserverAdapter {
 
         //set and share the current swap game
         Shared.currentSwapGame = mPlayingSwapGame;
+
+        Clock clock = Clock.getInstance();
+        clock.pauseClock();
+        Shared.currentSwapGame.gameClock = clock;
+
+
 
         // arrange board
         arrangeSwapBoard();
@@ -474,7 +497,7 @@ public class Engine extends EventObserverAdapter {
 				mToFlip -= 2;			//remaining number of tiles to flip..
 				if (mToFlip == 0) {		//when this gets to 0, we have flipped all pairs and can compute the score
 					int passedSeconds = (int) (Clock.getInstance().getPassedTime() / 1000);
-					Clock.getInstance().pause();
+					Clock.getInstance().pauseClock();           //FIXME could this be stop clock?
 					long totalTimeInMillis = mPlayingMatchGame.matchBoardConfiguration.time;
                     int totalTime = (int) Math.ceil((double) totalTimeInMillis / 1000); //TODO is this enough or should we convert all to long ms
 					GameState gameState = new GameState();
@@ -541,7 +564,7 @@ public class Engine extends EventObserverAdapter {
         }
         if (winning) {
             int passedSeconds = (int) (Clock.getInstance().getPassedTime() / 1000);
-            Clock.getInstance().pause();
+            Clock.getInstance().pauseClock();
             long totalTimeInMillis = mPlayingSwapGame.swapBoardConfiguration.time;
             int totalTime = (int) Math.ceil((double) totalTimeInMillis / 1000); //TODO is this enough or should we convert all to long ms
             GameState gameState = new GameState();

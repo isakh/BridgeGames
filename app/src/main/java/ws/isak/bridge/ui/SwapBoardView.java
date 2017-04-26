@@ -164,7 +164,7 @@ public class SwapBoardView extends LinearLayout {
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER);
 
-        //TODO!!! addRowControls();     //this method will draw a pair of buttons to the left of each row (play/pause?)
+        //TODO!!! addRowControls();     //this method will draw a pair of buttons to the left of each row (play/pauseClock?)
         Log.d (TAG, "method addBoardRow: Shared.userData.getCurSwapGameData.getSwapBoardMap @: " + Shared.userData.getCurSwapGameData().getSwapBoardMap());
 
         for (int curTileInRow = 0; curTileInRow < SwapBoardConfiguration.swapNumTilesInRow; curTileInRow++) {

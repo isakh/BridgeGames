@@ -3,6 +3,7 @@ package ws.isak.bridge;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.util.Log;
 
@@ -247,10 +248,15 @@ public class  MainActivity extends FragmentActivity {
 
     private void setBackgroundImage() {
         Log.d(TAG, "method setBackgroundImage");
-        Bitmap bitmap = ImageScaling.scaleDown(R.drawable.background, ImageScaling.screenWidth(), ImageScaling.screenHeight());
+        Bitmap bitmap = ImageScaling.scaleDown(R.drawable.background_match, ImageScaling.screenWidth(), ImageScaling.screenHeight());
         bitmap = ImageScaling.crop(bitmap, ImageScaling.screenHeight(), ImageScaling.screenWidth());
         bitmap = ImageScaling.downscaleBitmap(bitmap, 2);
         mBackgroundImage.setImageBitmap(bitmap);
+        AlphaAnimation animation1 = new AlphaAnimation(0.1f, 0.5f);
+        animation1.setDuration(500);
+        mBackgroundImage.setAlpha(0f);
+        mBackgroundImage.startAnimation(animation1);
+        mBackgroundImage.setImageAlpha(128);
     }
 
 

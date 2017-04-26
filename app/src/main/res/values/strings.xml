@@ -187,12 +187,12 @@
     <!-- =================================================================================== -->
     <!-- Layout: match_board_fragment -->
     <!-- *************************** -->
-    <string name="match_game_timebar_text_init">01:00</string>
+    <string name="match_game_timebar_text_init">99:99</string>
 
     <!-- =================================================================================== -->
     <!-- Layout: swap_game_fragment -->
     <!-- *************************** -->
-    <string name="swap_game_timebar_text_init">00:00</string>
+    <string name="swap_game_timebar_text_init">88:88</string>
 
 
 </resources>

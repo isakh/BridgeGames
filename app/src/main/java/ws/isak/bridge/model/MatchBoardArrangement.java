@@ -83,8 +83,11 @@ public class MatchBoardArrangement {
 			int drawableResourceId = Shared.context.getResources().getIdentifier(drawableResourceName, "drawable", Shared.context.getPackageName());
 			Log.d (TAG, "                : drawableResourceID: " + drawableResourceId);
 			Bitmap bitmap = ImageScaling.scaleDown(drawableResourceId, size, size);
-			return ImageScaling.crop(bitmap, size, size);
-		}
+            Bitmap croppedBitmap = ImageScaling.crop(bitmap, size, size);
+            Log.d (TAG, "method getMatchTileBitmap: SUCCESS: returning a cropped bitmap: " +
+                    croppedBitmap + " | from original bitmap: " + bitmap);
+            return croppedBitmap;
+        }
 		return null;
 	}
 

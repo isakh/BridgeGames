@@ -21,11 +21,11 @@ public class MatchBoardConfiguration {
 	private static final int medium = Shared.context.getResources().getInteger(R.integer.match_board_size_intermediate);
 	private static final int hard = Shared.context.getResources().getInteger(R.integer.match_board_size_hard);
 
-	public final int difficulty;
+    public long time;
+    public final int difficulty;
 	public final int numTiles;
 	public final int numTilesInRow;
 	public final int numRows;
-	public final long time;					//TODO this will include sample duration variables so will be in millis - need to use floor (time/1000) for timer in UI
 
 	/*
 	 * Constructor MatchBoardConfiguration sets up a board with a given difficultyLevel.  For the time being
@@ -41,19 +41,19 @@ public class MatchBoardConfiguration {
 			numTiles = easy;
 			numTilesInRow = 4;
 			numRows = 3;
-			time = CalculateMatchGameDuration (numTiles, Shared.context.getResources().getInteger(R.integer.baseline_match_time_difficulty_easy), matchTheme);
+			setTime(CalculateMatchGameDuration (numTiles, Shared.context.getResources().getInteger(R.integer.baseline_match_time_difficulty_easy), matchTheme));
 			break;
 		case 2:
 			numTiles = medium;
 			numTilesInRow = 4;
 			numRows = 4;
-            time = CalculateMatchGameDuration (numTiles, Shared.context.getResources().getInteger(R.integer.baseline_match_time_difficulty_medium), matchTheme);
+            setTime(CalculateMatchGameDuration (numTiles, Shared.context.getResources().getInteger(R.integer.baseline_match_time_difficulty_medium), matchTheme));
 			break;
 		case 3:
 			numTiles = hard;
 			numTilesInRow = 5;
 			numRows = 4;
-            time = CalculateMatchGameDuration (numTiles, Shared.context.getResources().getInteger(R.integer.baseline_match_time_difficulty_hard), matchTheme);
+            setTime(CalculateMatchGameDuration (numTiles, Shared.context.getResources().getInteger(R.integer.baseline_match_time_difficulty_hard), matchTheme));
 			break;
 
 		default:
@@ -61,7 +61,15 @@ public class MatchBoardConfiguration {
 		}
 	}
 
-	//TODO should we have a theme offset for time, i.e. blank gets longer for example?? FIXME
+	public void setTime (long t) {
+        time = t;
+    }
+
+    public long getTime () {
+        return time;
+    }
+
+	//TODO should we have a theme offset for time? i.e. blank gets longer for example?? FIXME
     private long CalculateMatchGameDuration (int numTiles, int difficultyBaseline, MatchTheme matchTheme) {
         Log.d (TAG, "method CalculateMatchGameDuration: numTiles: " + numTiles + " | difficultyBaseLine: " + difficultyBaseline + "ms | matchTheme.name: " + matchTheme.name);
         long cumulativeTime = (long) difficultyBaseline;

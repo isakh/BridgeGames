@@ -18,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.Locale;
+
 import ws.isak.bridge.R;
 import ws.isak.bridge.common.Audio;
 import ws.isak.bridge.common.Shared;
@@ -27,7 +29,7 @@ import ws.isak.bridge.events.ui.MatchNextGameEvent;
 import ws.isak.bridge.events.ui.MatchStartEvent;
 import ws.isak.bridge.model.GameState;
 import ws.isak.bridge.utils.Clock;
-import ws.isak.bridge.utils.Clock.OnTimerCount;
+import ws.isak.bridge.utils.TimerCountdown;
 import ws.isak.bridge.utils.FontLoader;
 import ws.isak.bridge.utils.FontLoader.Font;
 
@@ -129,7 +131,8 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
 		Log.d (TAG, "method setGameState");
 		int min = gameState.remainingTimeInSeconds / 60;
 		int sec = gameState.remainingTimeInSeconds - min * 60;
-		mTime.setText(" " + String.format("%02d", min) + ":" + String.format("%02d", sec));
+		mTime.setText(" " + String.format(Locale.ENGLISH, "%02d", min) + ":" +
+                String.format(Locale.ENGLISH, "%02d", sec));
 		mScore.setText("" + 0);
 		
 		mHandler.postDelayed(new Runnable() {
@@ -140,7 +143,7 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
 				animateScoreAndTime(gameState.remainingTimeInSeconds, gameState.achievedScore);
 				animateStars(gameState.achievedStars);
 			}
-		}, 500);
+		}, 500);                    //TODO change 500 to value in xml
 	}
 
 	private void animateStars(int start) {
@@ -208,10 +211,10 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
 
 	private void animateScoreAndTime(final int remainingTimeInSeconds, final int achievedScore) {
 		Log.d (TAG, "method animateScoreAndTime: remainingTimeInSeconds: " + remainingTimeInSeconds + " | achievedScore: " + achievedScore);
-		final int totalAnimation = 1200;        //TODO change this to a variable?
+		final int totalAnimation = 1200;        //TODO change this to a variable? -
 
         Log.d (TAG, "method animateScoreAndTime: calling Clock.getInstance().startTimer");
-		Clock.getInstance().startTimer(totalAnimation, 35, new OnTimerCount() {     //TODO what is 35 doing here?
+		Clock.getInstance().startClock(totalAnimation, 35, new TimerCountdown() {     //run through the clock at 35ms per second (just over 30fps so not video?)
 
 			@Override
 			public void onTick(long millisUntilFinished) {
