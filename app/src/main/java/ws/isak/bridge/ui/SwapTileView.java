@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
 import ws.isak.bridge.R;
 
 /**
- * Class TileView contains the code for generating a single tile in the match board array.
+ * Class SwapTileView contains the code for generating a single tile in the match board array.
  * This includes methods for flipping a tile and verifying the state of a tile (face up/ down)
  *
  * @author isak

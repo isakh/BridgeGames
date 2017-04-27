@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/swap_board_padding">
+    android:padding="@dimen/swap_board_padding"
+    android:background="@drawable/border_green"> <!-- TODO remove/adjust border-->
 
 </ws.isak.bridge.ui.SwapBoardView>

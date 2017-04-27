@@ -330,11 +330,7 @@ public class Engine extends EventObserverAdapter {
         //set and share the current swap game
         Shared.currentSwapGame = mPlayingSwapGame;
 
-        Clock clock = Clock.getInstance();
-        clock.pauseClock();
-        Shared.currentSwapGame.gameClock = clock;
-        Log.d (TAG, "onEvent(SwapDifficultySelectedEvent): Shared.currentSwapGame.gameClock.isClockPaused() : " +
-                Shared.currentSwapGame.gameClock.isClockPaused());
+        Shared.currentSwapGame.gameClock = Clock.getInstance();
 
         // arrange board
         arrangeSwapBoard();
@@ -530,79 +526,6 @@ public class Engine extends EventObserverAdapter {
 			Log.d(TAG, "onEvent MatchFlipCardEvent: reset mFlippedId to -1 check: " + mFlippedId);
 		}
 	}
-
-	public void onEvent (SwapSelectedCardsEvent event) {
-
-        // start of SwapSelectedCardsEvent
-        Log.d (TAG, "onEvent SwapSelectedCardsEvent: event.id1: " + event.id1 + " event.id2: " + event.id2 + " *** AT START OF method ***");
-        SwapTileCoordinates card1Coords = event.id1;
-        SwapTileCoordinates card2Coords = event.id2;
-        SwapCardData card1Data = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(card1Coords);
-        SwapCardData card2Data = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(card2Coords);
-        Log.d (TAG, "onEventSwapSelectedCardsEvent: card1Coords: " + card1Coords + " | card2Coords: " + card2Coords + " | card1Data ID: " + card1Data.getCardID() + " | card2Data ID: " + card2Data.getCardID());
-
-        //TODO prior to swap, append the current board Map to Shared.swapGameData.swapGameMapList
-        //TODO make a new copy of the board map
-        //FIXME: Swap the coordinates associated with the two SwapCardData objects
-        switchTileCoordinates(card1Coords, card2Coords);
-
-        //FIXME - push the new cards back into the board on the new Map?
-        mPlayingSwapGame.swapBoardArrangement.setCardOnBoard(card1Coords, card1Data);
-        mPlayingSwapGame.swapBoardArrangement.setCardOnBoard(card2Coords, card2Data);
-
-        //TODO what do I need to do to either animate their swapping or at least redraw all the cards on the board?
-
-        //Check if game is won
-        boolean winning = true;     //TODO is this safe to default to true?
-        for (int i = 0; i < mPlayingSwapGame.swapBoardConfiguration.getSwapDifficulty(); i++ ) {        //for each row on the board
-            for (int j = 0; j < 4; j++) {       //for each tile in row
-                SwapTileCoordinates targetCoords = new SwapTileCoordinates(i, j);
-                SwapCardData cardOnTile = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(targetCoords);
-                if (cardOnTile.getCardID().getSwapCardSpeciesID() != i || cardOnTile.getCardID().getSwapCardSegmentID() != j) {
-                    winning = false;
-                }
-            }
-        }
-        if (winning) {
-            int passedSeconds = (int) (Shared.currentSwapGame.gameClock.getPassedTime() / 1000);
-            Log.d (TAG, "onEvent SwapSelectedCardsEvent: winning: " + winning);     //TODO check passed time is right
-            Clock.getInstance().pauseClock();
-            long totalTimeInMillis = mPlayingSwapGame.swapBoardConfiguration.time;
-            int totalTime = (int) Math.ceil((double) totalTimeInMillis / 1000); //TODO is this enough or should we convert all to long ms
-            GameState gameState = new GameState();
-            mPlayingSwapGame.gameState = gameState;
-            // remained seconds
-            gameState.remainingTimeInSeconds = totalTime - passedSeconds;
-
-            // calculate stars and score from the amount of time that has elapsed as a ratio
-            // of total time allotted for the game.  When calculating this we still have incorporated
-            // the time based on the difficultyLevel as well as the time to play back the samples
-            if (passedSeconds <= totalTime / 2) {gameState.achievedStars = 3; }
-            else if (passedSeconds <= totalTime - totalTime / 5) {gameState.achievedStars = 2; }
-            else if (passedSeconds < totalTime) {gameState.achievedStars = 1; }
-            else {gameState.achievedStars = 0;}
-            // calculate the score
-            gameState.achievedScore = mPlayingSwapGame.swapBoardConfiguration.difficultyLevel * gameState.remainingTimeInSeconds;
-            // save to memory
-            Memory.saveSwap(mPlayingSwapGame.swapBoardConfiguration.difficultyLevel, gameState.achievedStars);
-            //trigger the MatchGameWonEvent
-            Shared.eventBus.notify(new SwapGameWonEvent(gameState), 1200);      //TODO what is 1200 doing here? convert to xml
-        }
-	}
-
-    private void switchTileCoordinates (SwapTileCoordinates tile1, SwapTileCoordinates tile2) {
-        //create temp coordinates, initialized to off the board
-        SwapTileCoordinates temp = new SwapTileCoordinates(-1, -1);
-        //copy tile 2 to temp
-        temp.setSwapCoordRow (tile2.getSwapCoordRow());
-        temp.setSwapCoordCol (tile2.getSwapCoordCol());
-        //copy tile 1 to tile 2
-        tile2.setSwapCoordRow (tile1.getSwapCoordRow());
-        tile2.setSwapCoordCol (tile1.getSwapCoordCol());
-        //copy temp to tile 1
-        tile1.setSwapCoordRow (temp.getSwapCoordRow());
-        tile1.setSwapCoordCol (temp.getSwapCoordCol());
-    }
 
 	public void onEvent (PlayCardAudioEvent event) {
 		int id = event.id;

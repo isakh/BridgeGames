@@ -20,7 +20,7 @@
         android:textSize="@dimen/popup_won_title_text_size"
         android:textColor="#0e0e0e" />
 
-    <!-- Stars (Animated visible in java class) according to Score -->
+    <!-- Stars (Animated visible in SwapControlsView class) according to Score -->
 
     <LinearLayout
         android:id="@+id/popup_won_stars_section"

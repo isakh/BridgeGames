@@ -5,15 +5,38 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <!-- the main layout for the entire screen -->
+
     <LinearLayout
         android:id="@+id/swap_game_board"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
+        <!-- a relative layout for the top (timer) info and controls -->
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/swap_margin_top" >
+            android:layout_height="@dimen/swap_margin_top"
+            android:background="@drawable/border_blue">
+
+            <!-- starting right to left - the locations are set by dp offsets -->
+
+            <TextView
+                android:id="@+id/time_bar_text_view"
+                android:layout_width="@dimen/match_clock_width"
+                android:layout_height="@dimen/match_clock_height"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/swap_clock_text_margin_right"
+                android:gravity="center"
+                android:shadowColor="#2eaed9"
+                android:shadowDx="4"
+                android:shadowDy="4"
+                android:shadowRadius="4"
+                android:text="@string/swap_game_timebar_text_init"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/swap_clock_text_size" /> <!-- TODO set numbers in xml -->
 
             <ImageView
                 android:id="@+id/time_bar_play_pause_button"
@@ -44,34 +67,46 @@
                 android:layout_marginRight="@dimen/swap_clock_margin_right"
                 android:src="@drawable/time_bar" />
 
-            <TextView
-                android:id="@+id/time_bar_text_view"
-                android:layout_width="@dimen/match_clock_width"
-                android:layout_height="@dimen/match_clock_height"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/swap_clock_text_margin_right"
-                android:gravity="center"
-                android:shadowColor="#2eaed9"
-                android:shadowDx="4"
-                android:shadowDy="4"
-                android:shadowRadius="4"
-                android:text="@string/swap_game_timebar_text_init"
-                android:textColor="@color/colorText"
-                android:textSize="@dimen/swap_clock_text_size" /> <!-- TODO set numbers in xml -->
-
         </RelativeLayout>
 
-        <RelativeLayout
+        <!-- below the timer section, a horizontal linear layout holds the two ViewGroups for the controls and the board -->
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/border_green"> <!-- TODO remove/adjust border-->
+
+            <FrameLayout
+                android:id="@+id/swap_game_audio_controls"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:orientation="vertical"
+                android:background="@drawable/border_red"> <!-- TODO remove/adjust border-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="TEST_AUDIO_CONTROLS"/>
+
+            </FrameLayout>
 
             <FrameLayout
                 android:id="@+id/swap_game_play_container"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp" />
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:background="@drawable/border_green"> <!-- TODO remove/adjust border-->
 
-        </RelativeLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="TEST_BOARD"/>
+
+            </FrameLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

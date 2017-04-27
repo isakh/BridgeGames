@@ -12,15 +12,21 @@ import android.util.Log;
 import java.util.Locale;
 
 import ws.isak.bridge.R;
+import ws.isak.bridge.common.Memory;
 import ws.isak.bridge.common.Shared;
 
+import ws.isak.bridge.common.SwapCardData;
 import ws.isak.bridge.events.engine.SwapSelectedCardsEvent;
 import ws.isak.bridge.events.engine.SwapUnselectCardsEvent;
 import ws.isak.bridge.events.engine.SwapGameWonEvent;
 
+import ws.isak.bridge.model.GameState;
 import ws.isak.bridge.model.SwapGame;
 import ws.isak.bridge.ui.SwapBoardView;
+import ws.isak.bridge.ui.SwapControlsView;
 import ws.isak.bridge.ui.PopupManager;
+import ws.isak.bridge.utils.Clock;
+import ws.isak.bridge.utils.SwapTileCoordinates;
 import ws.isak.bridge.utils.TimerCountdown;
 import ws.isak.bridge.utils.FontLoader;
 import ws.isak.bridge.utils.FontLoader.Font;
@@ -39,6 +45,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
 
 
     private SwapBoardView mSwapBoardView;
+    private SwapControlsView mSwapControlsView;
     private TextView mTime;
     private ImageView mTimeImage;
     private ImageView mTimerPlayPause;
@@ -60,18 +67,25 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         mTimerPlayPause.setOnClickListener(this);
         mTimerRestart.setOnClickListener(this);
         FontLoader.setTypeface(Shared.context, new TextView[] {mTime}, Font.ANGRYBIRDS);
-        //the swap game play container
+        //the swap game audio controls
+        mSwapControlsView = SwapControlsView.fromXml(getActivity().getApplicationContext(), view);
+        FrameLayout controlsFrameLayout = (FrameLayout) view.findViewById(R.id.swap_game_audio_controls);
+        controlsFrameLayout.addView(mSwapControlsView);
+        controlsFrameLayout.setClipChildren(false);
+        Log.d (TAG, "method onCreateView: created layout controlsFrameLayout: " + controlsFrameLayout);
+        //the swap game board
         mSwapBoardView = SwapBoardView.fromXml(getActivity().getApplicationContext(), view);
         FrameLayout playFrameLayout = (FrameLayout) view.findViewById(R.id.swap_game_play_container);
         playFrameLayout.addView(mSwapBoardView);
         playFrameLayout.setClipChildren(false);
+        Log.d (TAG, "method onCreateView: created layout playFrameLayout: " + playFrameLayout);
 
         // build board
         buildBoard();
 
         Shared.eventBus.listen(SwapSelectedCardsEvent.TYPE, this);
         Shared.eventBus.listen(SwapGameWonEvent.TYPE, this);
-        Shared.eventBus.listen(SwapUnselectCardsEvent.TYPE, this);
+        //FIXME - what does this event do? Shared.eventBus.listen(SwapUnselectCardsEvent.TYPE, this);
 
         //TODO build audio controls
         //Shared.eventBus.listen(SwapPlayRowAudioEvent.TYPE, this);
@@ -114,7 +128,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
     public void onDestroy() {
         Shared.eventBus.unlisten(SwapSelectedCardsEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapGameWonEvent.TYPE, this);
-        Shared.eventBus.unlisten(SwapUnselectCardsEvent.TYPE, this);
+        //FIXME - do we need this? Shared.eventBus.unlisten(SwapUnselectCardsEvent.TYPE, this);
 
         //TODO build audio controls
         //Shared.eventBus.unlisten(SwapPlayRowAudioEvent.TYPE, this);
@@ -168,6 +182,81 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
                 setTime(0);
             }
         });
+    }
+
+    public void onEvent (SwapSelectedCardsEvent event) {
+
+        // start of SwapSelectedCardsEvent
+        Log.d (TAG, "onEvent SwapSelectedCardsEvent: event.id1: " + event.id1 + " event.id2: " + event.id2 + " *** AT START OF method ***");
+        SwapTileCoordinates card1Coords = event.id1;
+        SwapTileCoordinates card2Coords = event.id2;
+        SwapCardData card1Data = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(card1Coords);
+        SwapCardData card2Data = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(card2Coords);
+        Log.d (TAG, "onEventSwapSelectedCardsEvent: card1Coords: " + card1Coords + " | card2Coords: " + card2Coords + " | card1Data ID: " + card1Data.getCardID() + " | card2Data ID: " + card2Data.getCardID());
+
+        //TODO prior to swap, append the current board Map to Shared.swapGameData.swapGameMapList
+        //TODO make a new copy of the board map
+        //Swap the coordinates associated with the two SwapCardData objects
+        switchTileCoordinates(card1Coords, card2Coords);
+
+        //FIXME - push the new cards back into the board on the new Map?
+        Shared.currentSwapGame.swapBoardArrangement.setCardOnBoard(card1Coords, card1Data);
+        Shared.currentSwapGame.swapBoardArrangement.setCardOnBoard(card2Coords, card2Data);
+
+        //TODO what do I need to do to either animate their swapping or at least redraw all the cards on the board?
+        //FIXME - does this work ? - do I still need to redraw the board?
+        mSwapBoardView.swapCards(card1Coords, card2Coords);
+
+        //Check if game is won
+        boolean winning = true;     //TODO is this safe to default to true?
+        for (int i = 0; i < Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty(); i++ ) {        //for each row on the board
+            for (int j = 0; j < 4; j++) {       //for each tile in row
+                SwapTileCoordinates targetCoords = new SwapTileCoordinates(i, j);
+                SwapCardData cardOnTile = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(targetCoords);
+                if (cardOnTile.getCardID().getSwapCardSpeciesID() != i || cardOnTile.getCardID().getSwapCardSegmentID() != j) {
+                    winning = false;
+                }
+            }
+        }
+        if (winning) {
+            int passedSeconds = (int) (Shared.currentSwapGame.gameClock.getPassedTime() / 1000);
+            Log.d (TAG, "onEvent SwapSelectedCardsEvent: winning: " + winning + " | passedSeconds: " + passedSeconds);     //TODO check passed time is right
+            Clock.getInstance().pauseClock();
+            long totalTimeInMillis = Shared.currentSwapGame.swapBoardConfiguration.getGameTime();
+            int totalTime = (int) Math.ceil((double) totalTimeInMillis / 1000); //TODO is this enough or should we convert all to long ms
+            GameState gameState = new GameState();
+            Shared.currentSwapGame.gameState = gameState;
+            // remained seconds
+            gameState.remainingTimeInSeconds = totalTime - passedSeconds;
+
+            // calculate stars and score from the amount of time that has elapsed as a ratio
+            // of total time allotted for the game.  When calculating this we still have incorporated
+            // the time based on the difficultyLevel as well as the time to play back the samples
+            if (passedSeconds <= totalTime / 2) {gameState.achievedStars = 3; }
+            else if (passedSeconds <= totalTime - totalTime / 5) {gameState.achievedStars = 2; }
+            else if (passedSeconds < totalTime) {gameState.achievedStars = 1; }
+            else {gameState.achievedStars = 0;}
+            // calculate the score
+            gameState.achievedScore = Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty() * gameState.remainingTimeInSeconds;     //FIXME - was difficultyLevel, now getSwapDifficulty() , check consistency
+            // save to memory
+            Memory.saveSwap(Shared.currentSwapGame.swapBoardConfiguration.difficultyLevel, gameState.achievedStars);
+            //trigger the MatchGameWonEvent
+            Shared.eventBus.notify(new SwapGameWonEvent(gameState), 1200);      //TODO what is 1200 doing here? convert to xml
+        }
+    }
+
+    private void switchTileCoordinates (SwapTileCoordinates tile1, SwapTileCoordinates tile2) {
+        //create temp coordinates, initialized to off the board
+        SwapTileCoordinates temp = new SwapTileCoordinates(-1, -1);
+        //copy tile 2 to temp
+        temp.setSwapCoordRow (tile2.getSwapCoordRow());
+        temp.setSwapCoordCol (tile2.getSwapCoordCol());
+        //copy tile 1 to tile 2
+        tile2.setSwapCoordRow (tile1.getSwapCoordRow());
+        tile2.setSwapCoordCol (tile1.getSwapCoordCol());
+        //copy temp to tile 1
+        tile1.setSwapCoordRow (temp.getSwapCoordRow());
+        tile1.setSwapCoordCol (temp.getSwapCoordCol());
     }
 
     @Override

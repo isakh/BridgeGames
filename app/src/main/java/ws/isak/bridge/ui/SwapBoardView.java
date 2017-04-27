@@ -54,8 +54,9 @@ public class SwapBoardView extends LinearLayout {
     public static final String TAG = "SwapBoardView";
 
     private LinearLayout.LayoutParams mRowLayoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+    private LinearLayout.LayoutParams swapControlsLayoutParams;     //TODO stuff with this
     private LinearLayout.LayoutParams mTileLayoutParams;
-    private int mScreenWidth;
+    private int mScreenWidth;           //TODO make this a function of the 80% of the screen width for the board
     private int mScreenHeight;
     //an instance of the board configuration for the current game
     private SwapBoardConfiguration mSwapBoardConfiguration;
@@ -83,10 +84,10 @@ public class SwapBoardView extends LinearLayout {
         setGravity(Gravity.CENTER);
         int margin = getResources().getDimensionPixelSize(R.dimen.swap_margin_top);
         int padding = getResources().getDimensionPixelSize(R.dimen.swap_board_padding);
-        mScreenHeight = getResources().getDisplayMetrics().heightPixels - margin - padding*2;               //TODO * proportion of screen for view
-        mScreenWidth = getResources().getDisplayMetrics().widthPixels - padding*2 - ImageScaling.px(20);    //TODO * proportion of screen for view
+        mScreenHeight = getResources().getDisplayMetrics().heightPixels - margin - padding*2;
+        mScreenWidth = (int) Math.floor((getResources().getDisplayMetrics().widthPixels - padding*2 - ImageScaling.px(20)) * 0.8);    //TODO * proportion of screen for view - make less of a hack
         Log.d (TAG, " ... mScreenHeight: " + mScreenHeight + " | mScreenWidth: " + mScreenWidth);
-        mTileViewMap = new HashMap<SwapTileCoordinates, SwapTileView>();
+        mTileViewMap = new HashMap<SwapTileCoordinates, SwapTileView>();        //TODO something with this!
         setClipToPadding(false);
     }
 
@@ -136,7 +137,7 @@ public class SwapBoardView extends LinearLayout {
                     " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
                     cardData.getCardID().getSwapCardSegmentID());
         }
-        //*****
+        // TODO - remove... end debug code *****
         // build the ui
         Log.d (TAG, "method setBoard ... calling method buildBoard");
         buildBoard();
@@ -162,9 +163,8 @@ public class SwapBoardView extends LinearLayout {
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER);
 
-        addRowControls(linearLayout);     //this method will draw a pair of buttons to the left of each row (play/pauseClock?)
+        addRowControls(rowNum, linearLayout);     //this method will draw a pair of buttons to the left of each row (play/pauseClock?)
         Log.d (TAG, "method addBoardRow: Shared.userData.getCurSwapGameData.getSwapBoardMap @: " + Shared.userData.getCurSwapGameData().getSwapBoardMap());
-
         for (int curTileInRow = 0; curTileInRow < SwapBoardConfiguration.swapNumTilesInRow; curTileInRow++) {
             SwapTileCoordinates coords = Shared.userData.getCurSwapGameData().getMapSwapTileCoordinatesFromLoc(new SwapTileCoordinates(rowNum,curTileInRow));
             addTile (coords, linearLayout);
@@ -175,16 +175,19 @@ public class SwapBoardView extends LinearLayout {
         linearLayout.setClipChildren(false);
     }
 
-    private void addRowControls (LinearLayout rowLayout) {
-        final SwapControlsView swapControlsView = SwapControlsView.fromXml(getContext(), parent);
+    private void addRowControls (int row, ViewGroup parent) {
+        //TODO!!!
+        final SwapControlsView swapControlsView = SwapControlsView.fromXml(getContext(),parent);
     }
 
     // Add each tile to the board at position curTileOnBoard
     private void addTile(final SwapTileCoordinates curTileOnBoard, ViewGroup parent) {
+
         Log.d (TAG, "method addTile: address of curTileOnBoard: " + curTileOnBoard +
                 " | curTileOnBoard coords: < " + curTileOnBoard.getSwapCoordRow() + "," +
                 curTileOnBoard.getSwapCoordCol() + " >" + " | parent.getVisibility: " + parent.getVisibility() +
                 " | parent.isShown: " + parent.isShown());
+
         final SwapTileView swapTileView = SwapTileView.fromXml(getContext(), parent);
         swapTileView.setLayoutParams(mTileLayoutParams);
         parent.addView(swapTileView);
@@ -327,5 +330,13 @@ public class SwapBoardView extends LinearLayout {
         }
         selectedTiles.clear();
         mSelected = false;
+    }
+
+    public void swapCards (SwapTileCoordinates loc1, SwapTileCoordinates loc2) {
+        Log.d (TAG, "method swapCards: this takes the coordinates of the cards to swap and switches the Tile Views associated");
+        SwapTileView temp1 = mTileViewMap.get(loc1);
+        SwapTileView temp2 = mTileViewMap.get(loc2);
+        mTileViewMap.put(loc1, temp2);
+        mTileViewMap.put(loc2, temp1);
     }
 }

@@ -29,7 +29,7 @@ public abstract class CountDownClock {
 
 	/**
 	 * Method CountDownClock is the constructor for the countdown clock abstract class (which is inherited
-	 * by the PauseTimer constructor in the PauseTimer class (in Clock.java).  The input parameters
+	 * by the PauseTimer constructor in the PauseTimer class (in Clock.SwapControlsView).  The input parameters
 	 * are:
 	 *
 	 * @param millisOnTimer, a long which represent the time remaining until the timer completes (at
@@ -138,7 +138,7 @@ public abstract class CountDownClock {
         return (mPausedTimeRemaining <= mMillisOnTimer);
 	}
 
-	//Abstract method onTick is the callback declared here and implemented in class PauseTimer (in Clock.java)
+	//Abstract method onTick is the callback declared here and implemented in class PauseTimer (in Clock.SwapControlsView)
 	public abstract void onTick(long millisUntilFinished);
 
 	//Abstract method onFinish is the callback fired when the time is up. Implemented in PauseTimer.
