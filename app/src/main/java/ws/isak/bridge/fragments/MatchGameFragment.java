@@ -37,7 +37,9 @@ public class MatchGameFragment extends BaseFragment implements View.OnClickListe
     public final String TAG = "MatchGameFragment";
 
 	private MatchBoardView mMatchBoardView;
-	private TextView mTime;
+
+    //timer controls/content
+    private TextView mTime;
 	private ImageView mTimeImage;
     private ImageView mTimerPlayPause;
     private ImageView mTimerRestart;        //TODO later, this functionality may not be necessary

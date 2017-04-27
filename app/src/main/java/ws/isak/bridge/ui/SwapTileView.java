@@ -7,12 +7,10 @@ import android.util.AttributeSet;
 import android.graphics.Bitmap;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import ws.isak.bridge.R;
 
@@ -27,7 +25,6 @@ public class SwapTileView extends FrameLayout {
 
     public static final String TAG = "SwapTileView";
 
-    private RelativeLayout mTopImage;
     private ImageView mTileImage;
     private boolean mSelected = false;
 
@@ -51,9 +48,8 @@ public class SwapTileView extends FrameLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         Log.d (TAG, "method onFinishInflate");
-        mTopImage = (RelativeLayout) findViewById(R.id.swap_image_top);
         mTileImage = (ImageView) findViewById(R.id.swap_tile_image);
-        Log.d (TAG, " ... mTopImage: " + mTopImage + " | mTileImage: " + mTileImage);
+        Log.d (TAG, " ... mTileImage: " + mTileImage);
     }
 
     public void setTileImage(Bitmap bitmap) {
@@ -65,7 +61,7 @@ public class SwapTileView extends FrameLayout {
     public void select() {
         Log.d (TAG, "method select ... at start");
         mSelected = true;
-        //TODO addSelectionBounds();
+        //TODO addSelectionBounds();        - can this be as simple as adding a border? see @drawable/border_***.xml
     }
 
     public void unSelect() {

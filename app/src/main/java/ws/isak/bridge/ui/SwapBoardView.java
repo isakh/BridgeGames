@@ -43,8 +43,9 @@ import ws.isak.bridge.utils.SwapTileCoordinates;
 /*
  * Class SwapBoardView comprises the code which builds the swap game board according to the 
  * dimensions found in the xml dimens file, the ratio of tiles to rows/columns that is defined
- * in the MatchBoardConfiguration class given the users' difficultyLevel selection, and the size of the
- * screen of the device.  The board is a 2D array of tiles, each tile mapped to a card object.
+ * in the SwapBoardConfiguration class given the users' difficultyLevel selection, and the size of the
+ * screen of the device.  The board is a 2D array (stored as a HashMap) of tiles coordinate objects,
+ * each tile mapped to a card object.
  *
  * @author isak
  */
@@ -54,9 +55,8 @@ public class SwapBoardView extends LinearLayout {
     public static final String TAG = "SwapBoardView";
 
     private LinearLayout.LayoutParams mRowLayoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-    private LinearLayout.LayoutParams swapControlsLayoutParams;     //TODO stuff with this
     private LinearLayout.LayoutParams mTileLayoutParams;
-    private int mScreenWidth;           //TODO make this a function of the 80% of the screen width for the board
+    private int mScreenWidth;           //FIXME - for now this is 80% of the board width hard coded, make dynamic? or set in xml
     private int mScreenHeight;
     //an instance of the board configuration for the current game
     private SwapBoardConfiguration mSwapBoardConfiguration;
@@ -82,7 +82,7 @@ public class SwapBoardView extends LinearLayout {
         Log.d (TAG, "SwapBoardView constructor");
         setOrientation(LinearLayout.VERTICAL);
         setGravity(Gravity.CENTER);
-        int margin = getResources().getDimensionPixelSize(R.dimen.swap_margin_top);
+        int margin = getResources().getDimensionPixelSize(R.dimen.swap_game_timer_margin_top);
         int padding = getResources().getDimensionPixelSize(R.dimen.swap_board_padding);
         mScreenHeight = getResources().getDisplayMetrics().heightPixels - margin - padding*2;
         mScreenWidth = (int) Math.floor((getResources().getDisplayMetrics().widthPixels - padding*2 - ImageScaling.px(20)) * 0.8);    //TODO * proportion of screen for view - make less of a hack
@@ -109,7 +109,7 @@ public class SwapBoardView extends LinearLayout {
         mSwapBoardConfiguration = swapGame.swapBoardConfiguration;
         mSwapBoardArrangement = swapGame.swapBoardArrangement;
         // calc preferred tiles' width and height based on display size
-        int singleMargin = getResources().getDimensionPixelSize(R.dimen.swap_card_margin);
+        int singleMargin = getResources().getDimensionPixelSize(R.dimen.swap_card_margin) + getResources().getDimensionPixelSize(R.dimen.swap_game_tile_border);
         float density = getResources().getDisplayMetrics().density;
         singleMargin = Math.max((int) (1 * density), (int) (singleMargin - mSwapBoardConfiguration.difficultyLevel * 2 * density));
         int sumMargin = 0;

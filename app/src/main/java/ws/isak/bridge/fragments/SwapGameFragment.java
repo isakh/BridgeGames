@@ -43,13 +43,14 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
 
     public final String TAG = "SwapGameFragment";
 
-
     private SwapBoardView mSwapBoardView;
     private SwapControlsView mSwapControlsView;
+
+    //timer controls/content
     private TextView mTime;
     private ImageView mTimeImage;
     private ImageView mTimerPlayPause;
-    private ImageView mTimerRestart;        //TODO later, this functionality may not be necessary
+    private ImageView mTimerRestart;        //TODO later, this functionality may not be necessary?
 
 
     @Override
@@ -67,7 +68,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         mTimerPlayPause.setOnClickListener(this);
         mTimerRestart.setOnClickListener(this);
         FontLoader.setTypeface(Shared.context, new TextView[] {mTime}, Font.ANGRYBIRDS);
-        //the swap game audio controls
+        //the swap game audio controls - TODO Does it make sense for these to be in a separate View from the board?
         mSwapControlsView = SwapControlsView.fromXml(getActivity().getApplicationContext(), view);
         FrameLayout controlsFrameLayout = (FrameLayout) view.findViewById(R.id.swap_game_audio_controls);
         controlsFrameLayout.addView(mSwapControlsView);
@@ -107,14 +108,14 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void pauseTimerButton () {
-        if (!Shared.currentMatchGame.gameClock.isClockPaused()) {   //isClockPaused false means playing
+        if (!Shared.currentSwapGame.gameClock.isClockPaused()) {   //isClockPaused false means playing
             mTimerRestart.setVisibility(View.VISIBLE);
-            Shared.currentMatchGame.gameClock.pauseClock();         //call pauseClock and make next button restart play
+            Shared.currentSwapGame.gameClock.pauseClock();         //call pauseClock and make next button restart play
             mTimerPlayPause.setImageResource(R.drawable.timer_play_button);
         }
         else {
             mTimerRestart.setVisibility(View.INVISIBLE);
-            Shared.currentMatchGame.gameClock.resumeClock();
+            Shared.currentSwapGame.gameClock.resumeClock();
             mTimerPlayPause.setImageResource(R.drawable.timer_pause_button);
         }
     }
