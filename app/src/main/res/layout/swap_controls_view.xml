@@ -7,4 +7,11 @@
     android:layout_height="match_parent"
     android:background="@drawable/border_red"> <!-- TODO remove/adjust border-->
 
+    <TableLayout
+        android:id="@+id/swap_audio_buttons_table"
+        android:layout_width="200dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:stretchColumns="*" />
+
 </ws.isak.bridge.ui.SwapControlsView>

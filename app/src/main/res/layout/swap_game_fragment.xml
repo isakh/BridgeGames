@@ -17,7 +17,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/swap_margin_top"
+            android:layout_height="@dimen/swap_game_timer_margin_top"
             android:background="@drawable/border_blue">
 
             <!-- starting right to left - the locations are set by dp offsets -->
@@ -85,10 +85,12 @@
                 android:orientation="vertical"
                 android:background="@drawable/border_red"> <!-- TODO remove/adjust border-->
 
+                <!--
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="TEST_AUDIO_CONTROLS"/>
+                -->
 
             </FrameLayout>
 
@@ -99,10 +101,12 @@
                 android:layout_weight="0.8"
                 android:background="@drawable/border_green"> <!-- TODO remove/adjust border-->
 
+            <!--
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="TEST_BOARD"/>
+            -->
 
             </FrameLayout>
 

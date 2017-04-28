@@ -16,6 +16,13 @@
     <!-- ********************* -->
     <dimen name="swap_card_margin">1dp</dimen>
 
+    <!-- ================================================================================ -->
+    <!-- Class: SwapControlsView -->
+    <!-- *********************** -->
+    <dimen name="swap_control_button_margin">5dp</dimen>
+    <dimen name="swap_control_button_width">75dp</dimen>
+    <dimen name="swap_control_button_height">100dp</dimen>
+
     <!-- DIMENSION RESOURCES REFERENCED IN LAYOUTS -->
 
     <!-- =============================================================================== -->

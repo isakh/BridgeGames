@@ -109,7 +109,7 @@ public class SwapBoardView extends LinearLayout {
         mSwapBoardConfiguration = swapGame.swapBoardConfiguration;
         mSwapBoardArrangement = swapGame.swapBoardArrangement;
         // calc preferred tiles' width and height based on display size
-        int singleMargin = getResources().getDimensionPixelSize(R.dimen.swap_card_margin) + getResources().getDimensionPixelSize(R.dimen.swap_game_tile_border);
+        int singleMargin = getResources().getDimensionPixelSize(R.dimen.swap_card_margin); //FIXME - how to get borders working?  + getResources().getDimensionPixelSize(R.dimen.swap_game_tile_border);
         float density = getResources().getDisplayMetrics().density;
         singleMargin = Math.max((int) (1 * density), (int) (singleMargin - mSwapBoardConfiguration.difficultyLevel * 2 * density));
         int sumMargin = 0;
@@ -118,7 +118,7 @@ public class SwapBoardView extends LinearLayout {
         }
         int tilesHeight = (mScreenHeight - sumMargin) / mSwapBoardConfiguration.numRows;
         int tilesWidth = (mScreenWidth - sumMargin) / SwapBoardConfiguration.swapNumTilesInRow;
-        mSize = Math.min(tilesHeight, tilesWidth);
+        mSize = Math.min(tilesHeight, tilesWidth) - getResources().getDimensionPixelSize(R.dimen.swap_game_tile_border); //TODO does this solve the border issues?
 
         mTileLayoutParams = new LinearLayout.LayoutParams(mSize, mSize);
         mTileLayoutParams.setMargins(singleMargin, singleMargin, singleMargin, singleMargin);
@@ -163,7 +163,6 @@ public class SwapBoardView extends LinearLayout {
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER);
 
-        addRowControls(rowNum, linearLayout);     //this method will draw a pair of buttons to the left of each row (play/pauseClock?)
         Log.d (TAG, "method addBoardRow: Shared.userData.getCurSwapGameData.getSwapBoardMap @: " + Shared.userData.getCurSwapGameData().getSwapBoardMap());
         for (int curTileInRow = 0; curTileInRow < SwapBoardConfiguration.swapNumTilesInRow; curTileInRow++) {
             SwapTileCoordinates coords = Shared.userData.getCurSwapGameData().getMapSwapTileCoordinatesFromLoc(new SwapTileCoordinates(rowNum,curTileInRow));
@@ -173,11 +172,6 @@ public class SwapBoardView extends LinearLayout {
         // add to this view
         addView(linearLayout, mRowLayoutParams);
         linearLayout.setClipChildren(false);
-    }
-
-    private void addRowControls (int row, ViewGroup parent) {
-        //TODO!!!
-        final SwapControlsView swapControlsView = SwapControlsView.fromXml(getContext(),parent);
     }
 
     // Add each tile to the board at position curTileOnBoard
@@ -216,7 +210,7 @@ public class SwapBoardView extends LinearLayout {
                         curTileOnBoard + "| coords are: < " + curTileOnBoard.getSwapCoordRow() +
                         "," + curTileOnBoard.getSwapCoordCol() + " > | mSize is: " + mSize);
                 //gets one of four bitmaps depending on flags at current coordinates
-                return mSwapBoardArrangement.getSwapTileBitmap(curTileOnBoard, mSize);
+                return mSwapBoardArrangement.getSwapTileBitmap(curTileOnBoard, mSize);      //FIXME - making mSize smaller to leave room for border?
             }
 
             @Override

@@ -146,6 +146,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         setTime(time);
         Log.d (TAG, "method buildBoard: check pointer to game: Shared.engine.getActiveSwapGame: " +
                     Shared.engine.getActiveSwapGame() + " | Shared.currentSwapGame : " + Shared.currentSwapGame);
+        mSwapControlsView.populateControls(swapGame);
         mSwapBoardView.setBoard(swapGame);
         startClock(time);
     }

@@ -20,20 +20,16 @@ import ws.isak.bridge.common.Shared;
 
 public class MatchDifficultyView extends LinearLayout {
 
-    public static final String TAG = "DifficultyView";
+    public static final String TAG = "MatchDifficultyView";
 	private ImageView mTitle;
 
-    /*
-     * Constructor DifficultyView sets context
-     */
+    // Constructor DifficultyView sets context
 	public MatchDifficultyView(Context context) {
 		this(context, null);
         Log.d (TAG, "constructor");
 	}
 
-    /*
-     * Overloaded constructor sets context and attributes
-     */
+    //Overloaded constructor sets context and attributes
 	public MatchDifficultyView(Context context, AttributeSet attrs) {
 		super(context, attrs);
         Log.d (TAG, "overloaded constructor, includes AttributeSet");
@@ -42,9 +38,7 @@ public class MatchDifficultyView extends LinearLayout {
 		mTitle = (ImageView) findViewById(R.id.match_difficulty_title);
 	}
 
-    /*
-     * Method setMatchDifficulty
-     */
+    //Method setMatchDifficulty
 	public void setMatchDifficulty(int difficulty, int stars) {
         Log.d (TAG, "method setMatchDifficulty");
 		String titleResource = String.format(Locale.ENGLISH, "button_difficulty_%d_star_%d", difficulty, stars);

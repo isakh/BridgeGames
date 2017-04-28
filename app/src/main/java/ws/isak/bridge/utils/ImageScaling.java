@@ -37,6 +37,7 @@ public class ImageScaling {
 	public static Bitmap crop(Bitmap source, int newHeight, int newWidth) {
 		int sourceWidth = source.getWidth();
 		int sourceHeight = source.getHeight();
+        Log.d (TAG, "method crop: source width: " + source.getWidth() + " | height: " + source.getHeight());
 
 		// Compute the scaling factors to fit the new height and width,
 		// respectively.

@@ -61,7 +61,7 @@ public class SwapTileView extends FrameLayout {
     public void select() {
         Log.d (TAG, "method select ... at start");
         mSelected = true;
-        //TODO addSelectionBounds();        - can this be as simple as adding a border? see @drawable/border_***.xml
+        //TODO addSelectionBounds();        - can this be as simple as adding a border? see @drawable/border_***.xml and changing the border color on selection
     }
 
     public void unSelect() {

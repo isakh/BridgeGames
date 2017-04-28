@@ -28,21 +28,24 @@ import ws.isak.bridge.ui.MatchDifficultyView;
 public class MatchDifficultySelectFragment extends Fragment {
 
     public static final String TAG="DifficultySelect";
+    MatchDifficultyView matchDifficulty1;
+    MatchDifficultyView matchDifficulty2;
+    MatchDifficultyView matchDifficulty3;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = LayoutInflater.from(Shared.context).inflate(R.layout.match_difficulty_select_fragment, container, false);
 		MatchTheme matchTheme = Shared.engine.getSelectedTheme();
 
-		MatchDifficultyView matchDifficulty1 = (MatchDifficultyView) view.findViewById(R.id.select_match_difficulty_1);
+        matchDifficulty1 = (MatchDifficultyView) view.findViewById(R.id.select_match_difficulty_1);
 		matchDifficulty1.setMatchDifficulty(1, Memory.getMatchHighStars(matchTheme.themeID, 1));
 		setOnClick(matchDifficulty1, 1);
 
-		MatchDifficultyView matchDifficulty2 = (MatchDifficultyView) view.findViewById(R.id.select_match_difficulty_2);
+        matchDifficulty2 = (MatchDifficultyView) view.findViewById(R.id.select_match_difficulty_2);
 		matchDifficulty2.setMatchDifficulty(2, Memory.getMatchHighStars(matchTheme.themeID, 2));
 		setOnClick(matchDifficulty2, 2);
 
-		MatchDifficultyView matchDifficulty3 = (MatchDifficultyView) view.findViewById(R.id.select_match_difficulty_3);
+        matchDifficulty3 = (MatchDifficultyView) view.findViewById(R.id.select_match_difficulty_3);
 		matchDifficulty3.setMatchDifficulty(3, Memory.getMatchHighStars(matchTheme.themeID, 3));
 		setOnClick(matchDifficulty3, 3);
 
