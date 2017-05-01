@@ -12,15 +12,15 @@ import ws.isak.bridge.events.EventObserver;
  * @author isak
  */
 
-public class SwapPauseRowAudioEvent extends AbstractEvent {
-    public  final String TAG = "SwapPauseRowAudioEvent";
+public class SwapPlayPauseRowAudioEvent extends AbstractEvent {
+    public  final String TAG = "SwapPlayPauseRowAudio";
 
-    public static final String TYPE = SwapPauseRowAudioEvent.class.getName();
+    public static final String TYPE = SwapPlayPauseRowAudioEvent.class.getName();
 
     public final int id;
 
-    public SwapPauseRowAudioEvent(int id) {
-        Log.d (TAG, "constructor method: SwapPauseRowAudioEvent: param id is: " + id);
+    public SwapPlayPauseRowAudioEvent(int id) {
+        Log.d (TAG, "constructor method: SwapPlayPauseRowAudioEvent: param id is: " + id);
         this.id = id;
     }
 

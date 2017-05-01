@@ -5,14 +5,17 @@ import android.util.Log;
 import android.util.AttributeSet;
 
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import ws.isak.bridge.R;
+import ws.isak.bridge.common.SwapCardData;
 
 /**
  * Class SwapTileView contains the code for generating a single tile in the match board array.
@@ -26,7 +29,8 @@ public class SwapTileView extends FrameLayout {
     public static final String TAG = "SwapTileView";
 
     private ImageView mTileImage;
-    private boolean mSelected = false;
+    private TextView mTileText;
+    private boolean isSelected = false;
 
     public SwapTileView(Context context) {
         this(context, null);
@@ -35,7 +39,7 @@ public class SwapTileView extends FrameLayout {
 
     public SwapTileView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Log.d (TAG, "overloaded constructor");
+        //Log.d (TAG, "overloaded constructor");
     }
 
     public static SwapTileView fromXml(Context context, ViewGroup parent) {
@@ -47,26 +51,39 @@ public class SwapTileView extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        Log.d (TAG, "method onFinishInflate");
+        //Log.d (TAG, "method onFinishInflate");
         mTileImage = (ImageView) findViewById(R.id.swap_tile_image);
-        Log.d (TAG, " ... mTileImage: " + mTileImage);
+        Log.d (TAG, " ... ImageView mTileImage: " + mTileImage);
     }
 
     public void setTileImage(Bitmap bitmap) {
-        Log.d (TAG, "method setTileImage");
+        //Log.d (TAG, "method setTileImage");
         mTileImage.setImageBitmap(bitmap);
         Log.d (TAG, "method setTileImage: mTileImage @: " + mTileImage + " | set with bitmap: " + bitmap);
     }
 
+    public void setTileDebugText(SwapCardData tileData) {
+        String tileText = "CardID: <" + tileData.getCardID().getSwapCardSpeciesID() + "," + tileData.getCardID().getSwapCardSegmentID() + ">";
+        mTileText.setText(tileText);
+    }
+
     public void select() {
-        Log.d (TAG, "method select ... at start");
-        mSelected = true;
-        //TODO addSelectionBounds();        - can this be as simple as adding a border? see @drawable/border_***.xml and changing the border color on selection
+        Log.d (TAG, "method select ... at start: mTileImage: " + mTileImage);
+        isSelected = true;
+        //can this be as simple as adding a border? see @drawable/border_***.xml and changing the border color on selection
+        //current implementation involves an overlay of transparent red FIXME - set color in xml
+        mTileImage.setColorFilter(0xFFFF0000, PorterDuff.Mode.MULTIPLY);
     }
 
     public void unSelect() {
-        Log.d (TAG, "method unSelect ... at start");
-        mSelected = false;
-        //TODO removeSelectionBounds();
+        Log.d (TAG, "method unSelect ... at start: mTileImage: " + mTileImage);
+        isSelected = false;
+        mTileImage.setColorFilter(0x00000000, PorterDuff.Mode.MULTIPLY);    //FIXME set color in xml
+
+    }
+
+    public boolean isSelected() {
+        Log.d (TAG, "method isSelected");
+        return isSelected;
     }
 }

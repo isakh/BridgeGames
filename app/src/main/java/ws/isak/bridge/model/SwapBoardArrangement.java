@@ -27,6 +27,7 @@ public class SwapBoardArrangement {
 
     public final String TAG = "SwapBoardArrangement";
     public static String URI_DRAWABLE = "drawable://";
+    public int tileSize;
 
 
     //Map of Coordinates objects to card data objects: this tells us where each card is on the board
@@ -72,7 +73,7 @@ public class SwapBoardArrangement {
             String drawableResourceName = imageURI.substring(URI_DRAWABLE.length());
             Log.d (TAG, "                       : drawableResourceName: " + drawableResourceName);
             int drawableResourceID = Shared.context.getResources().getIdentifier(drawableResourceName, "drawable", Shared.context.getPackageName());
-            Log.d (TAG, "                       : drawableResourceID: " + drawableResourceID);
+            //Log.d (TAG, "                       : drawableResourceID: " + drawableResourceID);
             Bitmap bitmap = ImageScaling.scaleDown(drawableResourceID, size, size);
             Bitmap croppedBitmap = ImageScaling.crop(bitmap, size, size);
             Log.d (TAG, "method getSwapTileBitmap: SUCCESS: returning a cropped bitmap: " +
@@ -82,4 +83,8 @@ public class SwapBoardArrangement {
         Log.d (TAG, "method getSwapTileBitmap: ERROR: returning no bitmap");
         return null;
     }
+
+    public void setTileSize (int size) { tileSize = size; }
+
+    public int getTileSize () { return tileSize; }
 }

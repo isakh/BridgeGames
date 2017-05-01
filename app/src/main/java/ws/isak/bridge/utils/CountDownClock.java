@@ -150,7 +150,7 @@ public abstract class CountDownClock {
         @Override
 		public void handleMessage(Message msg) {
 
-            Log.d (TAG, "Override handleMessage");
+            //Log.d (TAG, "Override handleMessage");
 
 			synchronized (CountDownClock.this) {
 				long millisLeft = timeLeft();

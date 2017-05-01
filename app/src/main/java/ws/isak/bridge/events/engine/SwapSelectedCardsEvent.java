@@ -13,9 +13,9 @@ import ws.isak.bridge.utils.SwapTileCoordinates;
  */
 public class SwapSelectedCardsEvent extends AbstractEvent {
 
-    public final String TAG = "MatchHidePairCardsEvent";
+    public final String TAG = "SwapSelectedCardsEvent";
 
-    public static final String TYPE = MatchHidePairCardsEvent.class.getName();
+    public static final String TYPE = SwapSelectedCardsEvent.class.getName();
 
     public SwapTileCoordinates id1;
     public SwapTileCoordinates id2;

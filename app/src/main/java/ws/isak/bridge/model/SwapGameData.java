@@ -82,8 +82,7 @@ public class SwapGameData {
 
     //return a pointer to the local deep copy of the map
     public Map <SwapTileCoordinates, SwapCardData> getSwapBoardMap () {
-        Log.d (TAG, "method getSwapBoardMap: curSwapBoardMap @: " + curSwapBoardMap +
-                " | curSwapBoardMap.size(): " + curSwapBoardMap.size());
+        //Log.d (TAG, "method getSwapBoardMap: curSwapBoardMap @: " + curSwapBoardMap + " | curSwapBoardMap.size(): " + curSwapBoardMap.size());
         return curSwapBoardMap;
     }
 
@@ -115,11 +114,14 @@ public class SwapGameData {
             //System.out.println(pair.getKey() + " maps to " + pair.getValue());
             SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
             SwapCardData cardData = (SwapCardData) pair.getValue();
+            /* fixme remove debug code to reduce output verbosity
             Log.d(TAG, "method getSwapCardDataFromSwapBoardMap: Searching... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
                     " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
                     cardData.getCardID().getSwapCardSegmentID() + " >");
+            */
             if (targetCoords.getSwapCoordRow() == coords.getSwapCoordRow() && targetCoords.getSwapCoordCol() == coords.getSwapCoordCol()) {
-                Log.d (TAG, " *** returning card from targetCoords @: " + targetCoords + " | with coords @: " + coords);
+                Log.d (TAG, " *** returning card : < " + cardData.getCardID().getSwapCardSpeciesID() +
+                "," + cardData.getCardID().getSwapCardSegmentID() + " > @: " + cardData + "| with key coords @: " + coords + " from targetCoords @: " + targetCoords);
                 cardToReturn = cardData;
             }
             //iterator.remove(); // TODO remove from here as well: avoids a ConcurrentModificationException but is destructive of map
@@ -136,10 +138,15 @@ public class SwapGameData {
             //System.out.println(pair.getKey() + " maps to " + pair.getValue());
             SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
             SwapCardData cardData = (SwapCardData) pair.getValue();
-            Log.d(TAG, "method getSwapTileCoordinatesFromSwapBoardMap: Searching... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
+            /*
+            Log.d(TAG, "method getMapSwapTileCoordinatesFromLoc: Searching... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
                     " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
                     cardData.getCardID().getSwapCardSegmentID() + " >");
+            */
             if (coords.getSwapCoordRow() == loc.getSwapCoordRow() && coords.getSwapCoordCol() == loc.getSwapCoordCol()) {
+                Log.d(TAG, "method getMapSwapTileCoordinatesFromLoc: Found target ... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
+                        " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
+                        cardData.getCardID().getSwapCardSegmentID() + " >");
                 coordsToReturn = coords;
             }
         }

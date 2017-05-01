@@ -21,7 +21,7 @@ public class PauseTimer extends CountDownClock {
 
     @Override
     public void onTick(long millisUntilFinished) {
-        Log.d (TAG, "overriding onTick from CountDownClock");
+        //Log.d (TAG, "overriding onTick from CountDownClock");
         if (mTimerCountdown != null) {
             mTimerCountdown.onTick(millisUntilFinished);
         }

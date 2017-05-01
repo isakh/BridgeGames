@@ -3,7 +3,6 @@ package ws.isak.bridge.engine;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.List;
 import java.util.Random;
@@ -22,7 +21,6 @@ import android.os.Handler;
 import android.util.Log;
 
 import android.view.animation.AlphaAnimation;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ImageView;
 
@@ -43,10 +41,8 @@ import ws.isak.bridge.events.engine.MatchGameWonEvent;
 import ws.isak.bridge.events.engine.PlayCardAudioEvent;
 import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
 
-import ws.isak.bridge.events.engine.SwapGameWonEvent;
-import ws.isak.bridge.events.engine.SwapPauseRowAudioEvent;
-import ws.isak.bridge.events.engine.SwapPlayRowAudioEvent;
-import ws.isak.bridge.events.engine.SwapSelectedCardsEvent;
+import ws.isak.bridge.events.engine.SwapPlayPauseRowAudioEvent;
+import ws.isak.bridge.events.engine.SwapResetRowAudioEvent;
 import ws.isak.bridge.events.ui.MatchStartEvent;
 import ws.isak.bridge.events.ui.SwapStartEvent;
 
@@ -76,7 +72,6 @@ import ws.isak.bridge.model.SwapBoardArrangement;
 import ws.isak.bridge.utils.Clock;
 import ws.isak.bridge.utils.ImageScaling;
 import ws.isak.bridge.utils.SwapTileCoordinates;
-import ws.isak.bridge.utils.TimerCountdown;
 
 /*
  * Class Engine contains the core behavior of the app.
@@ -384,12 +379,14 @@ public class Engine extends EventObserverAdapter {
                 }
             }
         }
+        /* TODO REMOVE Debugging code
         Log.d (TAG, " *** method arrangeSwapBoard: activeCardList prior to shuffling...");
         for (int n = 0; n < activeCardList.size(); n++) {
             Log.d (TAG, "                    : n: " + n + " | activeCardList(n) cardID: < " +
                     activeCardList.get(n).getCardID().getSwapCardSpeciesID() + " , " +
                     activeCardList.get(n).getCardID().getSwapCardSegmentID() + " >");
         }
+        */
         //shuffle all the active cards
         Collections.shuffle (activeCardList);
         Log.d (TAG, " *** method arrangeSwapBoard: activeCardList after shuffling...");
@@ -434,9 +431,9 @@ public class Engine extends EventObserverAdapter {
         //Log.d (TAG, " * Shared.userData.getCurSwapGameData().getSwapBoardMap().size(): " + Shared.userData.getCurSwapGameData().getSwapBoardMap().size());
 
 
-        //***** DEBUGGING CODE *****
+        /***** DEBUGGING CODE *****
 
-        Log.d (TAG, " \n ***** method arrangeSwapBoard: CHECK VALID BOARD ... iterate over Shared.userData.getCurSwapGameData.swapBoardMap:");
+        Log.d (TAG, " \n ***** method arrangeSwapBoard: CHECK VALID SWAP BOARD ... iterate over Shared.userData.getCurSwapGameData.swapBoardMap:");
         Log.d (TAG, "       Shared.userData.getCurSwapGameData: " + Shared.userData.getCurSwapGameData());
         Log.d (TAG, "       Shared.userData.getCurSwapGameData().getSwapBoardMap: " + Shared.userData.getCurSwapGameData().getSwapBoardMap());
         Log.d (TAG, "       Shared.userData.getCurSwapGameData().getSwapBoardMap().size(): " + Shared.userData.getCurSwapGameData().getSwapBoardMap().size());
@@ -453,6 +450,7 @@ public class Engine extends EventObserverAdapter {
                         " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() +
                         "," + cardData.getCardID().getSwapCardSegmentID());
         }
+        */
     }
 
 	// Override method onEvent when the event being passed is a MatchFlipCardEvent.
@@ -583,14 +581,16 @@ public class Engine extends EventObserverAdapter {
 	}
 
 	@Override
-    public void onEvent(SwapPauseRowAudioEvent event) {
+    public void onEvent(SwapPlayPauseRowAudioEvent event) {
         //FIXME - all the work
+        Log.d (TAG, "method onEvent(SwapPlayPauseRowAudioEvent)");
 
     }
 
     @Override
-    public void onEvent(SwapPlayRowAudioEvent event) {
+    public void onEvent(SwapResetRowAudioEvent event) {
         //FIXME - all the work
+        Log.d (TAG, "method onEvent(SwapResetRowAudioEvent)");
 
     }
 

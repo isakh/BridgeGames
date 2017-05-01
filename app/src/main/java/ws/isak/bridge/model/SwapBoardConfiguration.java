@@ -132,7 +132,7 @@ public class SwapBoardConfiguration {
     private long CalculateSwapGameDuration(int numTiles, int difficultyBaseline) {
         Log.d(TAG, "method CalculateSwapGameDuration: numTiles: " + numTiles + " | difficultyBaseLine: " + difficultyBaseline);
         long cumulativeTime = (long) difficultyBaseline;
-        cumulativeTime += numTiles * 3750; //FIXME this is a hack for now - each sample should be 3.5seconds
+        cumulativeTime += numTiles * 3814; //FIXME this is a hack for now - each sample should be 3.75seconds? or get from tiles??
         Log.d(TAG, "method CalculateSwapGameDuration: totalGameTime: " + cumulativeTime + "ms");
         return cumulativeTime;
     }

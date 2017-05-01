@@ -1,5 +1,7 @@
 package ws.isak.bridge.common;
 
+import android.graphics.Bitmap;
+
 import ws.isak.bridge.R;
 import ws.isak.bridge.utils.SwapCardID;
 import ws.isak.bridge.utils.SwapTileCoordinates;
@@ -34,6 +36,8 @@ public class SwapCardData
     private long sampleDuration1;
     private long sampleDuration2;
     private long sampleDuration3;
+
+    private Bitmap cardBitmap;      //this is recalculated for each game and cannot be part of the ORM for the database
 
 
     // [0]
@@ -207,4 +211,14 @@ public class SwapCardData
     public void setSampleDuration3 (long sDur3) { sampleDuration3 = sDur3; }
 
     public long getSampleDuration3 () { return sampleDuration3; }
+
+    //[15]      //TODO -decide if this is the best way to only make one copy of each bitmap per game?
+    //methods to set and get a Bitmap associated with the card for a specific game/layout/size
+    public void setCardBitmap (Bitmap bitmap) {
+        cardBitmap = bitmap;
+    }
+
+    public Bitmap getCardBitmap () {
+        return cardBitmap;
+    }
 }

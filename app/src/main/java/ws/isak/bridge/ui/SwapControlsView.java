@@ -20,6 +20,8 @@ import android.view.LayoutInflater;
 import ws.isak.bridge.R;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.common.Audio;
+import ws.isak.bridge.events.engine.SwapPlayPauseRowAudioEvent;
+import ws.isak.bridge.events.engine.SwapResetRowAudioEvent;
 import ws.isak.bridge.model.SwapGame;
 import ws.isak.bridge.utils.ImageScaling;
 
@@ -163,13 +165,14 @@ public class SwapControlsView extends LinearLayout implements View.OnClickListen
             Audio.OFF = false;
             currentPlayPauseButton.setBackgroundResource(R.drawable.swap_playback_pause_button);
             //TODO playback the audio
+            Shared.eventBus.notify(new SwapPlayPauseRowAudioEvent(activeRow));
         }
         else {
             Audio.OFF = true;
             currentPlayPauseButton.setBackgroundResource(R.drawable.swap_playback_play_button);
             //TODO stop audio playback
+            Shared.eventBus.notify(new SwapPlayPauseRowAudioEvent(activeRow));
         }
-
     }
 
     public void resetSwapRowPlaybackButton (int activeRow) {
@@ -177,6 +180,8 @@ public class SwapControlsView extends LinearLayout implements View.OnClickListen
 
         Button currentRestartButton = resetPlaybackButtons[activeRow];
         Audio.OFF = true;
+        currentRestartButton.setAlpha(0.5f);
         //TODO stop playback and reset cursor if necessary?
+        Shared.eventBus.notify(new SwapResetRowAudioEvent(activeRow));
     }
 }
