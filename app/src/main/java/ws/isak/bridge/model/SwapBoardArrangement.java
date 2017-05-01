@@ -32,7 +32,7 @@ public class SwapBoardArrangement {
 
     //Map of Coordinates objects to card data objects: this tells us where each card is on the board
 
-    public Map <SwapTileCoordinates, SwapCardData> swapBoardMap = new HashMap<>();
+    public HashMap <SwapTileCoordinates, SwapCardData> swapBoardMap = new HashMap<>();
 
     public void setCardOnBoard (SwapTileCoordinates coords, SwapCardData card) {
         Log.d (TAG, "   *** method setCardOnBoard: coords @: " + coords + " | tile coords: < " +

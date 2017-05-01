@@ -53,6 +53,7 @@ public class SwapTileView extends FrameLayout {
         super.onFinishInflate();
         //Log.d (TAG, "method onFinishInflate");
         mTileImage = (ImageView) findViewById(R.id.swap_tile_image);
+        mTileText = (TextView) findViewById(R.id.debug_image_view_text);
         Log.d (TAG, " ... ImageView mTileImage: " + mTileImage);
     }
 
@@ -63,7 +64,10 @@ public class SwapTileView extends FrameLayout {
     }
 
     public void setTileDebugText(SwapCardData tileData) {
+        //Log.d (TAG, "method setTileDebugText");
+        mTileText.setText("");
         String tileText = "CardID: <" + tileData.getCardID().getSwapCardSpeciesID() + "," + tileData.getCardID().getSwapCardSegmentID() + ">";
+        //Log.d (TAG, "Tile Debug Text: " + tileText);
         mTileText.setText(tileText);
     }
 
@@ -73,13 +77,15 @@ public class SwapTileView extends FrameLayout {
         //can this be as simple as adding a border? see @drawable/border_***.xml and changing the border color on selection
         //current implementation involves an overlay of transparent red FIXME - set color in xml
         mTileImage.setColorFilter(0xFFFF0000, PorterDuff.Mode.MULTIPLY);
+        mTileImage.postInvalidate();        //FIXME does this work?
+
     }
 
     public void unSelect() {
         Log.d (TAG, "method unSelect ... at start: mTileImage: " + mTileImage);
         isSelected = false;
-        mTileImage.setColorFilter(0x00000000, PorterDuff.Mode.MULTIPLY);    //FIXME set color in xml
-
+        mTileImage.setColorFilter(0, PorterDuff.Mode.MULTIPLY);    //FIXME set color in xml
+        mTileImage.postInvalidate();        //FIXME does this work?
     }
 
     public boolean isSelected() {

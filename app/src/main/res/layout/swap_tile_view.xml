@@ -9,8 +9,20 @@
         android:id="@+id/swap_tile_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:foreground="@drawable/tile"
-        android:background="@drawable/border_yellow"
-        android:scaleType="centerCrop" />
+        android:foreground="@drawable/border_yellow"
+        android:scaleType="centerCrop" />       <!-- android:background="@drawable/tile" -->
+
+    <TextView
+        android:id="@+id/debug_image_view_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/swap_tile_image"
+        android:layout_alignTop="@+id/swap_tile_image"
+        android:layout_alignRight="@+id/swap_tile_image"
+        android:layout_alignBottom="@+id/swap_tile_image"
+        android:layout_margin="1dp"
+        android:gravity="center"
+        android:text="DEBUG"
+        android:textColor="#000000" />
 
 </ws.isak.bridge.ui.SwapTileView>

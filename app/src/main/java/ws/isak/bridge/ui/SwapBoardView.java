@@ -63,9 +63,10 @@ public class SwapBoardView extends LinearLayout {
     //an instance of the board arrangement for the current game
     private SwapBoardArrangement mSwapBoardArrangement;
     //a mapping of each tile ID to a view TileView
-    private Map<SwapTileCoordinates, SwapTileView> mTileViewMap;
-    //an array list to hold the id's of the currently selected cards
-    private List<SwapTileCoordinates> selectedTiles = new ArrayList<SwapTileCoordinates>(0);
+    //TODO verify that this remains unchanged within each game
+    public Map<SwapTileCoordinates, SwapTileView> mTileViewMap;
+    //an array list holds the id's of the currently selected cards
+    public List<SwapTileCoordinates> selectedTiles = new ArrayList<SwapTileCoordinates>(0);
     //the dimension of the tile to be drawn
     private int mSize;
 
@@ -172,6 +173,9 @@ public class SwapBoardView extends LinearLayout {
         parent.addView(swapTileView);
         parent.setClipChildren(false);
         setSwapTileMap(curTileOnBoard, swapTileView);           //effectively mTileVieMap.put with debugging code
+        Log.d (TAG, "SwapCardData for current location: " + Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(curTileOnBoard));
+        SwapCardData cardDataAtCurTile = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(curTileOnBoard);
+        swapTileView.setTileDebugText(cardDataAtCurTile);
 
         new AsyncTask<Void, Void, Bitmap>() {
 
@@ -183,7 +187,9 @@ public class SwapBoardView extends LinearLayout {
                 //gets one of four bitmaps depending on flags at current coordinates
                 Bitmap croppedBitmap = mSwapBoardArrangement.getSwapTileBitmap(curTileOnBoard, mSize);      //FIXME - making mSize smaller to leave room for border?
                 Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(curTileOnBoard).setCardBitmap(croppedBitmap);
-                Log.d (TAG, "*** set card bitmap to: " + Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(curTileOnBoard).getCardBitmap());
+                Log.d (TAG, "***** addTile: doInBackground: create bitmap: " +
+                        Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(curTileOnBoard).getCardBitmap() +
+                        " FOR CARD @: < " + curTileOnBoard.getSwapCoordRow() + "," + curTileOnBoard.getSwapCoordCol() + " > ");
                 return croppedBitmap;
             }
 
@@ -192,12 +198,12 @@ public class SwapBoardView extends LinearLayout {
                 Log.d (TAG, "*** method addTile: Overriding onPostExecute: setting bitmap 'result'");
                 swapTileView.buildDrawingCache();    //FIXME does this help with later retrieval of bitmap?
                 swapTileView.setTileImage(result);
-                swapTileView.setTileDebugText(Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(curTileOnBoard));
                 Log.d (TAG, "... addTile: onPostExecute: swapTileView.getVisibility: " +
                         swapTileView.getVisibility() + " | swapTileView.isShown: " + swapTileView.isShown());
                 swapTileView.setVisibility(VISIBLE);
                 Log.d (TAG, "... addTile: onPostExecute: set VISIBLE: swapTileView.getVisibility: " +
                         swapTileView.getVisibility() + " | swapTileView.isShown: " + swapTileView.isShown());
+                swapTileView.invalidate();
             }
         }.execute();
 
@@ -293,24 +299,6 @@ public class SwapBoardView extends LinearLayout {
                         mTileViewMap.get(selectedTiles.get(0)).unSelect();
                         mTileViewMap.get(selectedTiles.get(1)).unSelect();
 
-                        //get tile images to swap
-                        Log.d (TAG, "*** ... GET BITMAPS TO SWAP ... ***");
-                        Bitmap tile0 = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(selectedTiles.get(0)).getCardBitmap();
-                        Bitmap tile1 = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(selectedTiles.get(1)).getCardBitmap();
-                        Log.d (TAG, "    ... tile0: " + tile0 + " | tile1: " + tile1);
-                        //and update the ImageViews with appropriate bitmaps
-                        mTileViewMap.get(selectedTiles.get(0)).setTileImage(tile1);
-                        mTileViewMap.get(selectedTiles.get(1)).setTileImage(tile0);
-
-                        //TODO - remove debugging text when working
-                        //and get debug text to swap
-                        SwapCardData card1ForText = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(selectedTiles.get(0));
-                        SwapCardData card2ForText = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(selectedTiles.get(1));
-                        //and update TextViews with appropriate text
-                        mTileViewMap.get(selectedTiles.get(0)).setTileDebugText(card1ForText);
-                        mTileViewMap.get(selectedTiles.get(1)).setTileDebugText(card2ForText);
-                        //TODO end text debugging
-
                         selectedTiles.clear();
 
                         debugCoordsTileViewsMap("method addTile, onClick, post redraw");
@@ -349,24 +337,6 @@ public class SwapBoardView extends LinearLayout {
                         Log.d(TAG, " ... unSelect both tile bitmaps");
                         mTileViewMap.get(selectedTiles.get(0)).unSelect();
                         mTileViewMap.get(selectedTiles.get(1)).unSelect();
-
-                        //swap tile images
-                        Log.d (TAG, "*** ... GET BITMAPS TO SWAP ... ***");
-                        Bitmap tile0 = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(selectedTiles.get(0)).getCardBitmap();
-                        Bitmap tile1 = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(selectedTiles.get(1)).getCardBitmap();
-                        Log.d (TAG, "    ... tile0: " + tile0 + " | tile1: " + tile1);
-
-                        mTileViewMap.get(selectedTiles.get(0)).setTileImage(tile1);
-                        mTileViewMap.get(selectedTiles.get(1)).setTileImage(tile0);
-
-                        //TODO - remove debugging text when working
-                        //and get debug text to swap
-                        SwapCardData card1ForText = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(selectedTiles.get(0));
-                        SwapCardData card2ForText = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(selectedTiles.get(1));
-                        //and update TextViews with appropriate text
-                        mTileViewMap.get(selectedTiles.get(0)).setTileDebugText(card1ForText);
-                        mTileViewMap.get(selectedTiles.get(1)).setTileDebugText(card2ForText);
-                        //TODO end text debugging
 
                         selectedTiles.clear();
 

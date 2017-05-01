@@ -25,7 +25,7 @@ public class SwapGameData {
     private SwapGame mPlayingSwapGame;
 
     // Map variable holds the Map representing the current game board - NOTE: not to be stored in database
-    private Map <SwapTileCoordinates, SwapCardData> curSwapBoardMap;
+    private HashMap <SwapTileCoordinates, SwapCardData> curSwapBoardMap;
     //Parameters to be saved for database matching game to user
     private long gameStartTimestamp;        //keep track of the timestamp for the start of the game - database primary key
     private String userPlayingName;         //FIXME database foreign key?
@@ -38,7 +38,7 @@ public class SwapGameData {
     private int numTurnsTakenInGame;        //Initialize number of turns in game to 0 and increment on each click.
     private ArrayList<Long> gamePlayDurations;  //Time the player spent on the game so far (sum of turnDurations) at each turn (can it be greater than allocated time?)
     private ArrayList <Long> turnDurations;      //a list of durations of each turn - a turn is defined as a single click, implemented as ArrayList //TODO should we also have a measure of paired click turns?
-    private ArrayList <Map <SwapTileCoordinates, SwapCardData>> swapGameMapList;   //a list of Map objects showing the remapping of the board on each swap
+    private ArrayList <HashMap <SwapTileCoordinates, SwapCardData>> swapGameMapList;   //a list of Map objects showing the remapping of the board on each swap
 
 
     //constructor method describes the information that is stored about each game played
@@ -59,11 +59,11 @@ public class SwapGameData {
 
     //[0] for now this is a deep copy (?) of the map 'swapBoardMap' initially set up in SwapBoardArrangment
     // this gets updated on each turn of the game so that it always holds the current Map of the board
-    public void setSwapBoardMap (Map curBoardMap) {
+    public void setSwapBoardMap (HashMap curBoardMap) {
         curSwapBoardMap = new HashMap<>();
         Iterator iterator = curBoardMap.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry pair = (Map.Entry) iterator.next();
+            HashMap.Entry pair = (HashMap.Entry) iterator.next();
             //System.out.println(pair.getKey() + " maps to " + pair.getValue());
             SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
             SwapCardData cardData = (SwapCardData) pair.getValue();
@@ -81,7 +81,7 @@ public class SwapGameData {
     }
 
     //return a pointer to the local deep copy of the map
-    public Map <SwapTileCoordinates, SwapCardData> getSwapBoardMap () {
+    public HashMap <SwapTileCoordinates, SwapCardData> getSwapBoardMap () {
         //Log.d (TAG, "method getSwapBoardMap: curSwapBoardMap @: " + curSwapBoardMap + " | curSwapBoardMap.size(): " + curSwapBoardMap.size());
         return curSwapBoardMap;
     }
@@ -91,7 +91,7 @@ public class SwapGameData {
         SwapTileCoordinates coordsToReturn = new SwapTileCoordinates(-1, -1);
         Iterator iterator = curSwapBoardMap.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry pair = (Map.Entry) iterator.next();
+            HashMap.Entry pair = (HashMap.Entry) iterator.next();
             //System.out.println(pair.getKey() + " maps to " + pair.getValue());
             SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
             SwapCardData cardData = (SwapCardData) pair.getValue();
@@ -110,7 +110,7 @@ public class SwapGameData {
         SwapCardData cardToReturn = new SwapCardData();
         Iterator iterator = curSwapBoardMap.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry pair = (Map.Entry) iterator.next();
+            HashMap.Entry pair = (HashMap.Entry) iterator.next();
             //System.out.println(pair.getKey() + " maps to " + pair.getValue());
             SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
             SwapCardData cardData = (SwapCardData) pair.getValue();
@@ -134,7 +134,7 @@ public class SwapGameData {
         SwapTileCoordinates coordsToReturn = new SwapTileCoordinates(-1, -1);
         Iterator iterator = curSwapBoardMap.entrySet().iterator();
         while (iterator.hasNext()) {
-            Map.Entry pair = (Map.Entry) iterator.next();
+            HashMap.Entry pair = (HashMap.Entry) iterator.next();
             //System.out.println(pair.getKey() + " maps to " + pair.getValue());
             SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
             SwapCardData cardData = (SwapCardData) pair.getValue();
@@ -265,15 +265,15 @@ public class SwapGameData {
     //[5] control methods for the swapGameMapList
     private void initSwapGameMapList () {
         //Log.d (TAG, "method initCardsSelectedOrderArray array list");
-        swapGameMapList = new ArrayList<Map<SwapTileCoordinates, SwapCardData>>();
+        swapGameMapList = new ArrayList<HashMap<SwapTileCoordinates, SwapCardData>>();
     }
 
-    public void appendToSwapGameMapList (Map <SwapTileCoordinates, SwapCardData> curSwapGameMap) {
+    public void appendToSwapGameMapList (HashMap <SwapTileCoordinates, SwapCardData> curSwapGameMap) {
         //Log.d (TAG, "method appendToSwapGameMapList");
         swapGameMapList.add(curSwapGameMap);
     }
 
-    public Map <SwapTileCoordinates, SwapCardData> querySwapGameMapList (int locToQuery) {
+    public HashMap <SwapTileCoordinates, SwapCardData> querySwapGameMapList (int locToQuery) {
         //Log.d (TAG, "method queryCardsSelectedArray");
         return swapGameMapList.get(locToQuery);
     }
@@ -283,7 +283,7 @@ public class SwapGameData {
         return swapGameMapList.size();
     }
 
-    public ArrayList <Map <SwapTileCoordinates, SwapCardData>> getSwapGameMapList () {
+    public ArrayList <HashMap <SwapTileCoordinates, SwapCardData>> getSwapGameMapList () {
         //
         return swapGameMapList;
     }

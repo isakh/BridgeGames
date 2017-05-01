@@ -1,5 +1,6 @@
 package ws.isak.bridge.fragments;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.util.Log;
 import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
+import java.util.HashMap;
 
 import ws.isak.bridge.R;
 import ws.isak.bridge.common.Memory;
@@ -59,11 +61,11 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d (TAG, "method onCreateView");
+        Log.d(TAG, "method onCreateView");
         //create the view for the swap game fragment
         ViewGroup view = (ViewGroup) inflater.inflate(R.layout.swap_game_fragment, container, false);
         view.setClipChildren(false);
-        ((ViewGroup)view.findViewById(R.id.swap_game_board)).setClipChildren(false);
+        ((ViewGroup) view.findViewById(R.id.swap_game_board)).setClipChildren(false);
         mTime = (TextView) view.findViewById(R.id.time_bar_text_view);
         mTimeImage = (ImageView) view.findViewById(R.id.time_bar_image);
         mTimerPlayPause = (ImageView) view.findViewById(R.id.time_bar_play_pause_button);
@@ -71,19 +73,19 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         mTimerRestart.setVisibility(View.INVISIBLE);
         mTimerPlayPause.setOnClickListener(this);
         mTimerRestart.setOnClickListener(this);
-        FontLoader.setTypeface(Shared.context, new TextView[] {mTime}, Font.ANGRYBIRDS);
+        FontLoader.setTypeface(Shared.context, new TextView[]{mTime}, Font.ANGRYBIRDS);
         //the swap game audio controls - TODO Does it make sense for these to be in a separate View from the board?
         mSwapControlsView = SwapControlsView.fromXml(getActivity().getApplicationContext(), view);
         FrameLayout controlsFrameLayout = (FrameLayout) view.findViewById(R.id.swap_game_audio_controls);
         controlsFrameLayout.addView(mSwapControlsView);
         controlsFrameLayout.setClipChildren(false);
-        Log.d (TAG, "method onCreateView: created layout controlsFrameLayout: " + controlsFrameLayout);
+        Log.d(TAG, "method onCreateView: created layout controlsFrameLayout: " + controlsFrameLayout);
         //the swap game board
         mSwapBoardView = SwapBoardView.fromXml(getActivity().getApplicationContext(), view);
         FrameLayout playFrameLayout = (FrameLayout) view.findViewById(R.id.swap_game_play_container);
         playFrameLayout.addView(mSwapBoardView);
         playFrameLayout.setClipChildren(false);
-        Log.d (TAG, "method onCreateView: created layout playFrameLayout: " + playFrameLayout);
+        Log.d(TAG, "method onCreateView: created layout playFrameLayout: " + playFrameLayout);
 
         // build board
         buildBoard();
@@ -98,7 +100,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public void onClick (View view) {
+    public void onClick(View view) {
         switch (view.getId()) {
             case R.id.time_bar_play_pause_button:
                 pauseTimerButton();
@@ -109,20 +111,19 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    private void pauseTimerButton () {
+    private void pauseTimerButton() {
         if (!Shared.currentSwapGame.gameClock.isClockPaused()) {   //isClockPaused false means playing
             mTimerRestart.setVisibility(View.VISIBLE);
             Shared.currentSwapGame.gameClock.pauseClock();         //call pauseClock and make next button restart play
             mTimerPlayPause.setImageResource(R.drawable.timer_play_button);
-        }
-        else {
+        } else {
             mTimerRestart.setVisibility(View.INVISIBLE);
             Shared.currentSwapGame.gameClock.resumeClock();
             mTimerPlayPause.setImageResource(R.drawable.timer_pause_button);
         }
     }
 
-    private void restartGameButton () {
+    private void restartGameButton() {
         //TODO decide if this button should do anything - if so how does database handle incomplete games?
         // - Shared.currentMatchGame.gameClock.cancelClock();
     }
@@ -139,17 +140,17 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void buildBoard() {
-        Log.d (TAG, "method buildBoard");
+        Log.d(TAG, "method buildBoard");
         SwapGame swapGame = Shared.engine.getActiveSwapGame();
-        Log.d (TAG, "method buildBoard: time: " + Shared.currentSwapGame.swapBoardConfiguration.getGameTime());
+        Log.d(TAG, "method buildBoard: time: " + Shared.currentSwapGame.swapBoardConfiguration.getGameTime());
         long time = Shared.currentSwapGame.swapBoardConfiguration.getGameTime();
         setTime(time);
-        Log.d (TAG, "method buildBoard: check pointer to game: Shared.engine.getActiveSwapGame: " +
-                    Shared.engine.getActiveSwapGame() + " | Shared.currentSwapGame : " + Shared.currentSwapGame);
+        Log.d(TAG, "method buildBoard: check pointer to game: Shared.engine.getActiveSwapGame: " +
+                Shared.engine.getActiveSwapGame() + " | Shared.currentSwapGame : " + Shared.currentSwapGame);
         mSwapControlsView.populateControls(swapGame);
         mSwapBoardView.setBoard(swapGame);
         startClock(time);
-        Log.d (TAG, "method buildBoard: calling method debugHashMaps");
+        Log.d(TAG, "method buildBoard: calling method debugHashMaps");
         debugHashMaps("method buildBoard");
     }
 
@@ -159,28 +160,28 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
      */
     private void setTime(long time) {
         //Log.d (TAG, "method setTime: input time (ms): " + time);
-        int timeInSeconds = (int) Math.ceil ((double) time / 1000);
+        int timeInSeconds = (int) Math.ceil((double) time / 1000);
         //Log.d (TAG, "              : timeInSeconds: " + timeInSeconds);
         int min = timeInSeconds / 60;
         //Log.d (TAG, "              : min: " + min);
-        int sec = timeInSeconds - min*60;
+        int sec = timeInSeconds - min * 60;
         //Log.d (TAG, "              : sec: " + sec + " | calling mTime.setText");
         mTime.setText(" " + String.format(Locale.ENGLISH, "%02d", min) + ":" + String.format(Locale.ENGLISH, "%02d", sec));
     }
 
     private void startClock(long time) {
-        Log.d (TAG, "method startClock: input time(ms): " + time);
+        Log.d(TAG, "method startClock: input time(ms): " + time);
         Shared.currentSwapGame.gameClock.startClock(time, 1000, new TimerCountdown() {
 
             @Override
             public void onTick(long millisUntilFinished) {
                 //Log.d (TAG, "Clock: onTick: millisUntilFinished: " + millisUntilFinished);
-                setTime (millisUntilFinished);
+                setTime(millisUntilFinished);
             }
 
             @Override
             public void onFinish() {
-                Log.d (TAG, "method startClock: overriding onFinish");
+                Log.d(TAG, "method startClock: overriding onFinish");
                 mTimerPlayPause.setVisibility(View.INVISIBLE);          //TODO - does this make controls disappear on finish?
                 mTimerRestart.setVisibility(View.INVISIBLE);
                 setTime(0);
@@ -188,34 +189,69 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         });
     }
 
-    public void onEvent (SwapSelectedCardsEvent event) {
+    public void onEvent(SwapSelectedCardsEvent event) {
         //
-        Log.d (TAG, "onEvent SwapSelectedCardsEvent @ start: calling debugHashMaps");
+        Log.d(TAG, "onEvent SwapSelectedCardsEvent @ start: calling debugHashMaps");
         debugHashMaps(event.TAG);
         //prior to swap, append the current board Map to Shared.swapGameData.swapGameMapList
         Shared.userData.getCurSwapGameData().appendToSwapGameMapList(Shared.userData.getCurSwapGameData().getSwapBoardMap());
+        //debug state of list of maps representing board on each turn
+        for (int i = 0; i < Shared.userData.getCurSwapGameData().sizeOfSwapGameMapList(); i++) {
+            Log.d(TAG, "Map in List @ i: " + i + " | @ pointer: " + Shared.userData.getCurSwapGameData().querySwapGameMapList(i));
+            debugCoordsDataMap(Shared.userData.getCurSwapGameData().querySwapGameMapList(i), "STATE OF MAP" + i + " IN GAMEDATA LIST");
+        }
         //TODO - make a new copy of the board map ?
-        Shared.userData.getCurSwapGameData().setSwapBoardMap(Shared.userData.getCurSwapGameData().getSwapBoardMap());
+        HashMap<SwapTileCoordinates, SwapCardData> nextTurnMap = Shared.userData.getCurSwapGameData().getSwapBoardMap();
+        Shared.userData.getCurSwapGameData().setSwapBoardMap(nextTurnMap);
         // start of SwapSelectedCardsEvent - this method swaps the SwapCardData associated with the
         // tile coordinates received by the event in the Board setup HashMap found at Shared.userData.
         // getCurSwapGameData.curSwapBoardMap.  Additionally, this also calls mSwapBoardView.
-        Log.d (TAG, "onEvent(SwapSelectedCardsEvent): event.id1: " + event.id1 + " event.id2: " + event.id2 + " *** AT START OF method ***");
+        Log.d(TAG, "onEvent(SwapSelectedCardsEvent): event.id1: " + event.id1 + " event.id2: " + event.id2 + " *** AT START OF method ***");
         SwapTileCoordinates card1Coords = event.id1;
         SwapTileCoordinates card2Coords = event.id2;
         SwapCardData card1Data = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(card1Coords);
         SwapCardData card2Data = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(card2Coords);
-        Log.d (TAG, "onEvent(SwapSelectedCardsEvent): card1Coords: " + card1Coords + " | card2Coords: " + card2Coords + " | card1Data ID: " + card1Data.getCardID() + " | card2Data ID: " + card2Data.getCardID());
+        Log.d(TAG, "onEvent(SwapSelectedCardsEvent): card1Coords: " + card1Coords + " | card2Coords: " + card2Coords + " | card1Data ID: " + card1Data.getCardID() + " | card2Data ID: " + card2Data.getCardID());
 
         //Swap the coordinates associated with the two SwapCardData objects
         switchDataAtTileCoordinates(card1Coords, card2Coords, card1Data, card2Data);
 
-        //FIXME - push the new cards back into the board on the new Map?
+        //push the new cards back into the board on the new Map
         Shared.currentSwapGame.swapBoardArrangement.setCardOnBoard(card1Coords, card1Data);
         Shared.currentSwapGame.swapBoardArrangement.setCardOnBoard(card2Coords, card2Data);
 
+        //redraw the board FIXME ************
+
+        //swap tile images
+        Log.d (TAG, "*** ... GET BITMAPS TO SWAP ... ***");
+        Log.d (TAG, "Card for bitmap1: < " + Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0)).getCardID().getSwapCardSpeciesID() +
+                    "," + Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0)).getCardID().getSwapCardSegmentID() + " >");
+        Bitmap tile0 = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0)).getCardBitmap();
+        Log.d (TAG, "Card for bitmap2: < " + Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(1)).getCardID().getSwapCardSpeciesID() +
+                "," + Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(1)).getCardID().getSwapCardSegmentID() + " >");
+        Bitmap tile1 = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(1)).getCardBitmap();
+        Log.d (TAG, " SWAPPING BITMAPS ... tile0: " + tile0 + " | tile1: " + tile1);
+        mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(0)).setTileImage(tile1);
+        mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(1)).setTileImage(tile0);
+        Log.d (TAG, "Calling mSwapBoardView.invalidate() to push redrawing of screen");
+        mSwapBoardView.postInvalidate();
+        //mSwapBoardView.invalidate();        //FIXME does this work?
+
+        //TODO - remove debugging text when working
+        //and get debug text to swap
+        SwapCardData card1ForText = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0));
+        SwapCardData card2ForText = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(1));
+        //and update TextViews with appropriate text
+        Log.d (TAG, " SWAPPING TEXT");
+        mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(0)).setTileDebugText(card1ForText);
+        mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(1)).setTileDebugText(card2ForText);
+        mSwapBoardView.invalidate();        //FIXME does this work?
+
+        //TODO end testing ******************
+
         //Check if game is won
         boolean winning = true;     //TODO is this safe to default to true?
-        for (int i = 0; i < Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty(); i++ ) {        //for each row on the board
+        for (int i = 0; i < Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty(); i++) {        //for each row on the board
             for (int j = 0; j < 4; j++) {       //for each tile in row
                 SwapTileCoordinates targetCoords = new SwapTileCoordinates(i, j);
                 SwapCardData cardOnTile = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(targetCoords);
@@ -226,7 +262,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         }
         if (winning) {
             int passedSeconds = (int) (Shared.currentSwapGame.gameClock.getPassedTime() / 1000);
-            Log.d (TAG, "onEvent SwapSelectedCardsEvent: winning: " + winning + " | passedSeconds: " + passedSeconds);     //TODO check passed time is right
+            Log.d(TAG, "onEvent SwapSelectedCardsEvent: winning: " + winning + " | passedSeconds: " + passedSeconds);     //TODO check passed time is right
             Clock.getInstance().pauseClock();
             long totalTimeInMillis = Shared.currentSwapGame.swapBoardConfiguration.getGameTime();
             int totalTime = (int) Math.ceil((double) totalTimeInMillis / 1000); //TODO is this enough or should we convert all to long ms
@@ -238,10 +274,15 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
             // calculate stars and score from the amount of time that has elapsed as a ratio
             // of total time allotted for the game.  When calculating this we still have incorporated
             // the time based on the difficultyLevel as well as the time to play back the samples
-            if (passedSeconds <= totalTime / 2) {gameState.achievedStars = 3; }
-            else if (passedSeconds <= totalTime - totalTime / 5) {gameState.achievedStars = 2; }
-            else if (passedSeconds < totalTime) {gameState.achievedStars = 1; }
-            else {gameState.achievedStars = 0;}
+            if (passedSeconds <= totalTime / 2) {
+                gameState.achievedStars = 3;
+            } else if (passedSeconds <= totalTime - totalTime / 5) {
+                gameState.achievedStars = 2;
+            } else if (passedSeconds < totalTime) {
+                gameState.achievedStars = 1;
+            } else {
+                gameState.achievedStars = 0;
+            }
             // calculate the score
             gameState.achievedScore = Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty() * gameState.remainingTimeInSeconds;     //FIXME - was difficultyLevel, now getSwapDifficulty() , check consistency
             // save to memory
@@ -251,10 +292,10 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    private void switchDataAtTileCoordinates (SwapTileCoordinates tile1, SwapTileCoordinates tile2,
-                                              SwapCardData data1, SwapCardData data2) {
-        Log.d (TAG, "*** method switchDataAtTileCoordinates:  ");
-        Log.d (TAG, "   ... before switch .... tile1: " + tile1 + " coords: < " +
+    private void switchDataAtTileCoordinates(SwapTileCoordinates tile1, SwapTileCoordinates tile2,
+                                             SwapCardData data1, SwapCardData data2) {
+        Log.d(TAG, "*** method switchDataAtTileCoordinates:  ");
+        Log.d(TAG, "   ... before switch .... tile1: " + tile1 + " coords: < " +
                 tile1.getSwapCoordRow() + "," + tile1.getSwapCoordCol() + " > | tile2: " + tile2 +
                 " coords: < " + tile2.getSwapCoordRow() + "," + tile2.getSwapCoordCol() + " > | data1: " +
                 data1 + " cardID - species: " + data1.getCardID().getSwapCardSpeciesID() +
@@ -305,15 +346,15 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void debugHashMaps(String callingMethod) {
-        Log.d (TAG, " \n ... \n");
-        Log.d (TAG, "method debugHashMaps ... called by: " + callingMethod);
+        Log.d(TAG, " \n ... \n");
+        Log.d(TAG, "method debugHashMaps ... called by: " + callingMethod);
         debugCoordsDataMap();
         mSwapBoardView.debugCoordsTileViewsMap(callingMethod);
     }
 
     private void debugCoordsDataMap() {
         //FIXME - DEBUGGING CODE - check state of map before starting swap
-        Log.d (TAG, " \n ... \n");
+        Log.d(TAG, " \n ... \n");
         Log.d(TAG, "***** method debugCoordsDataMap: BoardMap <Coords, CardID>");
         Iterator iterator = Shared.userData.getCurSwapGameData().getSwapBoardMap().entrySet().iterator();
 
@@ -327,6 +368,27 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
                     " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() +
                     "," + cardData.getCardID().getSwapCardSegmentID() + " > | address of Map.entry: " + pair);
         }
-        Log.d (TAG, " \n ... \n");
+        Log.d(TAG, " \n ... \n");
+    }
+
+
+    //overloaded version takes a HashMap as input so we can iterate through List of Board Maps
+    private void debugCoordsDataMap(HashMap map, String callingMethod) {
+        //FIXME - DEBUGGING CODE - check state of map before starting swap
+        Log.d(TAG, " \n ... \n");
+        Log.d(TAG, "***** method debugCoordsDataMap: BoardMap <Coords, CardID> | Called From: " + callingMethod);
+        Iterator iterator = map.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry pair = (Map.Entry) iterator.next();
+            //System.out.println(pair.getKey() + " maps to " + pair.getValue());
+            SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
+            SwapCardData cardData = (SwapCardData) pair.getValue();
+            Log.d(TAG, "... debugCoordsDataMap: | coords: < " +
+                    coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
+                    " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() +
+                    "," + cardData.getCardID().getSwapCardSegmentID() + " > | address of Map.entry: " + pair);
+        }
+        Log.d(TAG, " \n ... \n");
     }
 }
