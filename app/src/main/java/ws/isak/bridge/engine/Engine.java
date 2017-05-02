@@ -3,10 +3,8 @@ package ws.isak.bridge.engine;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
 import java.util.Random;
-import java.util.Iterator;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -41,8 +39,6 @@ import ws.isak.bridge.events.engine.MatchGameWonEvent;
 import ws.isak.bridge.events.engine.PlayCardAudioEvent;
 import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
 
-import ws.isak.bridge.events.engine.SwapPlayPauseRowAudioEvent;
-import ws.isak.bridge.events.engine.SwapResetRowAudioEvent;
 import ws.isak.bridge.events.ui.MatchStartEvent;
 import ws.isak.bridge.events.ui.SwapStartEvent;
 

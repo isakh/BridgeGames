@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.util.Log;
 import android.content.res.AssetFileDescriptor;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -25,7 +26,8 @@ import ws.isak.bridge.common.Memory;
 import ws.isak.bridge.common.Shared;
 
 import ws.isak.bridge.common.SwapCardData;
-import ws.isak.bridge.events.engine.SwapPlayPauseRowAudioEvent;
+import ws.isak.bridge.events.engine.SwapPauseRowAudioEvent;
+import ws.isak.bridge.events.engine.SwapPlayRowAudioEvent;
 import ws.isak.bridge.events.engine.SwapResetRowAudioEvent;
 import ws.isak.bridge.events.engine.SwapSelectedCardsEvent;
 import ws.isak.bridge.events.engine.SwapUnselectCardsEvent;
@@ -99,7 +101,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         Shared.eventBus.listen(SwapSelectedCardsEvent.TYPE, this);
         Shared.eventBus.listen(SwapGameWonEvent.TYPE, this);
         //FIXME - what does this event do? Shared.eventBus.listen(SwapUnselectCardsEvent.TYPE, this);
-        Shared.eventBus.listen(SwapPlayPauseRowAudioEvent.TYPE, this);
+        Shared.eventBus.listen(SwapPlayRowAudioEvent.TYPE, this);
         Shared.eventBus.listen(SwapResetRowAudioEvent.TYPE, this);
 
         return view;
@@ -139,7 +141,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         Shared.eventBus.unlisten(SwapSelectedCardsEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapGameWonEvent.TYPE, this);
         //FIXME - do we need this? Shared.eventBus.unlisten(SwapUnselectCardsEvent.TYPE, this);
-        Shared.eventBus.unlisten(SwapPlayPauseRowAudioEvent.TYPE, this);
+        Shared.eventBus.unlisten(SwapPlayRowAudioEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapResetRowAudioEvent.TYPE, this);
 
         super.onDestroy();
@@ -399,18 +401,27 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
-    public void onEvent (SwapPlayPauseRowAudioEvent event) {
+    public void onEvent (SwapPlayRowAudioEvent event) {
         ArrayList <Integer> audioResourceIdList;
         int row = event.id;
-        Log.d (TAG, "onEvent SwapPlayPauseRowAudioEvent: row to playback: " + row +
+        Log.d (TAG, "onEvent SwapPlayRowAudioEvent: row to playback: " + row +
                     " | state of Audio.getIsAudioPlaying " + Audio.getIsAudioPlaying());
+        //if no other audio is playing
         if (!Audio.getIsAudioPlaying()) {
             audioResourceIdList = getAudioFilesInOrderByID(row);
             playAudioFromFileList (audioResourceIdList);
         }
+        //if another row of audio is currently playing
         else {
-            //stop playing audio
+            Toast.makeText(Shared.context, "please pause playing audio or wait for it to finish", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onEvent (SwapPauseRowAudioEvent event) {
+        //
+        //TODO
+        //
     }
 
     @Override
@@ -422,6 +433,8 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
 
     private ArrayList <Integer> getAudioFilesInOrderByID(int targetRow) {
         ArrayList <Integer> audioResourceIDs = new ArrayList<Integer>(0);
+        //for debugging, local array of string for audio resources to be printed before return of method
+        ArrayList <String> audioResourceNames = new ArrayList <String>(0);
         for (int i = 0; i < Shared.currentSwapGame.swapBoardConfiguration.swapNumTilesInRow; i++) {
             SwapTileCoordinates targetTileCoords = Shared.userData.getCurSwapGameData().getMapSwapTileCoordinatesFromLoc(new SwapTileCoordinates(targetRow, i));
             int segmentID = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(targetTileCoords).getCardID().getSwapCardSegmentID();
@@ -429,24 +442,32 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
                 case 0:
                     String audioResourceName0 = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(targetTileCoords).getAudioURI0().substring(URI_AUDIO.length());
                     int audioResourceId0 = Shared.context.getResources().getIdentifier(audioResourceName0, "raw", Shared.context.getPackageName());
+                    audioResourceNames.add(audioResourceName0);
                     audioResourceIDs.add(audioResourceId0);
                     break;
                 case 1:
                     String audioResourceName1 = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(targetTileCoords).getAudioURI1().substring(URI_AUDIO.length());
                     int audioResourceId1 = Shared.context.getResources().getIdentifier(audioResourceName1, "raw", Shared.context.getPackageName());
+                    audioResourceNames.add(audioResourceName1);
                     audioResourceIDs.add(audioResourceId1);
                     break;
                 case 2:
                     String audioResourceName2 = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(targetTileCoords).getAudioURI2().substring(URI_AUDIO.length());
                     int audioResourceId2 = Shared.context.getResources().getIdentifier(audioResourceName2, "raw", Shared.context.getPackageName());
+                    audioResourceNames.add(audioResourceName2);
                     audioResourceIDs.add(audioResourceId2);
                     break;
                 case 3:
                     String audioResourceName3 = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(targetTileCoords).getAudioURI3().substring(URI_AUDIO.length());
                     int audioResourceId3 = Shared.context.getResources().getIdentifier(audioResourceName3, "raw", Shared.context.getPackageName());
+                    audioResourceNames.add(audioResourceName3);
                     audioResourceIDs.add(audioResourceId3);
                     break;
             }
+        }
+        Log.d (TAG, "..... AudioResourceNames in Target Row: .....");
+        for (int i = 0; i < audioResourceNames.size(); i++) {
+            Log.d (TAG, "..... resource @ i: " + i + " : " + audioResourceNames.get(i));
         }
         return audioResourceIDs;
     }
@@ -468,6 +489,13 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
                 curMediaPlayer.setLooping(false);
                 mPlayerList.add(curMediaPlayer);
                 Log.d(TAG, "mPlayerList.size(): " + mPlayerList.size());
+
+                curMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        //todo - can we use this to handle pause button?
+                    }
+                });
             }
             catch (IOException e) {
                 e.printStackTrace();
@@ -478,8 +506,4 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         }
         mPlayerList.get(0).start();
     }
-
-    //TODO Put this somewhere |  Toast.makeText(Shared.context, "Please turn on game audio to play in this mode, you can do this under settings", Toast.LENGTH_SHORT).show();
-    //TODO put this somewhere |  ScreenController.getInstance().openScreen(ScreenController.Screen.MENU_SWAP);
 }
-

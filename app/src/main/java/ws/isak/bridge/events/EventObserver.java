@@ -1,7 +1,8 @@
 package ws.isak.bridge.events;
 
 import ws.isak.bridge.events.engine.MatchFlipDownCardsEvent;
-import ws.isak.bridge.events.engine.SwapPlayPauseRowAudioEvent;
+import ws.isak.bridge.events.engine.SwapPlayRowAudioEvent;
+import ws.isak.bridge.events.engine.SwapPauseRowAudioEvent;
 import ws.isak.bridge.events.engine.SwapResetRowAudioEvent;
 import ws.isak.bridge.events.engine.SwapSelectedCardsEvent;
 import ws.isak.bridge.events.engine.SwapUnselectCardsEvent;
@@ -72,7 +73,9 @@ public interface EventObserver {
 
     void onEvent(SwapResetRowAudioEvent event);
 
-    void onEvent(SwapPlayPauseRowAudioEvent event);
+    void onEvent(SwapPlayRowAudioEvent event);
+
+    void onEvent(SwapPauseRowAudioEvent event);
 
     void onEvent(PlayCardAudioEvent event);
 
