@@ -580,20 +580,6 @@ public class Engine extends EventObserverAdapter {
 		}
 	}
 
-	@Override
-    public void onEvent(SwapPlayPauseRowAudioEvent event) {
-        //FIXME - all the work
-        Log.d (TAG, "method onEvent(SwapPlayPauseRowAudioEvent)");
-
-    }
-
-    @Override
-    public void onEvent(SwapResetRowAudioEvent event) {
-        //FIXME - all the work
-        Log.d (TAG, "method onEvent(SwapResetRowAudioEvent)");
-
-    }
-
     @Override
     public void onEvent(MatchNextGameEvent event) {
         PopupManager.closePopup();

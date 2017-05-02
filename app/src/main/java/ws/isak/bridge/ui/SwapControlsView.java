@@ -8,10 +8,10 @@ import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.Button;
 
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -25,9 +25,6 @@ import ws.isak.bridge.events.engine.SwapResetRowAudioEvent;
 import ws.isak.bridge.model.SwapGame;
 import ws.isak.bridge.utils.ImageScaling;
 
-//FIXME
-import android.widget.Button;
-import android.widget.Toast;
 
 /*
  * The SwapControlsView class describes the UI for the audio playback control buttons associated

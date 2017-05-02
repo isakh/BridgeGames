@@ -10,9 +10,6 @@ import java.io.File;
 
 import ws.isak.bridge.R;
 
-
-//TODO remove? import android.provider.MediaStore;
-
 /**
  * Class Audio handles all of the media player events for the game.  During the game this includes
  * both the audio sounds triggered for each correct match (method playCorrect) and for each star
