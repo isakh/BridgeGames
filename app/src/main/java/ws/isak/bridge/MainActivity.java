@@ -241,9 +241,10 @@ public class  MainActivity extends FragmentActivity {
                 Log.d(TAG, "                            : audio0: " + curCard.getAudioURI0() + " | audio1: " + curCard.getAudioURI1() + " | audio2: " + curCard.getAudioURI2() + " | audio3" + curCard.getAudioURI3());
                 Log.d(TAG, "                            : dur0: " + curCard.getSampleDuration0() + " | dur1: " + curCard.getSampleDuration1() + " | dur2: " + curCard.getSampleDuration2() + " | dur3: " + curCard.getSampleDuration3());
                 Log.d(TAG, "                            : image0: " + curCard.getSpectroURI0() + " | image1: " + curCard.getSpectroURI1() + " | image2: " + curCard.getSpectroURI2() + " | image3: " + curCard.getSpectroURI3());
-                //TODO check if card is in DB
+                //TODO check if card is in DB and if not add it
             }
         }
+        Log.d (TAG, "method buildSwapCardDataList: Shared.swapCardDataList.size(): " + Shared.swapCardDataList.size());
     }
 
     private void setBackgroundImage() {

@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.Button;
+import android.widget.Toast;
 
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -20,7 +21,9 @@ import android.view.LayoutInflater;
 import ws.isak.bridge.R;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.common.Audio;
-import ws.isak.bridge.events.engine.SwapPlayPauseRowAudioEvent;
+import ws.isak.bridge.engine.ScreenController;
+import ws.isak.bridge.events.engine.SwapPlayRowAudioEvent;
+import ws.isak.bridge.events.engine.SwapPauseRowAudioEvent;
 import ws.isak.bridge.events.engine.SwapResetRowAudioEvent;
 import ws.isak.bridge.model.SwapGame;
 import ws.isak.bridge.utils.ImageScaling;
@@ -158,17 +161,20 @@ public class SwapControlsView extends LinearLayout implements View.OnClickListen
         Log.d (TAG, "method pauseSwapRowPlaybackButton");
 
         Button currentPlayPauseButton = playPauseButtons[activeRow];
+        //if the audio setting is turned off, direct the user to turn it back on
         if (Audio.OFF) {
-            Audio.OFF = false;
-            currentPlayPauseButton.setBackgroundResource(R.drawable.swap_playback_pause_button);
-            //TODO playback the audio
-            Shared.eventBus.notify(new SwapPlayPauseRowAudioEvent(activeRow));
+            Toast.makeText(Shared.context, "Please turn on game audio to play in this mode, you can do this under settings", Toast.LENGTH_SHORT).show();
+            ScreenController.getInstance().openScreen(ScreenController.Screen.MENU_SWAP);
         }
+        //if audio is allowed, and not currently playing
+        else if (!Audio.OFF && !Audio.getIsAudioPlaying()) {
+            currentPlayPauseButton.setBackgroundResource(R.drawable.swap_playback_pause_button);
+            Shared.eventBus.notify(new SwapPlayRowAudioEvent(activeRow));
+        }
+        //if audio is allowed, and already playing
         else {
-            Audio.OFF = true;
             currentPlayPauseButton.setBackgroundResource(R.drawable.swap_playback_play_button);
-            //TODO stop audio playback
-            Shared.eventBus.notify(new SwapPlayPauseRowAudioEvent(activeRow));
+            Shared.eventBus.notify(new SwapPauseRowAudioEvent(activeRow));
         }
     }
 

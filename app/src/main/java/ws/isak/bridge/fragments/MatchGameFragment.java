@@ -20,7 +20,6 @@ import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
 import ws.isak.bridge.model.MatchGame;
 import ws.isak.bridge.ui.MatchBoardView;
 import ws.isak.bridge.ui.PopupManager;
-import ws.isak.bridge.utils.Clock;
 import ws.isak.bridge.utils.TimerCountdown;
 import ws.isak.bridge.utils.FontLoader;
 import ws.isak.bridge.utils.FontLoader.Font;
@@ -209,7 +208,7 @@ public class MatchGameFragment extends BaseFragment implements View.OnClickListe
         Shared.userData.setCurMatchGame(null);
 		mTime.setVisibility(View.GONE);
 		mTimeImage.setVisibility(View.GONE);
-		PopupManager.showPopupWon(event.gameState);
+		PopupManager.showMatchPopupWon(event.gameState);
 	}
 
 	@Override

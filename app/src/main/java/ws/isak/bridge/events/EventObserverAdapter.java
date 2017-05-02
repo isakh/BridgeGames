@@ -23,6 +23,9 @@ import ws.isak.bridge.events.ui.MatchResetBackgroundEvent;
 import ws.isak.bridge.events.ui.MatchThemeSelectedEvent;
 import ws.isak.bridge.events.ui.MatchStartEvent;
 import ws.isak.bridge.events.ui.SwapStartEvent;
+import ws.isak.bridge.events.ui.SwapBackGameEvent;
+import ws.isak.bridge.events.ui.SwapNextGameEvent;
+
 
 /*
  * Class EventObserverAdapter defines the behavior of each eventObserver onEvent method
@@ -123,6 +126,18 @@ public class EventObserverAdapter implements EventObserver {
 
     @Override
     public void onEvent(SwapDifficultySelectedEvent event) {
+        //Log.d (TAG, "");
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void onEvent(SwapNextGameEvent event) {
+        //Log.d (TAG, "");
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void onEvent(SwapBackGameEvent event) {
         //Log.d (TAG, "");
         throw new UnsupportedOperationException();
     }

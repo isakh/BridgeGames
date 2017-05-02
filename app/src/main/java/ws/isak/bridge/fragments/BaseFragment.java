@@ -25,6 +25,8 @@ import ws.isak.bridge.events.ui.MatchResetBackgroundEvent;
 import ws.isak.bridge.events.ui.MatchThemeSelectedEvent;
 import ws.isak.bridge.events.ui.MatchStartEvent;
 import ws.isak.bridge.events.ui.SwapStartEvent;
+import ws.isak.bridge.events.ui.SwapBackGameEvent;
+import ws.isak.bridge.events.ui.SwapNextGameEvent;
 
 /*
  * Class BaseFragment defines the core of each fragment behavior when an event occurs
@@ -124,6 +126,18 @@ public class BaseFragment extends Fragment implements EventObserver {
 
     @Override
     public void onEvent(SwapDifficultySelectedEvent event) {
+        //Log.d (TAG, "");
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void onEvent(SwapNextGameEvent event) {
+        //Log.d (TAG, "");
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void onEvent(SwapBackGameEvent event) {
         //Log.d (TAG, "");
         throw new UnsupportedOperationException();
     }

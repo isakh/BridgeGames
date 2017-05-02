@@ -92,30 +92,55 @@ public class PopupManager {
         animatorSet.start();
     }    
 
-	public static void showPopupWon(GameState gameState) {
-        Log.d (TAG, "method showPopupWon");
+	public static void showMatchPopupWon(GameState gameState) {
+        Log.d (TAG, "method showMatchPopupWon");
 		RelativeLayout popupContainer = (RelativeLayout) Shared.activity.findViewById(R.id.popup_container);
 		popupContainer.removeAllViews();
 
 		// popup
-		PopupWonView popupWonView = new PopupWonView(Shared.context);
-		popupWonView.setGameState(gameState);
+		MatchPopupWonView matchPopupWonView = new MatchPopupWonView(Shared.context);
+		matchPopupWonView.setGameState(gameState);
 		int width = Shared.context.getResources().getDimensionPixelSize(R.dimen.popup_won_width);
 		int height = Shared.context.getResources().getDimensionPixelSize(R.dimen.popup_won_height);
 		RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
 		params.addRule(RelativeLayout.CENTER_IN_PARENT);
-		popupContainer.addView(popupWonView, params);
+		popupContainer.addView(matchPopupWonView, params);
 
 		// animate all together
-		ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(popupWonView, "scaleX", 0f, 1f);
-		ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(popupWonView, "scaleY", 0f, 1f);
+		ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(matchPopupWonView, "scaleX", 0f, 1f);
+		ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(matchPopupWonView, "scaleY", 0f, 1f);
 		AnimatorSet animatorSet = new AnimatorSet();
 		animatorSet.playTogether(scaleXAnimator, scaleYAnimator);
 		animatorSet.setDuration(500);
 		animatorSet.setInterpolator(new DecelerateInterpolator(2));
-		popupWonView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+		matchPopupWonView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
 		animatorSet.start();
 	}
+
+    public static void showSwapPopupWon(GameState gameState) {
+        Log.d (TAG, "method showSwapPopupWon");
+        RelativeLayout popupContainer = (RelativeLayout) Shared.activity.findViewById(R.id.popup_container);
+        popupContainer.removeAllViews();
+
+        // popup
+        SwapPopupWonView swapPopupWonView = new SwapPopupWonView(Shared.context);
+        swapPopupWonView.setGameState(gameState);
+        int width = Shared.context.getResources().getDimensionPixelSize(R.dimen.popup_won_width);
+        int height = Shared.context.getResources().getDimensionPixelSize(R.dimen.popup_won_height);
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
+        params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        popupContainer.addView(swapPopupWonView, params);
+
+        // animate all together
+        ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(swapPopupWonView, "scaleX", 0f, 1f);
+        ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(swapPopupWonView, "scaleY", 0f, 1f);
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(scaleXAnimator, scaleYAnimator);
+        animatorSet.setDuration(500);
+        animatorSet.setInterpolator(new DecelerateInterpolator(2));
+        swapPopupWonView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+        animatorSet.start();
+    }
 
 	public static void closePopup() {
 		final RelativeLayout popupContainer = (RelativeLayout) Shared.activity.findViewById(R.id.popup_container);

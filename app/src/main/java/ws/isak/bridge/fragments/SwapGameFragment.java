@@ -133,7 +133,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
 
     private void restartGameButton() {
         //TODO decide if this button should do anything - if so how does database handle incomplete games?
-        // - Shared.currentMatchGame.gameClock.cancelClock();
+        // - Shared.currentSwapGame.gameClock.cancelClock();
     }
 
     @Override
@@ -253,24 +253,32 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         Log.d (TAG, " SWAPPING TEXT");
         mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(0)).setTileDebugText(card1ForText);
         mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(1)).setTileDebugText(card2ForText);
-        mSwapBoardView.invalidate();        //FIXME does this work?
+        mSwapBoardView.postInvalidate();        //FIXME -does this make more sense than .invalidate() as we are outside the view?
 
-        //TODO end testing ******************
-
-        //Check if game is won
-        boolean winning = true;     //TODO is this safe to default to true?
+        //testing whether game has been won******************
+        //Check if game is won on easy mode where we will define winningEasy has having one species per row
+        boolean winningEasy = true;     //TODO is this safe to default to true?
+        //iterate over each row
         for (int i = 0; i < Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty(); i++) {        //for each row on the board
-            for (int j = 0; j < 4; j++) {       //for each tile in row
-                SwapTileCoordinates targetCoords = new SwapTileCoordinates(i, j);
-                SwapCardData cardOnTile = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(targetCoords);
-                if (cardOnTile.getCardID().getSwapCardSpeciesID() != i || cardOnTile.getCardID().getSwapCardSegmentID() != j) {
-                    winning = false;
+            //get the species of the first tile as the target for the row
+            SwapTileCoordinates targetCoords = new SwapTileCoordinates(i, 0);
+            SwapCardData cardOnTile = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(targetCoords);
+            int targetSpecies = cardOnTile.getCardID().getSwapCardSpeciesID();
+            for (int j = 1; j < Shared.currentSwapGame.swapBoardConfiguration.swapNumTilesInRow; j++) {
+                SwapTileCoordinates nextTileCoords = new SwapTileCoordinates(i, j);
+                SwapCardData nextCardOnTile = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(nextTileCoords);
+                int compareSpecies = nextCardOnTile.getCardID().getSwapCardSpeciesID();
+                if (targetSpecies != compareSpecies) {
+                    winningEasy = false;
+                    Log.d (TAG, "looping checking state of winningEasy: " + winningEasy);
                 }
             }
+            Log.d (TAG, "finished checking state of winningEasy: " + winningEasy + " for row: i = " + i);
         }
-        if (winning) {
+        //TODO  - two difficulty modes set in preferences, the harder one requiring the correct tile order
+        if (winningEasy) {      //todo && swapGamePlayMode is EASY
             int passedSeconds = (int) (Shared.currentSwapGame.gameClock.getPassedTime() / 1000);
-            Log.d(TAG, "onEvent SwapSelectedCardsEvent: winning: " + winning + " | passedSeconds: " + passedSeconds);     //TODO check passed time is right
+            Log.d(TAG, "onEvent SwapSelectedCardsEvent: winningEasy: " + winningEasy + " | passedSeconds: " + passedSeconds);     //TODO check passed time is right
             Clock.getInstance().pauseClock();
             long totalTimeInMillis = Shared.currentSwapGame.swapBoardConfiguration.getGameTime();
             int totalTime = (int) Math.ceil((double) totalTimeInMillis / 1000); //TODO is this enough or should we convert all to long ms
@@ -295,7 +303,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
             gameState.achievedScore = Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty() * gameState.remainingTimeInSeconds;     //FIXME - was difficultyLevel, now getSwapDifficulty() , check consistency
             // save to memory
             Memory.saveSwap(Shared.currentSwapGame.swapBoardConfiguration.difficultyLevel, gameState.achievedStars);
-            //trigger the MatchGameWonEvent
+            //trigger the SwapGameWonEvent
             Shared.eventBus.notify(new SwapGameWonEvent(gameState), 1200);      //TODO what is 1200 doing here? convert to xml
         }
     }
@@ -333,7 +341,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
             }
         }
         //append SwapGameData to userData array
-        Shared.userData.appendSwapGameData(Shared.userData.getCurSwapGameData());     //append the MatchGameData for completed game to
+        Shared.userData.appendSwapGameData(Shared.userData.getCurSwapGameData());     //append the SwapGameData for completed game to
 
         //TODO insert current swapGameData into database
         //SwapGameDataORM.insertSwapGameData(Shared.userData.getCurSwapGameData());
@@ -344,12 +352,12 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         Shared.userData.setCurSwapGameData(null);
         mTime.setVisibility(View.GONE);
         mTimeImage.setVisibility(View.GONE);
-        PopupManager.showPopupWon(event.gameState);
+        PopupManager.showSwapPopupWon(event.gameState);
     }
 
     @Override
     public void onEvent(SwapUnselectCardsEvent event) {
-        //Log.d (TAG, "overriding method onEvent (MatchFlipDownCardsEvent)");
+        //Log.d (TAG, "overriding method onEvent (SwapFlipDownCardsEvent)");
         mSwapBoardView.unSelectAll();
     }
 
@@ -477,7 +485,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         mPlayerList.clear();
         for (int i = 0; i < audioResourceIdList.size(); i++) {
             try {
-                MediaPlayer curMediaPlayer = new MediaPlayer();
+                final MediaPlayer curMediaPlayer = new MediaPlayer();
 
                 AssetFileDescriptor afd = Shared.context.getResources().openRawResourceFd(audioResourceIdList.get(i));
                 if (afd == null) return;
@@ -493,7 +501,8 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
                 curMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mediaPlayer) {
-                        //todo - can we use this to handle pause button?
+                        //todo - can we use this to handle pause button
+                        curMediaPlayer.release();
                     }
                 });
             }

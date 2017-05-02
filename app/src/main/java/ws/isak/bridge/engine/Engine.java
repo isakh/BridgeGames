@@ -44,7 +44,8 @@ import ws.isak.bridge.events.ui.SwapStartEvent;
 
 import ws.isak.bridge.events.ui.MatchDifficultySelectedEvent;
 import ws.isak.bridge.events.ui.SwapDifficultySelectedEvent;
-
+import ws.isak.bridge.events.ui.SwapBackGameEvent;
+import ws.isak.bridge.events.ui.SwapNextGameEvent;
 import ws.isak.bridge.events.ui.MatchNextGameEvent;
 import ws.isak.bridge.events.ui.MatchResetBackgroundEvent;
 import ws.isak.bridge.events.ui.MatchThemeSelectedEvent;
@@ -86,8 +87,6 @@ public class Engine extends EventObserverAdapter {
     private int mFlippedId = -1;					//id of the tile (? or event?) with the card being flipped
 	private int mToFlip = -1;
 
-    private int mSelectedID = -1;
-
 	private ScreenController mScreenController;
 	private MatchTheme mSelectedMatchTheme;         //only the matching game has themes for now...
 	private ImageView mBackgroundImage;
@@ -117,7 +116,8 @@ public class Engine extends EventObserverAdapter {
         //difficultyLevel select event listeners
 		Shared.eventBus.listen(MatchDifficultySelectedEvent.TYPE, this);
 		Shared.eventBus.listen(SwapDifficultySelectedEvent.TYPE, this);
-
+        Shared.eventBus.listen(SwapNextGameEvent.TYPE, this);
+        Shared.eventBus.listen(SwapBackGameEvent.TYPE, this);
         Shared.eventBus.listen(MatchFlipCardEvent.TYPE, this);
 		Shared.eventBus.listen(MatchThemeSelectedEvent.TYPE, this);
 		Shared.eventBus.listen(MatchBackGameEvent.TYPE, this);
@@ -139,7 +139,8 @@ public class Engine extends EventObserverAdapter {
         //difficultyLevel select event unlisten
         Shared.eventBus.unlisten(MatchDifficultySelectedEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapDifficultySelectedEvent.TYPE, this);
-
+        Shared.eventBus.unlisten(SwapNextGameEvent.TYPE, this);
+        Shared.eventBus.unlisten(SwapBackGameEvent.TYPE, this);
 		Shared.eventBus.unlisten(MatchFlipCardEvent.TYPE, this);
 		Shared.eventBus.unlisten(MatchThemeSelectedEvent.TYPE, this);
 		Shared.eventBus.unlisten(MatchBackGameEvent.TYPE, this);
@@ -314,13 +315,13 @@ public class Engine extends EventObserverAdapter {
 
     @Override
     public void onEvent(SwapDifficultySelectedEvent event) {
-        mSelectedID = -1;
+        Log.d (TAG, "onEvent SwapDifficultySelectedEvent ...");
         mPlayingSwapGame = new SwapGame();
         mPlayingSwapGame.swapBoardConfiguration = new SwapBoardConfiguration(event.difficulty);
 
         //set and share the current swap game
         Shared.currentSwapGame = mPlayingSwapGame;
-
+        Log.d (TAG, " ... Shared.currentSwapGame @: " + Shared.currentSwapGame);
         Shared.currentSwapGame.gameClock = Clock.getInstance();
 
         // arrange board
@@ -357,11 +358,14 @@ public class Engine extends EventObserverAdapter {
             Log.d (TAG, "                   : k: " + k + " | targetSpeciesID(k): " + targetSpeciesIDs.get(k));
         }
         //create a list for the active cards (all cards for each target species)
-        List <SwapCardData> activeCardList = new ArrayList<SwapCardData>(swapBoardConfiguration.difficultyLevel * 4);
+        List <SwapCardData> activeCardList = new ArrayList<SwapCardData>();
         //iterate over Shared.swapCardDataList and
         Log.d (TAG, " *** method arrangeSwapBoard: adding card to active list ...");
+        //for each of the 40 cards in the swapCardDataList
+        Log.d (TAG, "method arrangeSwapBoard: Shared.swapCardDataList.size(): " + Shared.swapCardDataList.size());
         for (int l = 0; l < Shared.swapCardDataList.size(); l++) {
             // iterate over targetSpecies ID list
+            Log.d (TAG, "method arrangeSwapBoard: targetSpeciesIDs.size(): " + targetSpeciesIDs.size());
             for (int m = 0; m < targetSpeciesIDs.size(); m++) {
                 //if the current card in the data list has the same ID as we are looking for in the species list
                 if (Shared.swapCardDataList.get(l).getCardID().getSwapCardSpeciesID() == targetSpeciesIDs.get(m)) {
@@ -372,17 +376,18 @@ public class Engine extends EventObserverAdapter {
                             Shared.swapCardDataList.get(l).getCardID().getSwapCardSegmentID() +
                             " > | targetSpeciesID.get(m): " + targetSpeciesIDs.get(m) + "| Adding card to active list...");
                     activeCardList.add(Shared.swapCardDataList.get(l));
+                    Log.d (TAG, "... building activeCardList: activeCardList.size(): " + activeCardList.size());
                 }
             }
         }
-        /* TODO REMOVE Debugging code
+        //TODO REMOVE Debugging code
         Log.d (TAG, " *** method arrangeSwapBoard: activeCardList prior to shuffling...");
         for (int n = 0; n < activeCardList.size(); n++) {
             Log.d (TAG, "                    : n: " + n + " | activeCardList(n) cardID: < " +
                     activeCardList.get(n).getCardID().getSwapCardSpeciesID() + " , " +
                     activeCardList.get(n).getCardID().getSwapCardSegmentID() + " >");
         }
-        */
+
         //shuffle all the active cards
         Collections.shuffle (activeCardList);
         Log.d (TAG, " *** method arrangeSwapBoard: activeCardList after shuffling...");
@@ -593,6 +598,25 @@ public class Engine extends EventObserverAdapter {
         //TODO verify that adding the following lines to reset the difficultyLevel on backGameEvent worked [initially yes]
         int difficulty = mPlayingMatchGame.matchBoardConfiguration.difficulty;
         Shared.eventBus.notify (new MatchDifficultySelectedEvent(difficulty));
+    }
+
+    @Override
+    public void onEvent(SwapNextGameEvent event) {
+        PopupManager.closePopup();
+        int difficulty = mPlayingSwapGame.swapBoardConfiguration.getSwapDifficulty();
+        if (mPlayingSwapGame.gameState.achievedStars == 3 && difficulty < 3) {  //TODO set these numbers in values.xml?
+            difficulty++;
+        }
+        Shared.eventBus.notify(new SwapDifficultySelectedEvent(difficulty));
+    }
+
+    @Override
+    public void onEvent(SwapBackGameEvent event) {
+        PopupManager.closePopup();
+        mScreenController.openScreen(Screen.DIFFICULTY_SWAP);
+        //TODO verify that adding the following lines to reset the difficultyLevel on backGameEvent worked [initially yes]
+        int difficulty = mPlayingSwapGame.swapBoardConfiguration.getSwapDifficulty();
+        Shared.eventBus.notify (new SwapDifficultySelectedEvent(difficulty));
     }
 
 	public MatchGame getActiveMatchGame() {

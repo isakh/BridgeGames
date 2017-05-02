@@ -42,7 +42,7 @@ import ws.isak.bridge.utils.FontLoader.Font;
  * @author isak
  */
 
-public class PopupWonView extends RelativeLayout implements View.OnClickListener{
+public class MatchPopupWonView extends RelativeLayout implements View.OnClickListener{
 
 	public static final String TAG = "PopupWonView";
 
@@ -60,15 +60,15 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
     private Handler mHandler;
 
 
-	public PopupWonView(Context context) {
+	public MatchPopupWonView(Context context) {
 		this(context, null);
         //Log.d (TAG, "constructor);
 	}
 
-	public PopupWonView(Context context, AttributeSet attrs) {
+	public MatchPopupWonView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		Log.d (TAG, "overloaded constructor PopupWonView");
-		LayoutInflater.from(context).inflate(R.layout.popup_won_view, this, true);
+		LayoutInflater.from(context).inflate(R.layout.match_popup_won_view, this, true);
 		//Load text time and score from xml - TODO make this dynamic?
         mTime = (TextView) findViewById(R.id.popop_won_time_left_countdown);
 		mScore = (TextView) findViewById(R.id.popup_won_score_bar_text);
@@ -213,10 +213,12 @@ public class PopupWonView extends RelativeLayout implements View.OnClickListener
 	private void animateScoreAndTime(final int remainingTimeInSeconds, final int achievedScore) {
 		Log.d (TAG, "method animateScoreAndTime: remainingTimeInSeconds: " + remainingTimeInSeconds + " | achievedScore: " + achievedScore);
 		final int totalAnimation = 1000;        //TODO change this to a variable? -
+        Log.d (TAG, "method animateScoreAndTime: Shared.currentMatchGame.gameClock.getPassedTime(): " +
+                Shared.currentMatchGame.gameClock.getPassedTime());
         final int timeTaken = (int) (Shared.currentMatchGame.gameClock.getPassedTime() / 1000);
         Log.d (TAG, "animateScoreAndTime: timeTaken: " + timeTaken);
         Log.d (TAG, "method animateScoreAndTime: calling Clock.getInstance().startTimer");
-		Clock.getInstance().startClock(totalAnimation, 50, new TimerCountdown() {     //run through the clock at 35ms per second (just over 30fps so not video?)
+		Clock.getInstance().startClock(totalAnimation, 50, new TimerCountdown() {     //run through the clock at 50ms per second ( over 30fps so not animated?)
 
 			@Override
 			public void onTick(long millisUntilFinished) {
