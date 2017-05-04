@@ -188,7 +188,7 @@ public class MatchGameDataORM {
         return matchGameDataList;
     }
 
-    //method insertMatchGameData inserts a new UserData object into the database if it doesn't already exist
+    //method insertMatchGameData inserts a new MatchGameData object into the database if it doesn't already exist
     public static boolean insertMatchGameData(MatchGameData matchGameData) {
         Log.d (TAG, "method insertMatchGameData tries to insert a new MatchGameData object into the database");
 

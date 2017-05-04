@@ -5,7 +5,7 @@ import android.util.Log;
 import ws.isak.bridge.events.AbstractEvent;
 import ws.isak.bridge.events.EventObserver;
 
-/**
+/** FIXME _ this event is never called - can remove it
  * This method is called when the cards in the match game need to be flipped down
  *
  * @author isak
