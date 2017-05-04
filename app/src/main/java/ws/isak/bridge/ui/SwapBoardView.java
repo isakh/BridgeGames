@@ -210,12 +210,17 @@ public class SwapBoardView extends LinearLayout {
         swapTileView.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick(View v) {        //FIXME, was (View v)
+            public void onClick(View v) {
+
+                //keep local track of click time
+                long now = System.currentTimeMillis();
+
                 //debug at start of onClick
                 Log.d(TAG, "*** tile onClick: tile being clicked is swapTileView @: " + swapTileView +
                         " | swapTileView.isSelected (if true the second click is unselect): " + swapTileView.isSelected() +
                         " | Audio.getIsAudioPlaying: " + Audio.getIsAudioPlaying() +
-                        " | selectedTiles.size: " + selectedTiles.size());
+                        " | selectedTiles.size: " + selectedTiles.size() +
+                        " | now: " + now);
 
 
                 //[0] if MIX is OFF and audio is playing - Toast and break out - user needs to click again
@@ -225,7 +230,8 @@ public class SwapBoardView extends LinearLayout {
                 }
 
                 //[1] if the view for the tile has already been selected, the second click unSelects it
-                //TODO how do we deal with timing here? or should we only time swaps as moves (current implementation)?
+                // In the case where the first tile to be selected is then unselected, do we count this
+                // as a game not yet started?
                 if (swapTileView.isSelected()) {
                     Log.d(TAG, "***** ... DOUBLE CLICKING on a tile un-selects it");
                     swapTileView.unSelect();
@@ -238,9 +244,6 @@ public class SwapBoardView extends LinearLayout {
 
                 //[2] else this is a viable turn
                 else {
-                    //keep local track of click time
-                    long now = System.currentTimeMillis();
-
                     //Toast.makeText(Shared.context, "Coordinates: < " + curTileOnBoard.getSwapCoordRow() +
                     //        "," + curTileOnBoard.getSwapCoordCol() + " >", Toast.LENGTH_SHORT).show();  //TODO remove toast?
 
@@ -253,9 +256,9 @@ public class SwapBoardView extends LinearLayout {
                         Log.d(TAG, "   ***: getGameStarted: " + Shared.userData.getCurSwapGameData().isGameStarted());
                         Shared.userData.getCurSwapGameData().setGameStartTimestamp(now);
                         Log.d(TAG, "   ***: getGameStartTimestamp: " + Shared.userData.getCurSwapGameData().getGameStartTimestamp());
-                        Log.d (TAG, " ..... appending: " + (now - Shared.userData.getCurSwapGameData().getGameStartTimestamp()) + " to gamePlayDurations");
+                        Log.d (TAG, " ..... appending 0 to initialize gamePlayDurations");
                         Shared.userData.getCurSwapGameData().appendToGamePlayDurations(now - Shared.userData.getCurSwapGameData().getGameStartTimestamp());
-                        Log.d (TAG, " ..... appending 0 to turnDurations");
+                        Log.d (TAG, " ..... appending 0 to initialize turnDurations");
                         Shared.userData.getCurSwapGameData().appendToTurnDurations(0);
                         //output log of current SwapGameData State
                         Log.d(TAG, " *****: | System time: " + now +
@@ -263,6 +266,9 @@ public class SwapBoardView extends LinearLayout {
                                 " | numTurnsTaken: " + Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
                                 " | gamePlayDuration @ numTurnsTaken: " + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()) +
                                 " | elapsed turn time: " + (Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken())));
+                        //  - update the number of turns taken
+                        Shared.userData.getCurSwapGameData().incrementNumTurnsTaken();
+                        Log.d(TAG, "   ***: numTurnsTaken postIncrement: " + Shared.userData.getCurSwapGameData().getNumTurnsTaken());
                     }
 
                     //[2.1] If this is the first card in a pair to be selected
@@ -274,22 +280,29 @@ public class SwapBoardView extends LinearLayout {
                         Log.d(TAG, " ... curTileOnBoard added to selectedTiles: selectedTiles.size(): " + selectedTiles.size());
                     }
 
+                    /* TODO REMOVE THIS AS IT WILL NEVER BE TRIGGERED
                     //[2.2.1] If this is the second card in the first pair to be selected - highlight second tile
                     // and animate swap (call via event for CoordToCard HashMap updates and perform Coord to TileView image
                     // updates here) and set the number of turns taken to 1
                     else if (Shared.userData.getCurSwapGameData().getNumTurnsTaken() == 0){
+                        Log.d (TAG, "******* UPDATED APPROACH TO COUNTING TURNS - THIS SHOULD NEVER BE TRIGGERED");
                         // we want to count turns only when pairs are to be swapped - first time turn duration is now - game start timestamp
-                        Log.d (TAG, " ..... appending to PlayDurations: turn: [" +
+                        Shared.userData.getCurSwapGameData().appendToGamePlayDurations(now - Shared.userData.getCurSwapGameData().getGameStartTimestamp());
+                        Log.d (TAG, " ..... appending [" + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken())+
+                                "] to PlayDurations: turn: [" +
                                 Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
                                 "] | now: " + now + " | startTimeStamp: " +
                                 Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
                                 " | now - startTimeStamp: " + (now - Shared.userData.getCurSwapGameData().getGameStartTimestamp()));
-                        Shared.userData.getCurSwapGameData().appendToGamePlayDurations(now - Shared.userData.getCurSwapGameData().getGameStartTimestamp());
-                        Log.d (TAG, " ..... appending to TurnDurations: turn: [" +
+                        Log.d (TAG, " ..... appending [" + Shared.userData.getCurSwapGameData().queryTurnDurationsArray(Shared.userData.getCurSwapGameData().getNumTurnsTaken())+
+                                "]to TurnDurations: turn: [" +
                                 Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
                                 "] | now: " + now + " | startTimeStamp: " +
-                                Shared.userData.getCurSwapGameData().getGameStartTimestamp());
-                        Shared.userData.getCurSwapGameData().appendToTurnDurations(now - Shared.userData.getCurSwapGameData().getGameStartTimestamp());
+                                Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
+                                " | queryGamePlayDurations[0]: " +
+                                Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()));
+                        Shared.userData.getCurSwapGameData().appendToTurnDurations(now - (Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
+                                Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken())));
                         Log.d(TAG, "***** ... SECOND OF PAIR selected: swapTileView@: " + swapTileView);
                         swapTileView.select();
                         Log.d(TAG, " ... post select() - swapTileView.isSelected: " + swapTileView.isSelected());
@@ -319,19 +332,22 @@ public class SwapBoardView extends LinearLayout {
                         Shared.userData.getCurSwapGameData().incrementNumTurnsTaken();
                         Log.d(TAG, "   ***: numTurnsTaken postIncrement: " + Shared.userData.getCurSwapGameData().getNumTurnsTaken());
                     }
+                    */ //TODO END REMOVE BLOCK
 
                     //[2.2.2] If this is the second card in any subsequent pair to be selected - highlight second tile
                     // and animate swap (call via event for CoordToCard HashMap updates and perform Coord to TileView image
                     // updates here)
                     else {
                         //TODO are we sure we want to count turns only when pairs are to be swapped?
-                        Log.d (TAG, " ..... appending to PlayDurations: turn: [" +
+                        Log.d (TAG, " ..... appending [" + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()-1)+
+                                "]to PlayDurations: turn: [" +
                                 Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
                                 "] | now: " + now + " | startTimeStamp: " +
                                 Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
                                 " | now - startTimeStamp: " + (now - Shared.userData.getCurSwapGameData().getGameStartTimestamp()));
                         Shared.userData.getCurSwapGameData().appendToGamePlayDurations(now - Shared.userData.getCurSwapGameData().getGameStartTimestamp());
-                        Log.d (TAG, " ..... appending to TurnDurations: turn: [" +
+                        Log.d (TAG, " ..... appending [" + Shared.userData.getCurSwapGameData().queryTurnDurationsArray(Shared.userData.getCurSwapGameData().getNumTurnsTaken()-1)+
+                                "]to TurnDurations: turn: [" +
                                     Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
                                     "] | now: " + now + " | startTimeStamp: " +
                                     Shared.userData.getCurSwapGameData().getGameStartTimestamp() +

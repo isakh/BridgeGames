@@ -100,7 +100,6 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
 
         Shared.eventBus.listen(SwapSelectedCardsEvent.TYPE, this);
         Shared.eventBus.listen(SwapGameWonEvent.TYPE, this);
-        //FIXME - what does this event do? Shared.eventBus.listen(SwapUnselectCardsEvent.TYPE, this);
         Shared.eventBus.listen(SwapPlayRowAudioEvent.TYPE, this);
         Shared.eventBus.listen(SwapResetRowAudioEvent.TYPE, this);
 
@@ -140,7 +139,6 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
     public void onDestroy() {
         Shared.eventBus.unlisten(SwapSelectedCardsEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapGameWonEvent.TYPE, this);
-        //FIXME - do we need this? Shared.eventBus.unlisten(SwapUnselectCardsEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapPlayRowAudioEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapResetRowAudioEvent.TYPE, this);
 
@@ -282,6 +280,9 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         }
         //TODO  - two difficulty modes set in preferences, the harder one requiring the correct tile order
         if (winningEasy) {      //todo && swapGamePlayMode is EASY
+            //append the updated map to the map list
+            Shared.userData.getCurSwapGameData().appendToSwapGameMapList(Shared.userData.getCurSwapGameData().getSwapBoardMap());
+            //calculate current game state variables
             int passedSeconds = (int) (Shared.currentSwapGame.gameClock.getPassedTime() / 1000);
             Log.d(TAG, "onEvent SwapSelectedCardsEvent: winningEasy: " + winningEasy + " | passedSeconds: " + passedSeconds);     //TODO check passed time is right
             Clock.getInstance().pauseClock();
