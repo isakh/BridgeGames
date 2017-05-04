@@ -334,38 +334,31 @@ public class Engine extends EventObserverAdapter {
         SwapBoardConfiguration swapBoardConfiguration = mPlayingSwapGame.swapBoardConfiguration;
         SwapBoardArrangement swapBoardArrangement = new SwapBoardArrangement();
 
-        // select Shared.currentSwapGame.difficultyLevel number of species without duplicates
-        List <Integer> targetSpeciesIDs = new ArrayList<Integer>(swapBoardConfiguration.getSwapDifficulty());
-        for (int i = 0; i < swapBoardConfiguration.getNumSpecies(); i++) {
-            Log.d (TAG, "method arrangeSwapBoard: i: " + i + " | difficultyLevel = numSpecies: " + swapBoardConfiguration.getSwapDifficulty());
-            int  tempSpeciesIndex = randomIndex.nextInt(9);       //10 is currently the max number of species - TODO set in xml
-            tempSpeciesIndex++;                                   //set range 0-9 to range 1-10 FIXME check?!
-            Log.d (TAG, "method arrangeSwapBoard:" + " tempSpeciesIndex: " + tempSpeciesIndex);
-            for (int j = 0; j < i; j++) {
-                if (targetSpeciesIDs.get(j) == tempSpeciesIndex) {
-                    Log.d (TAG, "... targetSpeciesID.get(j): " + targetSpeciesIDs.get(j) +
-                            " == tempSpeciesIndex: " + tempSpeciesIndex +
-                            " | NOT ADDING DUPLICATE TARGET SPECIES");
-                    i--;
-                    break;
-                }
-            }
-            targetSpeciesIDs.add(tempSpeciesIndex);
-            Log.d (TAG, "method arrangeSwapBoard: @ position i: " + i + " targetSpeciesID: " + targetSpeciesIDs.get(i));
+        //select Shared.currentSwapGame.getNumSpecies number of species without duplicates
+        ArrayList <Integer> speciesIDList =  new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {      //FIXME - 10 is a hack, make variable in xml at least
+            speciesIDList.add(i);
         }
+        Collections.shuffle(speciesIDList);
+        ArrayList <Integer> targetSpeciesIDs = new ArrayList<Integer>();
+        for (int j = 0; j < Shared.currentSwapGame.swapBoardConfiguration.getNumSpecies(); j++ ) {
+            targetSpeciesIDs.add(speciesIDList.get(j));
+        }
+        //iterate over the target number of species
+        Log.d (TAG, "method arrangeSwapBoard: targetSpeciesIDs.size(): " + targetSpeciesIDs.size());
         Log.d (TAG, "method arrangeSwapBoard: Target Species Selected: ");
         for (int k = 0; k < targetSpeciesIDs.size(); k++) {
             Log.d (TAG, "                   : k: " + k + " | targetSpeciesID(k): " + targetSpeciesIDs.get(k));
         }
         //create a list for the active cards (all cards for each target species)
-        List <SwapCardData> activeCardList = new ArrayList<SwapCardData>();
+        ArrayList <SwapCardData> activeCardList = new ArrayList<SwapCardData>();
         //iterate over Shared.swapCardDataList and
         Log.d (TAG, " *** method arrangeSwapBoard: adding card to active list ...");
         //for each of the 40 cards in the swapCardDataList
         Log.d (TAG, "method arrangeSwapBoard: Shared.swapCardDataList.size(): " + Shared.swapCardDataList.size());
         for (int l = 0; l < Shared.swapCardDataList.size(); l++) {
-            // iterate over targetSpecies ID list
-            Log.d (TAG, "method arrangeSwapBoard: targetSpeciesIDs.size(): " + targetSpeciesIDs.size());
+            // iterate over targetSpecies ID list - this should be size (difficulty + 1)
+            //Log.d (TAG, "method arrangeSwapBoard: targetSpeciesIDs.size(): " + targetSpeciesIDs.size());
             for (int m = 0; m < targetSpeciesIDs.size(); m++) {
                 //if the current card in the data list has the same ID as we are looking for in the species list
                 if (Shared.swapCardDataList.get(l).getCardID().getSwapCardSpeciesID() == targetSpeciesIDs.get(m)) {

@@ -187,7 +187,7 @@ public class SwapBoardView extends LinearLayout {
                 //gets one of four bitmaps depending on flags at current coordinates
                 Bitmap croppedBitmap = mSwapBoardArrangement.getSwapTileBitmap(curTileOnBoard, mSize);      //FIXME - making mSize smaller to leave room for border?
                 Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(curTileOnBoard).setCardBitmap(croppedBitmap);
-                Log.d (TAG, "***** addTile: doInBackground: create bitmap: " +
+                Log.d (TAG, "*** addTile: doInBackground: create bitmap: " +
                         Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(curTileOnBoard).getCardBitmap() +
                         " FOR CARD @: < " + curTileOnBoard.getSwapCoordRow() + "," + curTileOnBoard.getSwapCoordCol() + " > ");
                 return croppedBitmap;
@@ -229,6 +229,7 @@ public class SwapBoardView extends LinearLayout {
                 if (swapTileView.isSelected()) {
                     Log.d(TAG, "***** ... DOUBLE CLICKING on a tile un-selects it");
                     swapTileView.unSelect();
+                    swapTileView.invalidate();
                     Log.d(TAG, " ... unSelecting tile: swapTileView: " + swapTileView);
                     selectedTiles.clear();
                     Log.d(TAG, " ... clearing selectedTiles: selectedTiles @: " + selectedTiles +
@@ -240,8 +241,8 @@ public class SwapBoardView extends LinearLayout {
                     //keep local track of click time
                     long now = System.currentTimeMillis();
 
-                    Toast.makeText(Shared.context, "Coordinates: < " + curTileOnBoard.getSwapCoordRow() +
-                            "," + curTileOnBoard.getSwapCoordCol() + " >", Toast.LENGTH_SHORT).show();  //TODO remove toast?
+                    //Toast.makeText(Shared.context, "Coordinates: < " + curTileOnBoard.getSwapCoordRow() +
+                    //        "," + curTileOnBoard.getSwapCoordCol() + " >", Toast.LENGTH_SHORT).show();  //TODO remove toast?
 
                     //[2.0] if this tile being clicked is the first tile to be clicked on the board we
                     //change the state of SwapGameData.isGameStarted() and set the SwapGameData.setGameStartTimeStamp()
@@ -252,7 +253,9 @@ public class SwapBoardView extends LinearLayout {
                         Log.d(TAG, "   ***: getGameStarted: " + Shared.userData.getCurSwapGameData().isGameStarted());
                         Shared.userData.getCurSwapGameData().setGameStartTimestamp(now);
                         Log.d(TAG, "   ***: getGameStartTimestamp: " + Shared.userData.getCurSwapGameData().getGameStartTimestamp());
+                        Log.d (TAG, " ..... appending: " + (now - Shared.userData.getCurSwapGameData().getGameStartTimestamp()) + " to gamePlayDurations");
                         Shared.userData.getCurSwapGameData().appendToGamePlayDurations(now - Shared.userData.getCurSwapGameData().getGameStartTimestamp());
+                        Log.d (TAG, " ..... appending 0 to turnDurations");
                         Shared.userData.getCurSwapGameData().appendToTurnDurations(0);
                         //output log of current SwapGameData State
                         Log.d(TAG, " *****: | System time: " + now +
@@ -276,8 +279,17 @@ public class SwapBoardView extends LinearLayout {
                     // updates here) and set the number of turns taken to 1
                     else if (Shared.userData.getCurSwapGameData().getNumTurnsTaken() == 0){
                         // we want to count turns only when pairs are to be swapped - first time turn duration is now - game start timestamp
-                        Shared.userData.getCurSwapGameData().appendToTurnDurations(now - Shared.userData.getCurSwapGameData().getGameStartTimestamp());
+                        Log.d (TAG, " ..... appending to PlayDurations: turn: [" +
+                                Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
+                                "] | now: " + now + " | startTimeStamp: " +
+                                Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
+                                " | now - startTimeStamp: " + (now - Shared.userData.getCurSwapGameData().getGameStartTimestamp()));
                         Shared.userData.getCurSwapGameData().appendToGamePlayDurations(now - Shared.userData.getCurSwapGameData().getGameStartTimestamp());
+                        Log.d (TAG, " ..... appending to TurnDurations: turn: [" +
+                                Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
+                                "] | now: " + now + " | startTimeStamp: " +
+                                Shared.userData.getCurSwapGameData().getGameStartTimestamp());
+                        Shared.userData.getCurSwapGameData().appendToTurnDurations(now - Shared.userData.getCurSwapGameData().getGameStartTimestamp());
                         Log.d(TAG, "***** ... SECOND OF PAIR selected: swapTileView@: " + swapTileView);
                         swapTileView.select();
                         Log.d(TAG, " ... post select() - swapTileView.isSelected: " + swapTileView.isSelected());
@@ -312,12 +324,25 @@ public class SwapBoardView extends LinearLayout {
                     // and animate swap (call via event for CoordToCard HashMap updates and perform Coord to TileView image
                     // updates here)
                     else {
-                        //FIXME we want to count turns only when pairs are to be swapped?
-                        Shared.userData.getCurSwapGameData().appendToTurnDurations(now - Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
-                                Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken() - 1));
+                        //TODO are we sure we want to count turns only when pairs are to be swapped?
+                        Log.d (TAG, " ..... appending to PlayDurations: turn: [" +
+                                Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
+                                "] | now: " + now + " | startTimeStamp: " +
+                                Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
+                                " | now - startTimeStamp: " + (now - Shared.userData.getCurSwapGameData().getGameStartTimestamp()));
                         Shared.userData.getCurSwapGameData().appendToGamePlayDurations(now - Shared.userData.getCurSwapGameData().getGameStartTimestamp());
+                        Log.d (TAG, " ..... appending to TurnDurations: turn: [" +
+                                    Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
+                                    "] | now: " + now + " | startTimeStamp: " +
+                                    Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
+                                    " | queryGamePlayDurations[turn - 1]: " +
+                                    Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken() - 1));
+                        Shared.userData.getCurSwapGameData().appendToTurnDurations(now - (Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
+                                Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken() - 1)));
                         Log.d(TAG, "***** ... SECOND OF PAIR selected: swapTileView@: " + swapTileView);
                         swapTileView.select();
+                        swapTileView.postInvalidate();
+                        swapTileView.invalidate();      //Fixme - only one of these necessary?
                         Log.d(TAG, " ... post select() - swapTileView.isSelected: " + swapTileView.isSelected());
                         selectedTiles.add(curTileOnBoard);
                         Log.d(TAG, " ... curTileOnBoard added to selectedTiles: selectedTiles.size(): " + selectedTiles.size());
@@ -350,6 +375,7 @@ public class SwapBoardView extends LinearLayout {
             }
         });
 
+        //TODO - what does this do here?
         ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(swapTileView, "scaleX", 0.8f, 1f);
         scaleXAnimator.setInterpolator(new BounceInterpolator());
         ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(swapTileView, "scaleY", 0.8f, 1f);

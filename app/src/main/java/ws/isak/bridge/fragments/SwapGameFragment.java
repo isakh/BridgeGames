@@ -203,11 +203,11 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         debugHashMaps(event.TAG);
         //prior to swap, append the current board Map to Shared.swapGameData.swapGameMapList
         Shared.userData.getCurSwapGameData().appendToSwapGameMapList(Shared.userData.getCurSwapGameData().getSwapBoardMap());
-        //debug state of list of maps representing board on each turn
+        /*TODO - remove here once runningdebug state of list of maps representing board on each turn
         for (int i = 0; i < Shared.userData.getCurSwapGameData().sizeOfSwapGameMapList(); i++) {
             Log.d(TAG, "Map in List @ i: " + i + " | @ pointer: " + Shared.userData.getCurSwapGameData().querySwapGameMapList(i));
             debugCoordsDataMap(Shared.userData.getCurSwapGameData().querySwapGameMapList(i), "STATE OF MAP" + i + " IN GAMEDATA LIST");
-        }
+        }*/ //TODO end remove
         //TODO - make a new copy of the board map ?
         HashMap<SwapTileCoordinates, SwapCardData> nextTurnMap = Shared.userData.getCurSwapGameData().getSwapBoardMap();
         Shared.userData.getCurSwapGameData().setSwapBoardMap(nextTurnMap);
@@ -274,6 +274,11 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
                 }
             }
             Log.d (TAG, "finished checking state of winningEasy: " + winningEasy + " for row: i = " + i);
+            if (winningEasy) {
+                //if a given row is correctly matched, toast the species for the row - FIXME this re-toasts the first one(s) each subsequent time...
+                String speciesName = cardOnTile.getSpeciesName();
+                Toast.makeText(Shared.context, "Row " + (i + 1) + " correct: " + speciesName, Toast.LENGTH_SHORT).show();
+            }
         }
         //TODO  - two difficulty modes set in preferences, the harder one requiring the correct tile order
         if (winningEasy) {      //todo && swapGamePlayMode is EASY
@@ -343,6 +348,35 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         //append SwapGameData to userData array
         Shared.userData.appendSwapGameData(Shared.userData.getCurSwapGameData());     //append the SwapGameData for completed game to
 
+        //TODO this can be removed once validated
+        //display single variable values for game
+        Log.d (TAG, "\n\n ..................................... \n\n");
+        Log.d (TAG, " SWAPGAMEWONEVENT - DISPLAYING ALL DATA COLLECTED ABOUT THE GAME:...........");
+        Log.d (TAG, "... Shared.userData.getCurSwapGameDataData: " +
+                " | gameStartTimeStamp: " + Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
+                " | difficultyLevel selected: " + Shared.userData.getCurSwapGameData().getGameDifficulty() +
+                " | gameDurationAllocated: " + Shared.userData.getCurSwapGameData().getGameDurationAllocated() +
+                " | gameStarted: " + Shared.userData.getCurSwapGameData().isGameStarted() +
+                " | numTurnsTaken:  " + Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
+                " | numPlayDurationsRecorded: " + Shared.userData.getCurSwapGameData().sizeOfPlayDurationsArray() +
+                " | numTurnDurationsRecorded: " + Shared.userData.getCurSwapGameData().sizeOfTurnDurationsArray() +
+                " | num game maps recorded: " + Shared.userData.getCurSwapGameData().sizeOfSwapGameMapList());
+        //display list of turn durations
+        for (int i = 0; i < Shared.userData.getCurSwapGameData().sizeOfTurnDurationsArray(); i++ ) {
+            Log.d(TAG, "... turnDurations[" + i + "] : " + Shared.userData.getCurSwapGameData().queryTurnDurationsArray(i));
+        }
+        //display list of elapsed game time durations
+        for (int i = 0; i < Shared.userData.getCurSwapGameData().sizeOfPlayDurationsArray(); i++ ) {
+            Log.d(TAG, "... playDurations[" + i + "] : " + Shared.userData.getCurSwapGameData().queryGamePlayDurations(i));
+        }
+        //display all game hashmaps in
+        for (int i = 0; i < Shared.userData.getCurSwapGameData().sizeOfSwapGameMapList(); i++) {
+            Log.d(TAG, "Map in List @ i: " + i + " | @ pointer: " + Shared.userData.getCurSwapGameData().querySwapGameMapList(i));
+            debugCoordsDataMap(Shared.userData.getCurSwapGameData().querySwapGameMapList(i), "STATE OF MAP" + i + " IN GAMEDATA LIST");
+        }
+        //end validation block
+        
+        
         //TODO insert current swapGameData into database
         //SwapGameDataORM.insertSwapGameData(Shared.userData.getCurSwapGameData());
 

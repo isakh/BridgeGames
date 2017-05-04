@@ -22,8 +22,6 @@ public class SwapGameData {
 
     private static final String TAG = "SwapGameData";
 
-    private SwapGame mPlayingSwapGame;
-
     // Map variable holds the Map representing the current game board - NOTE: not to be stored in database
     private HashMap <SwapTileCoordinates, SwapCardData> curSwapBoardMap;
     //Parameters to be saved for database matching game to user
