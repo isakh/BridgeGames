@@ -9,6 +9,7 @@ import android.util.Log;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.model.SwapGameData;
@@ -46,13 +47,15 @@ public class SwapGameDataORM {
     private static final String COLUMN_NUM_TURNS_TAKEN_IN_GAME_TYPE = "INTEGER";
     private static final String COLUMN_NUM_TURNS_TAKEN_IN_GAME = "numTurnsTakenInGame";
 
-    private static final String COLUMN_GAME_PLAY_DURATIONS_TYPE = "STRING";       //FIXME, maybe STRING? see http://stackoverflow.com/a/34767584/1443674
+    private static final String COLUMN_GAME_PLAY_DURATIONS_TYPE = "STRING";
     private static final String COLUMN_GAME_PLAY_DURATIONS = "gamePlayDurations";
 
     private static final String COLUMN_TURN_DURATIONS_TYPE = "STRING";
     private static final String COLUMN_TURN_DURATIONS = "turnDurations";
 
-    //TODO - how to store SwapGameMapList which is a list of hashmaps of <coord, card> objects
+    //FIXME store SwapGameMapList which is an array list of hashmaps of <coord, card> objects as a string? or better serialize and use BLOB?
+    private static final String COLUMN_SWAP_BOARD_MAP_LIST_TYPE = "STRING";
+    private static final String COLUMN_SWAP_BOARD_MAP_LIST = "swapGameMapList"
 
     public static final String SQL_CREATE_TABLE = "CREATE TABLE " +
             TABLE_NAME +
@@ -62,9 +65,10 @@ public class SwapGameDataORM {
             COLUMN_DIFFICULTY + " " + COLUMN_DIFFICULTY_TYPE + COMMA_SEP +
             COLUMN_GAME_DURATION_ALLOCATED + " " + COLUMN_GAME_DURATION_ALLOCATED_TYPE + COMMA_SEP +
             COLUMN_GAME_STARTED + " " + COLUMN_GAME_STARTED_TYPE + COMMA_SEP +
-            COLUMN_NUM_TURNS_TAKEN_IN_GAME + " " + COLUMN_NUM_TURNS_TAKEN_IN_GAME_TYPE +
+            COLUMN_NUM_TURNS_TAKEN_IN_GAME + " " + COLUMN_NUM_TURNS_TAKEN_IN_GAME_TYPE + COMMA_SEP +
             COLUMN_GAME_PLAY_DURATIONS + " " + COLUMN_GAME_PLAY_DURATIONS_TYPE + COMMA_SEP +
             COLUMN_TURN_DURATIONS + " " + COLUMN_TURN_DURATIONS_TYPE + COMMA_SEP +
+            COLUMN_SWAP_BOARD_MAP_LIST + " " + COLUMN_SWAP_BOARD_MAP_LIST_TYPE +
             ")";
 
     public static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -153,15 +157,19 @@ public class SwapGameDataORM {
                             " | gameStarted: " + swapGameDataAtCursor.isGameStarted() +
                             " | numTurnsTakenInGame: "+ swapGameDataAtCursor.getNumTurnsTaken());
                     if (swapGameDataAtCursor.sizeOfPlayDurationsArray() != swapGameDataAtCursor.sizeOfTurnDurationsArray()) {
-                        //TODO extend to compare with BoardMaps array size as well
                         Log.d (TAG, " ***** ERROR! Size of play durations and turn durations not returned as equal");
+                    }
+                    //FIXME extend to compare with BoardMaps array size as well? for both? or is just comparing to PlayDurations enough
+                    if (swapGameDataAtCursor.sizeOfPlayDurationsArray() != swapGameDataAtCursor.sizeOfSwapGameMapList()) {
+                        Log.d (TAG, " ***** ERROR! Size of play durations and number of BoardMaps in list not returned as equal");
                     }
                     for (int i = 0; i < swapGameDataAtCursor.sizeOfPlayDurationsArray(); i++) {
                         Log.d(TAG, " ... PARSE ARRAYS in Database row " + rowCount +
                                 " | current array element i: " + i +
                                 " | gamePlayDuration(i): " + swapGameDataAtCursor.queryGamePlayDurations(i) +
-                                " | turnDurations(i): " + swapGameDataAtCursor.queryTurnDurationsArray(i));
-                        //TODO add in array of BoardMaps
+                                " | turnDurations(i): " + swapGameDataAtCursor.queryTurnDurationsArray(i) +
+                                " | boardMapsList(i): " + swapGameDataAtCursor.querySwapGameMapList(i));
+
                     }
                     swapGameDataList.add(swapGameDataAtCursor);
                     Log.d (TAG, "!!! userDataList.get(rowCount) userData Object @: " + swapGameDataList.get(rowCount));
@@ -210,11 +218,15 @@ public class SwapGameDataORM {
     private static ContentValues swapGameDataToContentValues (SwapGameData swapGameData) {
         Log.d (TAG, "private method swapGameDataToContentValues");
         ContentValues values = new ContentValues();
-
+        Log.d (TAG, " ... swapGameDataToContentValues: putting UserName: " + swapGameData.getUserPlayingName());
         values.put (COLUMN_PLAYER_USERNAME, swapGameData.getUserPlayingName());
+        Log.d (TAG, " ... swapGameDataToContentValues: putting GameStartTimeStamp: " + swapGameData.getGameStartTimestamp());
         values.put (COLUMN_GAME_START_TIMESTAMP, swapGameData.getGameStartTimestamp());
+        Log.d (TAG, " ... swapGameDataToContentValues: putting Difficulty: " + swapGameData.getGameDifficulty());
         values.put (COLUMN_DIFFICULTY, swapGameData.getGameDifficulty());
+        Log.d (TAG, " ... swapGameDataToContentValues: putting GameDuration: " + swapGameData.getGameDurationAllocated());
         values.put (COLUMN_GAME_DURATION_ALLOCATED, swapGameData.getGameDurationAllocated());
+        Log.d (TAG, " ... swapGameDataToContentValues: putting GameStarted (always 1?): " + swapGameData.isGameStarted());
         if (!swapGameData.isGameStarted()) values.put (COLUMN_GAME_STARTED, 0);
         else values.put (COLUMN_GAME_STARTED, 1);
 
@@ -223,6 +235,7 @@ public class SwapGameDataORM {
             gamePlayDurationsString.append(elementInGamePlayDurationsArrayList);
             gamePlayDurationsString.append(DELIMITER);
         }
+        Log.d (TAG, " ... swapGameDataToContentValues: putting PlayDurationsString: " + gamePlayDurationsString.toString());
         values.put (COLUMN_GAME_PLAY_DURATIONS, gamePlayDurationsString.toString());
 
         StringBuilder turnDurationsString = new StringBuilder();
@@ -230,38 +243,52 @@ public class SwapGameDataORM {
             turnDurationsString.append(elementInTurnDurationsArrayList);
             turnDurationsString.append(DELIMITER);
         }
+        Log.d (TAG, " ... swapGameDataToContentValues: putting TurnDurationsString: " + turnDurationsString.toString());
         values.put (COLUMN_TURN_DURATIONS, turnDurationsString.toString());
 
-        //TODO sort our BoardMaps
+        //FIXME sort out BoardMaps - for now we make a comma seperated string where each element is a hashmap of objects, does this work?
+        //StringBuilder swapBoardMapListString = new StringBuilder();
+        //for (HashMap curBoardMap : swapGameData.getSwapGameMapList()) {
+        //    swapBoardMapListString.append(curBoardMap);
+        //    swapBoardMapListString.append(DELIMITER);
+        //}
+        //Log.d (TAG, " ... swapGameDataToContentValues: putting swapBoardMapListString: " + swapBoardMapListString.toString());
+        //values.put (COLUMN_SWAP_BOARD_MAP_LIST, swapBoardMapListString.toString());
 
         values.put (COLUMN_NUM_TURNS_TAKEN_IN_GAME, swapGameData.getNumTurnsTaken());
+        Log.d (TAG, "private method swapGameDataToContentValues: returning values");
         return values;
     }
 
     //method cursorToUserData populates a UserData object with data from the cursor
     private static SwapGameData cursorToSwapGameData(Cursor cursor) {
-        Log.d (TAG, "method cursorToMatchGameData");
-        SwapGameData cursorAtMatchGameData = new SwapGameData();
+        Log.d (TAG, "method cursorToSwapGameData");
+        SwapGameData cursorAtSwapGameData = new SwapGameData();
 
-        cursorAtMatchGameData.setUserPlayingName(cursor.getString(cursor.getColumnIndex(COLUMN_PLAYER_USERNAME)));
-        cursorAtMatchGameData.setGameStartTimestamp ((long) cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_START_TIMESTAMP)));
-        cursorAtMatchGameData.setGameDifficulty(cursor.getInt(cursor.getColumnIndex(COLUMN_DIFFICULTY)));
-        cursorAtMatchGameData.setGameDurationAllocated((long) cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_DURATION_ALLOCATED)));
+        cursorAtSwapGameData.setUserPlayingName(cursor.getString(cursor.getColumnIndex(COLUMN_PLAYER_USERNAME)));
+        cursorAtSwapGameData.setGameStartTimestamp ((long) cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_START_TIMESTAMP)));
+        cursorAtSwapGameData.setGameDifficulty(cursor.getInt(cursor.getColumnIndex(COLUMN_DIFFICULTY)));
+        cursorAtSwapGameData.setGameDurationAllocated((long) cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_DURATION_ALLOCATED)));
 
-        if (cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)) == 1) { cursorAtMatchGameData.setGameStarted(true); }
-        else if (cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)) == 0) { cursorAtMatchGameData.setGameStarted(false); }
+        if (cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)) == 1) { cursorAtSwapGameData.setGameStarted(true); }
+        else if (cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)) == 0) { cursorAtSwapGameData.setGameStarted(false); }
         else {
-            Log.d (TAG, "ERROR: method cursorAtMatchGameData: isGameStarted: " + cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)));
+            Log.d (TAG, "ERROR: method cursorAtSwapGameData: isGameStarted: " + cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)));
         }
 
         String gamePlayDurationsString = cursor.getString(cursor.getColumnIndex(COLUMN_GAME_PLAY_DURATIONS));
-        for (String s : gamePlayDurationsString.split(DELIMITER)) cursorAtMatchGameData.appendToGamePlayDurations(Long.valueOf(s));
+        for (String s : gamePlayDurationsString.split(DELIMITER)) cursorAtSwapGameData.appendToGamePlayDurations(Long.valueOf(s));
 
         String turnDurationsString = cursor.getString(cursor.getColumnIndex(COLUMN_TURN_DURATIONS));
-        //Log.d (TAG, "******** method cursorToMatchGameData: turnDurationsString: " + turnDurationsString);
-        for (String s : turnDurationsString.split(DELIMITER)) cursorAtMatchGameData.appendToTurnDurations(Long.valueOf(s));
+        //Log.d (TAG, "******** method cursorToSwapGameData: turnDurationsString: " + turnDurationsString);
+        for (String s : turnDurationsString.split(DELIMITER)) cursorAtSwapGameData.appendToTurnDurations(Long.valueOf(s));
+        
+        //FIXME
+        //String swapBoardMapListString = cursor.getString(cursor.getColumnIndex(COLUMN_SWAP_BOARD_MAP_LIST));
+        //Log.d (TAG, "******** method cursorToSwapGameData: swapBoardMapListString: " + swapBoardMapListString);
+        //for (String s : swapBoardMapListString.split(DELIMITER)) cursorAtSwapGameData.appendToSwapGameMapList(HashMap.valueOf(s));
 
-        cursorAtMatchGameData.setNumTurnsTaken(cursor.getInt(cursor.getColumnIndex(COLUMN_NUM_TURNS_TAKEN_IN_GAME)));
-        return cursorAtMatchGameData;
+        cursorAtSwapGameData.setNumTurnsTaken(cursor.getInt(cursor.getColumnIndex(COLUMN_NUM_TURNS_TAKEN_IN_GAME)));
+        return cursorAtSwapGameData;
     }
 }

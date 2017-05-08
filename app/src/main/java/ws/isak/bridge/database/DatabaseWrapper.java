@@ -41,6 +41,8 @@ public class DatabaseWrapper extends SQLiteOpenHelper {
         sqliteDB.execSQL(MatchCardDataORM.SQL_CREATE_TABLE);
         Log.d (TAG, "created MatchCardData table");
         sqliteDB.execSQL(SwapGameDataORM.SQL_CREATE_TABLE);
+        Log.d (TAG, "created SwapGameData table");
+        sqliteDB.execSQL(SwapCardDataORM.SQL_CREATE_TABLE);
         Log.d (TAG, "created SwapCardData table");
         Log.d (TAG, "method onCreate: check doesDatabaseExist: " + doesDatabaseExist(Shared.context));
     }
@@ -54,6 +56,7 @@ public class DatabaseWrapper extends SQLiteOpenHelper {
         sqliteDB.execSQL(MatchGameDataORM.SQL_DROP_TABLE);
         sqliteDB.execSQL(MatchCardDataORM.SQL_DROP_TABLE);
         sqliteDB.execSQL(SwapGameDataORM.SQL_DROP_TABLE);
+        sqliteDB.execSQL(SwapCardDataORM.SQL_DROP_TABLE);
         onCreate(sqliteDB);
     }
 

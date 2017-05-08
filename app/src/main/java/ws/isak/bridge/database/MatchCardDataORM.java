@@ -20,7 +20,7 @@ public class MatchCardDataORM {
 
     private static final String TAG="MatchCardDataORM";
 
-    private static final String TABLE_NAME = "card_data";
+    private static final String TABLE_NAME = "match_card_data";
 
     private static final String COMMA_SEP = ", ";
 
@@ -75,8 +75,8 @@ public class MatchCardDataORM {
 
     // ===========================================================================================
 
-    public static boolean cardDataRecordsInDatabase (Context context) {
-        //Log.d (TAG, "method cardDataRecordsInDatabase");
+    public static boolean matchCardDataRecordsInDatabase(Context context) {
+        //Log.d (TAG, "method matchCardDataRecordsInDatabase");
 
         DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
@@ -85,7 +85,7 @@ public class MatchCardDataORM {
 
         if (database != null) {
             Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-            Log.d(TAG, "method cardDataRecordsInDatabase: Checked " + cursor.getCount() + " MatchCardData records...");
+            Log.d(TAG, "method matchCardDataRecordsInDatabase: Checked " + cursor.getCount() + " MatchCardData records...");
 
             if (cursor.getCount() > 0) {
                 recordsExist = true;
@@ -160,7 +160,7 @@ public class MatchCardDataORM {
             Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_CARD_ID + " ='" + cardID + "'", null);
             //FIXME - this prevent's SQL injection: Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " =?", userName);
             Log.d (TAG, "method getCardData: Loaded " + cursor.getCount() + " MatchCardData records... this should always only be 1");
-            if (cardDataRecordsInDatabase(Shared.context)) {
+            if (matchCardDataRecordsInDatabase(Shared.context)) {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
                     MatchCardData matchCardDataAtCursor = cursorToCardData(cursor);

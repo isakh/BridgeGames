@@ -142,25 +142,25 @@ public class SwapCardData
 
     // [3]
     // methods to get and set the URI for the 0th segment
-    public void setspectroURI0 (String sURI0) { spectroURI0 = sURI0; }
+    public void setSpectroURI0(String sURI0) { spectroURI0 = sURI0; }
 
     public String getSpectroURI0 () { return spectroURI0; }
 
     // [4]
     // methods to get and set the URI for the 1st segment
-    public void setspectroURI1 (String sURI1) { spectroURI1 = sURI1; }
+    public void setSpectroURI1(String sURI1) { spectroURI1 = sURI1; }
 
     public String getSpectroURI1 () { return spectroURI1; }
 
     // [5]
     // methods to get and set the URI for the 2nd  segment
-    public void setspectroURI2 (String sURI2) { spectroURI2 = sURI2; }
+    public void setSpectroURI2(String sURI2) { spectroURI2 = sURI2; }
 
     public String getSpectroURI2 () { return spectroURI2; }
 
     // [6]
     // methods to get and set the URI for the 3rd segment
-    public void setspectroURI3 (String sURI3) { spectroURI3 = sURI3; }
+    public void setSpectroURI3(String sURI3) { spectroURI3 = sURI3; }
 
     public String getSpectroURI3 () { return spectroURI3; }
 

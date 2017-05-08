@@ -16,19 +16,27 @@ import ws.isak.bridge.common.Audio;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.common.SwapCardData;
 import ws.isak.bridge.common.UserData;
-import ws.isak.bridge.database.MatchCardDataORM;
-import ws.isak.bridge.database.MatchGameDataORM;
+
 import ws.isak.bridge.engine.Engine;
 import ws.isak.bridge.engine.ScreenController;
 import ws.isak.bridge.engine.ScreenController.Screen;
+
 import ws.isak.bridge.events.EventBus;
 import ws.isak.bridge.events.ui.MatchBackGameEvent;
+
 import ws.isak.bridge.model.MatchGameData;
+import ws.isak.bridge.model.SwapGameData;
+
 import ws.isak.bridge.ui.PopupManager;
+
 import ws.isak.bridge.utils.ImageScaling;
 import ws.isak.bridge.utils.SwapCardID;
+
 import ws.isak.bridge.database.DatabaseWrapper;
 import ws.isak.bridge.database.UserDataORM;
+import ws.isak.bridge.database.MatchCardDataORM;
+import ws.isak.bridge.database.MatchGameDataORM;
+import ws.isak.bridge.database.SwapGameDataORM;
 
 /*
  * The main activity class of the app.  This activity class is called from the AndroidManifest.xml
@@ -87,8 +95,8 @@ public class  MainActivity extends FragmentActivity {
 
         // open to User setup screen
         //Log.d(TAG, "               : get instance of user setup screen");
-        //FIXME revert to this for app: testing with below ScreenController.getInstance().openScreen(Screen.USER_SETUP);
-        ScreenController.getInstance().openScreen(Screen.MENU_SWAP);
+        //FIXME ∆ screen depending on debug mode
+        ScreenController.getInstance().openScreen(Screen.USER_SETUP);
     }
 
     @Override
@@ -173,10 +181,10 @@ public class  MainActivity extends FragmentActivity {
                         curCard.setAudioURI2(null);
                         curCard.setAudioURI3(null);
                         //set images
-                        curCard.setspectroURI0(URI_DRAWABLE + String.format(Locale.ENGLISH, "swap_spectro_%d", i) + "_a");
-                        curCard.setspectroURI1(null);
-                        curCard.setspectroURI2(null);
-                        curCard.setspectroURI3(null);
+                        curCard.setSpectroURI0(URI_DRAWABLE + String.format(Locale.ENGLISH, "swap_spectro_%d", i) + "_a");
+                        curCard.setSpectroURI1(null);
+                        curCard.setSpectroURI2(null);
+                        curCard.setSpectroURI3(null);
                         //set duration
                         Log.d (TAG, "method buildSwapCardDataList: curCard.getAudioURI0: " + curCard.getAudioURI0());
                         curCard.setSampleDuration0(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI0().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
@@ -191,10 +199,10 @@ public class  MainActivity extends FragmentActivity {
                         curCard.setAudioURI2(null);
                         curCard.setAudioURI3(null);
                         //set images
-                        curCard.setspectroURI0(null);
-                        curCard.setspectroURI1(URI_DRAWABLE + String.format(Locale.ENGLISH, "swap_spectro_%d", i) + "_b");
-                        curCard.setspectroURI2(null);
-                        curCard.setspectroURI3(null);
+                        curCard.setSpectroURI0(null);
+                        curCard.setSpectroURI1(URI_DRAWABLE + String.format(Locale.ENGLISH, "swap_spectro_%d", i) + "_b");
+                        curCard.setSpectroURI2(null);
+                        curCard.setSpectroURI3(null);
                         //set duration
                         curCard.setSampleDuration0(0);
                         curCard.setSampleDuration1(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI1().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
@@ -208,10 +216,10 @@ public class  MainActivity extends FragmentActivity {
                         curCard.setAudioURI2(URI_AUDIO + String.format(Locale.ENGLISH, "swap_audio_%d", i) + "_c");
                         curCard.setAudioURI3(null);
                         //set images
-                        curCard.setspectroURI0(null);
-                        curCard.setspectroURI1(null);
-                        curCard.setspectroURI2(URI_DRAWABLE + String.format(Locale.ENGLISH, "swap_spectro_%d", i) + "_c");
-                        curCard.setspectroURI3(null);
+                        curCard.setSpectroURI0(null);
+                        curCard.setSpectroURI1(null);
+                        curCard.setSpectroURI2(URI_DRAWABLE + String.format(Locale.ENGLISH, "swap_spectro_%d", i) + "_c");
+                        curCard.setSpectroURI3(null);
                         //set duration
                         curCard.setSampleDuration0(0);
                         curCard.setSampleDuration1(0);
@@ -225,10 +233,10 @@ public class  MainActivity extends FragmentActivity {
                         curCard.setAudioURI2(null);
                         curCard.setAudioURI3(URI_AUDIO + String.format(Locale.ENGLISH, "swap_audio_%d", i) + "_d");
                         //set images
-                        curCard.setspectroURI0(null);
-                        curCard.setspectroURI1(null);
-                        curCard.setspectroURI2(null);
-                        curCard.setspectroURI3(URI_DRAWABLE + String.format(Locale.ENGLISH, "swap_spectro_%d", i) + "_d");
+                        curCard.setSpectroURI0(null);
+                        curCard.setSpectroURI1(null);
+                        curCard.setSpectroURI2(null);
+                        curCard.setSpectroURI3(URI_DRAWABLE + String.format(Locale.ENGLISH, "swap_spectro_%d", i) + "_d");
                         //set duration
                         curCard.setSampleDuration0(0);
                         curCard.setSampleDuration1(0);
@@ -262,7 +270,8 @@ public class  MainActivity extends FragmentActivity {
 
 
     //private methods check that the ORM's have correctly populated the  shared data records of prior
-    //users and their games from the database with a matchCardData for each
+    //users and their match and swap games from the database with a matchCardData or swapBoardMap
+    //specific data for each
 
     private void loadDatabase() {
         if (UserDataORM.userDataRecordsInDatabase(Shared.context)) {
@@ -286,7 +295,8 @@ public class  MainActivity extends FragmentActivity {
                             " | interfaceExperience: " + Shared.userDataList.get(i).getInterfaceExperienceRange() +
                             " | hearingIsSeeing: " + Shared.userDataList.get(i).getHearingEqualsSeeing() +
                             " | usedSmartPhone: " + Shared.userDataList.get(i).getHasUsedSmartphone());
-                    loadUsersMemGameDataRecords(Shared.userDataList.get(i));
+                    loadUsersMatchGameDataRecords(Shared.userDataList.get(i));
+                    loadUsersSwapGameDataRecords(Shared.userDataList.get(i));
                 }
             }
         } else if (UserDataORM.getUserData(Shared.context) == null) {
@@ -295,7 +305,7 @@ public class  MainActivity extends FragmentActivity {
         }
     }
 
-    private void loadUsersMemGameDataRecords(UserData userData) {
+    private void loadUsersMatchGameDataRecords(UserData userData) {
         if (MatchGameDataORM.matchGameRecordsInDatabase(Shared.context)) {
             int dbLength = MatchGameDataORM.numMatchGameRecordsInDatabase(Shared.context);
             Shared.matchGameDataList = new ArrayList<MatchGameData>(dbLength);
@@ -340,7 +350,7 @@ public class  MainActivity extends FragmentActivity {
 
     //this should print out the information associated with the matchCardData object with id cardID
     private void loadCardSelectedData (int cardID) {
-        if (MatchCardDataORM.cardDataRecordsInDatabase(Shared.context)) {
+        if (MatchCardDataORM.matchCardDataRecordsInDatabase(Shared.context)) {
             int dbLength = MatchCardDataORM.numCardDataRecordsInDatabase(Shared.context);
             Shared.matchCardDataList = new ArrayList<MatchCardData>(dbLength);
             while (Shared.matchCardDataList.size() < dbLength) {
@@ -365,6 +375,46 @@ public class  MainActivity extends FragmentActivity {
             } else if (MatchCardDataORM.getCardData(cardID) == null) {
                 //
                 Log.d(TAG, "*!*!* no MatchCardData object for cardID: " + cardID);
+            }
+        }
+    }
+
+    private void loadUsersSwapGameDataRecords(UserData userData) {
+        if (SwapGameDataORM.swapGameRecordsInDatabase(Shared.context)) {
+            int dbLength = SwapGameDataORM.numSwapGameRecordsInDatabase(Shared.context);
+            Shared.swapGameDataList = new ArrayList<SwapGameData>(dbLength);
+            while (Shared.swapGameDataList.size() < dbLength) {
+                Shared.swapGameDataList.add(new SwapGameData());
+            }
+            Log.d(TAG, "**** Shared.swapGameDataList.size(): " + Shared.swapGameDataList.size() +
+                    " | SwapGameDataORM.getSwapGameData(Shared.context).size(): " + dbLength);
+            Collections.copy(Shared.swapGameDataList, SwapGameDataORM.getSwapGameData(userData.getUserName()));
+            Log.d(TAG, "... Shared.swapGameDataList.size(): " + Shared.swapGameDataList.size() + " | @: " + Shared.swapGameDataList);
+            if (Shared.swapGameDataList != null) {
+                for (int i = 0; i < Shared.swapGameDataList.size(); i++) {
+                    Log.d(TAG, "... MAIN: SwapGameData table: Database row: " + i +
+                            " | gameStartTimestamp: " + Shared.swapGameDataList.get(i).getGameStartTimestamp() +
+                            " | playerUserName: " + Shared.swapGameDataList.get(i).getUserPlayingName() +
+                            " | difficultyLevel: " + Shared.swapGameDataList.get(i).getGameDifficulty() +
+                            " | gameDurationAllocated: " + Shared.swapGameDataList.get(i).getGameDurationAllocated() +
+                            " | gameStarted: " + Shared.swapGameDataList.get(i).isGameStarted() +
+                            " | numTurnsTakenInGame: " + Shared.swapGameDataList.get(i).getNumTurnsTaken());
+                    if (Shared.swapGameDataList.get(i).sizeOfPlayDurationsArray() == Shared.swapGameDataList.get(i).sizeOfTurnDurationsArray()) {
+                        for (int j = 0; j < Shared.swapGameDataList.get(i).sizeOfPlayDurationsArray(); j++) {
+                            Log.d(TAG, " ... MAIN: GAME ARRAYS in SwapGameData Table, " + j +
+                                    " | current array element i: " + j +
+                                    " | gamePlayDuration(i): " + Shared.swapGameDataList.get(i).queryGamePlayDurations(j) +
+                                    " | turnDurations(i): " + Shared.swapGameDataList.get(i).queryTurnDurationsArray(j));
+                                    // TODO add swapBoardMaps Here
+                        }
+                    } else {
+                        Log.d(TAG, " ***** ERROR! Size of play durations and turn durations not returned as equal");
+                    }
+                    Shared.userData.appendSwapGameData(Shared.swapGameDataList.get(i));
+                }
+            } else if (SwapGameDataORM.getSwapGameData(userData.getUserName()) == null) {
+                //
+                Log.d(TAG, "*!*!* no SwapGameData objects for userData.getUserName: " + userData.getUserName());
             }
         }
     }

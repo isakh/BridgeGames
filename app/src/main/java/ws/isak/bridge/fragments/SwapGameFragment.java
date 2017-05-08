@@ -24,6 +24,7 @@ import ws.isak.bridge.R;
 import ws.isak.bridge.common.Audio;
 import ws.isak.bridge.common.Memory;
 import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.database.SwapGameDataORM;
 
 import ws.isak.bridge.common.SwapCardData;
 import ws.isak.bridge.events.engine.SwapPauseRowAudioEvent;
@@ -352,7 +353,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         //TODO this can be removed once validated
         //display single variable values for game
         Log.d (TAG, "\n\n ..................................... \n\n");
-        Log.d (TAG, " SWAPGAMEWONEVENT - DISPLAYING ALL DATA COLLECTED ABOUT THE GAME:...........");
+        Log.d (TAG, " SWAP GAME WON EVENT - DISPLAYING ALL DATA COLLECTED ABOUT THE GAME:...........");
         Log.d (TAG, "... Shared.userData.getCurSwapGameDataData: " +
                 " | gameStartTimeStamp: " + Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
                 " | difficultyLevel selected: " + Shared.userData.getCurSwapGameData().getGameDifficulty() +
@@ -376,10 +377,9 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
             debugCoordsDataMap(Shared.userData.getCurSwapGameData().querySwapGameMapList(i), "STATE OF MAP" + i + " IN GAMEDATA LIST");
         }
         //end validation block
-        
-        
-        //TODO insert current swapGameData into database
-        //SwapGameDataORM.insertSwapGameData(Shared.userData.getCurSwapGameData());
+
+        // insert current swapGameData into database
+        SwapGameDataORM.insertSwapGameData(Shared.userData.getCurSwapGameData());
 
         //reset flags
         Shared.userData.getCurSwapGameData().setGameStarted(false);                  //reset the gameStarted boolean to false
