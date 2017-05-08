@@ -8,6 +8,7 @@ import android.util.Log;
 import java.io.File;
 
 import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.utils.SwapTileCoordinates;
 
 
 /*
@@ -35,7 +36,8 @@ public class DatabaseWrapper extends SQLiteOpenHelper {
         Log.d (TAG, "method onCreate: Creating Database [" + Shared.DATABASE_NAME + " v." + DATABASE_VERSION + "]...");
         //create the database
         sqliteDB.execSQL(UserDataORM.SQL_CREATE_TABLE);
-        Log.d (TAG, "created UserData table");
+        Log.d (TAG, "created UserData table - this table holds all the user data and sets the " +
+                "username/password primary key used as a foreign key for *GameData tables");
         sqliteDB.execSQL(MatchGameDataORM.SQL_CREATE_TABLE);
         Log.d (TAG, "created MatchGameData table");
         sqliteDB.execSQL(MatchCardDataORM.SQL_CREATE_TABLE);
@@ -44,6 +46,10 @@ public class DatabaseWrapper extends SQLiteOpenHelper {
         Log.d (TAG, "created SwapGameData table");
         sqliteDB.execSQL(SwapCardDataORM.SQL_CREATE_TABLE);
         Log.d (TAG, "created SwapCardData table");
+        sqliteDB.execSQL(SwapCardIDORM.SQL_CREATE_TABLE);
+        Log.d (TAG, "created SwapCardIDORM table");
+        sqliteDB.execSQL(SwapTileCoordinatesORM.SQL_CREATE_TABLE);
+        Log.d (TAG, "created SwapTileCoordinatesORM table");
         Log.d (TAG, "method onCreate: check doesDatabaseExist: " + doesDatabaseExist(Shared.context));
     }
 
@@ -57,6 +63,8 @@ public class DatabaseWrapper extends SQLiteOpenHelper {
         sqliteDB.execSQL(MatchCardDataORM.SQL_DROP_TABLE);
         sqliteDB.execSQL(SwapGameDataORM.SQL_DROP_TABLE);
         sqliteDB.execSQL(SwapCardDataORM.SQL_DROP_TABLE);
+        sqliteDB.execSQL(SwapCardIDORM.SQL_DROP_TABLE);
+        sqliteDB.execSQL(SwapTileCoordinatesORM.SQL_DROP_TABLE);
         onCreate(sqliteDB);
     }
 

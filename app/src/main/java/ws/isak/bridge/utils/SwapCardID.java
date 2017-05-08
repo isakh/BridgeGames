@@ -12,6 +12,7 @@ public class SwapCardID {
 
     private static final String TAG = "SwapCardID";
 
+    private float cardID;
     private int speciesID;
     private int segmentID;
 
@@ -19,6 +20,24 @@ public class SwapCardID {
         Log.d (TAG, "constructor");
         this.speciesID = speciesID;
         this.segmentID = segmentID;
+        setCardID (speciesID, segmentID);
+        setSwapCardSpeciesID(speciesID);
+        setSwapCardSegmentID(segmentID);
+    }
+
+    //TODO - can we make this private and use the public setter when retrieving from database?
+    public void setCardID (int species, int segment) {
+        //this creates a decimal of species.segment - FIXME - how would we deal with more than 10 segments?
+        cardID = species + (segment/10);
+    }
+
+    //overloaded constructor takes a decimalized form of the id and uses that.
+    public void setCardID (float specSegDec) {
+        cardID = specSegDec;
+    }
+
+    public float getCardID () {
+        return cardID;
     }
 
 
@@ -41,4 +60,6 @@ public class SwapCardID {
         //
         return segmentID;
     }
+
+
 }

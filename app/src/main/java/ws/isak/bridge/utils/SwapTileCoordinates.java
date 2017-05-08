@@ -12,6 +12,7 @@ public class SwapTileCoordinates {
 
     private static final String TAG = "SwapCoordinates";
 
+    private float coordsID;
     private int row;
     private int col;
 
@@ -19,6 +20,22 @@ public class SwapTileCoordinates {
         //Log.d (TAG, "constructor");
         this.row = row;
         this.col = col;
+        setSwapTileCoordsID (row, col);
+    }
+
+    public void setSwapTileCoordsID (int row, int col) {
+        //TODO - decimal float hack to contain both values - how to resolve if grid over 10x10?
+        coordsID = row + (col/10);
+    }
+
+    public void setSwapTileCoordsID (float rowColID) {
+        //overloaded version that sets the ID from a known float
+        Log.d (TAG, "method setSwapTileCoordsID - overloaded version takes a float: " + rowColID);
+        coordsID = rowColID;
+    }
+
+    public float getSwapTileCoordsID () {
+         return coordsID;
     }
 
 
