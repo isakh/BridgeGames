@@ -104,7 +104,7 @@ public class SwapBoardConfiguration {
                 SwapTileCoordinates targetCoords = Shared.userData.getCurSwapGameData().getMapSwapTileCoordinatesFromLoc(tempCoords);
                 SwapCardData targetData = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(targetCoords);
                 long cardDur = 0;
-                switch (targetData.getCardID().getSwapCardSegmentID()) {
+                switch (targetData.getCardIDKey().getSwapCardSegmentID()) {
                     case 0:
                         cardDur = targetData.getSampleDuration0();
                         break;

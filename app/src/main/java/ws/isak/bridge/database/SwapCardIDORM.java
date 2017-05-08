@@ -102,7 +102,7 @@ public class SwapCardIDORM {
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
 
         boolean cardExists = false;     //false unless found in database
-        Float cardID = cardIDToCheck.getCardID();
+        Float cardID = cardIDToCheck.getCardIDKey();
         if (database != null) {
             Log.d(TAG, "method isSwapCardIDInDB: searching...");
             //FIXME !!! - this isn't an integer at the moment - ∆ to a swapCardID object?
@@ -137,7 +137,7 @@ public class SwapCardIDORM {
                     SwapCardID swapCardIDAtCursor = cursorToSwapCardID(cursor);
                     //Check the state of all MatchCardData fields here
                     Log.d(TAG, "... PARSE: SwapCardID object to return:" +
-                            " | cardID: " + swapCardIDAtCursor.getCardID() +
+                            " | cardID: " + swapCardIDAtCursor.getCardIDKey() +
                             " | species number: " + swapCardIDAtCursor.getSwapCardSpeciesID() +
                             " | segment number: " + swapCardIDAtCursor.getSwapCardSegmentID());
                     swapCardIDToReturn = swapCardIDAtCursor;
@@ -169,7 +169,7 @@ public class SwapCardIDORM {
                 success = true;
             }
         } catch (SQLiteException sqlex) {
-            Log.e(TAG, "method insertSwapCardID: Failed to insert SwapCardID[" + swapCardID.getCardID() + "] due to: " + sqlex);
+            Log.e(TAG, "method insertSwapCardID: Failed to insert SwapCardID[" + swapCardID.getCardIDKey() + "] due to: " + sqlex);
             sqlex.printStackTrace();
         } finally {
             if (database != null) {
@@ -185,7 +185,7 @@ public class SwapCardIDORM {
         Log.d(TAG, "private method swapCardIDToContentValues");
         ContentValues values = new ContentValues();
 
-        values.put(COLUMN_SWAP_CARD_ID_KEY, swapCardID.getCardID());
+        values.put(COLUMN_SWAP_CARD_ID_KEY, swapCardID.getCardIDKey());
         values.put(COLUMN_SPECIES_ID, swapCardID.getSwapCardSpeciesID());
         values.put(COLUMN_SEGMENT_ID, swapCardID.getSwapCardSegmentID());
 
@@ -198,7 +198,7 @@ public class SwapCardIDORM {
         Log.d(TAG, "method cursorToSwapCardID");
         SwapCardID cursorAtSwapCardID = new SwapCardID(-1, -1);     //FIXME - is there a better way to null this constructor?
 
-        cursorAtSwapCardID.setCardID(cursor.getFloat(cursor.getColumnIndex(COLUMN_SWAP_CARD_ID_KEY)));
+        cursorAtSwapCardID.setCardIDKey(cursor.getFloat(cursor.getColumnIndex(COLUMN_SWAP_CARD_ID_KEY)));
         cursorAtSwapCardID.setSwapCardSpeciesID(cursor.getInt(cursor.getColumnIndex(COLUMN_SPECIES_ID)));
         cursorAtSwapCardID.setSwapCardSegmentID(cursor.getInt(cursor.getColumnIndex(COLUMN_SEGMENT_ID)));
 

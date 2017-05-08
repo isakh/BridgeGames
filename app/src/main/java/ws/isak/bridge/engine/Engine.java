@@ -302,7 +302,7 @@ public class Engine extends EventObserverAdapter {
 				matchBoardArrangement.cardObjs.put(tileIDs.get(i + 1), Shared.matchCardDataList.get(j));
 				//debug report: state of tile id's paired on board, and card id for the tile pair
 				Log.d (TAG, "method arrangeBoard: Map Tile Pairs: Tile id1: " + tileIDs.get(i) + " |  Tile id2: " + tileIDs.get(i + 1) + " | Mapped Card id: " + Shared.matchCardDataList.get(j).getCardID());
-				//Log.d (TAG, "method arrangeBoard: Mapping swapBoardMap to IDs: ID is: " + tileIDs.get(i) + " | Card Object ID is: " + mSelectedMatchTheme.swapBoardMap.get(j).getCardID());
+				//Log.d (TAG, "method arrangeBoard: Mapping swapBoardMap to IDs: ID is: " + tileIDs.get(i) + " | Card Object ID is: " + mSelectedMatchTheme.swapBoardMap.get(j).getCardIDKey());
 				//Log.d (TAG, "method arrangeBoard: 		Card Object Image URI 1 is : " + mSelectedMatchTheme.swapBoardMap.get(j).getImageURI1());
 				//Log.d (TAG, "method arrangeBoard: 		Card Object Image URI 2 is : " + mSelectedMatchTheme.swapBoardMap.get(j).getImageURI2());
 				//Log.d (TAG, "method arrangeBoard: 		Card Object Audio URI is : " + mSelectedMatchTheme.swapBoardMap.get(j).getAudioURI());
@@ -364,7 +364,7 @@ public class Engine extends EventObserverAdapter {
                 if (Shared.swapCardDataList.get(l).getCardID().getSwapCardSpeciesID() == targetSpeciesIDs.get(m)) {
                     //append that card to the active list
                     Log.d (TAG, "           l: " + l + " | m: " + m +
-                            " | Shared.swapCardDataList.get(i).getCardID(): < " +
+                            " | Shared.swapCardDataList.get(i).getCardIDKey(): < " +
                             Shared.swapCardDataList.get(l).getCardID().getSwapCardSpeciesID() + " , " +
                             Shared.swapCardDataList.get(l).getCardID().getSwapCardSegmentID() +
                             " > | targetSpeciesID.get(m): " + targetSpeciesIDs.get(m) + "| Adding card to active list...");
@@ -406,8 +406,8 @@ public class Engine extends EventObserverAdapter {
             //        tileCoords.getSwapCoordRow() + " , " + tileCoords.getSwapCoordCol() +
             //        " > | activeCardList.get(i): " + activeCardList.get(q) +
             //        " | cardID <species, segment>: < " +
-            //        activeCardList.get(q).getCardID().getSwapCardSpeciesID() +
-            //        " , " + activeCardList.get(q).getCardID().getSwapCardSegmentID() + " >");
+            //        activeCardList.get(q).getCardIDKey().getSwapCardSpeciesID() +
+            //        " , " + activeCardList.get(q).getCardIDKey().getSwapCardSegmentID() + " >");
             swapBoardArrangement.setCardOnBoard (tileCoords, activeCardList.get(q));
         }
         mPlayingSwapGame.swapBoardArrangement = swapBoardArrangement;
@@ -441,8 +441,8 @@ public class Engine extends EventObserverAdapter {
             SwapCardData cardData = (SwapCardData) pair.getValue();
             Log.d (TAG, "... address of Map.entry: " + pair + " | coords: < " +
                         coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
-                        " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() +
-                        "," + cardData.getCardID().getSwapCardSegmentID());
+                        " > | MAPS TO | cardID: < " + cardData.getCardIDKey().getSwapCardSpeciesID() +
+                        "," + cardData.getCardIDKey().getSwapCardSegmentID());
         }
         */
     }
@@ -537,7 +537,7 @@ public class Engine extends EventObserverAdapter {
 	private void playTileAudio(int tileID) {
 		/*
         Log.d (TAG, "method playTileAudio: tileID: " + tileID);
-		Log.d (TAG, "					 : curCardOnTile is: " + mPlayingMatchGame.matchBoardArrangement.swapBoardMap.get(tileID).getCardID());
+		Log.d (TAG, "					 : curCardOnTile is: " + mPlayingMatchGame.matchBoardArrangement.swapBoardMap.get(tileID).getCardIDKey());
 		Log.d (TAG, " 					 : curCardOnTile.getAudioURI is: " + mPlayingMatchGame.matchBoardArrangement.swapBoardMap.get(tileID).getAudioURI());
 		Log.d (TAG, " 					 : curCardOnTile.getImageURI1 is: " + mPlayingMatchGame.matchBoardArrangement.swapBoardMap.get(tileID).getImageURI1());
 		Log.d (TAG, " 					 : curCardOnTile.getPairedImageDiffer is: " + mPlayingMatchGame.matchBoardArrangement.swapBoardMap.get(tileID).getPairedImageDiffer());

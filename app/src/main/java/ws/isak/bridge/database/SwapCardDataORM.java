@@ -26,7 +26,7 @@ public class SwapCardDataORM {
 
     private static final String COMMA_SEP = ", ";
 
-    private static final String COLUMN_CARD_ID_TYPE = "INTEGER PRIMARY KEY"; //TODO this integer is tied to a <species, segment> tuple ID
+    private static final String COLUMN_CARD_ID_TYPE = "REAL PRIMARY KEY";    //this float comes from SwapCardID float key
     private static final String COLUMN_CARD_ID = "cardID";
 
     private static final String COLUMN_SPECIES_NAME_TYPE = "STRING";
@@ -57,8 +57,8 @@ public class SwapCardDataORM {
     private static final String COLUMN_AUDIO_URI3 = "audioURI3";
 
     private static final String COLUMN_SAMPLE_DURATION0_TYPE = "INTEGER";        //SQLite Integer can handle 8 byte long
-    private static final String COLUMN_SAMPLE_DURATION0 = "sampleDuration0";
-
+    private static final String COLUMN_SAMPLE_DURATION0 = "sampleDuration0";     //so we use INTEGER for all sample durations
+                                                                                 //...
     private static final String COLUMN_SAMPLE_DURATION1_TYPE = "INTEGER";
     private static final String COLUMN_SAMPLE_DURATION1 = "sampleDuration1";
 
@@ -182,7 +182,7 @@ public class SwapCardDataORM {
             if (swapCardDataRecordsInDatabase(Shared.context)) {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
-                    SwapCardData swapCardDataAtCursor = cursorToCardData(cursor);
+                    SwapCardData swapCardDataAtCursor = cursorToSwapCardData(cursor);
                     //Check the state of all MatchCardData fields here
                     Log.d(TAG, "... PARSE: MatchCardData object to return:" +
                             " | cardID: " + swapCardDataAtCursor.getCardID() +
@@ -216,7 +216,7 @@ public class SwapCardDataORM {
         boolean success = false;
 
         Log.d(TAG, "method insertSwapCardData: creating ContentValues");
-        ContentValues values = cardDataToContentValues(swapCardData);
+        ContentValues values = swapCardDataToContentValues(swapCardData);
 
         DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
@@ -238,14 +238,13 @@ public class SwapCardDataORM {
         return success;
     }
 
-
     //method cardDataToContentValues packs a UserData object into a ContentValues map for
     //use with SQL inserts
     private static ContentValues swapCardDataToContentValues(SwapCardData swapCardData) {
         Log.d(TAG, "private method cardDataToContentValues");
         ContentValues values = new ContentValues();
 
-        values.put(COLUMN_CARD_ID, swapCardData.getCardID());      //FIXME - column needs a string not an ID object
+        values.put(COLUMN_CARD_ID, swapCardData.getCardIDKey());      //FIXME - column needs a string not an ID object
         values.put(COLUMN_SPECIES_NAME, swapCardData.getSpeciesName());
 
         values.put(COLUMN_SPECTRO_URI0, swapCardData.getSpectroURI0());
@@ -269,7 +268,7 @@ public class SwapCardDataORM {
         Log.d(TAG, "method cursorToSwapCardData");
         SwapCardData cursorAtSwapCardData = new SwapCardData();
 
-        cursorAtSwapCardData.setCardID(cursor.getInt(cursor.getColumnIndex(COLUMN_CARD_ID)));      //FIXME!!!!! - column needs a string?
+        cursorAtSwapCardData.setCardIDKey(cursor.getInt(cursor.getColumnIndex(COLUMN_CARD_ID)));      //FIXME!!!!! - column needs a string?
         cursorAtSwapCardData.setSpeciesName(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIES_NAME)));      //FIXME solve string approach to species loading - currently overloading constructor
 
         cursorAtSwapCardData.setSpectroURI0(cursor.getString(cursor.getColumnIndex(COLUMN_SPECTRO_URI0)));

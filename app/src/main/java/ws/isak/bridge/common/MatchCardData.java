@@ -30,11 +30,11 @@ public class MatchCardData
     private long sampleDuration;
 
     /*
-     * Method setCardID sets the ID value for a card object to @param id
+     * Method setCardIDKey sets the ID value for a card object to @param id
      */
     public void setCardID (int id) {
         try {
-            //Log.d (TAG, "method setCardID: id : " + id);
+            //Log.d (TAG, "method setCardIDKey: id : " + id);
             cardID = id;
         }
         catch (IllegalArgumentException e) {
@@ -43,11 +43,11 @@ public class MatchCardData
     }
 
     /*
-     * Method getCardID returns the @param id associated with a card object
+     * Method getCardIDKey returns the @param id associated with a card object
      */
     public int getCardID () {
         try {
-            //Log.d(TAG, "method: getCardID: return: " + cardID);
+            //Log.d(TAG, "method: getCardIDKey: return: " + cardID);
             return cardID;
         }
         catch (NullPointerException npe) {

@@ -55,7 +55,7 @@ public class SwapGameDataORM {
 
     //FIXME store SwapGameMapList which is an array list of hashmaps of <coord, card> objects as a string? or better serialize and use BLOB?
     private static final String COLUMN_SWAP_BOARD_MAP_LIST_TYPE = "STRING";
-    private static final String COLUMN_SWAP_BOARD_MAP_LIST = "swapGameMapList"
+    private static final String COLUMN_SWAP_BOARD_MAP_LIST = "swapGameMapList";
 
     public static final String SQL_CREATE_TABLE = "CREATE TABLE " +
             TABLE_NAME +

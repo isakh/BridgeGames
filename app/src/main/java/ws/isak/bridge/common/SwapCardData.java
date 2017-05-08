@@ -20,6 +20,7 @@ public class SwapCardData
     private final String TAG = "SwapCardData";
 
     private SwapCardID cardID;                  //cardID is a two-tuple built from <speciesID, segmentActiveID>
+    private float cardIDKey;                    //a decimal built from cardID (species.segment) used as a primary key for each card in the database
     private String speciesName;                 //this string stores the species name from R.strings.species_bird_% FIXME make dynamic?
 
     private String spectroURI0;
@@ -44,8 +45,9 @@ public class SwapCardData
     // Methods to set and get the cardID
     public void setCardID (SwapCardID id) {
         try {
-            //Log.d (TAG, "method setCardID: id : " + id);
+            //Log.d (TAG, "method setCardIDKey: id : " + id);
             cardID = id;
+            setCardIDKey(cardID.getCardIDKey());
         }
         catch (IllegalArgumentException e) {
             e.getStackTrace();
@@ -54,13 +56,21 @@ public class SwapCardData
 
     public SwapCardID getCardID () {
         try {
-            //Log.d(TAG, "method: getCardID: return: " + cardID);
+            //Log.d(TAG, "method: getCardIDKey: return: " + cardID);
             return cardID;
         }
         catch (NullPointerException npe) {
             npe.printStackTrace();
             return null;
         }
+    }
+
+    public void setCardIDKey (float key) {
+        cardIDKey = key;
+    }
+
+    public float getCardIDKey () {
+        return cardIDKey;
     }
 
     public SwapCardData getCardFromIDAndSegment (int id, int seg) {

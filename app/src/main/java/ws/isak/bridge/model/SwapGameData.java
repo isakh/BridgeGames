@@ -114,8 +114,8 @@ public class SwapGameData {
             SwapCardData cardData = (SwapCardData) pair.getValue();
             /* fixme remove debug code to reduce output verbosity
             Log.d(TAG, "method getSwapCardDataFromSwapBoardMap: Searching... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
-                    " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
-                    cardData.getCardID().getSwapCardSegmentID() + " >");
+                    " > | MAPS TO | cardID: < " + cardData.getCardIDKey().getSwapCardSpeciesID() + "," +
+                    cardData.getCardIDKey().getSwapCardSegmentID() + " >");
             */
             if (targetCoords.getSwapCoordRow() == coords.getSwapCoordRow() && targetCoords.getSwapCoordCol() == coords.getSwapCoordCol()) {
                 Log.d (TAG, " *** returning card : < " + cardData.getCardID().getSwapCardSpeciesID() +
@@ -138,8 +138,8 @@ public class SwapGameData {
             SwapCardData cardData = (SwapCardData) pair.getValue();
             /*
             Log.d(TAG, "method getMapSwapTileCoordinatesFromLoc: Searching... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
-                    " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
-                    cardData.getCardID().getSwapCardSegmentID() + " >");
+                    " > | MAPS TO | cardID: < " + cardData.getCardIDKey().getSwapCardSpeciesID() + "," +
+                    cardData.getCardIDKey().getSwapCardSegmentID() + " >");
             */
             if (coords.getSwapCoordRow() == loc.getSwapCoordRow() && coords.getSwapCoordCol() == loc.getSwapCoordCol()) {
                 Log.d(TAG, "method getMapSwapTileCoordinatesFromLoc: Found target ... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
