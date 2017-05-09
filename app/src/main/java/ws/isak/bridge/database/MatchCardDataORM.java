@@ -97,8 +97,8 @@ public class MatchCardDataORM {
     }
 
     //FIXME these methods can be made generic if the TypeOfDataORM.TABLE_NAME is passed in
-    public static int numCardDataRecordsInDatabase (Context context) {
-        //Log.d (TAG, "method numCardDataRecordsInDatabase");
+    public static int numMatchCardDataRecordsInDatabase(Context context) {
+        //Log.d (TAG, "method numMatchCardDataRecordsInDatabase");
 
         DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
@@ -107,7 +107,7 @@ public class MatchCardDataORM {
 
         if (database != null) {
             Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME, null);
-            Log.d(TAG, "method numCardDataRecordsInDatabase: There are: " + cursor.getCount() + " MatchCardData records...");
+            Log.d(TAG, "method numMatchCardDataRecordsInDatabase: There are: " + cursor.getCount() + " MatchCardData records...");
 
             if (cursor.getCount() > 0) {
                 cursor.moveToFirst();
@@ -122,17 +122,17 @@ public class MatchCardDataORM {
         return numRecords;
     }
 
-    //method isCardDataInDB takes a MatchCardData object and checks whether it has been used as a
+    //method isMatchCardDataInDB takes a MatchCardData object and checks whether it has been used as a
     //primary key yet in the database - used to check existence and uniqueness when loading cards.
-    public static boolean isCardDataInDB (MatchCardData cardToCheck) {
-        Log.d (TAG, "method isCardDataInDB: check cardToCheck: " + cardToCheck);
+    public static boolean isMatchCardDataInDB(MatchCardData cardToCheck) {
+        Log.d (TAG, "method isMatchCardDataInDB: check cardToCheck: " + cardToCheck);
         DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
 
         boolean cardExists = false;     //false unless found in database
         int cardID = cardToCheck.getCardID();
         if (database != null) {
-            Log.d (TAG, "method isCardDataInDB: searching...");
+            Log.d (TAG, "method isMatchCardDataInDB: searching...");
             Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_CARD_ID + " ='" + cardID + "'", null);
             //FIXME - this prevent's SQL injection: Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " =?", userName);
             if (cursor.getCount() > 0) {
@@ -148,7 +148,7 @@ public class MatchCardDataORM {
     }
 
 
-    public static MatchCardData getCardData (int cardID) {
+    public static MatchCardData getMatchCardData(int cardID) {
         Log.d (TAG, "method getMatchGameData returns a list of matchCardData objects with cardID " + cardID);
 
         DatabaseWrapper databaseWrapper =  Shared.databaseWrapper;
@@ -159,11 +159,11 @@ public class MatchCardDataORM {
         if (database !=  null) {
             Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_CARD_ID + " ='" + cardID + "'", null);
             //FIXME - this prevent's SQL injection: Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " =?", userName);
-            Log.d (TAG, "method getCardData: Loaded " + cursor.getCount() + " MatchCardData records... this should always only be 1");
+            Log.d (TAG, "method getMatchCardData: Loaded " + cursor.getCount() + " MatchCardData records... this should always only be 1");
             if (matchCardDataRecordsInDatabase(Shared.context)) {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
-                    MatchCardData matchCardDataAtCursor = cursorToCardData(cursor);
+                    MatchCardData matchCardDataAtCursor = cursorToMatchCardData(cursor);
                     //Check the state of all MatchCardData fields here
                     Log.d (TAG, "... PARSE: MatchCardData object to return:" +
                             " | cardID: " + matchCardDataAtCursor.getCardID() +
@@ -187,13 +187,13 @@ public class MatchCardDataORM {
     }
 
 
-    public static boolean insertCardData (MatchCardData matchCardData){
-        Log.d (TAG, "method insertCardData tries to insert a new MatchCardData object into the database");
+    public static boolean insertMatchCardData(MatchCardData matchCardData){
+        Log.d (TAG, "method insertMatchCardData tries to insert a new MatchCardData object into the database");
 
         boolean success = false;
 
-        Log.d(TAG, "method insertCardData: creating ContentValues");
-        ContentValues values = cardDataToContentValues(matchCardData);
+        Log.d(TAG, "method insertMatchCardData: creating ContentValues");
+        ContentValues values = matchCardDataToContentValues(matchCardData);
 
         DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
@@ -201,11 +201,11 @@ public class MatchCardDataORM {
         try {
             if (database != null) {
                 long rowID = database.insert(TABLE_NAME, "null", values);
-                Log.d(TAG, "method insertCardData: Inserted new MatchCardData into rowID: " + rowID);
+                Log.d(TAG, "method insertMatchCardData: Inserted new MatchCardData into rowID: " + rowID);
                 success = true;
             }
         } catch (SQLiteException sqlex) {
-            Log.e(TAG, "method insertCardData: Failed to insert MatchCardData[" + matchCardData.getCardID() + "] due to: " + sqlex);
+            Log.e(TAG, "method insertMatchCardData: Failed to insert MatchCardData[" + matchCardData.getCardID() + "] due to: " + sqlex);
             sqlex.printStackTrace();
         } finally {
             if (database != null) {
@@ -216,10 +216,10 @@ public class MatchCardDataORM {
     }
 
 
-        //method cardDataToContentValues packs a UserData object into a ContentValues map for
+        //method matchCardDataToContentValues packs a UserData object into a ContentValues map for
     //use with SQL inserts
-    private static ContentValues cardDataToContentValues (MatchCardData matchCardData) {
-        Log.d (TAG, "private method cardDataToContentValues");
+    private static ContentValues matchCardDataToContentValues(MatchCardData matchCardData) {
+        Log.d (TAG, "private method matchCardDataToContentValues");
         ContentValues values = new ContentValues();
 
         values.put (COLUMN_CARD_ID, matchCardData.getCardID());
@@ -241,8 +241,8 @@ public class MatchCardDataORM {
 
 
     //method cursorToUserData populates a UserData object with data from the cursor
-    private static MatchCardData cursorToCardData (Cursor cursor) {
-        Log.d (TAG, "method cursorToCardData");
+    private static MatchCardData cursorToMatchCardData(Cursor cursor) {
+        Log.d (TAG, "method cursorToMatchCardData");
         MatchCardData cursorAtMatchCardData = new MatchCardData();
 
         cursorAtMatchCardData.setCardID (cursor.getInt(cursor.getColumnIndex(COLUMN_CARD_ID)));

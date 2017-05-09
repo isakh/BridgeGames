@@ -159,8 +159,8 @@ public class  MainActivity extends FragmentActivity {
             curCard.setSampleDuration(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
             //insert matchCardData object into Database and local storage
             Shared.matchCardDataList.add(curCard);
-            if (!MatchCardDataORM.isCardDataInDB(curCard)) {
-                MatchCardDataORM.insertCardData(curCard);
+            if (!MatchCardDataORM.isMatchCardDataInDB(curCard)) {
+                MatchCardDataORM.insertMatchCardData(curCard);
             }
         }
     }
@@ -351,14 +351,14 @@ public class  MainActivity extends FragmentActivity {
     //this should print out the information associated with the matchCardData object with id cardID
     private void loadCardSelectedData (int cardID) {
         if (MatchCardDataORM.matchCardDataRecordsInDatabase(Shared.context)) {
-            int dbLength = MatchCardDataORM.numCardDataRecordsInDatabase(Shared.context);
+            int dbLength = MatchCardDataORM.numMatchCardDataRecordsInDatabase(Shared.context);
             Shared.matchCardDataList = new ArrayList<MatchCardData>(dbLength);
             while (Shared.matchCardDataList.size() < dbLength) {
                 Shared.matchCardDataList.add(new MatchCardData());
             }
             //Log.d(TAG, "**** Shared.matchCardDataList.size(): " + Shared.matchCardDataList.size() +
-            //           " | MatchCardDataORM.getCardData(Shared.context).size(): " + dbLength);
-            Shared.matchCardData = MatchCardDataORM.getCardData(cardID);
+            //           " | MatchCardDataORM.getMatchCardData(Shared.context).size(): " + dbLength);
+            Shared.matchCardData = MatchCardDataORM.getMatchCardData(cardID);
             //Log.d(TAG, "... Shared.matchCardDataList.size(): " + Shared.matchCardDataList.size() + " | @: " + Shared.matchCardDataList);
             if (Shared.matchCardDataList != null) {
                 Log.d (TAG, "... PARSE: MatchCardData table: " +
@@ -372,7 +372,7 @@ public class  MainActivity extends FragmentActivity {
                         " | imageURI3: " + Shared.matchCardData.getImageURI3() +
                         " | audioURI: " + Shared.matchCardData.getAudioURI() +
                         " | sampleDuration: "+ Shared.matchCardData.getSampleDuration());
-            } else if (MatchCardDataORM.getCardData(cardID) == null) {
+            } else if (MatchCardDataORM.getMatchCardData(cardID) == null) {
                 //
                 Log.d(TAG, "*!*!* no MatchCardData object for cardID: " + cardID);
             }
@@ -404,8 +404,9 @@ public class  MainActivity extends FragmentActivity {
                             Log.d(TAG, " ... MAIN: GAME ARRAYS in SwapGameData Table, " + j +
                                     " | current array element i: " + j +
                                     " | gamePlayDuration(i): " + Shared.swapGameDataList.get(i).queryGamePlayDurations(j) +
-                                    " | turnDurations(i): " + Shared.swapGameDataList.get(i).queryTurnDurationsArray(j));
-                                    // TODO add swapBoardMaps Here
+                                    " | turnDurations(i): " + Shared.swapGameDataList.get(i).queryTurnDurationsArray(j) +
+                                    " | swapBoardMaps(i): " + Shared.swapGameDataList.get(i).querySwapGameMapList(j));
+                                    // FIXME - did this last line add swapBoardMaps Here
                         }
                     } else {
                         Log.d(TAG, " ***** ERROR! Size of play durations and turn durations not returned as equal");

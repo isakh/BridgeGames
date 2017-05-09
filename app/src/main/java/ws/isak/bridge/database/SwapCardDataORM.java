@@ -141,7 +141,7 @@ public class SwapCardDataORM {
         return numRecords;
     }
 
-    //method isCardDataInDB takes a MatchCardData object and checks whether it has been used as a
+    //method isMatchCardDataInDB takes a MatchCardData object and checks whether it has been used as a
     //primary key yet in the database - used to check existence and uniqueness when loading cards.
     public static boolean isSwapCardDataInDB(SwapCardData cardToCheck) {
         Log.d(TAG, "method isSwapCardDataInDB: check cardToCheck: " + cardToCheck);
@@ -151,7 +151,7 @@ public class SwapCardDataORM {
         boolean cardExists = false;     //false unless found in database
         SwapCardID cardID = cardToCheck.getCardID();
         if (database != null) {
-            Log.d(TAG, "method isCardDataInDB: searching...");
+            Log.d(TAG, "method isMatchCardDataInDB: searching...");
             //FIXME !!! - this isn't an integer at the moment - ∆ to a swapCardID object? 
             Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_CARD_ID + " ='" + cardID + "'", null);
             //FIXME - this prevent's SQL injection: Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " =?", userName);

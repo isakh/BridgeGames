@@ -32,7 +32,7 @@ public class SwapGameDataORM {
     private static final String COLUMN_GAME_START_TIMESTAMP_TYPE = "INTEGER PRIMARY KEY";
     private static final String COLUMN_GAME_START_TIMESTAMP = "gameStartTimestamp";
 
-    private static final String COLUMN_PLAYER_USERNAME_TYPE = "STRING";
+    private static final String COLUMN_PLAYER_USERNAME_TYPE = "STRING";                 //TODO foreign key?
     private static final String COLUMN_PLAYER_USERNAME = "playerUserName";
 
     private static final String COLUMN_DIFFICULTY_TYPE = "INTEGER";
@@ -54,7 +54,7 @@ public class SwapGameDataORM {
     private static final String COLUMN_TURN_DURATIONS = "turnDurations";
 
     //FIXME store SwapGameMapList which is an array list of hashmaps of <coord, card> objects as a string? or better serialize and use BLOB?
-    private static final String COLUMN_SWAP_BOARD_MAP_LIST_TYPE = "STRING";
+    private static final String COLUMN_SWAP_BOARD_MAP_LIST_TYPE = "BLOB";
     private static final String COLUMN_SWAP_BOARD_MAP_LIST = "swapGameMapList";
 
     public static final String SQL_CREATE_TABLE = "CREATE TABLE " +

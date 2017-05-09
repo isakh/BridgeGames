@@ -30,7 +30,7 @@ public class MatchGameDataORM {
     private static final String COLUMN_GAME_START_TIMESTAMP_TYPE = "INTEGER PRIMARY KEY";
     private static final String COLUMN_GAME_START_TIMESTAMP = "gameStartTimestamp";
 
-    private static final String COLUMN_PLAYER_USERNAME_TYPE = "STRING";
+    private static final String COLUMN_PLAYER_USERNAME_TYPE = "STRING";         //TODO foreign key?!
     private static final String COLUMN_PLAYER_USERNAME = "playerUserName";
 
     private static final String COLUMN_THEME_ID_TYPE = "INTEGER";
