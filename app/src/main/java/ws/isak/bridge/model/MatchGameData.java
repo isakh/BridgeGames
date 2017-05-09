@@ -23,13 +23,16 @@ public class MatchGameData {
     //Parameters to be saved for database matching game to user
     private long gameStartTimestamp;        //keep track of the timestamp for the start of the game - database primary key
     private String userPlayingName;         //FIXME database foreign key?
+
     //Parameters to be saved for analysis:
+
     //defined at MatchDifficultySelectedEvent - the following are fixed for the duration of the game
     private int themeID;                    //set/get string from selection
     private int difficulty;                 //difficultyLevel level for the current game
     private long gameDurationAllocated;     //This is the fixed time allocated for playing the game
     private boolean mixerState;             //keep track of mix state for each game,
     private boolean gameStarted;            //Set to Boolean false, becomes true when first card is clicked - triggers gameStarTimeStamp
+
     //the following respond to user input during the game
     private int numTurnsTakenInGame;        //Initialize number of turns in game to 0 and increment on each click.
     private ArrayList <Long> gamePlayDurations;  //Time the player spent on the game so far (sum of turnDurations) at each turn (can it be greater than allocated time?)

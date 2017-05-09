@@ -38,7 +38,6 @@ public class SwapTileCoordinates {
          return coordsID;
     }
 
-
     public void setSwapCoordRow (int r) {
         //
         row = r;

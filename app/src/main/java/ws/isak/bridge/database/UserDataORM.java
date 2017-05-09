@@ -50,7 +50,7 @@ public class UserDataORM {
     private static final String COLUMN_HEARING_EQUALS_SEEING_TYPE = " INTEGER";
     private static final String COLUMN_HEARING_EQUALS_SEEING = "hearingEqualsSeeing";
 
-    //TODO sqlite cannot deal with booleans: private static boolean hasUsedSmartPhone; becomes int
+    //sqlite cannot store booleans: private static boolean hasUsedSmartPhone; becomes int
     private static final String COLUMN_HAS_USED_SMARTPHONE_TYPE = " INTEGER";
     private static final String COLUMN_HAS_USED_SMARTPHONE = "hasUsedSmartPhone";
 

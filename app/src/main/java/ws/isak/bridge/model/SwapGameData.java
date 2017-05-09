@@ -72,13 +72,13 @@ public class SwapGameData {
             curSwapBoardMap.put(coords, cardData);
         }
         //create a set view for the map
-        Set set = curSwapBoardMap.entrySet();
+        //Set set = curSwapBoardMap.entrySet();
         //check set values TODO remove
         //System.out.println("Set values: " + set);
         //Log.d (TAG, "method setSwapBoardMap: created Map curSwapBoardMap @: " + curSwapBoardMap);
     }
 
-    //return a pointer to the local deep copy of the map
+    //return a pointer to the local(?) deep(?) copy(?) of the map
     public HashMap <SwapTileCoordinates, SwapCardData> getSwapBoardMap () {
         //Log.d (TAG, "method getSwapBoardMap: curSwapBoardMap @: " + curSwapBoardMap + " | curSwapBoardMap.size(): " + curSwapBoardMap.size());
         return curSwapBoardMap;

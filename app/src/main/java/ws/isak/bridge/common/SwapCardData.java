@@ -4,8 +4,6 @@ import android.graphics.Bitmap;
 
 import ws.isak.bridge.R;
 import ws.isak.bridge.utils.SwapCardID;
-import ws.isak.bridge.utils.SwapTileCoordinates;
-
 
 /*
  * Class SwapCardData constructs the object that comprises one tile element in a swap game.  Each

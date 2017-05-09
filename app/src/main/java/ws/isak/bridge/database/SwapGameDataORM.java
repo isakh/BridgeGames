@@ -10,9 +10,12 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.common.SwapCardData;
 import ws.isak.bridge.model.SwapGameData;
+import ws.isak.bridge.utils.SwapTileCoordinates;
 
 /*
  *
@@ -25,6 +28,13 @@ public class SwapGameDataORM {
     private static final String TAG = "SwapGameDataORM";
 
     private static final String DELIMITER = ", ";
+
+    private static final String BOARD_MAP_START = "[";
+    private static final String BEGIN_MAP_ENTRY = "<";
+    private static final String MAP_KEY_VALUE_DELIMETER = "=";
+    private static final String END_MAP_ENTRY = ">";
+    private static final String MAP_ENTRY_DELIMTER = ";";
+    private static final String BOARD_MAP_END = "]";
 
     private static final String TABLE_NAME = "swap_game_data";
     private static final String COMMA_SEP = ", ";
@@ -53,7 +63,7 @@ public class SwapGameDataORM {
     private static final String COLUMN_TURN_DURATIONS_TYPE = "STRING";
     private static final String COLUMN_TURN_DURATIONS = "turnDurations";
 
-    //FIXME store SwapGameMapList which is an array list of hashmaps of <coord, card> objects as a string? or better serialize and use BLOB?
+    //FIXME - serialize arraylist of hashmaps to blob?
     private static final String COLUMN_SWAP_BOARD_MAP_LIST_TYPE = "BLOB";
     private static final String COLUMN_SWAP_BOARD_MAP_LIST = "swapGameMapList";
 
@@ -246,14 +256,31 @@ public class SwapGameDataORM {
         Log.d (TAG, " ... swapGameDataToContentValues: putting TurnDurationsString: " + turnDurationsString.toString());
         values.put (COLUMN_TURN_DURATIONS, turnDurationsString.toString());
 
-        //FIXME sort out BoardMaps - for now we make a comma seperated string where each element is a hashmap of objects, does this work?
-        //StringBuilder swapBoardMapListString = new StringBuilder();
-        //for (HashMap curBoardMap : swapGameData.getSwapGameMapList()) {
-        //    swapBoardMapListString.append(curBoardMap);
-        //    swapBoardMapListString.append(DELIMITER);
-        //}
-        //Log.d (TAG, " ... swapGameDataToContentValues: putting swapBoardMapListString: " + swapBoardMapListString.toString());
-        //values.put (COLUMN_SWAP_BOARD_MAP_LIST, swapBoardMapListString.toString());
+        //FIXME sort out BoardMaps -
+        StringBuilder swapBoardHashMapsString = new StringBuilder ();
+        for (HashMap swapBoardTurnMap : swapGameData.getSwapGameMapList()) {
+            swapBoardHashMapsString.append(BOARD_MAP_START);                                    //map in list starts with '['
+            Iterator iterator = swapBoardTurnMap.entrySet().iterator();
+            while (iterator.hasNext()) {
+                HashMap.Entry pair = (HashMap.Entry) iterator.next();
+                System.out.println(pair.getKey() + " maps to " + pair.getValue());
+                swapBoardHashMapsString.append(BEGIN_MAP_ENTRY);                                //open map entry with '<'
+                SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
+                swapBoardHashMapsString.append(String.valueOf(coords.getSwapTileCoordsID()));   //append key coordsID float as string
+                swapBoardHashMapsString.append(MAP_KEY_VALUE_DELIMETER);                        //append '.'
+                SwapCardData cardData = (SwapCardData) pair.getValue();
+                swapBoardHashMapsString.append(String.valueOf(cardData.getCardIDKey()));        //append value cardDataID float as string
+                swapBoardHashMapsString.append(END_MAP_ENTRY);                                  //close map entry with '>'
+                swapBoardHashMapsString.append(MAP_ENTRY_DELIMTER);                             //append ';'
+
+            }
+            swapBoardHashMapsString.append(BOARD_MAP_END);                                      //map in list ends with ']'
+            swapBoardHashMapsString.append(DELIMITER);                                          //append ',' to separate maps in list
+        }
+        Log.d (TAG, " ... swapGameDataToContentValues: putting swapBoardHashMapsString: " + swapBoardHashMapsString);
+        //CHECK has this produced something of the form [<k=v>;<k=v>;<k=v>;<k=v>],[<k=v>;<k=v>;<k=v>;<k=v>],...
+        values.put(COLUMN_SWAP_BOARD_MAP_LIST, swapBoardHashMapsString.toString());
+        //TODO end BoardMaps as string
 
         values.put (COLUMN_NUM_TURNS_TAKEN_IN_GAME, swapGameData.getNumTurnsTaken());
         Log.d (TAG, "private method swapGameDataToContentValues: returning values");
@@ -277,16 +304,47 @@ public class SwapGameDataORM {
         }
 
         String gamePlayDurationsString = cursor.getString(cursor.getColumnIndex(COLUMN_GAME_PLAY_DURATIONS));
-        for (String s : gamePlayDurationsString.split(DELIMITER)) cursorAtSwapGameData.appendToGamePlayDurations(Long.valueOf(s));
+        for (String s : gamePlayDurationsString.split(DELIMITER)) {
+            cursorAtSwapGameData.appendToGamePlayDurations(Long.valueOf(s));
+        }
 
         String turnDurationsString = cursor.getString(cursor.getColumnIndex(COLUMN_TURN_DURATIONS));
         //Log.d (TAG, "******** method cursorToSwapGameData: turnDurationsString: " + turnDurationsString);
-        for (String s : turnDurationsString.split(DELIMITER)) cursorAtSwapGameData.appendToTurnDurations(Long.valueOf(s));
+        for (String s : turnDurationsString.split(DELIMITER)) {
+            cursorAtSwapGameData.appendToTurnDurations(Long.valueOf(s));
+        }
         
         //FIXME
-        //String swapBoardMapListString = cursor.getString(cursor.getColumnIndex(COLUMN_SWAP_BOARD_MAP_LIST));
-        //Log.d (TAG, "******** method cursorToSwapGameData: swapBoardMapListString: " + swapBoardMapListString);
-        //for (String s : swapBoardMapListString.split(DELIMITER)) cursorAtSwapGameData.appendToSwapGameMapList(HashMap.valueOf(s));
+        String swapBoardMapListString = cursor.getString(cursor.getColumnIndex(COLUMN_SWAP_BOARD_MAP_LIST));
+        Log.d (TAG, "******** method cursorToSwapGameData: swapBoardMapListString: " + swapBoardMapListString);
+        for (String hashMapInList : swapBoardMapListString.split(DELIMITER)) {          //split on ',' should give us each turns' HashMap
+            //create an empty hashmap to repopulate and push back to the list
+            HashMap <SwapTileCoordinates, SwapCardData> curTurnMap = new HashMap<>();
+            Log.d (TAG, " --- hashMapInList: " + hashMapInList);            //should be [<k=v>;<k=v>;<k=v>;<k=v>]
+            //remove '[' and ']' before subsequent parsing - will get us to <k=v>;<k=v>;<k=v>;<k=v>
+            hashMapInList.replace(BOARD_MAP_START, "");
+            hashMapInList.replace(BOARD_MAP_END, "");
+            Log.d (TAG, " ---- hashMapInList, truncated: " + hashMapInList);
+            for (String entryInHashMap : hashMapInList.split(MAP_ENTRY_DELIMTER)) {     //split on ';' should give each map entry <k=v>
+                //remove '<' and '>' before subsequent parsing - will get us to k=v
+                entryInHashMap.replace (BEGIN_MAP_ENTRY, "");
+                entryInHashMap.replace (END_MAP_ENTRY, "");
+                String [] keyValue = entryInHashMap.split(MAP_KEY_VALUE_DELIMETER);
+                //TODO check that size of keyValue is always 2
+                String coordKeyString = keyValue [0];
+                String cardIDKeyString = keyValue [1];
+                float coordsID = Float.parseFloat(coordKeyString);
+                //FIXME - this seems wrong, since we should already have reloaded all the SwapTileCoords objects from database so can just link?
+                SwapTileCoordinates curEntryCoords = new SwapTileCoordinates((int)Math.floor(coordsID),((int)(coordsID-Math.floor(coordsID))));
+                float cardID = Float.parseFloat(cardIDKeyString);
+                for (SwapCardData curSwapCard : Shared.swapCardDataList) {
+                    if (curSwapCard.getCardID().getCardIDKey() == cardID) {
+                        curTurnMap.put(curEntryCoords, curSwapCard);
+                    }
+                }
+            }
+            cursorAtSwapGameData.appendToSwapGameMapList(curTurnMap);
+        }
 
         cursorAtSwapGameData.setNumTurnsTaken(cursor.getInt(cursor.getColumnIndex(COLUMN_NUM_TURNS_TAKEN_IN_GAME)));
         return cursorAtSwapGameData;

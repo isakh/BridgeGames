@@ -31,7 +31,7 @@ public class MatchCardDataORM {
     private static final String COLUMN_SPECIES_NAME_TYPE = "STRING";
     private static final String COLUMN_SPECIES_NAME = "speciesName";
 
-    //TODO sqlite cannot deal with booleans, pairedImagesDiffer and firstImageUsed become INTEGERS
+    //sqlite cannot deal with booleans, pairedImagesDiffer and firstImageUsed become INTEGERS
     private static final String COLUMN_PAIRED_IMAGES_DIFFER_TYPE = "INTEGER";
     private static final String COLUMN_PAIRED_IMAGES_DIFFER = "pairedImagesDiffer";
 
@@ -268,5 +268,4 @@ public class MatchCardDataORM {
 
         return cursorAtMatchCardData;
     }
-
 }
