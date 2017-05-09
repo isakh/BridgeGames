@@ -12,7 +12,7 @@ public class SwapCardID {
 
     private static final String TAG = "SwapCardID";
 
-    private float cardIDKey;
+    private double cardIDKey;
     private int speciesID;
     private int segmentID;
 
@@ -28,15 +28,15 @@ public class SwapCardID {
     //TODO - can we make this private and use the public setter when retrieving from database?
     public void setCardID (int species, int segment) {
         //this creates a decimal of species.segment - FIXME - how would we deal with more than 10 segments?
-        cardIDKey = species + (segment/10);
+        cardIDKey = species + ((double) segment/10);
     }
 
     //overloaded constructor takes a decimalized form of the id and uses that.
-    public void setCardIDKey(float specSegDec) {
+    public void setCardIDKey(double specSegDec) {
         cardIDKey = specSegDec;
     }
 
-    public float getCardIDKey() {
+    public double getCardIDKey() {
         return cardIDKey;
     }
 

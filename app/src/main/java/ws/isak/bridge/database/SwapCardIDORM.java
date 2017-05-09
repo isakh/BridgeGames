@@ -102,7 +102,7 @@ public class SwapCardIDORM {
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
 
         boolean cardExists = false;     //false unless found in database
-        Float cardID = cardIDToCheck.getCardIDKey();
+        Double cardID = cardIDToCheck.getCardIDKey();
         if (database != null) {
             Log.d(TAG, "method isSwapCardIDInDB: searching...");
             //FIXME !!! - this isn't an integer at the moment - ∆ to a swapCardID object?
@@ -198,7 +198,7 @@ public class SwapCardIDORM {
         Log.d(TAG, "method cursorToSwapCardID");
         SwapCardID cursorAtSwapCardID = new SwapCardID(-1, -1);     //FIXME - is there a better way to null this constructor?
 
-        cursorAtSwapCardID.setCardIDKey(cursor.getFloat(cursor.getColumnIndex(COLUMN_SWAP_CARD_ID_KEY)));
+        cursorAtSwapCardID.setCardIDKey(cursor.getDouble(cursor.getColumnIndex(COLUMN_SWAP_CARD_ID_KEY)));
         cursorAtSwapCardID.setSwapCardSpeciesID(cursor.getInt(cursor.getColumnIndex(COLUMN_SPECIES_ID)));
         cursorAtSwapCardID.setSwapCardSegmentID(cursor.getInt(cursor.getColumnIndex(COLUMN_SEGMENT_ID)));
 

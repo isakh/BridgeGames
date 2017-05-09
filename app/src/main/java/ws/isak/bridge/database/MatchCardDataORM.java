@@ -139,7 +139,7 @@ public class MatchCardDataORM {
                 cardExists = true;
             }
             else {
-                Toast.makeText(Shared.context, "new card added to database" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(Shared.context, "new match game card added to database" , Toast.LENGTH_SHORT).show();
             }
             cursor.close();
             database.close();

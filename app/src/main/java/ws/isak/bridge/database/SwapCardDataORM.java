@@ -141,7 +141,7 @@ public class SwapCardDataORM {
         return numRecords;
     }
 
-    //method isMatchCardDataInDB takes a MatchCardData object and checks whether it has been used as a
+    //method isSwapCardDataInDB takes a SwapCardData object and checks whether it has been used as a
     //primary key yet in the database - used to check existence and uniqueness when loading cards.
     public static boolean isSwapCardDataInDB(SwapCardData cardToCheck) {
         Log.d(TAG, "method isSwapCardDataInDB: check cardToCheck: " + cardToCheck);
@@ -151,14 +151,14 @@ public class SwapCardDataORM {
         boolean cardExists = false;     //false unless found in database
         SwapCardID cardID = cardToCheck.getCardID();
         if (database != null) {
-            Log.d(TAG, "method isMatchCardDataInDB: searching...");
-            //FIXME !!! - this isn't an integer at the moment - ∆ to a swapCardID object? 
+            Log.d(TAG, "method isSwapCardDataInDB: searching...");
+            //FIXME !!! - this isn't an integer at the moment - ∆ to a swapCardID object?  - or float if we are using that??
             Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_CARD_ID + " ='" + cardID + "'", null);
             //FIXME - this prevent's SQL injection: Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " =?", userName);
             if (cursor.getCount() > 0) {
                 cardExists = true;
             } else {
-                Toast.makeText(Shared.context, "new card added to database", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Shared.context, "new swap game card added to database", Toast.LENGTH_SHORT).show();
             }
             cursor.close();
             database.close();
@@ -168,7 +168,7 @@ public class SwapCardDataORM {
 
 
     public static SwapCardData getSwapCardData(SwapCardID cardID) {
-        Log.d(TAG, "method getMatchGameData returns a list of matchCardData objects with cardID " + cardID);
+        Log.d(TAG, "method getSwapGameData returns a list of matchCardData objects with cardID " + cardID);
 
         DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
@@ -183,18 +183,21 @@ public class SwapCardDataORM {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
                     SwapCardData swapCardDataAtCursor = cursorToSwapCardData(cursor);
-                    //Check the state of all MatchCardData fields here
-                    Log.d(TAG, "... PARSE: MatchCardData object to return:" +
+                    //Check the state of all SwapCardData fields here
+                    Log.d(TAG, "... PARSE: SwapCardData object to return:" +
                             " | cardID: " + swapCardDataAtCursor.getCardID() +
                             " | speciesName: " + swapCardDataAtCursor.getSpeciesName() +
+
                             " | imageURI0: " + swapCardDataAtCursor.getSpectroURI0() +
                             " | imageURI1: " + swapCardDataAtCursor.getSpectroURI1() +
                             " | imageURI2: " + swapCardDataAtCursor.getSpectroURI2() +
                             " | imageURI3: " + swapCardDataAtCursor.getSpectroURI3() +
+
                             " | audioURI0: " + swapCardDataAtCursor.getAudioURI0() +
                             " | audioURI1: " + swapCardDataAtCursor.getAudioURI1() +
                             " | audioURI2: " + swapCardDataAtCursor.getAudioURI2() +
                             " | audioURI3: " + swapCardDataAtCursor.getAudioURI3() +
+
                             " | sampleDuration0: " + swapCardDataAtCursor.getSampleDuration0() +
                             " | sampleDuration1: " + swapCardDataAtCursor.getSampleDuration1() +
                             " | sampleDuration2: " + swapCardDataAtCursor.getSampleDuration2() +

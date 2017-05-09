@@ -9,6 +9,8 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 
 import ws.isak.bridge.common.MatchCardData;
@@ -31,12 +33,14 @@ import ws.isak.bridge.ui.PopupManager;
 
 import ws.isak.bridge.utils.ImageScaling;
 import ws.isak.bridge.utils.SwapCardID;
+import ws.isak.bridge.utils.SwapTileCoordinates;
 
 import ws.isak.bridge.database.DatabaseWrapper;
 import ws.isak.bridge.database.UserDataORM;
 import ws.isak.bridge.database.MatchCardDataORM;
 import ws.isak.bridge.database.MatchGameDataORM;
 import ws.isak.bridge.database.SwapGameDataORM;
+import ws.isak.bridge.database.SwapCardDataORM;
 
 /*
  * The main activity class of the app.  This activity class is called from the AndroidManifest.xml
@@ -168,9 +172,11 @@ public class  MainActivity extends FragmentActivity {
     private void buildSwapCardDataList() {
         Shared.swapCardDataList = new ArrayList<SwapCardData>();
 
-        for (int i = 1; i <= 10; i++) {
-            for (int j = 0; j < 4; j++) {
+        for (int i = 1; i <= 10; i++) {                             //FIXME - make numSpecies 10 an xml value?
+            for (int j = 0; j < 4; j++) {                           //FIXME - make numSegments 4 and xml value?
                 SwapCardData curCard = new SwapCardData();
+                curCard.setCardIDKey(i + ((double)j/10));
+                //Log.d (TAG, "^^^ (i+((double)j/10)): " + (i+((double)j/10)) + " | curCard.getCardIDKey: " + curCard.getCardIDKey());
                 curCard.setCardID(new SwapCardID(i, j));
                 curCard.setSpeciesName(curCard.getCardID().getSwapCardSpeciesID());
                 switch (j) {
@@ -186,7 +192,7 @@ public class  MainActivity extends FragmentActivity {
                         curCard.setSpectroURI2(null);
                         curCard.setSpectroURI3(null);
                         //set duration
-                        Log.d (TAG, "method buildSwapCardDataList: curCard.getAudioURI0: " + curCard.getAudioURI0());
+                        Log.d(TAG, "method buildSwapCardDataList: curCard.getAudioURI0: " + curCard.getAudioURI0());
                         curCard.setSampleDuration0(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI0().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
                         curCard.setSampleDuration1(0);
                         curCard.setSampleDuration2(0);
@@ -245,14 +251,17 @@ public class  MainActivity extends FragmentActivity {
                         break;
                 }
                 Shared.swapCardDataList.add(curCard);
-                Log.d(TAG, "method buildSwapCardDataList: added: cardID.species: " + curCard.getCardID().getSwapCardSpeciesID() + " | species: " + curCard.getSpeciesName() + " | active segment: " + curCard.getCardID().getSwapCardSegmentID());
-                Log.d(TAG, "                            : audio0: " + curCard.getAudioURI0() + " | audio1: " + curCard.getAudioURI1() + " | audio2: " + curCard.getAudioURI2() + " | audio3" + curCard.getAudioURI3());
+                Log.d(TAG, "method buildSwapCardDataList: added: cardID.getCardIDKey: " + curCard.getCardIDKey() + " | cardID.species: " + curCard.getCardID().getSwapCardSpeciesID() + " | species: " + curCard.getSpeciesName() + " | active segment: " + curCard.getCardID().getSwapCardSegmentID());
+                Log.d(TAG, "                            : audio0: " + curCard.getAudioURI0() + " | audio1: " + curCard.getAudioURI1() + " | audio2: " + curCard.getAudioURI2() + " | audio3: " + curCard.getAudioURI3());
                 Log.d(TAG, "                            : dur0: " + curCard.getSampleDuration0() + " | dur1: " + curCard.getSampleDuration1() + " | dur2: " + curCard.getSampleDuration2() + " | dur3: " + curCard.getSampleDuration3());
                 Log.d(TAG, "                            : image0: " + curCard.getSpectroURI0() + " | image1: " + curCard.getSpectroURI1() + " | image2: " + curCard.getSpectroURI2() + " | image3: " + curCard.getSpectroURI3());
-                //TODO check if card is in DB and if not add it
+                //insert swapCardData object into Database and local storage
+                if (!SwapCardDataORM.isSwapCardDataInDB(curCard)) {
+                    SwapCardDataORM.insertSwapCardData(curCard);
+                }
             }
         }
-        Log.d (TAG, "method buildSwapCardDataList: Shared.swapCardDataList.size(): " + Shared.swapCardDataList.size());
+        Log.d(TAG, "method buildSwapCardDataList: Shared.swapCardDataList.size(): " + Shared.swapCardDataList.size());
     }
 
     private void setBackgroundImage() {
@@ -334,7 +343,7 @@ public class  MainActivity extends FragmentActivity {
                                     " | gamePlayDuration(i): " + Shared.matchGameDataList.get(i).queryGamePlayDurations(j) +
                                     " | turnDurations(i): " + Shared.matchGameDataList.get(i).queryTurnDurationsArray(j) +
                                     " | cardsSelected(i): " + Shared.matchGameDataList.get(i).queryCardsSelectedArray(j));
-                            loadCardSelectedData (Shared.matchGameDataList.get(i).queryCardsSelectedArray(j));
+                            loadMatchCardSelectedData(Shared.matchGameDataList.get(i).queryCardsSelectedArray(j));
                         }
                     } else {
                         Log.d(TAG, " ***** ERROR! Size of play durations and turn durations not returned as equal");
@@ -349,7 +358,7 @@ public class  MainActivity extends FragmentActivity {
     }
 
     //this should print out the information associated with the matchCardData object with id cardID
-    private void loadCardSelectedData (int cardID) {
+    private void loadMatchCardSelectedData(int cardID) {
         if (MatchCardDataORM.matchCardDataRecordsInDatabase(Shared.context)) {
             int dbLength = MatchCardDataORM.numMatchCardDataRecordsInDatabase(Shared.context);
             Shared.matchCardDataList = new ArrayList<MatchCardData>(dbLength);
@@ -406,7 +415,8 @@ public class  MainActivity extends FragmentActivity {
                                     " | gamePlayDuration(i): " + Shared.swapGameDataList.get(i).queryGamePlayDurations(j) +
                                     " | turnDurations(i): " + Shared.swapGameDataList.get(i).queryTurnDurationsArray(j) +
                                     " | swapBoardMaps(i): " + Shared.swapGameDataList.get(i).querySwapGameMapList(j));
-                                    // FIXME - did this last line add swapBoardMaps Here
+                            //for each turn we return a hash map relating all of the <coords, cards> on the board
+                            //TODO fixme? is this necessary? loadSwapBoardMap(Shared.swapGameDataList.get(i).querySwapGameMapList(j));
                         }
                     } else {
                         Log.d(TAG, " ***** ERROR! Size of play durations and turn durations not returned as equal");
@@ -416,6 +426,35 @@ public class  MainActivity extends FragmentActivity {
             } else if (SwapGameDataORM.getSwapGameData(userData.getUserName()) == null) {
                 //
                 Log.d(TAG, "*!*!* no SwapGameData objects for userData.getUserName: " + userData.getUserName());
+            }
+        }
+    }
+
+    //this should print out the data associated with the hashmap depicting the board at a given turn
+    private void loadSwapBoardMap (HashMap curSwapGameCurTurnMap) {
+        Log.d (TAG, "method loadSwapBoardMap...");
+        Iterator iterator = curSwapGameCurTurnMap.entrySet().iterator();
+        //iterate over the current turn board map
+        while (iterator.hasNext()) {
+            HashMap.Entry pair = (HashMap.Entry) iterator.next();
+            System.out.println(pair.getKey() + " maps to " + pair.getValue());
+            SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
+            SwapCardData cardData = (SwapCardData) pair.getValue();
+
+            if (SwapCardDataORM.swapCardDataRecordsInDatabase(Shared.context)) {
+                int numSwapCardRecords = SwapCardDataORM.numSwapCardDataRecordsInDatabase(Shared.context);
+                Shared.swapCardDataList = new ArrayList<SwapCardData>(numSwapCardRecords);
+                while (Shared.swapCardDataList.size() < numSwapCardRecords) {
+                    Shared.swapCardDataList.add(new SwapCardData());
+                }
+                Shared.swapCardData = SwapCardDataORM.getSwapCardData(cardData.getCardID());
+                if (Shared.swapCardDataList == cardData) {
+                    Log.d(TAG, " ... PARSE Turn HashMap " +
+                            " | coords.row: " + coords.getSwapCoordRow() +
+                            " | coords.col: " + coords.getSwapCoordCol() +
+                            " | cardID.species: " + Shared.swapCardData.getCardID().getSwapCardSpeciesID() +
+                            " | cardID.segment: " + Shared.swapCardData.getCardID().getSwapCardSegmentID());
+                }
             }
         }
     }

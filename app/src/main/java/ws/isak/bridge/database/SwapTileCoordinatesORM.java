@@ -102,7 +102,7 @@ public class SwapTileCoordinatesORM {
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
 
         boolean coordsExist = false;     //false unless found in database
-        Float tileCoords = coordsToCheck.getSwapTileCoordsID();
+        Double tileCoords = coordsToCheck.getSwapTileCoordsID();
         if (database != null) {
             Log.d(TAG, "method isSwapTileCoordsInDB: searching...");
             Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_SWAP_TILE_COORDS_KEY + " ='" + tileCoords + "'", null);
@@ -197,7 +197,7 @@ public class SwapTileCoordinatesORM {
         Log.d(TAG, "method cursorToSwapCardID");
         SwapTileCoordinates cursorAtSwapCoords = new SwapTileCoordinates(-1, -1);     //FIXME - is there a better way to null this constructor?
 
-        cursorAtSwapCoords.setSwapTileCoordsID(cursor.getFloat(cursor.getColumnIndex(COLUMN_SWAP_TILE_COORDS_KEY)));
+        cursorAtSwapCoords.setSwapTileCoordsID(cursor.getDouble(cursor.getColumnIndex(COLUMN_SWAP_TILE_COORDS_KEY)));
         cursorAtSwapCoords.setSwapCoordRow(cursor.getInt(cursor.getColumnIndex(COLUMN_COORDS_ROW)));
         cursorAtSwapCoords.setSwapCoordCol(cursor.getInt(cursor.getColumnIndex(COLUMN_COORDS_COL)));
 

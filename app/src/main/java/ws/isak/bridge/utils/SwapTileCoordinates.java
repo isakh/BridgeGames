@@ -12,7 +12,7 @@ public class SwapTileCoordinates {
 
     private static final String TAG = "SwapCoordinates";
 
-    private float coordsID;
+    private double coordsID;
     private int row;
     private int col;
 
@@ -24,17 +24,17 @@ public class SwapTileCoordinates {
     }
 
     public void setSwapTileCoordsID (int row, int col) {
-        //TODO - decimal float hack to contain both values - how to resolve if grid over 10x10?
-        coordsID = row + (col/10);
+        //TODO - decimal double hack to contain both values - how to resolve if grid over 10x10?
+        coordsID = row + ((double) col/10);
     }
 
-    public void setSwapTileCoordsID (float rowColID) {
-        //overloaded version that sets the ID from a known float
-        Log.d (TAG, "method setSwapTileCoordsID - overloaded version takes a float: " + rowColID);
+    public void setSwapTileCoordsID (double rowColID) {
+        //overloaded version that sets the ID from a known double
+        Log.d (TAG, "method setSwapTileCoordsID - overloaded version takes a double: " + rowColID);
         coordsID = rowColID;
     }
 
-    public float getSwapTileCoordsID () {
+    public double getSwapTileCoordsID () {
          return coordsID;
     }
 
