@@ -337,23 +337,23 @@ public class SwapGameDataORM {
             Log.d (TAG, " --- hashMapInList: " + hashMapInList);            //should be [<k=v>;<k=v>;<k=v>;<k=v>]
             //remove leading '[' and trailing ']' before subsequent parsing - will get us to <k=v>;<k=v>;<k=v>;<k=v>
             String truncatedHashMapInList = hashMapInList.replaceAll("[\\[\\]]", "");
-            Log.d (TAG, " ---- truncatedHashMapInList: " + truncatedHashMapInList);
+            //Log.d (TAG, " ---- truncatedHashMapInList: " + truncatedHashMapInList);
             for (String entryInHashMap : truncatedHashMapInList.split(MAP_ENTRY_DELIMTER)) {     //split on ';' should give each map entry <k=v>
                 //remove '<' and '>' before subsequent parsing - will get us to k=v
                 String cleanHashMapEntry = entryInHashMap.replaceAll("[<>]", "");
-                Log.d (TAG, " ----- cleanHashMapEntry: " + cleanHashMapEntry);
+                //Log.d (TAG, " ----- cleanHashMapEntry: " + cleanHashMapEntry);
                 String [] keyValue = cleanHashMapEntry.split(MAP_KEY_VALUE_DELIMETER);
                 //check that size of keyValue is always 2
                 if (keyValue.length == 2) {
                     String coordKeyString = keyValue[0];
-                    Log.d(TAG, " ----- coordKeyString: " + coordKeyString);
+                    //Log.d(TAG, " ----- coordKeyString: " + coordKeyString);
                     String cardIDKeyString = keyValue[1];
-                    Log.d(TAG, " ----- cardIDKeyString: " + cardIDKeyString);
+                    //Log.d(TAG, " ----- cardIDKeyString: " + cardIDKeyString);
                     double coordsID = Double.parseDouble(coordKeyString);
                     SwapTileCoordinates curEntryCoords = new SwapTileCoordinates((int) Math.floor(coordsID), ((int) (coordsID - Math.floor(coordsID))));
                     double cardID = Double.parseDouble(cardIDKeyString);
                     //now that we have the IDs for the coords and the cards, check the coordinates points to the right object
-                    Log.d(TAG, " ... curEntryCoords: " + curEntryCoords);
+                    //Log.d(TAG, " ... curEntryCoords: " + curEntryCoords);
                     //and iterate over the Shared swapCardDataList previously loaded to find the cardID object
                     //Log.d(TAG, " !!! shared.SwapCardDataList: " + Shared.swapCardDataList);
                     for (SwapCardData curSwapCard : Shared.swapCardDataList) {

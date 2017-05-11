@@ -91,11 +91,11 @@ public class Audio {
 	 * at location passed with @param audioResourceID
 	 */
 	public static long getAudioDuration (int audioResourceID) {
-		Log.d (TAG, "method getAudioDuration: audioResourceID: " + audioResourceID);
+		//Log.d (TAG, "method getAudioDuration: audioResourceID: " + audioResourceID);
 		//load audio data file
-        Log.d (TAG, "                       : create new MediaMetadataRetriever");
+        //Log.d (TAG, "                       : create new MediaMetadataRetriever");
 		MediaMetadataRetriever audioMetaData = new MediaMetadataRetriever();
-        Log.d (TAG, "                       : setting the data source");
+        //Log.d (TAG, "                       : setting the data source");
         audioMetaData.setDataSource(Shared.context, Uri.parse("android.resource://" + Shared.context.getPackageName() + File.separator + audioResourceID));
 		String duration = audioMetaData.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         //Log.d (TAG, "                       : duration (string): " + duration);

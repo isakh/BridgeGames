@@ -17,7 +17,7 @@ public class SwapCardID {
     private int segmentID;
 
     public SwapCardID (int speciesID, int segmentID) {
-        Log.d (TAG, "constructor");
+        //Log.d (TAG, "constructor");
         this.speciesID = speciesID;
         this.segmentID = segmentID;
         setCardID (speciesID, segmentID);

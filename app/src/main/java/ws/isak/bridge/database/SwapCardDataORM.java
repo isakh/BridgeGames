@@ -149,11 +149,11 @@ public class SwapCardDataORM {
 
         boolean cardExists = false;     //false unless found in database
         SwapCardID cardID = cardToCheck.getCardID();
-        Log.d (TAG, " ... checking cardID: " + cardID);
+        //Log.d (TAG, " ... checking cardID: " + cardID);
         Double cardIDNum = cardID.getCardIDKey();
-        Log.d (TAG, " ... checking cardID Double: " + cardIDNum);
+        //Log.d (TAG, " ... checking cardID Double: " + cardIDNum);
         if (database != null) {
-            Log.d(TAG, "method isSwapCardDataInDB: searching.....");
+            //Log.d(TAG, "method isSwapCardDataInDB: searching.....");
             Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_CARD_ID + " ='" + cardIDNum + "'", null);
             //FIXME - this prevent's SQL injection: Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " =?", userName);
             if (cursor.getCount() > 0) {
@@ -309,4 +309,3 @@ public class SwapCardDataORM {
         return cursorAtSwapCardData;
     }
 }
-
