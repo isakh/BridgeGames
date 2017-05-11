@@ -271,6 +271,7 @@ public class SwapGameData {
         swapGameMapList.add(curSwapGameMap);
     }
 
+    //this returns a hashmap which represents a given board state at a given turn in the given game
     public HashMap <SwapTileCoordinates, SwapCardData> querySwapGameMapList (int locToQuery) {
         //Log.d (TAG, "method queryCardsSelectedArray");
         return swapGameMapList.get(locToQuery);

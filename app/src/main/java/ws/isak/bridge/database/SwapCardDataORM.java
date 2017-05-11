@@ -158,7 +158,7 @@ public class SwapCardDataORM {
             if (cursor.getCount() > 0) {
                 cardExists = true;
             } else {
-                Toast.makeText(Shared.context, "new swap game card added to database", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(Shared.context, "new swap game card added to database", Toast.LENGTH_SHORT).show();
             }
             cursor.close();
             database.close();

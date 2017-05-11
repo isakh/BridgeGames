@@ -266,13 +266,17 @@ public class SwapGameDataORM {
                 System.out.println(pair.getKey() + " maps to " + pair.getValue());
                 swapBoardHashMapsString.append(BEGIN_MAP_ENTRY);                                //open map entry with '<'
                 SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
+                Log.d (TAG, " .*.*. swapGameDataToContentValues: coords.row: " + coords.getSwapCoordRow());
+                Log.d (TAG, " .*.*. swapGameDataToContentValues: coords.col: " + coords.getSwapCoordCol());
+                Log.d (TAG, " .*.*. swapGameDataToContentValues: coords.getSwapTileCoordsID(): " + coords.getSwapTileCoordsID());
+                Log.d (TAG, " .*.*. swapGameDataToContentValues: appending: String.valueOf(coords.getSwapTileCoordsID()): " +
+                        String.valueOf(coords.getSwapTileCoordsID()));
                 swapBoardHashMapsString.append(String.valueOf(coords.getSwapTileCoordsID()));   //append key coordsID float as string
-                swapBoardHashMapsString.append(MAP_KEY_VALUE_DELIMETER);                        //append '.'
+                swapBoardHashMapsString.append(MAP_KEY_VALUE_DELIMETER);                        //append '='
                 SwapCardData cardData = (SwapCardData) pair.getValue();
                 swapBoardHashMapsString.append(String.valueOf(cardData.getCardIDKey()));        //append value cardDataID float as string
                 swapBoardHashMapsString.append(END_MAP_ENTRY);                                  //close map entry with '>'
                 swapBoardHashMapsString.append(MAP_ENTRY_DELIMTER);                             //append ';'
-
             }
             swapBoardHashMapsString.append(BOARD_MAP_END);                                      //map in list ends with ']'
             swapBoardHashMapsString.append(DELIMITER);                                          //append ',' to separate maps in list

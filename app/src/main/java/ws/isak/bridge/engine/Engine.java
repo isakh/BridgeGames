@@ -395,19 +395,27 @@ public class Engine extends EventObserverAdapter {
             //Log.d (TAG, "method arrangeSwapBoard: iterating to place cards: q: " + q + " | numTiles: " +
             //        swapBoardConfiguration.numTiles + " | difficultyLevel: " + swapBoardConfiguration.difficultyLevel);
             //a SwapTileCoordinates object
-            SwapTileCoordinates tileCoords = new SwapTileCoordinates(-1 ,-1); //FIXME make less of a kludge? - these coords are off the board
-            tileCoords.setSwapCoordRow ((int) Math.floor(q / swapBoardConfiguration.swapNumTilesInRow));
-            tileCoords.setSwapCoordCol (q % swapBoardConfiguration.swapNumTilesInRow);
+            //FIXME make less of a kludge? - these coords are off the board
+            //TODO REMOVE if subsequent works: SwapTileCoordinates tileCoords = new SwapTileCoordinates(-1 ,-1);
+            SwapTileCoordinates tileCoords = new SwapTileCoordinates((int) Math.floor(q / swapBoardConfiguration.swapNumTilesInRow) ,
+                    (q % swapBoardConfiguration.swapNumTilesInRow));
+            if (tileCoords.getSwapCoordRow() == ((int) Math.floor(q / swapBoardConfiguration.swapNumTilesInRow)) &&
+                tileCoords.getSwapCoordCol() == (q % swapBoardConfiguration.swapNumTilesInRow)) {
+                    Log.d (TAG, "method arrangeSwapboard: tileCoords.getSwapTileCoordsID(): " +
+                            tileCoords.getSwapTileCoordsID());
+            }
+            /* //TODO remove code - or move it to debug prior to release
             //having set the Row and Column coordinates print them out
-            //Log.d (TAG, "method arrangeSwapBoard: insert tileCoords: q: " + q + " row: " +
-            //        tileCoords.getSwapCoordRow() + " col: " + tileCoords.getSwapCoordCol());
+            Log.d (TAG, "method arrangeSwapBoard: insert tileCoords: q: " + q + " row: " +
+                    tileCoords.getSwapCoordRow() + " col: " + tileCoords.getSwapCoordCol());
             //create the Mapping between tileCoords and the SwapCard object in the activeCardList.
-            //Log.d (TAG, "method arrangeSwapBoard: tileCoords @: " + tileCoords + " | coords < " +
-            //        tileCoords.getSwapCoordRow() + " , " + tileCoords.getSwapCoordCol() +
-            //        " > | activeCardList.get(i): " + activeCardList.get(q) +
-            //        " | cardID <species, segment>: < " +
-            //        activeCardList.get(q).getCardIDKey().getSwapCardSpeciesID() +
-            //        " , " + activeCardList.get(q).getCardIDKey().getSwapCardSegmentID() + " >");
+            Log.d (TAG, "method arrangeSwapBoard: tileCoords @: " + tileCoords + " | coords < " +
+                   tileCoords.getSwapCoordRow() + " , " + tileCoords.getSwapCoordCol() +
+                    " > | activeCardList.get(i): " + activeCardList.get(q) +
+                    " | cardID <species, segment>: < " +
+                    activeCardList.get(q).getCardIDKey().getSwapCardSpeciesID() +
+                    " , " + activeCardList.get(q).getCardIDKey().getSwapCardSegmentID() + " >");
+            */ //TODO end remove code
             swapBoardArrangement.setCardOnBoard (tileCoords, activeCardList.get(q));
         }
         mPlayingSwapGame.swapBoardArrangement = swapBoardArrangement;

@@ -192,7 +192,6 @@ public class SwapCardIDORM {
         return values;
     }
 
-
     //method cursorToUserData populates a UserData object with data from the cursor
     private static SwapCardID cursorToSwapCardID( Cursor cursor) {
         Log.d(TAG, "method cursorToSwapCardID");
