@@ -131,6 +131,7 @@ public class MatchCardDataORM {
 
         boolean cardExists = false;     //false unless found in database
         int cardID = cardToCheck.getCardID();
+        Log.d (TAG, " ... checking cardID: " + cardID);
         if (database != null) {
             Log.d (TAG, "method isMatchCardDataInDB: searching...");
             Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_CARD_ID + " ='" + cardID + "'", null);
@@ -144,6 +145,7 @@ public class MatchCardDataORM {
             cursor.close();
             database.close();
         }
+        Log.d (TAG, " ..... searching ..... cardExists: " + cardExists);
         return  cardExists;
     }
 

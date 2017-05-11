@@ -26,7 +26,7 @@ public class SwapCardDataORM {
 
     private static final String COMMA_SEP = ", ";
 
-    private static final String COLUMN_CARD_ID_TYPE = "REAL PRIMARY KEY";    //this float comes from SwapCardID float key
+    private static final String COLUMN_CARD_ID_TYPE = "REAL PRIMARY KEY";    //this double comes from SwapCardID double key
     private static final String COLUMN_CARD_ID = "cardID";
 
     private static final String COLUMN_SPECIES_NAME_TYPE = "STRING";
@@ -115,7 +115,6 @@ public class SwapCardDataORM {
         return recordsExist;
     }
 
-    //TODO these methods can be made generic if the TypeOfDataORM.TABLE_NAME is passed in
     public static int numSwapCardDataRecordsInDatabase(Context context) {
         //Log.d (TAG, "method numSwapCardDataRecordsInDatabase");
 
@@ -150,10 +149,12 @@ public class SwapCardDataORM {
 
         boolean cardExists = false;     //false unless found in database
         SwapCardID cardID = cardToCheck.getCardID();
+        Log.d (TAG, " ... checking cardID: " + cardID);
+        Double cardIDNum = cardID.getCardIDKey();
+        Log.d (TAG, " ... checking cardID Double: " + cardIDNum);
         if (database != null) {
-            Log.d(TAG, "method isSwapCardDataInDB: searching...");
-            //FIXME !!! - this isn't an integer at the moment - ∆ to a swapCardID object?  - or float if we are using that??
-            Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_CARD_ID + " ='" + cardID + "'", null);
+            Log.d(TAG, "method isSwapCardDataInDB: searching.....");
+            Cursor cursor = database.rawQuery("SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_CARD_ID + " ='" + cardIDNum + "'", null);
             //FIXME - this prevent's SQL injection: Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " =?", userName);
             if (cursor.getCount() > 0) {
                 cardExists = true;
@@ -163,6 +164,7 @@ public class SwapCardDataORM {
             cursor.close();
             database.close();
         }
+        Log.d (TAG, " ..... searching ..... cardExists: " + cardExists);
         return cardExists;
     }
 
@@ -244,24 +246,41 @@ public class SwapCardDataORM {
     //method cardDataToContentValues packs a UserData object into a ContentValues map for
     //use with SQL inserts
     private static ContentValues swapCardDataToContentValues(SwapCardData swapCardData) {
-        Log.d(TAG, "private method cardDataToContentValues");
+        Log.d(TAG, "private method swapCardDataToContentValues: creating values: putting ... ");
         ContentValues values = new ContentValues();
-
-        values.put(COLUMN_CARD_ID, swapCardData.getCardIDKey());      //FIXME - column needs a string not an ID object
+        //insert unique ID and species name
+        Log.d (TAG, "... putting swapCardData.getCardIDKey(): " + swapCardData.getCardIDKey());
+        values.put(COLUMN_CARD_ID, swapCardData.getCardIDKey());
+        Log.d (TAG, "... putting swapCardData.getSpeciesName(): " + swapCardData.getSpeciesName());
         values.put(COLUMN_SPECIES_NAME, swapCardData.getSpeciesName());
-
+        //insert spectro image URIs
+        Log.d (TAG, "... putting swapCardData.getSpectroURI0(): " + swapCardData.getSpectroURI0());
         values.put(COLUMN_SPECTRO_URI0, swapCardData.getSpectroURI0());
+        Log.d (TAG, "... putting swapCardData.getSpectroURI1(): " + swapCardData.getSpectroURI1());
         values.put(COLUMN_SPECTRO_URI1, swapCardData.getSpectroURI1());
+        Log.d (TAG, "... putting swapCardData.getSpectroURI2(): " + swapCardData.getSpectroURI2());
         values.put(COLUMN_SPECTRO_URI2, swapCardData.getSpectroURI2());
+        Log.d (TAG, "... putting swapCardData.getSpectroURI3(): " + swapCardData.getSpectroURI3());
         values.put(COLUMN_SPECTRO_URI3, swapCardData.getSpectroURI3());
+        //insert audio URIs
+        Log.d (TAG, "... putting swapCardData.getAudioURI0(): " + swapCardData.getAudioURI0());
         values.put(COLUMN_AUDIO_URI0, swapCardData.getAudioURI0());
+        Log.d (TAG, "... putting swapCardData.getAudioURI1(): " + swapCardData.getAudioURI1());
         values.put(COLUMN_AUDIO_URI1, swapCardData.getAudioURI1());
+        Log.d (TAG, "... putting swapCardData.getAudioURI2(): " + swapCardData.getAudioURI2());
         values.put(COLUMN_AUDIO_URI2, swapCardData.getAudioURI2());
+        Log.d (TAG, "... putting swapCardData.getAudioURI3(): " + swapCardData.getAudioURI3());
         values.put(COLUMN_AUDIO_URI3, swapCardData.getAudioURI3());
+        //insert audio sample durations
+        Log.d (TAG, "... putting swapCardData.getSampleDuration0(): " + swapCardData.getSampleDuration0());
         values.put(COLUMN_SAMPLE_DURATION0, swapCardData.getSampleDuration0());
+        Log.d (TAG, "... putting swapCardData.getSampleDuration1(): " + swapCardData.getSampleDuration1());
         values.put(COLUMN_SAMPLE_DURATION1, swapCardData.getSampleDuration1());
+        Log.d (TAG, "... putting swapCardData.getSampleDuration2(): " + swapCardData.getSampleDuration2());
         values.put(COLUMN_SAMPLE_DURATION2, swapCardData.getSampleDuration2());
+        Log.d (TAG, "... putting swapCardData.getSampleDuration3(): " + swapCardData.getSampleDuration3());
         values.put(COLUMN_SAMPLE_DURATION3, swapCardData.getSampleDuration3());
+        Log.d (TAG, " ... returning values ... ");
         return values;
     }
 

@@ -9,8 +9,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Locale;
 
 import ws.isak.bridge.common.MatchCardData;
@@ -33,7 +31,6 @@ import ws.isak.bridge.ui.PopupManager;
 
 import ws.isak.bridge.utils.ImageScaling;
 import ws.isak.bridge.utils.SwapCardID;
-import ws.isak.bridge.utils.SwapTileCoordinates;
 
 import ws.isak.bridge.database.DatabaseWrapper;
 import ws.isak.bridge.database.UserDataORM;
@@ -82,7 +79,6 @@ public class  MainActivity extends FragmentActivity {
 
         //instantiate a DatabaseWrapper and load the database into memory
         Shared.databaseWrapper= new DatabaseWrapper(this);
-        loadDatabase();
 
         Shared.engine.start();
         Shared.engine.setBackgroundImageView(mBackgroundImage);
@@ -93,6 +89,10 @@ public class  MainActivity extends FragmentActivity {
 
         //build the list of SwapCardData objects based on resources
         buildSwapCardDataList();
+
+        //FIXME - we need to load the database after we have built the CardData Lists
+        loadDatabase();
+
 
         // set background
         setBackgroundImage();
@@ -147,8 +147,9 @@ public class  MainActivity extends FragmentActivity {
 
     //build the matchCardData list in for access by themes
     private void buildMatchCardDataList() {
+        //create the local list to hold the cards in the matching deck
         Shared.matchCardDataList = new ArrayList<MatchCardData>();
-
+        //iterate over the number of cards to put in the deck
         for (int i = 1; i <= 10; i++) {                             //FIXME - make this constant into a variable
             MatchCardData curCard = new MatchCardData();
             curCard.setCardID(i);
@@ -161,9 +162,11 @@ public class  MainActivity extends FragmentActivity {
             curCard.setImageURI3(URI_DRAWABLE + String.format(Locale.ENGLISH, "match_spectrogram_%d", i));
             curCard.setAudioURI(URI_AUDIO + String.format(Locale.ENGLISH, "match_audio_%d", i));
             curCard.setSampleDuration(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
-            //insert matchCardData object into Database and local storage
+            //insert matchCardData object into local storage and if not already in database add it to the database
             Shared.matchCardDataList.add(curCard);
+            Log.d (TAG, "method buildMatchCardDataList: added curCard: " + Shared.matchCardDataList);
             if (!MatchCardDataORM.isMatchCardDataInDB(curCard)) {
+                Log.d (TAG, "method buildMatchCardDataList: card not previously in database: adding...");
                 MatchCardDataORM.insertMatchCardData(curCard);
             }
         }
@@ -192,7 +195,6 @@ public class  MainActivity extends FragmentActivity {
                         curCard.setSpectroURI2(null);
                         curCard.setSpectroURI3(null);
                         //set duration
-                        Log.d(TAG, "method buildSwapCardDataList: curCard.getAudioURI0: " + curCard.getAudioURI0());
                         curCard.setSampleDuration0(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI0().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
                         curCard.setSampleDuration1(0);
                         curCard.setSampleDuration2(0);
@@ -389,16 +391,20 @@ public class  MainActivity extends FragmentActivity {
     }
 
     private void loadUsersSwapGameDataRecords(UserData userData) {
+        //if there are records of previous swap games in the database for the given user
         if (SwapGameDataORM.swapGameRecordsInDatabase(Shared.context)) {
+            //dbLength will hold the number of swap games played by the user
             int dbLength = SwapGameDataORM.numSwapGameRecordsInDatabase(Shared.context);
+            //create a list of size dbLength to hold the SwapGameData objects for each game played
             Shared.swapGameDataList = new ArrayList<SwapGameData>(dbLength);
-            while (Shared.swapGameDataList.size() < dbLength) {
-                Shared.swapGameDataList.add(new SwapGameData());
-            }
+            //check that the sizes correspond
             Log.d(TAG, "**** Shared.swapGameDataList.size(): " + Shared.swapGameDataList.size() +
                     " | SwapGameDataORM.getSwapGameData(Shared.context).size(): " + dbLength);
-            Collections.copy(Shared.swapGameDataList, SwapGameDataORM.getSwapGameData(userData.getUserName()));
+            //copy the collection of SwapGameData objects returned from the ORM to the Shared list
+            Shared.swapGameDataList = SwapGameDataORM.getSwapGameData(userData.getUserName());
+            //check the size and memory location for the list THE REST IS FOR DEBUGGING
             Log.d(TAG, "... Shared.swapGameDataList.size(): " + Shared.swapGameDataList.size() + " | @: " + Shared.swapGameDataList);
+            //iterate over the list to verify contents
             if (Shared.swapGameDataList != null) {
                 for (int i = 0; i < Shared.swapGameDataList.size(); i++) {
                     Log.d(TAG, "... MAIN: SwapGameData table: Database row: " + i +
@@ -425,7 +431,7 @@ public class  MainActivity extends FragmentActivity {
                 }
             } else if (SwapGameDataORM.getSwapGameData(userData.getUserName()) == null) {
                 //
-                Log.d(TAG, "*!*!* no SwapGameData objects for userData.getUserName: " + userData.getUserName());
+                Log.e(TAG, "*!*!* no SwapGameData objects for userData.getUserName: " + userData.getUserName());
             }
         }
     }

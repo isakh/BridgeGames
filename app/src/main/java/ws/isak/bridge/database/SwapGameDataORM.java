@@ -159,7 +159,7 @@ public class SwapGameDataORM {
                 while (!cursor.isAfterLast()) {
                     SwapGameData swapGameDataAtCursor = cursorToSwapGameData(cursor);
                     //Check the state of all SwapGameData fields here
-                    Log.d (TAG, "... PARSE: Database row: " + rowCount +
+                    Log.d (TAG, " method getSwapGameData:  PARSE: Database row: " + rowCount +
                             " | gameStartTimestamp: " + swapGameDataAtCursor.getGameStartTimestamp() +
                             " | playerUserName: " + swapGameDataAtCursor.getUserPlayingName() +
                             " | difficultyLevel: " + swapGameDataAtCursor.getGameDifficulty() +
@@ -174,7 +174,7 @@ public class SwapGameDataORM {
                         Log.d (TAG, " ***** ERROR! Size of play durations and number of BoardMaps in list not returned as equal");
                     }
                     for (int i = 0; i < swapGameDataAtCursor.sizeOfPlayDurationsArray(); i++) {
-                        Log.d(TAG, " ... PARSE ARRAYS in Database row " + rowCount +
+                        Log.d(TAG, " method getSwapGameData: PARSE ARRAYS in Database row " + rowCount +
                                 " | current array element i: " + i +
                                 " | gamePlayDuration(i): " + swapGameDataAtCursor.queryGamePlayDurations(i) +
                                 " | turnDurations(i): " + swapGameDataAtCursor.queryTurnDurationsArray(i) +
@@ -182,9 +182,11 @@ public class SwapGameDataORM {
 
                     }
                     swapGameDataList.add(swapGameDataAtCursor);
-                    Log.d (TAG, "!!! userDataList.get(rowCount) userData Object @: " + swapGameDataList.get(rowCount));
+                    Log.d (TAG, "method getSwapGameData: swapGameDataList.get(rowCount) swapGameData Object @: " +
+                            swapGameDataList.get(rowCount));
                     //move cursor to start of next row
                     rowCount++;
+                    Log.d (TAG, "method getSwapGameData: rowCount incremented: rowCount: " + rowCount);
                     cursor.moveToNext();
                 }
                 cursor.close();
@@ -266,11 +268,11 @@ public class SwapGameDataORM {
                 System.out.println(pair.getKey() + " maps to " + pair.getValue());
                 swapBoardHashMapsString.append(BEGIN_MAP_ENTRY);                                //open map entry with '<'
                 SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
-                Log.d (TAG, " .*.*. swapGameDataToContentValues: coords.row: " + coords.getSwapCoordRow());
-                Log.d (TAG, " .*.*. swapGameDataToContentValues: coords.col: " + coords.getSwapCoordCol());
-                Log.d (TAG, " .*.*. swapGameDataToContentValues: coords.getSwapTileCoordsID(): " + coords.getSwapTileCoordsID());
-                Log.d (TAG, " .*.*. swapGameDataToContentValues: appending: String.valueOf(coords.getSwapTileCoordsID()): " +
-                        String.valueOf(coords.getSwapTileCoordsID()));
+                //Log.d (TAG, " .*.*. swapGameDataToContentValues: coords.row: " + coords.getSwapCoordRow());
+                //Log.d (TAG, " .*.*. swapGameDataToContentValues: coords.col: " + coords.getSwapCoordCol());
+                //Log.d (TAG, " .*.*. swapGameDataToContentValues: coords.getSwapTileCoordsID(): " + coords.getSwapTileCoordsID());
+                //Log.d (TAG, " .*.*. swapGameDataToContentValues: appending: String.valueOf(coords.getSwapTileCoordsID()): " +
+                //        String.valueOf(coords.getSwapTileCoordsID()));
                 swapBoardHashMapsString.append(String.valueOf(coords.getSwapTileCoordsID()));   //append key coordsID float as string
                 swapBoardHashMapsString.append(MAP_KEY_VALUE_DELIMETER);                        //append '='
                 SwapCardData cardData = (SwapCardData) pair.getValue();
@@ -293,58 +295,76 @@ public class SwapGameDataORM {
 
     //method cursorToUserData populates a UserData object with data from the cursor
     private static SwapGameData cursorToSwapGameData(Cursor cursor) {
-        Log.d (TAG, "method cursorToSwapGameData");
-        SwapGameData cursorAtSwapGameData = new SwapGameData();
-
+        Log.d (TAG, "method cursorToSwapGameData: creating new SwapGameData with null boardMap");
+        SwapGameData cursorAtSwapGameData = new SwapGameData(null);
+        Log.d (TAG, "method cursorToSwapGameData: setting data to SwapGameDataObject from cursor...");
         cursorAtSwapGameData.setUserPlayingName(cursor.getString(cursor.getColumnIndex(COLUMN_PLAYER_USERNAME)));
+        Log.d (TAG, " ... cursorAtSwapGameData.getUserPlayingName(): " + cursorAtSwapGameData.getUserPlayingName());
         cursorAtSwapGameData.setGameStartTimestamp ((long) cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_START_TIMESTAMP)));
+        Log.d (TAG, " ... cursorAtSwapGameData.getGameStartTimestamp(): " + cursorAtSwapGameData.getGameStartTimestamp());
         cursorAtSwapGameData.setGameDifficulty(cursor.getInt(cursor.getColumnIndex(COLUMN_DIFFICULTY)));
+        Log.d (TAG, " ... cursorAtSwapGameData.getGameDifficulty(): " + cursorAtSwapGameData.getGameDifficulty());
         cursorAtSwapGameData.setGameDurationAllocated((long) cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_DURATION_ALLOCATED)));
-
-        if (cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)) == 1) { cursorAtSwapGameData.setGameStarted(true); }
-        else if (cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)) == 0) { cursorAtSwapGameData.setGameStarted(false); }
+        Log.d (TAG, " ... cursorAtSwapGameData.getGameDurationAllocated(): " + cursorAtSwapGameData.getGameDurationAllocated());
+        if (cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)) == 1) {
+            cursorAtSwapGameData.setGameStarted(true);
+            Log.d (TAG, " ... cursorAtSwapGameData.isGameStarted(): " + cursorAtSwapGameData.isGameStarted());
+        }
+        else if (cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)) == 0) {
+            cursorAtSwapGameData.setGameStarted(false);
+            Log.d (TAG, " ... cursorAtSwapGameData.isGameStarted(): " + cursorAtSwapGameData.isGameStarted());
+        }
         else {
             Log.d (TAG, "ERROR: method cursorAtSwapGameData: isGameStarted: " + cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)));
         }
 
         String gamePlayDurationsString = cursor.getString(cursor.getColumnIndex(COLUMN_GAME_PLAY_DURATIONS));
+        Log.d (TAG, " ... gamePlayDurationsString: " + gamePlayDurationsString);
         for (String s : gamePlayDurationsString.split(DELIMITER)) {
             cursorAtSwapGameData.appendToGamePlayDurations(Long.valueOf(s));
         }
-
         String turnDurationsString = cursor.getString(cursor.getColumnIndex(COLUMN_TURN_DURATIONS));
-        //Log.d (TAG, "******** method cursorToSwapGameData: turnDurationsString: " + turnDurationsString);
+        Log.d (TAG, " ... turnDurationsString: " + turnDurationsString);
         for (String s : turnDurationsString.split(DELIMITER)) {
             cursorAtSwapGameData.appendToTurnDurations(Long.valueOf(s));
         }
-        
         //FIXME
         String swapBoardMapListString = cursor.getString(cursor.getColumnIndex(COLUMN_SWAP_BOARD_MAP_LIST));
-        Log.d (TAG, "******** method cursorToSwapGameData: swapBoardMapListString: " + swapBoardMapListString);
+        Log.d (TAG, " ... swapBoardMapListString: " + swapBoardMapListString);
         for (String hashMapInList : swapBoardMapListString.split(DELIMITER)) {          //split on ',' should give us each turns' HashMap
             //create an empty hashmap to repopulate and push back to the list
             HashMap <SwapTileCoordinates, SwapCardData> curTurnMap = new HashMap<>();
             Log.d (TAG, " --- hashMapInList: " + hashMapInList);            //should be [<k=v>;<k=v>;<k=v>;<k=v>]
-            //remove '[' and ']' before subsequent parsing - will get us to <k=v>;<k=v>;<k=v>;<k=v>
-            hashMapInList.replace(BOARD_MAP_START, "");
-            hashMapInList.replace(BOARD_MAP_END, "");
-            Log.d (TAG, " ---- hashMapInList, truncated: " + hashMapInList);
-            for (String entryInHashMap : hashMapInList.split(MAP_ENTRY_DELIMTER)) {     //split on ';' should give each map entry <k=v>
+            //remove leading '[' and trailing ']' before subsequent parsing - will get us to <k=v>;<k=v>;<k=v>;<k=v>
+            String truncatedHashMapInList = hashMapInList.replaceAll("[\\[\\]]", "");
+            Log.d (TAG, " ---- truncatedHashMapInList: " + truncatedHashMapInList);
+            for (String entryInHashMap : truncatedHashMapInList.split(MAP_ENTRY_DELIMTER)) {     //split on ';' should give each map entry <k=v>
                 //remove '<' and '>' before subsequent parsing - will get us to k=v
-                entryInHashMap.replace (BEGIN_MAP_ENTRY, "");
-                entryInHashMap.replace (END_MAP_ENTRY, "");
-                String [] keyValue = entryInHashMap.split(MAP_KEY_VALUE_DELIMETER);
-                //TODO check that size of keyValue is always 2
-                String coordKeyString = keyValue [0];
-                String cardIDKeyString = keyValue [1];
-                float coordsID = Float.parseFloat(coordKeyString);
-                //FIXME - this seems wrong, since we should already have reloaded all the SwapTileCoords objects from database so can just link?
-                SwapTileCoordinates curEntryCoords = new SwapTileCoordinates((int)Math.floor(coordsID),((int)(coordsID-Math.floor(coordsID))));
-                float cardID = Float.parseFloat(cardIDKeyString);
-                for (SwapCardData curSwapCard : Shared.swapCardDataList) {
-                    if (curSwapCard.getCardID().getCardIDKey() == cardID) {
-                        curTurnMap.put(curEntryCoords, curSwapCard);
+                String cleanHashMapEntry = entryInHashMap.replaceAll("[<>]", "");
+                Log.d (TAG, " ----- cleanHashMapEntry: " + cleanHashMapEntry);
+                String [] keyValue = cleanHashMapEntry.split(MAP_KEY_VALUE_DELIMETER);
+                //check that size of keyValue is always 2
+                if (keyValue.length == 2) {
+                    String coordKeyString = keyValue[0];
+                    Log.d(TAG, " ----- coordKeyString: " + coordKeyString);
+                    String cardIDKeyString = keyValue[1];
+                    Log.d(TAG, " ----- cardIDKeyString: " + cardIDKeyString);
+                    double coordsID = Double.parseDouble(coordKeyString);
+                    SwapTileCoordinates curEntryCoords = new SwapTileCoordinates((int) Math.floor(coordsID), ((int) (coordsID - Math.floor(coordsID))));
+                    double cardID = Double.parseDouble(cardIDKeyString);
+                    //now that we have the IDs for the coords and the cards, check the coordinates points to the right object
+                    Log.d(TAG, " ... curEntryCoords: " + curEntryCoords);
+                    //and iterate over the Shared swapCardDataList previously loaded to find the cardID object
+                    //Log.d(TAG, " !!! shared.SwapCardDataList: " + Shared.swapCardDataList);
+                    for (SwapCardData curSwapCard : Shared.swapCardDataList) {
+                        if (curSwapCard.getCardID().getCardIDKey() == cardID) {
+                            curTurnMap.put(curEntryCoords, curSwapCard);
+                        }
                     }
+                }
+                else {
+                    Log.e (TAG, "method cursorToSwapGameData: cannot parse map entry with dimensions: keyValue.length: " +
+                            keyValue.length);
                 }
             }
             cursorAtSwapGameData.appendToSwapGameMapList(curTurnMap);

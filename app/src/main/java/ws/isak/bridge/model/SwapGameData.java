@@ -42,7 +42,24 @@ public class SwapGameData {
     //constructor method describes the information that is stored about each game played
     public SwapGameData () {
         //Log.d (TAG, "Constructor: initializing game data fields");
-        setSwapBoardMap (Shared.currentSwapGame.swapBoardArrangement.swapBoardMap);
+        setSwapBoardMap(Shared.currentSwapGame.swapBoardArrangement.swapBoardMap);
+        setUserPlayingName(Shared.userData.getUserName());
+        setGameDifficulty(-1);
+        setGameDurationAllocated(0);
+        //initialize to 0 or null as necessary
+        setGameStarted(false);      //initialize to false on setup
+        setGameStartTimestamp(0);
+        setNumTurnsTaken(0);
+        initTurnDurationsArray();       //null array at start
+        initGamePlayDurationsArray();   //null array at start
+        initSwapGameMapList();
+    }
+
+    //overloaded constructor method describes the information that is stored about each game played
+    //but allows us to pass in a HashMap for the call to setSwapBoardMap - this can be null?
+    public SwapGameData (HashMap boardMap) {
+        Log.d (TAG, "Overloaded Constructor: initializing game data fields: boardMap: " + boardMap);
+        setSwapBoardMap (boardMap);
         setUserPlayingName(Shared.userData.getUserName());
         setGameDifficulty(-1);
         setGameDurationAllocated(0);
@@ -58,24 +75,27 @@ public class SwapGameData {
     //[0] for now this is a deep copy (?) of the map 'swapBoardMap' initially set up in SwapBoardArrangment
     // this gets updated on each turn of the game so that it always holds the current Map of the board
     public void setSwapBoardMap (HashMap curBoardMap) {
+        Log.d (TAG, "method setSwapBoardMap: curBoardMap @: " + curBoardMap);
         curSwapBoardMap = new HashMap<>();
-        Iterator iterator = curBoardMap.entrySet().iterator();
-        while (iterator.hasNext()) {
-            HashMap.Entry pair = (HashMap.Entry) iterator.next();
-            //System.out.println(pair.getKey() + " maps to " + pair.getValue());
-            SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
-            SwapCardData cardData = (SwapCardData) pair.getValue();
-            Log.d(TAG, "method setSwapBoardMap: Copying... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
-                    " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
-                    cardData.getCardID().getSwapCardSegmentID() + " > | coords @: " + coords +
-                    " | cardData @: " + cardData);
-            curSwapBoardMap.put(coords, cardData);
+        if (curBoardMap != null) {
+            Iterator iterator = curBoardMap.entrySet().iterator();
+            while (iterator.hasNext()) {
+                HashMap.Entry pair = (HashMap.Entry) iterator.next();
+                //System.out.println(pair.getKey() + " maps to " + pair.getValue());
+                SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
+                SwapCardData cardData = (SwapCardData) pair.getValue();
+                Log.d(TAG, "method setSwapBoardMap: Copying... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
+                        " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
+                        cardData.getCardID().getSwapCardSegmentID() + " > | coords @: " + coords +
+                        " | cardData @: " + cardData);
+                curSwapBoardMap.put(coords, cardData);
+            }
         }
-        //create a set view for the map
-        //Set set = curSwapBoardMap.entrySet();
-        //check set values TODO remove
-        //System.out.println("Set values: " + set);
-        //Log.d (TAG, "method setSwapBoardMap: created Map curSwapBoardMap @: " + curSwapBoardMap);
+        else {
+            //FIXME - is this a viable way to avoid the npe when reloading the database?
+            Log.d (TAG, "method setSwapBoardMap called with null current board");
+            curSwapBoardMap = curBoardMap;
+        }
     }
 
     //return a pointer to the local(?) deep(?) copy(?) of the map
