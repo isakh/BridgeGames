@@ -436,7 +436,8 @@ public class  MainActivity extends FragmentActivity {
         }
     }
 
-    /* //TODO can we print out the data associated with the hashmaps that make up the board turns
+    /*  //TODO can we print out the data associated with the hashmaps that make up the board turns for now most of
+        //TODO this functionality is in the associated methods in SwapGameDataORM where the database is parsed back in
     //this should print out the data associated with the hashmap depicting the board at a given turn
     private void loadSwapBoardMap (HashMap curSwapGameCurTurnMap) {
         Log.d (TAG, "method loadSwapBoardMap...");

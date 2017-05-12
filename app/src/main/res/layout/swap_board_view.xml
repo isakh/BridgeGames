@@ -4,7 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/swap_board_padding"
-    android:background="@drawable/border_green"> <!-- TODO remove/adjust border-->
+    android:padding="@dimen/swap_board_padding">
+
+    <!-- TODO remove/adjust border - was this causing the issues? android:background="@drawable/border_green"-->
 
 </ws.isak.bridge.ui.SwapBoardView>

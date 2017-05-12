@@ -28,10 +28,7 @@ public class SwapBoardArrangement {
     public final String TAG = "SwapBoardArrangement";
     public static String URI_DRAWABLE = "drawable://";
     public int tileSize;
-
-
     //Map of Coordinates objects to card data objects: this tells us where each card is on the board
-
     public HashMap <SwapTileCoordinates, SwapCardData> swapBoardMap = new HashMap<>();
 
     public void setCardOnBoard (SwapTileCoordinates coords, SwapCardData card) {

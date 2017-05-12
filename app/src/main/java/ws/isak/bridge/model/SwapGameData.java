@@ -56,7 +56,8 @@ public class SwapGameData {
     }
 
     //overloaded constructor method describes the information that is stored about each game played
-    //but allows us to pass in a HashMap for the call to setSwapBoardMap - this can be null?
+    //but allows us to pass in a HashMap for the call to setSwapBoardMap - this can be initialized to
+    // null when loading from the database and then updated from the values saved in the database
     public SwapGameData (HashMap boardMap) {
         Log.d (TAG, "Overloaded Constructor: initializing game data fields: boardMap: " + boardMap);
         setSwapBoardMap (boardMap);
@@ -84,7 +85,7 @@ public class SwapGameData {
                 //System.out.println(pair.getKey() + " maps to " + pair.getValue());
                 SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
                 SwapCardData cardData = (SwapCardData) pair.getValue();
-                Log.d(TAG, "method setSwapBoardMap: Copying... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
+                Log.v(TAG, "method setSwapBoardMap: Copying... coords: < " + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
                         " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() + "," +
                         cardData.getCardID().getSwapCardSegmentID() + " > | coords @: " + coords +
                         " | cardData @: " + cardData);
@@ -138,8 +139,11 @@ public class SwapGameData {
                     cardData.getCardIDKey().getSwapCardSegmentID() + " >");
             */
             if (targetCoords.getSwapCoordRow() == coords.getSwapCoordRow() && targetCoords.getSwapCoordCol() == coords.getSwapCoordCol()) {
-                Log.d (TAG, " *** returning card : < " + cardData.getCardID().getSwapCardSpeciesID() +
-                "," + cardData.getCardID().getSwapCardSegmentID() + " > @: " + cardData + "| with key coords @: " + coords + " from targetCoords @: " + targetCoords);
+                Log.d (TAG, "method getSwapCardDataFromSwapBoardMap: returning card : < "
+                        + cardData.getCardID().getSwapCardSpeciesID() +
+                        "," + cardData.getCardID().getSwapCardSegmentID() + " > @: " + cardData +
+                        " | with key coords: <" + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
+                        "> | @: " + coords + " from targetCoords @: " + targetCoords);
                 cardToReturn = cardData;
             }
             //iterator.remove(); // TODO remove from here as well: avoids a ConcurrentModificationException but is destructive of map

@@ -37,6 +37,7 @@ import ws.isak.bridge.events.engine.SwapGameWonEvent;
 import ws.isak.bridge.model.GameState;
 import ws.isak.bridge.model.SwapGame;
 import ws.isak.bridge.ui.SwapBoardView;
+import ws.isak.bridge.ui.SwapTileView;
 import ws.isak.bridge.ui.SwapControlsView;
 import ws.isak.bridge.ui.PopupManager;
 import ws.isak.bridge.utils.Clock;
@@ -230,19 +231,24 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         //redraw the board FIXME ************
 
         //swap tile images
-        Log.d (TAG, "*** ... GET BITMAPS TO SWAP ... ***");
-        Log.d (TAG, "Card for bitmap1: < " + Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0)).getCardID().getSwapCardSpeciesID() +
-                    "," + Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0)).getCardID().getSwapCardSegmentID() + " >");
-        Bitmap tile0 = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0)).getCardBitmap();
-        Log.d (TAG, "Card for bitmap2: < " + Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(1)).getCardID().getSwapCardSpeciesID() +
+        Log.i (TAG, "onEvent SwapSelectedCardsEvent: ... GET BITMAPS TO SWAP ... ");
+        Log.v (TAG, "onEvent SwapSelectedCardsEvent: Card for bitmap1: < " +
+                Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0)).getCardID().getSwapCardSpeciesID() +
+                "," +
+                Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0)).getCardID().getSwapCardSegmentID() +
+                " >");
+        Bitmap tile0Bitmap = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0)).getCardBitmap();
+        Log.v (TAG, "Card for bitmap2: < " + Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(1)).getCardID().getSwapCardSpeciesID() +
                 "," + Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(1)).getCardID().getSwapCardSegmentID() + " >");
-        Bitmap tile1 = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(1)).getCardBitmap();
-        Log.d (TAG, " SWAPPING BITMAPS ... tile0: " + tile0 + " | tile1: " + tile1);
-        mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(0)).setTileImage(tile1);
-        mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(1)).setTileImage(tile0);
-        Log.d (TAG, "Calling mSwapBoardView.invalidate() to push redrawing of screen");
+        Bitmap tile1Bitmap = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(1)).getCardBitmap();
+        Log.d (TAG, " BITMAPs to Swap ... tile0Bitmap: " + tile0Bitmap + " | tile1Bitmap: " + tile1Bitmap);
+        SwapTileView tile0View = mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(0));
+        SwapTileView tile1View = mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(1));
+        Log.d (TAG, " SwapTileViews to receive swapped bitmaps: tile0View: " + tile0View + " | tile1View: " + tile1View);
+        tile0View.setTileImage(tile1Bitmap);
+        tile1View.setTileImage(tile0Bitmap);
+        Log.d (TAG, "onEvent SwapSelectedCardsEvent: setTileImage called on tiles to swap with updated bitmaps");
         mSwapBoardView.postInvalidate();
-        //mSwapBoardView.invalidate();        //FIXME does this work?
 
         //TODO - remove debugging text when working
         //and get debug text to swap
@@ -252,9 +258,9 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         Log.d (TAG, " SWAPPING TEXT");
         mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(0)).setTileDebugText(card1ForText);
         mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(1)).setTileDebugText(card2ForText);
-        mSwapBoardView.postInvalidate();        //FIXME -does this make more sense than .invalidate() as we are outside the view?
+        mSwapBoardView.postInvalidate();
 
-        //testing whether game has been won******************
+        //testing whether game has been won****************** TODO have east and hard modes (hard requires correct order)
         //Check if game is won on easy mode where we will define winningEasy has having one species per row
         boolean winningEasy = true;     //TODO is this safe to default to true?
         //iterate over each row
@@ -414,10 +420,11 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
             //System.out.println(pair.getKey() + " maps to " + pair.getValue());
             SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
             SwapCardData cardData = (SwapCardData) pair.getValue();
-            Log.d(TAG, "... debugCoordsDataMap: | coords: < " +
+            Log.v(TAG, "... debugCoordsDataMap: | coords: < " +
                     coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
                     " > | MAPS TO | cardID: < " + cardData.getCardID().getSwapCardSpeciesID() +
                     "," + cardData.getCardID().getSwapCardSegmentID() + " > | address of Map.entry: " + pair);
+
         }
         Log.d(TAG, " \n ... \n");
     }

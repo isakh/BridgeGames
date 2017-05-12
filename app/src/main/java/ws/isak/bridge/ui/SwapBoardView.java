@@ -280,61 +280,7 @@ public class SwapBoardView extends LinearLayout {
                         Log.d(TAG, " ... curTileOnBoard added to selectedTiles: selectedTiles.size(): " + selectedTiles.size());
                     }
 
-                    /* TODO REMOVE THIS AS IT WILL NEVER BE TRIGGERED
-                    //[2.2.1] If this is the second card in the first pair to be selected - highlight second tile
-                    // and animate swap (call via event for CoordToCard HashMap updates and perform Coord to TileView image
-                    // updates here) and set the number of turns taken to 1
-                    else if (Shared.userData.getCurSwapGameData().getNumTurnsTaken() == 0){
-                        Log.d (TAG, "******* UPDATED APPROACH TO COUNTING TURNS - THIS SHOULD NEVER BE TRIGGERED");
-                        // we want to count turns only when pairs are to be swapped - first time turn duration is now - game start timestamp
-                        Shared.userData.getCurSwapGameData().appendToGamePlayDurations(now - Shared.userData.getCurSwapGameData().getGameStartTimestamp());
-                        Log.d (TAG, " ..... appending [" + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken())+
-                                "] to PlayDurations: turn: [" +
-                                Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
-                                "] | now: " + now + " | startTimeStamp: " +
-                                Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
-                                " | now - startTimeStamp: " + (now - Shared.userData.getCurSwapGameData().getGameStartTimestamp()));
-                        Log.d (TAG, " ..... appending [" + Shared.userData.getCurSwapGameData().queryTurnDurationsArray(Shared.userData.getCurSwapGameData().getNumTurnsTaken())+
-                                "]to TurnDurations: turn: [" +
-                                Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
-                                "] | now: " + now + " | startTimeStamp: " +
-                                Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
-                                " | queryGamePlayDurations[0]: " +
-                                Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()));
-                        Shared.userData.getCurSwapGameData().appendToTurnDurations(now - (Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
-                                Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken())));
-                        Log.d(TAG, "***** ... SECOND OF PAIR selected: swapTileView@: " + swapTileView);
-                        swapTileView.select();
-                        Log.d(TAG, " ... post select() - swapTileView.isSelected: " + swapTileView.isSelected());
-                        selectedTiles.add(curTileOnBoard);
-                        Log.d(TAG, " ... curTileOnBoard added to selectedTiles: selectedTiles.size(): " + selectedTiles.size());
-                        Log.d(TAG, "\n ... \n");
-
-                        //call swap event
-                        Shared.eventBus.notify(new SwapSelectedCardsEvent(selectedTiles.get(0), selectedTiles.get(1)));
-
-                        //display current game stats
-                        Log.d(TAG, " *****: | System time: " + now +
-                                " | gameStartTimeStamp: " + Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
-                                " | numTurnsTaken: " + Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
-                                " | gamePlayDuration @ numTurnsTaken: " + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()) +
-                                " | elapsed turn time: " + (Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken())));
-
-                        Log.d(TAG, " ... unSelect both tile bitmaps");
-                        mTileViewMap.get(selectedTiles.get(0)).unSelect();
-                        mTileViewMap.get(selectedTiles.get(1)).unSelect();
-
-                        selectedTiles.clear();
-
-                        debugCoordsTileViewsMap("method addTile, onClick, post redraw");
-
-                        //  - update the number of turns taken
-                        Shared.userData.getCurSwapGameData().incrementNumTurnsTaken();
-                        Log.d(TAG, "   ***: numTurnsTaken postIncrement: " + Shared.userData.getCurSwapGameData().getNumTurnsTaken());
-                    }
-                    */ //TODO END REMOVE BLOCK
-
-                    //[2.2.2] If this is the second card in any subsequent pair to be selected - highlight second tile
+                    //[2.2.1] If this is the second card in any subsequent pair to be selected - highlight second tile
                     // and animate swap (call via event for CoordToCard HashMap updates and perform Coord to TileView image
                     // updates here)
                     else {
@@ -391,7 +337,7 @@ public class SwapBoardView extends LinearLayout {
             }
         });
 
-        //TODO - what does this do here?
+        //FIXME - what does this do here?
         ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(swapTileView, "scaleX", 0.8f, 1f);
         scaleXAnimator.setInterpolator(new BounceInterpolator());
         ObjectAnimator scaleYAnimator = ObjectAnimator.ofFloat(swapTileView, "scaleY", 0.8f, 1f);
@@ -429,8 +375,9 @@ public class SwapBoardView extends LinearLayout {
         return mTileViewMap.get(loc);
     }
 
+    //this method is for debugging the state of the game board HashMap
     public void debugCoordsTileViewsMap(String callingMethod) {
-        Log.d (TAG, "\n\n... method debugCoordsTileViewsMap: < Coords, TileViews> : called by: " + callingMethod);
+        Log.v (TAG, "\n\n... method debugCoordsTileViewsMap: < Coords, TileViews> : called by: " + callingMethod);
         //Log.d (TAG, "   ...mTileViewMap @: " + mTileViewMap);
         Iterator iterator = mTileViewMap.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -438,7 +385,7 @@ public class SwapBoardView extends LinearLayout {
             //System.out.println(pair.getKey() + " maps to " + pair.getValue());
             SwapTileCoordinates coords = (SwapTileCoordinates) pair.getKey();
             SwapTileView tileView = (SwapTileView) pair.getValue();
-            Log.d(TAG, "method debugCoordsTileViewsMap: Searching... coords: < " +
+            Log.v(TAG, "method debugCoordsTileViewsMap: Searching... coords: < " +
                     coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
                     " > | Bitmap @ tileView: " +  tileView.getDrawingCache() +
                     " | Map.Entry pair: " + pair);

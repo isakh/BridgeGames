@@ -1,6 +1,7 @@
 package ws.isak.bridge.ui;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.util.AttributeSet;
 
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import ws.isak.bridge.R;
+import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.common.SwapCardData;
 
 /**
@@ -29,7 +31,7 @@ public class SwapTileView extends FrameLayout {
     public static final String TAG = "SwapTileView";
 
     private ImageView mTileImage;
-    private TextView mTileText;
+    private TextView mTileText;         //TODO this is for debugging - comment out when functioning
     private boolean isSelected = false;
 
     public SwapTileView(Context context) {
@@ -57,17 +59,46 @@ public class SwapTileView extends FrameLayout {
         Log.d (TAG, " ... ImageView mTileImage: " + mTileImage);
     }
 
-    public void setTileImage(Bitmap bitmap) {
-        //Log.d (TAG, "method setTileImage");
-        mTileImage.setImageBitmap(bitmap);
-        Log.d (TAG, "method setTileImage: mTileImage @: " + mTileImage + " | set with bitmap: " + bitmap);
+    //FIXME - use asynctask here? instead of setImageBitmap directly in method?
+    public void setTileImage(final Bitmap bitmap) {
+        Log.d (TAG, "method setTileImage: bitmap: " + bitmap +
+                " | mTileImage: " + mTileImage + " | calling new AsyncTask");
+        new AsyncTask<Void, Void, Bitmap>() {
+
+            @Override
+            protected Bitmap doInBackground(Void... params) {
+                Log.d (TAG, "method setTileImage: AsyncTask: doInBackground: returning bitmap: " + bitmap);
+                return bitmap;
+            }
+
+            @Override
+            protected void onPostExecute(Bitmap result) {
+                mTileImage.setImageBitmap(result);
+                mTileImage.setVisibility(VISIBLE);
+                mTileImage.invalidate();
+                Log.d (TAG, "method setTileImage: AsyncTask: onPostExecute: mTileImage @: " +
+                        mTileImage + " | set with bitmap: " + result +
+                        " | mTileImage.getVisibility(): " + mTileImage.getVisibility());
+            }
+        }.execute();
     }
 
     public void setTileDebugText(SwapCardData tileData) {
-        //Log.d (TAG, "method setTileDebugText");
+        Log.d (TAG, "method setTileDebugText");
         mTileText.setText("");
-        String tileText = "CardID: <" + tileData.getCardID().getSwapCardSpeciesID() + "," + tileData.getCardID().getSwapCardSegmentID() + ">";
-        //Log.d (TAG, "Tile Debug Text: " + tileText);
+        String tileBitmapAddress = Integer.toString(System.identityHashCode(tileData.getCardBitmap()));
+        Log.w(TAG, "method setTileDebugText: tileBitmapAddress: " + tileBitmapAddress +
+                " | tileData.getCardBitmap: " + tileData.getCardBitmap());
+        //String[] bitmapAdd = tileBitmapAddress.split("@");
+        //String loc = bitmapAdd[1];
+        String tileText = "CardID: <" +
+                tileData.getCardID().getSwapCardSpeciesID() +
+                "," +
+                tileData.getCardID().getSwapCardSegmentID() +
+                ">" +
+                "\n"; // + loc;
+        //Log.d (TAG, "Tile Debug Text: " + tileText + " | location of bitmap: " + loc);
+        Log.d (TAG, "Tile Debug Text: " + tileText);
         mTileText.setText(tileText);
     }
 
@@ -77,7 +108,7 @@ public class SwapTileView extends FrameLayout {
         //can this be as simple as adding a border? see @drawable/border_***.xml and changing the border color on selection
         //current implementation involves an overlay of transparent red FIXME - set color in xml
         mTileImage.setColorFilter(0xFFFF0000, PorterDuff.Mode.MULTIPLY);
-        mTileImage.postInvalidate();        //FIXME does this work?
+        mTileImage.invalidate();
 
     }
 
