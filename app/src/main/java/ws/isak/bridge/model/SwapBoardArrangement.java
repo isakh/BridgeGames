@@ -31,6 +31,9 @@ public class SwapBoardArrangement {
     //Map of Coordinates objects to card data objects: this tells us where each card is on the board
     public HashMap <SwapTileCoordinates, SwapCardData> swapBoardMap = new HashMap<>();
 
+
+    //this method builds an entry comprised of a coordinate location and a card's data and inserts
+    //it into the HashMap that represents the board as <coords, data>
     public void setCardOnBoard (SwapTileCoordinates coords, SwapCardData card) {
         Log.d (TAG, "   *** method setCardOnBoard: coords @: " + coords + " | tile coords: < " +
                     coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() + " > | cardID: < " +
@@ -73,11 +76,11 @@ public class SwapBoardArrangement {
             //Log.d (TAG, "                       : drawableResourceID: " + drawableResourceID);
             Bitmap bitmap = ImageScaling.scaleDown(drawableResourceID, size, size);
             Bitmap croppedBitmap = ImageScaling.crop(bitmap, size, size);
-            Log.d (TAG, "method getSwapTileBitmap: SUCCESS: returning a cropped bitmap: " +
+            Log.i (TAG, "method getSwapTileBitmap: SUCCESS: returning a cropped bitmap: " +
                     croppedBitmap + " | from original bitmap: " + bitmap);
             return croppedBitmap;
         }
-        Log.d (TAG, "method getSwapTileBitmap: ERROR: returning no bitmap");
+        Log.w (TAG, "method getSwapTileBitmap: ERROR: returning no bitmap");
         return null;
     }
 

@@ -1,6 +1,7 @@
 package ws.isak.bridge.ui;
 
 import android.content.Context;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.util.AttributeSet;
@@ -15,9 +16,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
 import ws.isak.bridge.R;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.common.SwapCardData;
+import ws.isak.bridge.utils.SwapTileCoordinates;
 
 /**
  * Class SwapTileView contains the code for generating a single tile in the match board array.
@@ -59,7 +63,7 @@ public class SwapTileView extends FrameLayout {
         Log.d (TAG, " ... ImageView mTileImage: " + mTileImage);
     }
 
-    //FIXME - use asynctask here? instead of setImageBitmap directly in method?
+    // use an asynctask here instead of setImageBitmap directly in method - onPostExecute is the UI thread
     public void setTileImage(final Bitmap bitmap) {
         Log.d (TAG, "method setTileImage: bitmap: " + bitmap +
                 " | mTileImage: " + mTileImage + " | calling new AsyncTask");
@@ -73,30 +77,41 @@ public class SwapTileView extends FrameLayout {
 
             @Override
             protected void onPostExecute(Bitmap result) {
-                mTileImage.setImageBitmap(result);
+                mTileImage.setImageDrawable(null);      //FIXME - testing - seems to do nothing, remove later?
+                mTileImage.invalidate();                //FIXME - testing
+
+                BitmapDrawable bitmapDrawable = new BitmapDrawable(Shared.context.getResources(), bitmap);
+                mTileImage.setImageDrawable(bitmapDrawable);
+
                 mTileImage.setVisibility(VISIBLE);
-                mTileImage.invalidate();
                 Log.d (TAG, "method setTileImage: AsyncTask: onPostExecute: mTileImage @: " +
                         mTileImage + " | set with bitmap: " + result +
                         " | mTileImage.getVisibility(): " + mTileImage.getVisibility());
+                mTileImage.invalidate();                //FIXME - testing
             }
         }.execute();
     }
 
-    public void setTileDebugText(SwapCardData tileData) {
+    public void setTileDebugText(HashMap <SwapTileCoordinates, SwapTileView> coordsViewsMap, SwapTileCoordinates curTileOnBoard) {
         Log.d (TAG, "method setTileDebugText");
         mTileText.setText("");
-        String tileBitmapAddress = Integer.toString(System.identityHashCode(tileData.getCardBitmap()));
-        Log.w(TAG, "method setTileDebugText: tileBitmapAddress: " + tileBitmapAddress +
-                " | tileData.getCardBitmap: " + tileData.getCardBitmap());
-        //String[] bitmapAdd = tileBitmapAddress.split("@");
-        //String loc = bitmapAdd[1];
-        String tileText = "CardID: <" +
+
+        SwapCardData tileData = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(curTileOnBoard);
+        SwapTileView tileView = coordsViewsMap.get(curTileOnBoard);
+        String tileText =
+                "Coords: <" +
+                curTileOnBoard.getSwapCoordRow() +
+                "," +
+                curTileOnBoard.getSwapCoordCol() +
+                ">" +
+                "\n" +
+                "CardID: <" +
                 tileData.getCardID().getSwapCardSpeciesID() +
                 "," +
                 tileData.getCardID().getSwapCardSegmentID() +
                 ">" +
-                "\n"; // + loc;
+                "\n" +
+                tileData.getCardBitmap();
         //Log.d (TAG, "Tile Debug Text: " + tileText + " | location of bitmap: " + loc);
         Log.d (TAG, "Tile Debug Text: " + tileText);
         mTileText.setText(tileText);
@@ -105,7 +120,6 @@ public class SwapTileView extends FrameLayout {
     public void select() {
         Log.d (TAG, "method select ... at start: mTileImage: " + mTileImage);
         isSelected = true;
-        //can this be as simple as adding a border? see @drawable/border_***.xml and changing the border color on selection
         //current implementation involves an overlay of transparent red FIXME - set color in xml
         mTileImage.setColorFilter(0xFFFF0000, PorterDuff.Mode.MULTIPLY);
         mTileImage.invalidate();
@@ -115,8 +129,8 @@ public class SwapTileView extends FrameLayout {
     public void unSelect() {
         Log.d (TAG, "method unSelect ... at start: mTileImage: " + mTileImage);
         isSelected = false;
-        mTileImage.setColorFilter(0, PorterDuff.Mode.MULTIPLY);    //FIXME set color in xml
-        mTileImage.postInvalidate();        //FIXME does this work?
+        mTileImage.clearColorFilter();
+        mTileImage.postInvalidate();        //FIXME is this necessary? should it just be .invalidate()
     }
 
     public boolean isSelected() {

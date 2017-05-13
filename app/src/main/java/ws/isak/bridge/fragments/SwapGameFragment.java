@@ -197,67 +197,69 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         });
     }
 
+    // this method is called when two different tiles have been selected: it takes the current state
+    // of the hashmap showing the boards (coords, cardData) and switches the cardData objects associated
+    // with the selected coordinates.
     public void onEvent(SwapSelectedCardsEvent event) {
         //
         Log.d(TAG, "onEvent SwapSelectedCardsEvent @ start: calling debugHashMaps");
         debugHashMaps(event.TAG);
-        //prior to swap, append the current board Map to Shared.swapGameData.swapGameMapList
+        //prior to swap, append the current SwapBoardMap (coords, data) to Shared.swapGameData.swapGameMapList
         Shared.userData.getCurSwapGameData().appendToSwapGameMapList(Shared.userData.getCurSwapGameData().getSwapBoardMap());
-        /*TODO - remove here once runningdebug state of list of maps representing board on each turn
-        for (int i = 0; i < Shared.userData.getCurSwapGameData().sizeOfSwapGameMapList(); i++) {
-            Log.d(TAG, "Map in List @ i: " + i + " | @ pointer: " + Shared.userData.getCurSwapGameData().querySwapGameMapList(i));
-            debugCoordsDataMap(Shared.userData.getCurSwapGameData().querySwapGameMapList(i), "STATE OF MAP" + i + " IN GAMEDATA LIST");
-        }*/ //TODO end remove
-        //TODO - make a new copy of the board map ?
+        //make a new copy of the swapBoardMap
         HashMap<SwapTileCoordinates, SwapCardData> nextTurnMap = Shared.userData.getCurSwapGameData().getSwapBoardMap();
+        //and set the current swapBoardMap to this (note - so far it is identical to the copy in the history list)
         Shared.userData.getCurSwapGameData().setSwapBoardMap(nextTurnMap);
-        // start of SwapSelectedCardsEvent - this method swaps the SwapCardData associated with the
-        // tile coordinates received by the event in the Board setup HashMap found at Shared.userData.
-        // getCurSwapGameData.curSwapBoardMap.  Additionally, this also calls mSwapBoardView.
+        // the swap selected cards event takes two coordinate IDs as input - log them here
         Log.d(TAG, "onEvent(SwapSelectedCardsEvent): event.id1: " + event.id1 + " event.id2: " + event.id2 + " *** AT START OF method ***");
+        //create local copies of the target coordinates whose data and images need swapping
         SwapTileCoordinates card1Coords = event.id1;
         SwapTileCoordinates card2Coords = event.id2;
+        //create local copies of the cardData stored a the coordinates
         SwapCardData card1Data = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(card1Coords);
         SwapCardData card2Data = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(card2Coords);
         Log.d(TAG, "onEvent(SwapSelectedCardsEvent): card1Coords: " + card1Coords + " | card2Coords: " + card2Coords + " | card1Data ID: " + card1Data.getCardID() + " | card2Data ID: " + card2Data.getCardID());
-
         //Swap the coordinates associated with the two SwapCardData objects
         switchDataAtTileCoordinates(card1Coords, card2Coords, card1Data, card2Data);
-
-        //push the new cards back into the board on the new Map
+        //push the new cards back into the board on the new Map - since the keys (coords) already exist
+        //on the board updating the associated values leads to a map where they are swapped
         Shared.currentSwapGame.swapBoardArrangement.setCardOnBoard(card1Coords, card1Data);
         Shared.currentSwapGame.swapBoardArrangement.setCardOnBoard(card2Coords, card2Data);
 
-        //redraw the board FIXME ************
-
-        //swap tile images
+        // redraw the board on the screen - this updates the bitmaps (and debugging text) associated
+        // with the tileViews found on the swapBoardViewMap (coords, tileViews)
         Log.i (TAG, "onEvent SwapSelectedCardsEvent: ... GET BITMAPS TO SWAP ... ");
-        Log.v (TAG, "onEvent SwapSelectedCardsEvent: Card for bitmap1: < " +
+        // store the bitmap associated with the cardData object on the first selected tile
+        Bitmap tile0Bitmap = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0)).getCardBitmap();
+        //verbose output identifies the <species, segment> on the first tile selected and the bitmap associated with it
+        Log.v (TAG, "onEvent SwapSelectedCardsEvent: Card for bitmap0: < " +
                 Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0)).getCardID().getSwapCardSpeciesID() +
                 "," +
                 Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0)).getCardID().getSwapCardSegmentID() +
-                " >");
-        Bitmap tile0Bitmap = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0)).getCardBitmap();
-        Log.v (TAG, "Card for bitmap2: < " + Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(1)).getCardID().getSwapCardSpeciesID() +
-                "," + Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(1)).getCardID().getSwapCardSegmentID() + " >");
+                " > | bitmap:" + tile0Bitmap);
+        // store the bitmap associated with the cardData object on the second selected tile
         Bitmap tile1Bitmap = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(1)).getCardBitmap();
-        Log.d (TAG, " BITMAPs to Swap ... tile0Bitmap: " + tile0Bitmap + " | tile1Bitmap: " + tile1Bitmap);
+        //verbose output identifies the <species, segment> on the first tile selected and the bitmap associated with it
+        Log.v (TAG, "onEvent SwapSelectedCardsEvent: Card for bitmap1: < " +
+                Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(1)).getCardID().getSwapCardSpeciesID() +
+                "," +
+                Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(1)).getCardID().getSwapCardSegmentID() +
+                " > | bitmap:" + tile0Bitmap);
+        //store the tileView objects associated with the selected tiles' coordinates on the tileViewMap
         SwapTileView tile0View = mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(0));
         SwapTileView tile1View = mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(1));
         Log.d (TAG, " SwapTileViews to receive swapped bitmaps: tile0View: " + tile0View + " | tile1View: " + tile1View);
+        //set the corresponding switched bitmaps on the tileViews
         tile0View.setTileImage(tile1Bitmap);
         tile1View.setTileImage(tile0Bitmap);
         Log.d (TAG, "onEvent SwapSelectedCardsEvent: setTileImage called on tiles to swap with updated bitmaps");
         mSwapBoardView.postInvalidate();
 
         //TODO - remove debugging text when working
-        //and get debug text to swap
-        SwapCardData card1ForText = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0));
-        SwapCardData card2ForText = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(1));
         //and update TextViews with appropriate text
         Log.d (TAG, " SWAPPING TEXT");
-        mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(0)).setTileDebugText(card1ForText);
-        mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(1)).setTileDebugText(card2ForText);
+        mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(0)).setTileDebugText(mSwapBoardView.getSwapTileMap(), mSwapBoardView.selectedTiles.get(0));
+        mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(1)).setTileDebugText(mSwapBoardView.getSwapTileMap(), mSwapBoardView.selectedTiles.get(1));
         mSwapBoardView.postInvalidate();
 
         //testing whether game has been won****************** TODO have east and hard modes (hard requires correct order)

@@ -30,7 +30,6 @@ import ws.isak.bridge.R;
 import ws.isak.bridge.common.Audio;
 import ws.isak.bridge.common.Shared;
 
-import ws.isak.bridge.common.SwapCardData;
 import ws.isak.bridge.events.engine.SwapSelectedCardsEvent;
 
 import ws.isak.bridge.model.SwapBoardConfiguration;
@@ -64,7 +63,7 @@ public class SwapBoardView extends LinearLayout {
     private SwapBoardArrangement mSwapBoardArrangement;
     //a mapping of each tile ID to a view TileView
     //TODO verify that this remains unchanged within each game
-    public Map<SwapTileCoordinates, SwapTileView> mTileViewMap;
+    public HashMap<SwapTileCoordinates, SwapTileView> mTileViewMap;
     //an array list holds the id's of the currently selected cards
     public List<SwapTileCoordinates> selectedTiles = new ArrayList<SwapTileCoordinates>(0);
     //the dimension of the tile to be drawn
@@ -162,21 +161,21 @@ public class SwapBoardView extends LinearLayout {
 
     // Add each tile to the board at position curTileOnBoard
     private void addTile(final SwapTileCoordinates curTileOnBoard, ViewGroup parent) {
-
+        //log state of inputs - coords, and parent
         Log.d (TAG, "method addTile: address of curTileOnBoard: " + curTileOnBoard +
                 " | curTileOnBoard coords: < " + curTileOnBoard.getSwapCoordRow() + "," +
                 curTileOnBoard.getSwapCoordCol() + " >" + " | parent.getVisibility: " + parent.getVisibility() +
-                " | parent.isShown: " + parent.isShown());
-
+                " | parent.isShown: " + parent.isShown() + " | ViewGroup parent: " + parent);
+        //create the SwapTileView - this must be final for it to be called from the AsyncTask
         final SwapTileView swapTileView = SwapTileView.fromXml(getContext(), parent);
         swapTileView.setLayoutParams(mTileLayoutParams);
+        //add the view to the parent ViewGroup
         parent.addView(swapTileView);
         parent.setClipChildren(false);
-        setSwapTileMap(curTileOnBoard, swapTileView);           //effectively mTileVieMap.put with debugging code
-        Log.d (TAG, "SwapCardData for current location: " + Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(curTileOnBoard));
-        SwapCardData cardDataAtCurTile = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(curTileOnBoard);
-        swapTileView.setTileDebugText(cardDataAtCurTile);
+        //update the HashMap of <coords, SwapTileViews>
+        setSwapTileMap(curTileOnBoard, swapTileView);           //effectively mTileViewMap.put with debugging code
 
+        //asynchronously load the bitmaps of the card images onto their respective tile views
         new AsyncTask<Void, Void, Bitmap>() {
 
             @Override
@@ -204,9 +203,13 @@ public class SwapBoardView extends LinearLayout {
                 Log.d (TAG, "... addTile: onPostExecute: set VISIBLE: swapTileView.getVisibility: " +
                         swapTileView.getVisibility() + " | swapTileView.isShown: " + swapTileView.isShown());
                 swapTileView.invalidate();
+                //TODO - remove this debugging code when all is functional
+                swapTileView.setTileDebugText(mTileViewMap, curTileOnBoard);
             }
         }.execute();
 
+        //FIXME - end text debugging code
+        //set the onClickListener for the view - this will respond to various interactions from clicking the tile
         swapTileView.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -284,7 +287,7 @@ public class SwapBoardView extends LinearLayout {
                     // and animate swap (call via event for CoordToCard HashMap updates and perform Coord to TileView image
                     // updates here)
                     else {
-                        //TODO are we sure we want to count turns only when pairs are to be swapped?
+                        //for now we want to count turns only when pairs are to be swapped
                         Log.d (TAG, " ..... appending [" + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()-1)+
                                 "]to PlayDurations: turn: [" +
                                 Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
@@ -354,6 +357,10 @@ public class SwapBoardView extends LinearLayout {
                 loc.getSwapCoordRow() + "," + loc.getSwapCoordCol() + " > " +
                 " | swapTileView: " + swapTileView);
         mTileViewMap.put(loc, swapTileView);
+    }
+
+    public HashMap <SwapTileCoordinates, SwapTileView> getSwapTileMap () {
+        return mTileViewMap;
     }
 
     public void unSelectAll() {
