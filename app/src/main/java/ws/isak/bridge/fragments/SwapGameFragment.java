@@ -249,6 +249,10 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         SwapTileView tile0View = mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(0));
         SwapTileView tile1View = mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(1));
         Log.d (TAG, " SwapTileViews to receive swapped bitmaps: tile0View: " + tile0View + " | tile1View: " + tile1View);
+        //FIXME - was this missing! set the tileViews to the corresponding swapped Coords keys in the TileViewMap
+        mSwapBoardView.mTileViewMap.put(mSwapBoardView.selectedTiles.get(0), tile1View);
+        mSwapBoardView.mTileViewMap.put(mSwapBoardView.selectedTiles.get(1), tile0View);
+
         //set the corresponding switched bitmaps on the tileViews
         tile0View.setTileImage(tile1Bitmap);
         tile1View.setTileImage(tile0Bitmap);

@@ -153,7 +153,6 @@ public class SwapBoardView extends LinearLayout {
             SwapTileCoordinates coords = Shared.userData.getCurSwapGameData().getMapSwapTileCoordinatesFromLoc(new SwapTileCoordinates(rowNum,curTileInRow));
             addTile (coords, linearLayout);
         }
-
         // add to this view
         addView(linearLayout, mRowLayoutParams);
         linearLayout.setClipChildren(false);
@@ -394,7 +393,9 @@ public class SwapBoardView extends LinearLayout {
             SwapTileView tileView = (SwapTileView) pair.getValue();
             Log.v(TAG, "method debugCoordsTileViewsMap: Searching... coords: < " +
                     coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
-                    " > | Bitmap @ tileView: " +  tileView.getDrawingCache() +
+                    " > | Bitmap @ tileView.getDrawingCache: " +  tileView.getDrawingCache() +
+                    " | Bitmap @ Shared.currentSwapGame.swapBoardArrangement.swapBoardMap.get(coords).getCardBitmap(): " +
+                    Shared.currentSwapGame.swapBoardArrangement.swapBoardMap.get(coords).getCardBitmap() +
                     " | Map.Entry pair: " + pair);
         }
         Log.d (TAG, "\n ... \n");
