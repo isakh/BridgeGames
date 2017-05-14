@@ -159,7 +159,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         mSwapBoardView.setBoard(swapGame);
         startClock(time);
         Log.d(TAG, "method buildBoard: calling method debugHashMaps");
-        debugHashMaps("method buildBoard");
+        debugHashMaps("class SwapGameFragment: method buildBoard");
     }
 
     /*
@@ -203,7 +203,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
     public void onEvent(SwapSelectedCardsEvent event) {
         //
         Log.d(TAG, "onEvent SwapSelectedCardsEvent @ start: calling debugHashMaps");
-        debugHashMaps(event.TAG);
+        debugHashMaps("class SwapGameFragment" + event.TAG);
         //prior to swap, append the current SwapBoardMap (coords, data) to Shared.swapGameData.swapGameMapList
         Shared.userData.getCurSwapGameData().appendToSwapGameMapList(Shared.userData.getCurSwapGameData().getSwapBoardMap());
         //make a new copy of the swapBoardMap
@@ -249,9 +249,6 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         SwapTileView tile0View = mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(0));
         SwapTileView tile1View = mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(1));
         Log.d (TAG, " SwapTileViews to receive swapped bitmaps: tile0View: " + tile0View + " | tile1View: " + tile1View);
-        //FIXME - was this missing! set the tileViews to the corresponding swapped Coords keys in the TileViewMap
-        mSwapBoardView.mTileViewMap.put(mSwapBoardView.selectedTiles.get(0), tile1View);
-        mSwapBoardView.mTileViewMap.put(mSwapBoardView.selectedTiles.get(1), tile0View);
 
         //set the corresponding switched bitmaps on the tileViews
         tile0View.setTileImage(tile1Bitmap);
@@ -341,7 +338,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         Shared.userData.getCurSwapGameData().getSwapBoardMap().put(tile1, data2);
         Shared.userData.getCurSwapGameData().getSwapBoardMap().put(tile2, data1);
         //
-        debugHashMaps("***** AFTER METHOD: switchDataAtTileCoordinates *****");
+        debugHashMaps("class SwapGameFragment: AFTER method: switchDataAtTileCoordinates");
     }
 
     @Override
@@ -412,11 +409,12 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         Log.d(TAG, " \n ... \n");
         Log.d(TAG, "method debugHashMaps ... called by: " + callingMethod);
         debugCoordsDataMap();
-        mSwapBoardView.debugCoordsTileViewsMap(callingMethod);
+        mSwapBoardView.debugCoordsTileViewsMap("class SwapGameFragment: via method debugHashMaps: called from: " + callingMethod);
     }
 
+    // private method prints verbose output of the current state of the board HashMap that describes
+    // the <coords, cardData> relationship
     private void debugCoordsDataMap() {
-        //FIXME - DEBUGGING CODE - check state of map before starting swap
         Log.d(TAG, " \n ... \n");
         Log.d(TAG, "***** method debugCoordsDataMap: BoardMap <Coords, CardID>");
         Iterator iterator = Shared.userData.getCurSwapGameData().getSwapBoardMap().entrySet().iterator();

@@ -124,8 +124,8 @@ public class SwapBoardView extends LinearLayout {
         // build the ui
         Log.d (TAG, "method setBoard ... calling method buildBoard");
         buildBoard();
-        Log.d (TAG, "method setBoard: calling method debugCoordsTileViewsMap");
-        debugCoordsTileViewsMap("method setBoard");
+        //Log.d (TAG, "method setBoard: calling method debugCoordsTileViewsMap");
+        //debugCoordsTileViewsMap("class SwapBoardView: method setBoard after call to buildBoard...");
     }
 
     /*
@@ -194,7 +194,7 @@ public class SwapBoardView extends LinearLayout {
             @Override
             protected void onPostExecute(Bitmap result) {
                 Log.d (TAG, "*** method addTile: Overriding onPostExecute: setting bitmap 'result'");
-                swapTileView.buildDrawingCache();    //FIXME does this help with later retrieval of bitmap?
+                //swapTileView.buildDrawingCache();    //FIXME does this help with later retrieval of bitmap?
                 swapTileView.setTileImage(result);
                 Log.d (TAG, "... addTile: onPostExecute: swapTileView.getVisibility: " +
                         swapTileView.getVisibility() + " | swapTileView.isShown: " + swapTileView.isShown());
@@ -204,6 +204,7 @@ public class SwapBoardView extends LinearLayout {
                 swapTileView.invalidate();
                 //TODO - remove this debugging code when all is functional
                 swapTileView.setTileDebugText(mTileViewMap, curTileOnBoard);
+                debugCoordsTileViewsMap("class SwapBoardView: method addTile: onPostExecute completion");
             }
         }.execute();
 
@@ -228,12 +229,11 @@ public class SwapBoardView extends LinearLayout {
                 //[0] if MIX is OFF and audio is playing - Toast and break out - user needs to click again
                 if (!Audio.MIX && Audio.getIsAudioPlaying()) {
                     Toast.makeText(Shared.context, "PLEASE WAIT FOR SOUND TO FINISH PLAYING", Toast.LENGTH_SHORT).show();
-                    return;     //TODO does return here break all the way out?
+                    return;     //TODO check does return here break all the way out?
                 }
 
                 //[1] if the view for the tile has already been selected, the second click unSelects it
-                // In the case where the first tile to be selected is then unselected, do we count this
-                // as a game not yet started?
+                // FIXME - In the case where the first tile to be selected is then unselected, do we count this as a game not yet started?
                 if (swapTileView.isSelected()) {
                     Log.d(TAG, "***** ... DOUBLE CLICKING on a tile un-selects it");
                     swapTileView.unSelect();
@@ -246,6 +246,7 @@ public class SwapBoardView extends LinearLayout {
 
                 //[2] else this is a viable turn
                 else {
+                    debugCoordsTileViewsMap ("class SwapBoardView: method addTile: onClick: [2] start of viable turn");
                     //Toast.makeText(Shared.context, "Coordinates: < " + curTileOnBoard.getSwapCoordRow() +
                     //        "," + curTileOnBoard.getSwapCoordCol() + " >", Toast.LENGTH_SHORT).show();  //TODO remove toast?
 
@@ -329,7 +330,7 @@ public class SwapBoardView extends LinearLayout {
 
                         selectedTiles.clear();
 
-                        debugCoordsTileViewsMap("method addTile, onClick, post redraw");
+                        debugCoordsTileViewsMap("method addTile: onClick: cards swapped - post redraw");
 
                         //  - update the number of turns taken
                         Shared.userData.getCurSwapGameData().incrementNumTurnsTaken();
@@ -393,7 +394,7 @@ public class SwapBoardView extends LinearLayout {
             SwapTileView tileView = (SwapTileView) pair.getValue();
             Log.v(TAG, "method debugCoordsTileViewsMap: Searching... coords: < " +
                     coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
-                    " > | Bitmap @ tileView.getDrawingCache: " +  tileView.getDrawingCache() +
+                    //TODO remove as didn't build cache: " > | Bitmap @ tileView.getDrawingCache: " +  tileView.getDrawingCache() +
                     " | Bitmap @ Shared.currentSwapGame.swapBoardArrangement.swapBoardMap.get(coords).getCardBitmap(): " +
                     Shared.currentSwapGame.swapBoardArrangement.swapBoardMap.get(coords).getCardBitmap() +
                     " | Map.Entry pair: " + pair);

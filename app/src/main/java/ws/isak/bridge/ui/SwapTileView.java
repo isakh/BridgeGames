@@ -88,6 +88,7 @@ public class SwapTileView extends FrameLayout {
                         mTileImage + " | set with bitmap: " + result +
                         " | mTileImage.getVisibility(): " + mTileImage.getVisibility());
                 mTileImage.invalidate();                //FIXME - testing
+
             }
         }.execute();
     }
@@ -104,14 +105,13 @@ public class SwapTileView extends FrameLayout {
                 "," +
                 curTileOnBoard.getSwapCoordCol() +
                 ">" +
-                "\n" +
-                "CardID: <" +
+                "\nCardID: <" +
                 tileData.getCardID().getSwapCardSpeciesID() +
                 "," +
                 tileData.getCardID().getSwapCardSegmentID() +
                 ">" +
-                "\n" +
-                tileData.getCardBitmap();
+                "\nBitmap @: " + tileData.getCardBitmap() +
+                "\nTileView @: " + tileView;
         //Log.d (TAG, "Tile Debug Text: " + tileText + " | location of bitmap: " + loc);
         Log.d (TAG, "Tile Debug Text: " + tileText);
         mTileText.setText(tileText);
