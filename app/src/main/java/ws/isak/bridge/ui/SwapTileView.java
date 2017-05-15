@@ -30,7 +30,7 @@ import ws.isak.bridge.utils.SwapTileCoordinates;
  * @author isak
  */
 
-public class SwapTileView extends FrameLayout {
+public class SwapTileView extends FrameLayout{
 
     public static final String TAG = "SwapTileView";
 
@@ -64,31 +64,43 @@ public class SwapTileView extends FrameLayout {
     }
 
     // use an asynctask here instead of setImageBitmap directly in method - onPostExecute is the UI thread
-    public void setTileImage(final Bitmap bitmap) {
-        Log.d (TAG, "method setTileImage: bitmap: " + bitmap +
-                " | mTileImage: " + mTileImage + " | calling new AsyncTask");
+    public void setTileImage(final Bitmap bitmap, final String calledFrom) {
+        //Log.d (TAG, "method setTileImage: bitmap: " + bitmap +
+        //        " | mTileImage: " + mTileImage + " | calling new AsyncTask");
         new AsyncTask<Void, Void, Bitmap>() {
 
             @Override
             protected Bitmap doInBackground(Void... params) {
-                Log.d (TAG, "method setTileImage: AsyncTask: doInBackground: returning bitmap: " + bitmap);
+                Log.v (TAG, "method setTileImage: AsyncTask: doInBackground: returning bitmap: " + bitmap);
                 return bitmap;
             }
 
             @Override
             protected void onPostExecute(Bitmap result) {
-                mTileImage.setImageDrawable(null);      //FIXME - testing - seems to do nothing, remove later?
-                mTileImage.invalidate();                //FIXME - testing
+                //mTileImage.setImageDrawable(null);      //FIXME - testing - seems to do nothing, remove later?
+                //mTileImage.invalidate();                //FIXME - testing
 
                 BitmapDrawable bitmapDrawable = new BitmapDrawable(Shared.context.getResources(), bitmap);
+
                 mTileImage.setImageDrawable(bitmapDrawable);
-
-                mTileImage.setVisibility(VISIBLE);
-                Log.d (TAG, "method setTileImage: AsyncTask: onPostExecute: mTileImage @: " +
-                        mTileImage + " | set with bitmap: " + result +
-                        " | mTileImage.getVisibility(): " + mTileImage.getVisibility());
+                //mTileImage.setBackground(bitmapDrawable);
                 mTileImage.invalidate();                //FIXME - testing
+                mTileImage.setVisibility(VISIBLE);
 
+                //TODO remove debugging code when functional
+                Log.d (TAG, "method setTileImage: onPostExecute: calledFrom: " + calledFrom +
+                        " | mTileImage @: " + mTileImage +
+                        " | mTileImage.getImageDrawable: " + mTileImage.getDrawable() +
+                        " | set with bitmap: " + result +
+                        " | mTileImage.getVisibility(): " + mTileImage.getVisibility());
+                //degbug colours yellow for the tile that should now have the second card selected displayed
+                if (calledFrom == "[class SwapGameFragment: SwapSelectedCardsEvent: setting tile0View to bitmap from old tile1View]") {
+                    mTileImage.setColorFilter(0xFF00FF00, PorterDuff.Mode.MULTIPLY);
+                }
+                //degbug colours blue for the tile that should now have the first card selected displayed
+                else if (calledFrom == "[class SwapGameFragment: SwapSelectedCardsEvent: setting tile1View to bitmap from old tile0View]") {
+                    mTileImage.setColorFilter(0xFF0000FF, PorterDuff.Mode.MULTIPLY);
+                }
             }
         }.execute();
     }
@@ -117,8 +129,8 @@ public class SwapTileView extends FrameLayout {
         mTileText.setText(tileText);
     }
 
-    public void select() {
-        Log.d (TAG, "method select ... at start: mTileImage: " + mTileImage);
+    public void select(String calledFrom) {
+        Log.d (TAG, "method select ... at start: mTileImage: " + mTileImage + " | calledFrom: " + calledFrom);
         isSelected = true;
         //current implementation involves an overlay of transparent red FIXME - set color in xml
         mTileImage.setColorFilter(0xFFFF0000, PorterDuff.Mode.MULTIPLY);

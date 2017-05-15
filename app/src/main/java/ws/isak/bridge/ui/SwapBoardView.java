@@ -195,7 +195,7 @@ public class SwapBoardView extends LinearLayout {
             protected void onPostExecute(Bitmap result) {
                 Log.d (TAG, "*** method addTile: Overriding onPostExecute: setting bitmap 'result'");
                 //swapTileView.buildDrawingCache();    //FIXME does this help with later retrieval of bitmap?
-                swapTileView.setTileImage(result);
+                swapTileView.setTileImage(result, "[class SwapBoardView: method addTile: initial setup]");
                 Log.d (TAG, "... addTile: onPostExecute: swapTileView.getVisibility: " +
                         swapTileView.getVisibility() + " | swapTileView.isShown: " + swapTileView.isShown());
                 swapTileView.setVisibility(VISIBLE);
@@ -208,7 +208,6 @@ public class SwapBoardView extends LinearLayout {
             }
         }.execute();
 
-        //FIXME - end text debugging code
         //set the onClickListener for the view - this will respond to various interactions from clicking the tile
         swapTileView.setOnClickListener(new View.OnClickListener() {
 
@@ -235,7 +234,8 @@ public class SwapBoardView extends LinearLayout {
                 //[1] if the view for the tile has already been selected, the second click unSelects it
                 // FIXME - In the case where the first tile to be selected is then unselected, do we count this as a game not yet started?
                 if (swapTileView.isSelected()) {
-                    Log.d(TAG, "***** ... DOUBLE CLICKING on a tile un-selects it");
+                    Log.d(TAG, "***** ... DOUBLE CLICKING: un-selection of tile: <" +
+                        curTileOnBoard.getSwapCoordRow() + "," + curTileOnBoard.getSwapCoordCol() + ">");
                     swapTileView.unSelect();
                     swapTileView.invalidate();
                     Log.d(TAG, " ... unSelecting tile: swapTileView: " + swapTileView);
@@ -277,16 +277,16 @@ public class SwapBoardView extends LinearLayout {
                     //[2.1] If this is the first card in a pair to be selected
                     if (!swapTileView.isSelected() && selectedTiles.size() == 0) {
                         Log.d(TAG, " ***** ... FIRST OF PAIR selected: swapTileView: " + swapTileView);
-                        swapTileView.select();
+                        swapTileView.select("SwapBoardView: addTile: [2.1] - first card in pair to be selected");
                         Log.d(TAG, " ... post select() - swapTileView.isSelected: " + swapTileView.isSelected());
                         selectedTiles.add(curTileOnBoard);
                         Log.d(TAG, " ... curTileOnBoard added to selectedTiles: selectedTiles.size(): " + selectedTiles.size());
                     }
 
-                    //[2.2.1] If this is the second card in any subsequent pair to be selected - highlight second tile
+                    //[2.2] If this is the second card in any subsequent pair to be selected - highlight second tile
                     // and animate swap (call via event for CoordToCard HashMap updates and perform Coord to TileView image
                     // updates here)
-                    else {
+                    else {      //FIXME - should this case still be an 'else if' with a final 'else' as catch option?
                         //for now we want to count turns only when pairs are to be swapped
                         Log.d (TAG, " ..... appending [" + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()-1)+
                                 "]to PlayDurations: turn: [" +
@@ -305,16 +305,16 @@ public class SwapBoardView extends LinearLayout {
                         Shared.userData.getCurSwapGameData().appendToTurnDurations(now - (Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
                                 Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken() - 1)));
                         Log.d(TAG, "***** ... SECOND OF PAIR selected: swapTileView@: " + swapTileView);
-                        swapTileView.select();
+                        swapTileView.select("SwapBoardView: addTile: [2.2] - second card in pair to be selected");
                         swapTileView.postInvalidate();
-                        swapTileView.invalidate();      //Fixme - only one of these necessary?
+                        swapTileView.invalidate();      //Fixme - only one of these should be necessary?
                         Log.d(TAG, " ... post select() - swapTileView.isSelected: " + swapTileView.isSelected());
                         selectedTiles.add(curTileOnBoard);
                         Log.d(TAG, " ... curTileOnBoard added to selectedTiles: selectedTiles.size(): " + selectedTiles.size());
                         Log.d(TAG, "\n ... \n");
 
-                        //call swap event
-                        Shared.eventBus.notify(new SwapSelectedCardsEvent(selectedTiles.get(0), selectedTiles.get(1)));
+                        //call swap event - //TODO ∆ wait 1 sec to xml - this should allow us one second to observe the selection before unselect both happens?
+                        Shared.eventBus.notify(new SwapSelectedCardsEvent(selectedTiles.get(0), selectedTiles.get(1)), 1000);
 
                         //display current game stats
                         Log.d(TAG, " *****: | System time: " + now +
@@ -324,11 +324,12 @@ public class SwapBoardView extends LinearLayout {
                                 " | elapsed turn time: " + (Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()) -
                                 Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken() - 1)));
 
-                        Log.d(TAG, " ... unSelect both tile bitmaps");
-                        mTileViewMap.get(selectedTiles.get(0)).unSelect();
-                        mTileViewMap.get(selectedTiles.get(1)).unSelect();
+                        //FIXME - removing unSelection and clear of selectedTiles - implementing in SwapSelectedCardsEvent
+                        //Log.d(TAG, " ... unSelect both tile bitmaps");
+                        //mTileViewMap.get(selectedTiles.get(0)).unSelect();
+                        //mTileViewMap.get(selectedTiles.get(1)).unSelect();
 
-                        selectedTiles.clear();
+                        //selectedTiles.clear();
 
                         debugCoordsTileViewsMap("method addTile: onClick: cards swapped - post redraw");
 
@@ -363,6 +364,7 @@ public class SwapBoardView extends LinearLayout {
         return mTileViewMap;
     }
 
+    //method unSelectAll iterates over the coordinates targeted in the selectedTiles array and unSelects them
     public void unSelectAll() {
         Log.d (TAG, "method unSelectAll ... at start");
         for (SwapTileCoordinates id : selectedTiles) {
@@ -370,7 +372,7 @@ public class SwapBoardView extends LinearLayout {
             mTileViewMap.get(id).unSelect();
             Log.d (TAG, "method unSelectAll: current id in list selectedTiles is: " + id);
         }
-        selectedTiles.clear();
+        //FIXME - if we clear this here, we can't access the list of selectedTiles when swapping... selectedTiles.clear();
     }
 
     public SwapTileView getSwapTileViewFromTileViewMap (SwapTileCoordinates loc) {

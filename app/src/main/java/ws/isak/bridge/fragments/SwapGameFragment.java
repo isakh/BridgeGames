@@ -201,7 +201,12 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
     // of the hashmap showing the boards (coords, cardData) and switches the cardData objects associated
     // with the selected coordinates.
     public void onEvent(SwapSelectedCardsEvent event) {
-        //
+        //unselect both cards in the pair to swap
+        Shared.eventBus.notify(new SwapUnselectCardsEvent(), 100);      //TODO keep tenth of a second delay here? is this redundant?
+        //Log.d(TAG, " ... unSelect both tile bitmaps");
+        mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(0)).unSelect();    //TODO necessary if event called first?
+        mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(1)).unSelect();    //TODO necessary if event called first?
+        //check state of board hashmaps <coords, cardData> & <coords, TileViews>
         Log.d(TAG, "onEvent SwapSelectedCardsEvent @ start: calling debugHashMaps");
         debugHashMaps("class SwapGameFragment" + event.TAG);
         //prior to swap, append the current SwapBoardMap (coords, data) to Shared.swapGameData.swapGameMapList
@@ -245,27 +250,33 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
                 "," +
                 Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(1)).getCardID().getSwapCardSegmentID() +
                 " > | bitmap:" + tile0Bitmap);
-        //store the tileView objects associated with the selected tiles' coordinates on the tileViewMap
+
+        //locally store the tileView objects associated with the selected tiles' coordinates on the tileViewMap
         SwapTileView tile0View = mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(0));
         SwapTileView tile1View = mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(1));
         Log.d (TAG, " SwapTileViews to receive swapped bitmaps: tile0View: " + tile0View + " | tile1View: " + tile1View);
 
-        //set the corresponding switched bitmaps on the tileViews
-        tile0View.setTileImage(tile1Bitmap);
-        tile1View.setTileImage(tile0Bitmap);
-        Log.d (TAG, "onEvent SwapSelectedCardsEvent: setTileImage called on tiles to swap with updated bitmaps");
-        mSwapBoardView.postInvalidate();
-
         //TODO - remove debugging text when working
         //and update TextViews with appropriate text
         Log.d (TAG, " SWAPPING TEXT");
-        mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(0)).setTileDebugText(mSwapBoardView.getSwapTileMap(), mSwapBoardView.selectedTiles.get(0));
-        mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(1)).setTileDebugText(mSwapBoardView.getSwapTileMap(), mSwapBoardView.selectedTiles.get(1));
+        tile0View.setTileDebugText(mSwapBoardView.getSwapTileMap(), mSwapBoardView.selectedTiles.get(0));
+        tile1View.setTileDebugText(mSwapBoardView.getSwapTileMap(), mSwapBoardView.selectedTiles.get(1));
         mSwapBoardView.postInvalidate();
+
+        //set the corresponding switched bitmaps on the tileViews
+        tile0View.setTileImage(tile1Bitmap, "[class SwapGameFragment: SwapSelectedCardsEvent: setting tile0View to bitmap from old tile1View]");
+        tile1View.setTileImage(tile0Bitmap, "[class SwapGameFragment: SwapSelectedCardsEvent: setting tile1View to bitmap from old tile0View]");
+
+        Log.d (TAG, "onEvent SwapSelectedCardsEvent: setTileImage called on tiles to swap with updated bitmaps");
+        //mSwapBoardView.postInvalidate();
+
+        //only clear the selectedTiles array once swap has occurred
+        mSwapBoardView.selectedTiles.clear();
 
         //testing whether game has been won****************** TODO have east and hard modes (hard requires correct order)
         //Check if game is won on easy mode where we will define winningEasy has having one species per row
         boolean winningEasy = true;     //TODO is this safe to default to true?
+        boolean winningHard = false;    //TODO when winning difficulty setting created, if winningEasy remains true, and diff is hard, set this to true below
         //iterate over each row
         for (int i = 0; i < Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty(); i++) {        //for each row on the board
             //get the species of the first tile as the target for the row
