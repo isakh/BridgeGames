@@ -43,12 +43,11 @@ public class MatchBoardArrangement {
 
 		String imageUri = null;		//string to store image uri, varies depending on whether first or second if necessary
 
-		Log.d (TAG, "method getMatchTileBitmap: *** ADDING NEW BITMAP ***");
-		Log.d (TAG, "                    : curTileID: " + curTileID + " tile image size: " + size);
-		MatchCardData cardOnTile = cardObjs.get(curTileID);
-		Log.d (TAG, "                    : cardOnTile id: " + cardOnTile.getCardID());
-		Log.d (TAG, "					 : cardOnTile.getPairedImagedDiffer: " + cardOnTile.getPairedImageDiffer());
-		Log.d (TAG, " 					 : cardOnTile.getFirstImageUsed: " + cardOnTile.getFirstImageUsed());
+        MatchCardData cardOnTile = cardObjs.get(curTileID);
+        Log.d (TAG, "method getMatchTileBitmap: ADDING NEW BITMAP: curTileID: " + curTileID +
+                " | tile image size: " + size + " | cardOnTile id: " + cardOnTile.getCardID() +
+		        " | cardOnTile.getPairedImagedDiffer: " + cardOnTile.getPairedImageDiffer() +
+                " | cardOnTile.getFirstImageUsed: " + cardOnTile.getFirstImageUsed());
 
         switch (Shared.userData.getCurMatchGame().getThemeID()) {
             case 0:                                                                         //MatchTheme is blank

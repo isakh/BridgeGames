@@ -64,4 +64,14 @@ public class Shared {
     static {
         Log.d (TAG, "static initialization block");
     }
+
+    public static void debugStateOfMatchCardDataList(String calledFrom) {
+        Log.d (TAG, "method debugStateOfMatchCardDataList called from: " + calledFrom + " | set verbose output to see list");
+        //verbose debugging of state of matchCardDataList
+        Log.v (TAG, "method buildMatchCardDataList: Shared.matchCardDataList.size(): " + Shared.matchCardDataList.size());
+        for (int j = 0; j < Shared.matchCardDataList.size(); j++) {
+            Log.v (TAG, "method debugStateOfMatchCardDataList: Shared.matchCardDataList @: " + j +
+                    " cardID is: " + Shared.matchCardDataList.get(j).getCardID());
+        }
+    }
 }

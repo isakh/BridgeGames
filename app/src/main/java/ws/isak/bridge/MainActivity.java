@@ -84,23 +84,38 @@ public class  MainActivity extends FragmentActivity {
         Shared.engine.setBackgroundImageView(mBackgroundImage);
 
         //build the list of MatchCardData objects based on resources
-        // TODO can this become dynamic if I can load variable resources?
         buildMatchCardDataList();
+
+        Log.w (TAG, "-----------------------------------------------------");
+        Log.w (TAG, ".....................................................");
+        Log.w (TAG, ".....=====***** MATCH CARD DECK BUILT *****=====.....");
+        Log.w (TAG, ".....................................................");
+        Log.w (TAG, "-----------------------------------------------------");
 
         //build the list of SwapCardData objects based on resources
         buildSwapCardDataList();
 
-        //FIXME - we need to load the database after we have built the CardData Lists
-        loadDatabase();
+        Log.w (TAG, "----------------------------------------------------");
+        Log.w (TAG, "....................................................");
+        Log.w (TAG, ".....=====***** SWAP CARD DECK BUILT *****=====.....");
+        Log.w (TAG, "....................................................");
+        Log.w (TAG, "----------------------------------------------------");
 
+        //load the database after we have built the CardData Lists
+        loadDatabase();
 
         // set background
         setBackgroundImage();
 
+        Log.w (TAG, "-----------------------------------------");
+        Log.w (TAG, ".........................................");
+        Log.w (TAG, ".....=====***** END SETUP *****=====.....");
+        Log.w (TAG, ".........................................");
+        Log.w (TAG, "-----------------------------------------");
+
         // open to User setup screen
         //Log.d(TAG, "               : get instance of user setup screen");
-        //FIXME ∆ screen depending on debug mode
-        ScreenController.getInstance().openScreen(Screen.DIFFICULTY_SWAP);
+        ScreenController.getInstance().openScreen(Screen.USER_SETUP);
     }
 
     @Override
@@ -166,10 +181,11 @@ public class  MainActivity extends FragmentActivity {
             Shared.matchCardDataList.add(curCard);
             Log.d (TAG, "method buildMatchCardDataList: added curCard: " + Shared.matchCardDataList);
             if (!MatchCardDataORM.isMatchCardDataInDB(curCard)) {
-                Log.d (TAG, "method buildMatchCardDataList: card not previously in database: adding...");
+                Log.i (TAG, "method buildMatchCardDataList: card not previously in database: adding...");
                 MatchCardDataORM.insertMatchCardData(curCard);
             }
         }
+        Shared.debugStateOfMatchCardDataList("Class MainActivity: method buildMatchCardDataList");
     }
 
     private void buildSwapCardDataList() {
@@ -253,10 +269,10 @@ public class  MainActivity extends FragmentActivity {
                         break;
                 }
                 Shared.swapCardDataList.add(curCard);
-                Log.d(TAG, "method buildSwapCardDataList: added: cardID.getCardIDKey: " + curCard.getCardIDKey() + " | cardID.species: " + curCard.getCardID().getSwapCardSpeciesID() + " | species: " + curCard.getSpeciesName() + " | active segment: " + curCard.getCardID().getSwapCardSegmentID());
-                Log.d(TAG, "                            : audio0: " + curCard.getAudioURI0() + " | audio1: " + curCard.getAudioURI1() + " | audio2: " + curCard.getAudioURI2() + " | audio3: " + curCard.getAudioURI3());
-                Log.d(TAG, "                            : dur0: " + curCard.getSampleDuration0() + " | dur1: " + curCard.getSampleDuration1() + " | dur2: " + curCard.getSampleDuration2() + " | dur3: " + curCard.getSampleDuration3());
-                Log.d(TAG, "                            : image0: " + curCard.getSpectroURI0() + " | image1: " + curCard.getSpectroURI1() + " | image2: " + curCard.getSpectroURI2() + " | image3: " + curCard.getSpectroURI3());
+                Log.v(TAG, "method buildSwapCardDataList: added: cardID.getCardIDKey: " + curCard.getCardIDKey() + " | cardID.species: " + curCard.getCardID().getSwapCardSpeciesID() + " | species: " + curCard.getSpeciesName() + " | active segment: " + curCard.getCardID().getSwapCardSegmentID());
+                Log.v(TAG, "                            : audio0: " + curCard.getAudioURI0() + " | audio1: " + curCard.getAudioURI1() + " | audio2: " + curCard.getAudioURI2() + " | audio3: " + curCard.getAudioURI3());
+                Log.v(TAG, "                            : dur0: " + curCard.getSampleDuration0() + " | dur1: " + curCard.getSampleDuration1() + " | dur2: " + curCard.getSampleDuration2() + " | dur3: " + curCard.getSampleDuration3());
+                Log.v(TAG, "                            : image0: " + curCard.getSpectroURI0() + " | image1: " + curCard.getSpectroURI1() + " | image2: " + curCard.getSpectroURI2() + " | image3: " + curCard.getSpectroURI3());
                 //insert swapCardData object into Database and local storage
                 if (!SwapCardDataORM.isSwapCardDataInDB(curCard)) {
                     SwapCardDataORM.insertSwapCardData(curCard);
@@ -340,12 +356,13 @@ public class  MainActivity extends FragmentActivity {
                             " | numTurnsTakenInGame: " + Shared.matchGameDataList.get(i).getNumTurnsTaken());
                     if (Shared.matchGameDataList.get(i).sizeOfPlayDurationsArray() == Shared.matchGameDataList.get(i).sizeOfTurnDurationsArray()) {
                         for (int j = 0; j < Shared.matchGameDataList.get(i).sizeOfPlayDurationsArray(); j++) {
-                            Log.d(TAG, " ... MAIN: GAME ARRAYS in MemGame Table, " + j +
+                            Log.d(TAG, " ... MAIN: GAME ARRAYS in MatchGame Table, " + j +
                                     " | current array element i: " + j +
                                     " | gamePlayDuration(i): " + Shared.matchGameDataList.get(i).queryGamePlayDurations(j) +
                                     " | turnDurations(i): " + Shared.matchGameDataList.get(i).queryTurnDurationsArray(j) +
                                     " | cardsSelected(i): " + Shared.matchGameDataList.get(i).queryCardsSelectedArray(j));
-                            loadMatchCardSelectedData(Shared.matchGameDataList.get(i).queryCardsSelectedArray(j));
+                            //FIXME - this method seems unecessary since all cards are loaded already into the game
+                            //loadMatchCardSelectedData(Shared.matchGameDataList.get(i).queryCardsSelectedArray(j));
                         }
                     } else {
                         Log.d(TAG, " ***** ERROR! Size of play durations and turn durations not returned as equal");
@@ -359,7 +376,8 @@ public class  MainActivity extends FragmentActivity {
         }
     }
 
-    //this should print out the information associated with the matchCardData object with id cardID
+    /* TODO did this method have any overarching purpose? it overwrites Shared.matchCardDataList to 0s
+    //this private method iterates over the match data cards in the database
     private void loadMatchCardSelectedData(int cardID) {
         if (MatchCardDataORM.matchCardDataRecordsInDatabase(Shared.context)) {
             int dbLength = MatchCardDataORM.numMatchCardDataRecordsInDatabase(Shared.context);
@@ -388,7 +406,9 @@ public class  MainActivity extends FragmentActivity {
                 Log.d(TAG, "*!*!* no MatchCardData object for cardID: " + cardID);
             }
         }
+        Shared.debugStateOfMatchCardDataList("Class MainActivity: private method loadMatchCardSelectedData");
     }
+    */
 
     private void loadUsersSwapGameDataRecords(UserData userData) {
         //if there are records of previous swap games in the database for the given user

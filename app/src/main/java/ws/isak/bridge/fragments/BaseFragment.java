@@ -108,7 +108,7 @@ public class BaseFragment extends Fragment implements EventObserver {
     }
 
     public void onEvent(SwapUnselectCardsEvent event) {
-        //Log.d (TAG, "");
+        Log.d (TAG, "onEvent(SwapUnselectCardsEvent event)");
         throw new UnsupportedOperationException();
     }
 

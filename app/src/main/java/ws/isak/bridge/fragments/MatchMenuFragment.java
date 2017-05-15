@@ -85,6 +85,7 @@ public class MatchMenuFragment extends Fragment {
 	protected void animateAllAssetsOff(AnimatorListenerAdapter adapter) {
 		// match_menu_title
 		// 120dp + 50dp + buffer(30dp)
+        //FIXME what is the '-200' doing here???
 		ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTitle, "translationY", ImageScaling.px(-200));  //TODO constant to variable
 		titleAnimator.setInterpolator(new AccelerateInterpolator(2));
 		titleAnimator.setDuration(300);

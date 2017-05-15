@@ -139,8 +139,7 @@ public class SwapTileView extends FrameLayout{
 
     public void select(String calledFrom) {
         Log.d (TAG, "method select ... at start: mTileImage: " + mTileImage + " | calledFrom: " + calledFrom);
-        isSelected = true;
-        //current implementation involves an overlay of transparent blue for first, yellow for second (was red)  FIXME - set colors in xml
+        //current implementation involves an overlay of transparent blue for first, yellow for second FIXME - set colors in xml
         if (calledFrom == "SwapBoardView: addTile: [2.1] - first card in pair to be selected") {
             mTileImage.setColorFilter(0x770000FF, PorterDuff.Mode.MULTIPLY);
             mTileImage.postInvalidate();
@@ -149,13 +148,14 @@ public class SwapTileView extends FrameLayout{
             mTileImage.setColorFilter(0x7700FF00, PorterDuff.Mode.MULTIPLY);
             mTileImage.postInvalidate();
         }
+        isSelected = true;
     }
 
     public void unSelect() {
         Log.d (TAG, "method unSelect ... at start: mTileImage: " + mTileImage);
-        isSelected = false;
         mTileImage.clearColorFilter();
         mTileImage.postInvalidate();        //this needs to be postInvalidate as we are not in the UI thread (could use AsyncTask?)
+        isSelected = false;
     }
 
     public boolean isSelected() {

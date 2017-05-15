@@ -102,6 +102,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         buildBoard();
 
         Shared.eventBus.listen(SwapSelectedCardsEvent.TYPE, this);
+        Shared.eventBus.listen(SwapUnselectCardsEvent.TYPE, this);
         Shared.eventBus.listen(SwapGameWonEvent.TYPE, this);
         Shared.eventBus.listen(SwapPlayRowAudioEvent.TYPE, this);
         Shared.eventBus.listen(SwapResetRowAudioEvent.TYPE, this);
@@ -141,6 +142,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onDestroy() {
         Shared.eventBus.unlisten(SwapSelectedCardsEvent.TYPE, this);
+        Shared.eventBus.unlisten(SwapUnselectCardsEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapGameWonEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapPlayRowAudioEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapResetRowAudioEvent.TYPE, this);
@@ -205,7 +207,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
     public void onEvent(SwapSelectedCardsEvent event) {
 
         //check state of board hashmaps <coords, cardData> & <coords, TileViews>
-        Log.d(TAG, "onEvent SwapSelectedCardsEvent @ start: calling debugHashMaps");
+        Log.i(TAG, "onEvent SwapSelectedCardsEvent @ start: calling debugHashMaps - set logging to verbose to read these in logcat");
         debugHashMaps("class SwapGameFragment" + event.TAG);
         //prior to swap, append the current SwapBoardMap (coords, data) to Shared.swapGameData.swapGameMapList
         Shared.userData.getCurSwapGameData().appendToSwapGameMapList(Shared.userData.getCurSwapGameData().getSwapBoardMap());
@@ -269,7 +271,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
 
         //unselect both cards in the pair to swap - this should remove their filters
         Log.d (TAG, "onEvent SwapSelectedCardsEvent: tiles swapped, calling SwapUnselectCardsEvent");
-        Shared.eventBus.notify(new SwapUnselectCardsEvent(), 777);      //TODO keep a .777 second delay here? is this redundant? I want tiles to switch color on swap, then go white
+        Shared.eventBus.notify(new SwapUnselectCardsEvent(mSwapBoardView.selectedTiles), 100);      //TODO keep a .777 second delay here? is this redundant? I want tiles to switch color on swap, then go white
 
         //testing whether game has been won****************** TODO have east and hard modes (hard requires correct order)
         //Check if game is won on easy mode where we will define winningEasy has having one species per row
@@ -352,7 +354,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onEvent(SwapGameWonEvent event) {
-        //Log.d (TAG, "overriding method onEvent (SwapGameWonEvent)");
+        Log.i (TAG, "overriding method onEvent (SwapGameWonEvent): set logging mode to debug for detailed output");
         //We print out all of the collected array data here?
         for (int i = 0; i < Shared.userData.getCurSwapGameData().getNumTurnsTaken(); i++) {
             if (i < 10) {
@@ -400,7 +402,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         SwapGameDataORM.insertSwapGameData(Shared.userData.getCurSwapGameData());
 
         //reset flags
-        Shared.userData.getCurSwapGameData().setGameStarted(false);                  //reset the gameStarted boolean to false
+        Shared.userData.getCurSwapGameData().setGameStarted(false);         //reset the gameStarted boolean to false
         //null the pointer to curSwapGameData once it has been appended to the UserData array of SwapGameData objects
         Shared.userData.setCurSwapGameData(null);
         mTime.setVisibility(View.GONE);
@@ -410,9 +412,14 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onEvent(SwapUnselectCardsEvent event) {
-        Log.d (TAG, "overriding method onEvent (SwapUnselectCardsEvent): calling swapBoardView.unSelectAll");
-        mSwapBoardView.unSelectAll();
-        //mSwapBoardView.selectedTiles.clear();
+        Log.i (TAG, "overriding method onEvent (SwapUnselectCardsEvent): calling swapBoardView.unSelectAll");
+        if (mSwapBoardView.selectedTiles != event.selectedTiles) {
+            Log.e (TAG, "ERROR: tiles to unselect do not match");
+        }
+        else {
+            mSwapBoardView.unSelectAll();
+            //mSwapBoardView.selectedTiles.clear();
+        }
     }
 
     private void debugHashMaps(String callingMethod) {

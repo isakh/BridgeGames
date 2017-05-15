@@ -1,5 +1,7 @@
 package ws.isak.bridge.fragments;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -7,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -35,6 +38,11 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
     private Button registerNewUser;
     private Button loginExistingUser;
 
+    /*
+     * This onCreateView overrides the nullable method:public View onCreateView
+     * (LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+     * from android.support.v4.app.Fragment
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "overriding onCreateView");
@@ -52,17 +60,22 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
         return view;
     }
 
-    //this switch implements the onClick behavior for each of the buttons in the fragment
+    /*
+     * this onClick implements the behavior for each of the buttons in the fragment, which is defined
+     * in the interface for android.view.View.OnClickListener
+     */
     @Override
     public void onClick(View v) {
         Log.d(TAG, "overriding onClick");
         switch (v.getId()) {
             case R.id.user_setup_register_button:
                 Log.d (TAG, "       :register button selected");
+                hideKeyboard();
                 registerNewUser(v);
                 break;
             case R.id.user_setup_login_button:
                 Log.d (TAG, "       : login button selected");
+                hideKeyboard();
                 loginExistingUser(v);
                 break;
         }
@@ -139,5 +152,16 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
         boolean userUnique = !UserDataORM.isUserNameInDB(Shared.context, userName); //true if userName not in DB
         Log.d (TAG, "method CheckUserUnique: !UserDataORM.isUserNameInDB: " + userUnique);
         return userUnique;
+    }
+
+    public static void hideKeyboard() {
+        InputMethodManager inputManager = (InputMethodManager) Shared.context.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        // check if no view has focus:
+        View viewInFocus = Shared.activity.getCurrentFocus();
+        if (viewInFocus == null)
+            return;
+
+        inputManager.hideSoftInputFromWindow(viewInFocus.getWindowToken(), 0);
     }
 }

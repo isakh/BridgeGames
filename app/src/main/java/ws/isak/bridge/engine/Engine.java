@@ -91,15 +91,23 @@ public class Engine extends EventObserverAdapter {
 	private MatchTheme mSelectedMatchTheme;         //only the matching game has themes for now...
 	private ImageView mBackgroundImage;
 	private Handler mHandler;
-    private Random randomIndex = new Random();
 
-	private Engine() {
+	/*
+	 * Private constructor for the engine creates and instance of the screen controller and launches
+	 * a new Handler thread.
+	 */
+
+    private Engine() {
         Log.d (TAG, "***** Constructor *****");
         Log.d (TAG, "calling ScreenController.getInstance");
 		mScreenController = ScreenController.getInstance();
 		mHandler = new Handler();
 	}
 
+	/*
+	 * Public method getInstance checks whether there is a running instance of the Engine and if not
+	 * creates one.
+	 */
 	public static Engine getInstance() {
         Log.d (TAG, "method getInstance called for Engine");
 		if (mInstance == null) {
@@ -108,6 +116,10 @@ public class Engine extends EventObserverAdapter {
 		return mInstance;
 	}
 
+	/*
+	 * Public method start launches the listeners for each event that can be handled by the engine
+	 * in the game - NOTE that some events are handled from within their specific game fragments
+	 */
 	public void start() {
         Log.d (TAG, " *******: method start: Shared.eventBus @: " + Shared.eventBus);
         //start event listeners
@@ -225,6 +237,7 @@ public class Engine extends EventObserverAdapter {
 
 	@Override
 	public void onEvent(MatchDifficultySelectedEvent event) {
+        Log.i(TAG, "onEvent MatchDifficultySelectedEvent: set logging verbose to output state of MatchGameData");
 		mFlippedId = -1;
 		mPlayingMatchGame = new MatchGame();
         mPlayingMatchGame.matchTheme = mSelectedMatchTheme;
@@ -233,6 +246,7 @@ public class Engine extends EventObserverAdapter {
         Shared.currentMatchGame = mPlayingMatchGame;
 
 		// arrange board
+        Log.d (TAG, "onEvent MatchDifficultySelectedEvent: calling arrangeMatchBoard");
 		arrangeMatchBoard();
 
         //instantiating the currentMatchGameData object - some fields default to 0 || null
@@ -241,26 +255,28 @@ public class Engine extends EventObserverAdapter {
         currentMatchGameData.setGameDifficulty(Shared.currentMatchGame.matchBoardConfiguration.difficulty);
         currentMatchGameData.setGameDurationAllocated(Shared.currentMatchGame.matchBoardConfiguration.time);
         currentMatchGameData.setMixerState(Audio.MIX);
-        //check setup of matchGameData - these should return current states
-        Log.d (TAG, "******* New MatchGameData Instantiated *******");
-        Log.d (TAG, "event MatchDifficultySelectedEvent: create currentMatchGameData: currentMatchGameData.getUserPlayingName : " + currentMatchGameData.getUserPlayingName());
-        Log.d (TAG, "                                                     : currentMatchGameData.getThemeID : " + currentMatchGameData.getThemeID());
-        Log.d (TAG, "                                                     : currentMatchGameData.getGameDifficulty: " + currentMatchGameData.getGameDifficulty());
-        Log.d (TAG, "                                                     : currentMatchGameData.getGameDurationAllocated: " + currentMatchGameData.getGameDurationAllocated());
-        Log.d (TAG, "                                                     : currentMatchGameData.getMixerState : " + currentMatchGameData.getMixerState());
+        //set the shared current match game data to the local version
+        Shared.userData.setCurMatchGame(currentMatchGameData);
+
+
+        //FOR DEBUGGING check setup of matchGameData - these should return current states
+        Log.v (TAG, "******* New MatchGameData Instantiated *******");
+        Log.v (TAG, "event MatchDifficultySelectedEvent: create currentMatchGameData: currentMatchGameData.getUserPlayingName : " + currentMatchGameData.getUserPlayingName());
+        Log.v (TAG, "                                                     : currentMatchGameData.getThemeID : " + currentMatchGameData.getThemeID());
+        Log.v (TAG, "                                                     : currentMatchGameData.getGameDifficulty: " + currentMatchGameData.getGameDifficulty());
+        Log.v (TAG, "                                                     : currentMatchGameData.getGameDurationAllocated: " + currentMatchGameData.getGameDurationAllocated());
+        Log.v (TAG, "                                                     : currentMatchGameData.getMixerState : " + currentMatchGameData.getMixerState());
         //these should reflect that the game is not yet started (don't check start timeStamp as it hasn't been used?)
-        Log.d (TAG, "                             			              : currentMatchGameData.isGameStarted: " + currentMatchGameData.isGameStarted());
-        Log.d (TAG, "                                                     : currentMatchGameData.getGameStartTimestamp: " + currentMatchGameData.getGameStartTimestamp());
-        Log.d (TAG, "                                                     : currentMatchGameData.numPlayDurationsRecorded: " + currentMatchGameData.sizeOfPlayDurationsArray());
-        Log.d (TAG, "                                                     : currentMatchGameData.numTurnDurationsRecorded: " + currentMatchGameData.sizeOfTurnDurationsArray());
-        Log.d (TAG, "                                                     : currentMatchGameData.numCardSelectionsRecorded: " + currentMatchGameData.sizeOfCardSelectionArray());
-        Log.d (TAG, "                             			              : currentMatchGameData.getNumTurnsTaken: " + currentMatchGameData.getNumTurnsTaken());
+        Log.v (TAG, "                             			              : currentMatchGameData.isGameStarted: " + currentMatchGameData.isGameStarted());
+        Log.v (TAG, "                                                     : currentMatchGameData.getGameStartTimestamp: " + currentMatchGameData.getGameStartTimestamp());
+        Log.v (TAG, "                                                     : currentMatchGameData.numPlayDurationsRecorded: " + currentMatchGameData.sizeOfPlayDurationsArray());
+        Log.v (TAG, "                                                     : currentMatchGameData.numTurnDurationsRecorded: " + currentMatchGameData.sizeOfTurnDurationsArray());
+        Log.v (TAG, "                                                     : currentMatchGameData.numCardSelectionsRecorded: " + currentMatchGameData.sizeOfCardSelectionArray());
+        Log.v (TAG, "                             			              : currentMatchGameData.getNumTurnsTaken: " + currentMatchGameData.getNumTurnsTaken());
 
         //debug Shared.userData
-        Log.d (TAG, " ******* : Shared.userData @ : " + Shared.userData);
-        Log.d (TAG, " ******* : userData.getCurMatchGame @ : " + Shared.userData.getCurMatchGame());
-
-        Shared.userData.setCurMatchGame(currentMatchGameData);
+        Log.v (TAG, " ******* : Shared.userData @ : " + Shared.userData);
+        Log.v (TAG, " ******* : userData.getCurMatchGame @ : " + Shared.userData.getCurMatchGame());
 
         Clock clock = Clock.getInstance();
         Shared.currentMatchGame.gameClock = clock;
@@ -275,6 +291,9 @@ public class Engine extends EventObserverAdapter {
     }
 
 	private void arrangeMatchBoard() {
+
+        //debug state of Shared.matchCardDataList
+        Shared.debugStateOfMatchCardDataList("Class Engine: private method arrangeMatchBoard");
 		MatchBoardConfiguration matchBoardConfiguration = mPlayingMatchGame.matchBoardConfiguration;
 		MatchBoardArrangement matchBoardArrangement = new MatchBoardArrangement();
 
@@ -283,9 +302,11 @@ public class Engine extends EventObserverAdapter {
 		for (int i = 0; i < matchBoardConfiguration.numTiles; i++) {
 			tileIDs.add(i);
 		}
+		Log.d (TAG, "method arrangeMatchBoard: Pre-shuffle List tileIDs: " + tileIDs);
 		// shuffle
 		// result {4,10,2,39,...}
 		Collections.shuffle(tileIDs);
+        Log.d (TAG, "method arrangeMatchBoard: Post-shuffle List tileIDs: " + tileIDs);
 
 		// map the paired tiles to each other as well as the card for each pair of tiles
 		matchBoardArrangement.pairs = new HashMap<Integer, Integer>();

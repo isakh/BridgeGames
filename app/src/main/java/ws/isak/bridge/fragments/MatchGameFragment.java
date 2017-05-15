@@ -126,13 +126,13 @@ public class MatchGameFragment extends BaseFragment implements View.OnClickListe
      * the countdown clock on the screen //TODO CHECK THIS IS TRUE?!
      */
 	private void setTime(long time) {
-        Log.d (TAG, "method setTime: input time (ms): " + time);
+        Log.v (TAG, "method setTime: input time (ms): " + time);
 		int timeInSeconds = (int) Math.ceil ((double) time / 1000);
-        Log.d (TAG, "              : timeInSeconds: " + timeInSeconds);
+        Log.v (TAG, "              : timeInSeconds: " + timeInSeconds);
 		int min = timeInSeconds / 60;
-        Log.d (TAG, "              : min: " + min);
+        Log.v (TAG, "              : min: " + min);
 		int sec = timeInSeconds - min*60;
-        Log.d (TAG, "              : sec: " + sec + " | calling mTime.setText");
+        Log.v (TAG, "              : sec: " + sec + " | calling mTime.setText");
 		mTime.setText(" " + String.format(Locale.ENGLISH, "%02d", min) + ":" + String.format(Locale.ENGLISH, "%02d", sec));
 	}
 
@@ -142,7 +142,7 @@ public class MatchGameFragment extends BaseFragment implements View.OnClickListe
 
             @Override
 			public void onTick(long millisUntilFinished) {
-                Log.d (TAG, "Clock: onTick: millisUntilFinished: " + millisUntilFinished);
+                Log.v (TAG, "Clock: onTick: millisUntilFinished: " + millisUntilFinished);
 				setTime (millisUntilFinished);
 			}
 

@@ -28,13 +28,13 @@ public class SwapSelectedCardsEvent extends AbstractEvent {
 
     @Override
     protected void fire(EventObserver eventObserver) {
-        //Log.d (TAG, "");
+        Log.d (TAG, "overriding fire from AbstractEvent class");
         eventObserver.onEvent(this);
     }
 
     @Override
     public String getType() {
-        //Log.d (TAG, "");
+        Log.d (TAG, "overriding getType from Event interface");
         return TYPE;
     }
 }

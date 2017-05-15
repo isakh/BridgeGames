@@ -32,6 +32,7 @@ import ws.isak.bridge.common.Shared;
 
 import ws.isak.bridge.events.ui.SwapSelectedCardsEvent;
 
+import ws.isak.bridge.events.ui.SwapUnselectCardsEvent;
 import ws.isak.bridge.model.SwapBoardConfiguration;
 import ws.isak.bridge.model.SwapGame;
 import ws.isak.bridge.model.SwapBoardArrangement;
@@ -234,9 +235,11 @@ public class SwapBoardView extends LinearLayout {
                 //[1] if the view for the tile has already been selected, the second click unSelects it
                 // FIXME - In the case where the first tile to be selected is then unselected, do we count this as a game not yet started?
                 if (swapTileView.isSelected()) {
-                    Log.d(TAG, "***** ... DOUBLE CLICKING: un-selection of tile: <" +
+                    Toast.makeText(Shared.context, "DOUBLE CLICK UN-SELECTS TILE", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "***** ... DOUBLE CLICKING: un-select tile: <" +
                         curTileOnBoard.getSwapCoordRow() + "," + curTileOnBoard.getSwapCoordCol() + ">");
-                    swapTileView.unSelect();
+                    //FIXME - try this with event instead - see next line instead - swapTileView.unSelect();
+                    Shared.eventBus.notify(new SwapUnselectCardsEvent(selectedTiles));
                     swapTileView.invalidate();
                     Log.d(TAG, " ... unSelecting tile: swapTileView: " + swapTileView);
                     selectedTiles.clear();
@@ -254,6 +257,7 @@ public class SwapBoardView extends LinearLayout {
                     //change the state of SwapGameData.isGameStarted() and set the SwapGameData.setGameStartTimeStamp()
                     Log.d(TAG, "**** Update SwapGameData with current timing information (and card info) ****");
                     if (!Shared.userData.getCurSwapGameData().isGameStarted()) {     //if this is the first card being flipped
+                        Toast.makeText(Shared.context, "FIRST CARD IN GAME", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "This is the First Tile Selected In SwapGame");
                         Shared.userData.getCurSwapGameData().setGameStarted(true);
                         Log.d(TAG, "   ***: getGameStarted: " + Shared.userData.getCurSwapGameData().isGameStarted());
@@ -276,6 +280,7 @@ public class SwapBoardView extends LinearLayout {
 
                     //[2.1] If this is the first card in a pair to be selected
                     if (!swapTileView.isSelected() && selectedTiles.size() == 0) {
+                        Toast.makeText(Shared.context, "FIRST CARD IN PAIR", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, " ***** ... FIRST OF PAIR selected: swapTileView: " + swapTileView);
                         swapTileView.select("SwapBoardView: addTile: [2.1] - first card in pair to be selected");
                         Log.d(TAG, " ... post select() - swapTileView.isSelected: " + swapTileView.isSelected());
@@ -287,6 +292,7 @@ public class SwapBoardView extends LinearLayout {
                     // and animate swap (call via event for CoordToCard HashMap updates and perform Coord to TileView image
                     // updates here)
                     else {      //FIXME - should this case still be an 'else if' with a final 'else' as catch option?
+                        Toast.makeText(Shared.context, "SECOND CARD IN PAIR", Toast.LENGTH_SHORT).show();
                         //for now we want to count turns only when pairs are to be swapped
                         Log.d (TAG, " ..... appending [" + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()-1)+
                                 "]to PlayDurations: turn: [" +
@@ -358,7 +364,6 @@ public class SwapBoardView extends LinearLayout {
         return mTileViewMap;
     }
 
-    //TODO this method may not be necessary as we are now passing the coords to unselect to the SwapUnselectCardsEvent
     //method unSelectAll iterates over the coordinates targeted in the selectedTiles array and unSelects them
     public void unSelectAll() {
         Log.d (TAG, "method unSelectAll ... at start");
