@@ -30,9 +30,10 @@ import ws.isak.bridge.common.SwapCardData;
 import ws.isak.bridge.events.engine.SwapPauseRowAudioEvent;
 import ws.isak.bridge.events.engine.SwapPlayRowAudioEvent;
 import ws.isak.bridge.events.engine.SwapResetRowAudioEvent;
-import ws.isak.bridge.events.engine.SwapSelectedCardsEvent;
-import ws.isak.bridge.events.engine.SwapUnselectCardsEvent;
 import ws.isak.bridge.events.engine.SwapGameWonEvent;
+
+import ws.isak.bridge.events.ui.SwapSelectedCardsEvent;
+import ws.isak.bridge.events.ui.SwapUnselectCardsEvent;
 
 import ws.isak.bridge.model.GameState;
 import ws.isak.bridge.model.SwapGame;
@@ -200,12 +201,9 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
     // this method is called when two different tiles have been selected: it takes the current state
     // of the hashmap showing the boards (coords, cardData) and switches the cardData objects associated
     // with the selected coordinates.
+    @Override
     public void onEvent(SwapSelectedCardsEvent event) {
-        //unselect both cards in the pair to swap
-        Shared.eventBus.notify(new SwapUnselectCardsEvent(), 100);      //TODO keep tenth of a second delay here? is this redundant?
-        //Log.d(TAG, " ... unSelect both tile bitmaps");
-        mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(0)).unSelect();    //TODO necessary if event called first?
-        mSwapBoardView.mTileViewMap.get(mSwapBoardView.selectedTiles.get(1)).unSelect();    //TODO necessary if event called first?
+
         //check state of board hashmaps <coords, cardData> & <coords, TileViews>
         Log.d(TAG, "onEvent SwapSelectedCardsEvent @ start: calling debugHashMaps");
         debugHashMaps("class SwapGameFragment" + event.TAG);
@@ -262,16 +260,16 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         tile0View.setTileDebugText(mSwapBoardView.getSwapTileMap(), mSwapBoardView.selectedTiles.get(0));
         tile1View.setTileDebugText(mSwapBoardView.getSwapTileMap(), mSwapBoardView.selectedTiles.get(1));
         mSwapBoardView.postInvalidate();
+        //TODO end debugging text
 
-        //set the corresponding switched bitmaps on the tileViews
+        //set the corresponding switched bitmaps on the tileViews - at first this will swap their filters
         tile0View.setTileImage(tile1Bitmap, "[class SwapGameFragment: SwapSelectedCardsEvent: setting tile0View to bitmap from old tile1View]");
         tile1View.setTileImage(tile0Bitmap, "[class SwapGameFragment: SwapSelectedCardsEvent: setting tile1View to bitmap from old tile0View]");
-
         Log.d (TAG, "onEvent SwapSelectedCardsEvent: setTileImage called on tiles to swap with updated bitmaps");
-        //mSwapBoardView.postInvalidate();
 
-        //only clear the selectedTiles array once swap has occurred
-        mSwapBoardView.selectedTiles.clear();
+        //unselect both cards in the pair to swap - this should remove their filters
+        Log.d (TAG, "onEvent SwapSelectedCardsEvent: tiles swapped, calling SwapUnselectCardsEvent");
+        Shared.eventBus.notify(new SwapUnselectCardsEvent(), 777);      //TODO keep a .777 second delay here? is this redundant? I want tiles to switch color on swap, then go white
 
         //testing whether game has been won****************** TODO have east and hard modes (hard requires correct order)
         //Check if game is won on easy mode where we will define winningEasy has having one species per row
@@ -331,7 +329,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
             // save to memory
             Memory.saveSwap(Shared.currentSwapGame.swapBoardConfiguration.difficultyLevel, gameState.achievedStars);
             //trigger the SwapGameWonEvent
-            Shared.eventBus.notify(new SwapGameWonEvent(gameState), 1200);      //TODO what is 1200 doing here? convert to xml
+            Shared.eventBus.notify(new SwapGameWonEvent(gameState), 1111);      //TODO what is 1200 doing here? convert to xml
         }
     }
 
@@ -412,8 +410,9 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onEvent(SwapUnselectCardsEvent event) {
-        //Log.d (TAG, "overriding method onEvent (SwapFlipDownCardsEvent)");
+        Log.d (TAG, "overriding method onEvent (SwapUnselectCardsEvent): calling swapBoardView.unSelectAll");
         mSwapBoardView.unSelectAll();
+        //mSwapBoardView.selectedTiles.clear();
     }
 
     private void debugHashMaps(String callingMethod) {

@@ -1,7 +1,6 @@
 package ws.isak.bridge.fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.util.Log;
@@ -22,7 +21,7 @@ import ws.isak.bridge.engine.ScreenController;
  * @author isak
  */
 
-public class FinishedFragment extends Fragment implements View.OnClickListener {
+public class FinishedFragment extends BaseFragment implements View.OnClickListener {
 
     public static final String TAG = "FinishedFragment";
 

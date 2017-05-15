@@ -1,4 +1,4 @@
-package ws.isak.bridge.events.engine;
+package ws.isak.bridge.events.ui;
 
 import android.util.Log;
 
@@ -17,7 +17,7 @@ public class SwapUnselectCardsEvent extends AbstractEvent {
     public static final String TYPE = SwapUnselectCardsEvent.class.getName();
 
     public SwapUnselectCardsEvent() {
-        Log.d (TAG, "constructor - empty");
+        Log.d (TAG, "constructor:");
     }
 
     @Override

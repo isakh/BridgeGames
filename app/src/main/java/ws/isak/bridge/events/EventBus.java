@@ -11,7 +11,7 @@ import android.util.Log;
 
 /**
  * The gateway for all events running in the game from ui to engine components
- * and back.
+ * and back. Notify can either happen immediately or be delayed if overloaded
  *
  * @author isak
  */
@@ -53,6 +53,7 @@ public class EventBus {
 	}
 
 	public void notify(Event event) {
+        Log.d (TAG, "method notify start: event.getType(): " + event.getType());
 		synchronized (obj) {
 			List<EventObserver> observers = events.get(event.getType());
 			if (observers != null) {
@@ -65,6 +66,7 @@ public class EventBus {
 	}
 	
 	public void notify(final Event event, long delay) {
+        Log.d (TAG, "overloaded method notify: Event.fire delay: " + delay);
 		mHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
@@ -73,5 +75,4 @@ public class EventBus {
 			}
 		}, delay);
 	}
-
 }

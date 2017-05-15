@@ -11,8 +11,6 @@ import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
 import ws.isak.bridge.events.engine.SwapPlayRowAudioEvent;
 import ws.isak.bridge.events.engine.SwapPauseRowAudioEvent;
 import ws.isak.bridge.events.engine.SwapResetRowAudioEvent;
-import ws.isak.bridge.events.engine.SwapSelectedCardsEvent;
-import ws.isak.bridge.events.engine.SwapUnselectCardsEvent;
 import ws.isak.bridge.events.engine.SwapGameWonEvent;
 import ws.isak.bridge.events.engine.PlayCardAudioEvent;
 
@@ -27,6 +25,8 @@ import ws.isak.bridge.events.ui.MatchStartEvent;
 import ws.isak.bridge.events.ui.SwapStartEvent;
 import ws.isak.bridge.events.ui.SwapBackGameEvent;
 import ws.isak.bridge.events.ui.SwapNextGameEvent;
+import ws.isak.bridge.events.ui.SwapSelectedCardsEvent;
+import ws.isak.bridge.events.ui.SwapUnselectCardsEvent;
 
 /*
  * Class BaseFragment defines the core of each fragment behavior when an event occurs

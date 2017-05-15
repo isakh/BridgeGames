@@ -30,7 +30,7 @@ import ws.isak.bridge.R;
 import ws.isak.bridge.common.Audio;
 import ws.isak.bridge.common.Shared;
 
-import ws.isak.bridge.events.engine.SwapSelectedCardsEvent;
+import ws.isak.bridge.events.ui.SwapSelectedCardsEvent;
 
 import ws.isak.bridge.model.SwapBoardConfiguration;
 import ws.isak.bridge.model.SwapGame;
@@ -183,7 +183,7 @@ public class SwapBoardView extends LinearLayout {
                         curTileOnBoard + "| coords are: < " + curTileOnBoard.getSwapCoordRow() +
                         "," + curTileOnBoard.getSwapCoordCol() + " > | mSize is: " + mSize);
                 //gets one of four bitmaps depending on flags at current coordinates
-                Bitmap croppedBitmap = mSwapBoardArrangement.getSwapTileBitmap(curTileOnBoard, mSize);      //FIXME - making mSize smaller to leave room for border?
+                Bitmap croppedBitmap = mSwapBoardArrangement.getSwapTileBitmap(curTileOnBoard, mSize);
                 Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(curTileOnBoard).setCardBitmap(croppedBitmap);
                 Log.d (TAG, "*** addTile: doInBackground: create bitmap: " +
                         Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(curTileOnBoard).getCardBitmap() +
@@ -324,13 +324,7 @@ public class SwapBoardView extends LinearLayout {
                                 " | elapsed turn time: " + (Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()) -
                                 Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken() - 1)));
 
-                        //FIXME - removing unSelection and clear of selectedTiles - implementing in SwapSelectedCardsEvent
-                        //Log.d(TAG, " ... unSelect both tile bitmaps");
-                        //mTileViewMap.get(selectedTiles.get(0)).unSelect();
-                        //mTileViewMap.get(selectedTiles.get(1)).unSelect();
-
-                        //selectedTiles.clear();
-
+                        //TODO remove debug code
                         debugCoordsTileViewsMap("method addTile: onClick: cards swapped - post redraw");
 
                         //  - update the number of turns taken
@@ -364,18 +358,18 @@ public class SwapBoardView extends LinearLayout {
         return mTileViewMap;
     }
 
+    //TODO this method may not be necessary as we are now passing the coords to unselect to the SwapUnselectCardsEvent
     //method unSelectAll iterates over the coordinates targeted in the selectedTiles array and unSelects them
     public void unSelectAll() {
         Log.d (TAG, "method unSelectAll ... at start");
         for (SwapTileCoordinates id : selectedTiles) {
-            //for (int id = 0; id < flippedUp.size(); id++) {
             mTileViewMap.get(id).unSelect();
             Log.d (TAG, "method unSelectAll: current id in list selectedTiles is: " + id);
         }
-        //FIXME - if we clear this here, we can't access the list of selectedTiles when swapping... selectedTiles.clear();
+        selectedTiles.clear();
     }
 
-    public SwapTileView getSwapTileViewFromTileViewMap (SwapTileCoordinates loc) {
+    public SwapTileView getSwapTileViewFromCoordsViewMap (SwapTileCoordinates loc) {
         /*
         Log.d (TAG, "method getSwapTileViewFromTileViewMap: loc: " + loc + " < " +
                 loc.getSwapCoordRow() + "," + loc.getSwapCoordCol() + " > " +

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 
@@ -70,6 +71,13 @@ public class SwapTileView extends FrameLayout{
         new AsyncTask<Void, Void, Bitmap>() {
 
             @Override
+            protected void onPreExecute () {
+                if (calledFrom == "[class SwapGameFragment: SwapSelectedCardsEvent: setting tile1View to bitmap from old tile0View]") {
+                    Toast.makeText(Shared.context, "swapping tiles", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
             protected Bitmap doInBackground(Void... params) {
                 Log.v (TAG, "method setTileImage: AsyncTask: doInBackground: returning bitmap: " + bitmap);
                 return bitmap;
@@ -93,11 +101,11 @@ public class SwapTileView extends FrameLayout{
                         " | mTileImage.getImageDrawable: " + mTileImage.getDrawable() +
                         " | set with bitmap: " + result +
                         " | mTileImage.getVisibility(): " + mTileImage.getVisibility());
-                //degbug colours yellow for the tile that should now have the second card selected displayed
+                //debug colours yellow for the tile that should now have the second card selected displayed
                 if (calledFrom == "[class SwapGameFragment: SwapSelectedCardsEvent: setting tile0View to bitmap from old tile1View]") {
                     mTileImage.setColorFilter(0xFF00FF00, PorterDuff.Mode.MULTIPLY);
                 }
-                //degbug colours blue for the tile that should now have the first card selected displayed
+                //debug colours blue for the tile that should now have the first card selected displayed
                 else if (calledFrom == "[class SwapGameFragment: SwapSelectedCardsEvent: setting tile1View to bitmap from old tile0View]") {
                     mTileImage.setColorFilter(0xFF0000FF, PorterDuff.Mode.MULTIPLY);
                 }
@@ -106,7 +114,7 @@ public class SwapTileView extends FrameLayout{
     }
 
     public void setTileDebugText(HashMap <SwapTileCoordinates, SwapTileView> coordsViewsMap, SwapTileCoordinates curTileOnBoard) {
-        Log.d (TAG, "method setTileDebugText");
+        Log.v (TAG, "method setTileDebugText");
         mTileText.setText("");
 
         SwapCardData tileData = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(curTileOnBoard);
@@ -132,17 +140,22 @@ public class SwapTileView extends FrameLayout{
     public void select(String calledFrom) {
         Log.d (TAG, "method select ... at start: mTileImage: " + mTileImage + " | calledFrom: " + calledFrom);
         isSelected = true;
-        //current implementation involves an overlay of transparent red FIXME - set color in xml
-        mTileImage.setColorFilter(0xFFFF0000, PorterDuff.Mode.MULTIPLY);
-        mTileImage.invalidate();
-
+        //current implementation involves an overlay of transparent blue for first, yellow for second (was red)  FIXME - set colors in xml
+        if (calledFrom == "SwapBoardView: addTile: [2.1] - first card in pair to be selected") {
+            mTileImage.setColorFilter(0x770000FF, PorterDuff.Mode.MULTIPLY);
+            mTileImage.postInvalidate();
+        }
+        else if (calledFrom == "SwapBoardView: addTile: [2.2] - second card in pair to be selected") {
+            mTileImage.setColorFilter(0x7700FF00, PorterDuff.Mode.MULTIPLY);
+            mTileImage.postInvalidate();
+        }
     }
 
     public void unSelect() {
         Log.d (TAG, "method unSelect ... at start: mTileImage: " + mTileImage);
         isSelected = false;
         mTileImage.clearColorFilter();
-        mTileImage.postInvalidate();        //FIXME is this necessary? should it just be .invalidate()
+        mTileImage.postInvalidate();        //this needs to be postInvalidate as we are not in the UI thread (could use AsyncTask?)
     }
 
     public boolean isSelected() {

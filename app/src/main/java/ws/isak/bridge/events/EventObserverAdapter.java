@@ -6,13 +6,10 @@ import ws.isak.bridge.events.engine.MatchFlipDownCardsEvent;
 import ws.isak.bridge.events.engine.MatchGameWonEvent;
 import ws.isak.bridge.events.engine.SwapGameWonEvent;
 import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
-import ws.isak.bridge.events.engine.SwapSelectedCardsEvent;
-import ws.isak.bridge.events.engine.SwapUnselectCardsEvent;
 import ws.isak.bridge.events.engine.PlayCardAudioEvent;
 import ws.isak.bridge.events.engine.SwapResetRowAudioEvent;
 import ws.isak.bridge.events.engine.SwapPlayRowAudioEvent;
 import ws.isak.bridge.events.engine.SwapPauseRowAudioEvent;
-
 
 import ws.isak.bridge.events.ui.MatchBackGameEvent;
 import ws.isak.bridge.events.ui.MatchDifficultySelectedEvent;
@@ -25,7 +22,8 @@ import ws.isak.bridge.events.ui.MatchStartEvent;
 import ws.isak.bridge.events.ui.SwapStartEvent;
 import ws.isak.bridge.events.ui.SwapBackGameEvent;
 import ws.isak.bridge.events.ui.SwapNextGameEvent;
-
+import ws.isak.bridge.events.ui.SwapSelectedCardsEvent;
+import ws.isak.bridge.events.ui.SwapUnselectCardsEvent;
 
 /*
  * Class EventObserverAdapter defines the behavior of each eventObserver onEvent method
@@ -108,7 +106,7 @@ public class EventObserverAdapter implements EventObserver {
     }
 
     public void onEvent(SwapUnselectCardsEvent event) {
-        //Log.d (TAG, "");
+        Log.d (TAG, "event SwapUnselectCardsEvent");
         throw new UnsupportedOperationException();
     }
 
