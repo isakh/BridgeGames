@@ -126,6 +126,7 @@ public class SwapGameData {
 
     //get a pointer to a SwapCardData value from a SwapTileCoordinates key in swapGameMap
     public SwapCardData getSwapCardDataFromSwapBoardMap (SwapTileCoordinates targetCoords) {
+        //Log.d (TAG, "method getSwapCardDataFromSwapBoardMap");
         SwapCardData cardToReturn = new SwapCardData();
         Iterator iterator = curSwapBoardMap.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -139,7 +140,7 @@ public class SwapGameData {
                     cardData.getCardIDKey().getSwapCardSegmentID() + " >");
             */
             if (targetCoords.getSwapCoordRow() == coords.getSwapCoordRow() && targetCoords.getSwapCoordCol() == coords.getSwapCoordCol()) {
-                Log.d (TAG, "method getSwapCardDataFromSwapBoardMap: returning card : < "
+                Log.d (TAG, "method getSwapCardDataFromSwapBoardMap: found match: returning card : < "
                         + cardData.getCardID().getSwapCardSpeciesID() +
                         "," + cardData.getCardID().getSwapCardSegmentID() + " > @: " + cardData +
                         " | with key coords: <" + coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +

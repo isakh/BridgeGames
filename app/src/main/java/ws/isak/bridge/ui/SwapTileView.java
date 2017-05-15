@@ -66,8 +66,8 @@ public class SwapTileView extends FrameLayout{
 
     // use an asynctask here instead of setImageBitmap directly in method - onPostExecute is the UI thread
     public void setTileImage(final Bitmap bitmap, final String calledFrom) {
-        //Log.d (TAG, "method setTileImage: bitmap: " + bitmap +
-        //        " | mTileImage: " + mTileImage + " | calling new AsyncTask");
+        Log.d (TAG, "method setTileImage: bitmap: " + bitmap +
+                " | mTileImage: " + mTileImage + " | calling new AsyncTask");
         new AsyncTask<Void, Void, Bitmap>() {
 
             @Override
@@ -103,10 +103,12 @@ public class SwapTileView extends FrameLayout{
                         " | mTileImage.getVisibility(): " + mTileImage.getVisibility());
                 //debug colours yellow for the tile that should now have the second card selected displayed
                 if (calledFrom == "[class SwapGameFragment: SwapSelectedCardsEvent: setting tile0View to bitmap from old tile1View]") {
+                    //was blue now yellow
                     mTileImage.setColorFilter(0xFF00FF00, PorterDuff.Mode.MULTIPLY);
                 }
                 //debug colours blue for the tile that should now have the first card selected displayed
                 else if (calledFrom == "[class SwapGameFragment: SwapSelectedCardsEvent: setting tile1View to bitmap from old tile0View]") {
+                    //was yellow now blue
                     mTileImage.setColorFilter(0xFF0000FF, PorterDuff.Mode.MULTIPLY);
                 }
             }
@@ -133,7 +135,7 @@ public class SwapTileView extends FrameLayout{
                 "\nBitmap @: " + tileData.getCardBitmap() +
                 "\nTileView @: " + tileView;
         //Log.d (TAG, "Tile Debug Text: " + tileText + " | location of bitmap: " + loc);
-        Log.d (TAG, "Tile Debug Text: " + tileText);
+        Log.v (TAG, "Tile Debug Text: " + tileText);
         mTileText.setText(tileText);
     }
 

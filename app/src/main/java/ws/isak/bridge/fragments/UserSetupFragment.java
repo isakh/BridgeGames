@@ -154,7 +154,7 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
         return userUnique;
     }
 
-    public static void hideKeyboard() {
+    private static void hideKeyboard() {
         InputMethodManager inputManager = (InputMethodManager) Shared.context.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         // check if no view has focus:

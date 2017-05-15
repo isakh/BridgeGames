@@ -53,11 +53,12 @@ public class EventBus {
 	}
 
 	public void notify(Event event) {
-        Log.d (TAG, "method notify start: event.getType(): " + event.getType());
+        Log.i (TAG, "method notify start: event.getType(): " + event.getType() + " | to see all events set logging to verbose");
 		synchronized (obj) {
 			List<EventObserver> observers = events.get(event.getType());
-			if (observers != null) {
-				for (EventObserver observer : observers) {
+            if (observers != null) {
+                listEvents(observers);
+                for (EventObserver observer : observers) {
 					AbstractEvent abstractEvent = (AbstractEvent) event;
 					abstractEvent.fire(observer);
 				}
@@ -66,7 +67,7 @@ public class EventBus {
 	}
 	
 	public void notify(final Event event, long delay) {
-        Log.d (TAG, "overloaded method notify: Event.fire delay: " + delay);
+        Log.i (TAG, "overloaded method notify: Event.fire delay: " + delay);
 		mHandler.postDelayed(new Runnable() {
 			@Override
 			public void run() {
@@ -75,4 +76,11 @@ public class EventBus {
 			}
 		}, delay);
 	}
+
+	//debugging method to see all events in the event observer list
+	private void listEvents (List<EventObserver> observers) {
+        for (EventObserver observer : observers) {
+            Log.v (TAG, "observer in list: " + observer);
+        }
+    }
 }

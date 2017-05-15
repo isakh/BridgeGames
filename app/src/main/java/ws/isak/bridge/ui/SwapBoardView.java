@@ -330,9 +330,6 @@ public class SwapBoardView extends LinearLayout {
                                 " | elapsed turn time: " + (Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()) -
                                 Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken() - 1)));
 
-                        //TODO remove debug code
-                        debugCoordsTileViewsMap("method addTile: onClick: cards swapped - post redraw");
-
                         //  - update the number of turns taken
                         Shared.userData.getCurSwapGameData().incrementNumTurnsTaken();
                         Log.d(TAG, "   ***: numTurnsTaken postIncrement: " + Shared.userData.getCurSwapGameData().getNumTurnsTaken());
@@ -372,6 +369,7 @@ public class SwapBoardView extends LinearLayout {
             Log.d (TAG, "method unSelectAll: current id in list selectedTiles is: " + id);
         }
         selectedTiles.clear();
+        Log.d (TAG, "method unSelectAll completed: selectedTiles: " + selectedTiles);
     }
 
     public SwapTileView getSwapTileViewFromCoordsViewMap (SwapTileCoordinates loc) {
@@ -385,7 +383,9 @@ public class SwapBoardView extends LinearLayout {
 
     //this method is for debugging the state of the game board HashMap
     public void debugCoordsTileViewsMap(String callingMethod) {
-        Log.v (TAG, "\n\n... method debugCoordsTileViewsMap: < Coords, TileViews> : called by: " + callingMethod);
+        Log.d (TAG, "##################################################################################");
+        Log.d (TAG, "method debugCoordsTileViewsMap: < Coords, TileViews> : called by: " + callingMethod);
+        Log.d (TAG, "##################################################################################");
         //Log.d (TAG, "   ...mTileViewMap @: " + mTileViewMap);
         Iterator iterator = mTileViewMap.entrySet().iterator();
         while (iterator.hasNext()) {
@@ -395,9 +395,12 @@ public class SwapBoardView extends LinearLayout {
             SwapTileView tileView = (SwapTileView) pair.getValue();
             Log.v(TAG, "method debugCoordsTileViewsMap: Searching... coords: < " +
                     coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
-                    //TODO remove as didn't build cache: " > | Bitmap @ tileView.getDrawingCache: " +  tileView.getDrawingCache() +
+                    //FIXME this first bitmap isn't updated on swap
                     " | Bitmap @ Shared.currentSwapGame.swapBoardArrangement.swapBoardMap.get(coords).getCardBitmap(): " +
                     Shared.currentSwapGame.swapBoardArrangement.swapBoardMap.get(coords).getCardBitmap() +
+                    //FIXME this second bitmap is updated on swap
+                    " | Bitmap @ Shared.userData.getCurSwapGameData().getSwapBoardMap().get(coords).getCardBitmap(): " +
+                    Shared.userData.getCurSwapGameData().getSwapBoardMap().get(coords).getCardBitmap() +
                     " | Map.Entry pair: " + pair);
         }
         Log.d (TAG, "\n ... \n");
