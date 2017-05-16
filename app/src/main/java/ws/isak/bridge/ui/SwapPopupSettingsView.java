@@ -27,8 +27,10 @@ public class SwapPopupSettingsView extends LinearLayout implements View.OnClickL
 
     private ImageView mLooperImage;
     private ImageView mMixImage;
+    private ImageView mWinningDifficultyImage;
     private TextView mLooperText;
     private TextView mMixText;
+    private TextView mWinningDifficultyText;
 
     /*
      * constructor
@@ -49,13 +51,17 @@ public class SwapPopupSettingsView extends LinearLayout implements View.OnClickL
         //Load images and text from xml
         mLooperText = (TextView) findViewById(R.id.looper_on_off_text);
         mMixText = (TextView) findViewById(R.id.mix_on_off_text);
+        mWinningDifficultyText = (TextView) findViewById(R.id.win_easy_hard_text);
         mLooperImage = (ImageView) findViewById(R.id.looper_on_off_image);
         mMixImage = (ImageView) findViewById(R.id.mix_on_off_image);
+        mWinningDifficultyImage = (ImageView) findViewById(R.id.win_easy_hard_image);
         FontLoader.setTypeface(context, new TextView[] { mLooperText, mMixText }, Font.ANGRYBIRDS);
         mLooperImage.setOnClickListener(this);
         mMixImage.setOnClickListener(this);
+        mWinningDifficultyImage.setOnClickListener(this);
         setLooperButton();                       //initialize
         setMixerButton();
+        setWinningDifficultyButton();
     }
 
     @Override
@@ -69,6 +75,11 @@ public class SwapPopupSettingsView extends LinearLayout implements View.OnClickL
                 Audio.MIX = !Audio.MIX;
                 setMixerButton();
                 break;
+            case R.id.win_easy_hard_image:
+                int winningDifficulty = Shared.userData.getCurSwapGameData().getWinningDifficulty();
+                int newWinningDifficulty = (winningDifficulty + 1) % 2;     //(0+1)%2 = 1; (1+1)%2 = 0
+                Shared.userData.getCurSwapGameData().setWinningDifficulty(newWinningDifficulty);
+                setWinningDifficultyButton();
         }
     }
 
@@ -94,6 +105,17 @@ public class SwapPopupSettingsView extends LinearLayout implements View.OnClickL
         } else {               //mixing is off
             mMixText.setText(Shared.context.getResources().getText(R.string.swap_popup_settings_mixer_off_text));
             mMixImage.setImageResource(R.drawable.button_mixer_off);
+        }
+    }
+
+    private void setWinningDifficultyButton() {
+        if (Shared.userData.getCurSwapGameData().getWinningDifficulty() == 0) { //set to easy
+            mWinningDifficultyText.setText(Shared.context.getResources().getText(R.string.swap_popup_settings_winning_easy_text));
+            mWinningDifficultyImage.setImageResource(R.drawable.swap_winning_easy);
+        }
+        else {
+            mWinningDifficultyText.setText(Shared.context.getResources().getText(R.string.swap_popup_settings_winning_hard_text));
+            mWinningDifficultyImage.setImageResource(R.drawable.swap_winning_hard);
         }
     }
 }

@@ -5,8 +5,6 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.common.SwapCardData;
@@ -29,7 +27,8 @@ public class SwapGameData {
     private String userPlayingName;         //FIXME database foreign key?
     //Parameters to be saved for analysis:
     //defined at SwapDifficultySelectedEvent - the following are fixed for the duration of the game
-    private int difficulty;                 //difficultyLevel level for the current game
+    private int levelDifficulty;                 //difficultyLevel level for the current game 2-4 species @ at time
+    private int winningDifficulty;               //the winningDifficulty is easy (order doesn't matter) or hard (order does)
     private long gameDurationAllocated;     //This is the fixed time allocated for playing the game
     private boolean gameStarted;            //Set to Boolean false, becomes true when first card is clicked - triggers gameStarTimeStamp
     //the following respond to user input during the game
@@ -45,6 +44,7 @@ public class SwapGameData {
         setSwapBoardMap(Shared.currentSwapGame.swapBoardArrangement.swapBoardMap);
         setUserPlayingName(Shared.userData.getUserName());
         setGameDifficulty(-1);
+        setWinningDifficulty(0);        //default 0 is winning 'easy' (1 is 'hard')
         setGameDurationAllocated(0);
         //initialize to 0 or null as necessary
         setGameStarted(false);      //initialize to false on setup
@@ -55,14 +55,15 @@ public class SwapGameData {
         initSwapGameMapList();
     }
 
-    //overloaded constructor method describes the information that is stored about each game played
-    //but allows us to pass in a HashMap for the call to setSwapBoardMap - this can be initialized to
+    // overloaded constructor method describes the information that is stored about each game played
+    // but allows us to pass in a HashMap for the call to setSwapBoardMap - this can be initialized to
     // null when loading from the database and then updated from the values saved in the database
     public SwapGameData (HashMap boardMap) {
         Log.d (TAG, "Overloaded Constructor: initializing game data fields: boardMap: " + boardMap);
         setSwapBoardMap (boardMap);
         setUserPlayingName(Shared.userData.getUserName());
         setGameDifficulty(-1);
+        setWinningDifficulty(0);        //default 0 is winning 'easy' (1 is 'hard')
         setGameDurationAllocated(0);
         //initialize to 0 or null as necessary
         setGameStarted(false);      //initialize to false on setup
@@ -190,12 +191,22 @@ public class SwapGameData {
     //[3]
     public void setGameDifficulty (int diff) {
         //Log.d (TAG, "");
-        difficulty = diff;
+        levelDifficulty = diff;
     }
 
     public int getGameDifficulty () {
         //Log.d (TAG, "");
-        return difficulty;
+        return levelDifficulty;
+    }
+
+    public void setWinningDifficulty (int difficulty) {
+        //Log.d (TAG, "");
+        winningDifficulty = difficulty;
+    }
+
+    public int getWinningDifficulty () {
+        //
+        return winningDifficulty;
     }
 
     //[4]
@@ -303,7 +314,7 @@ public class SwapGameData {
     }
 
     public int sizeOfSwapGameMapList () {
-        //Log.d (TAG, "method sizeOfCardSelectionArray);
+        Log.d (TAG, "method sizeOfSwapGameMapList: size: " + swapGameMapList.size());
         return swapGameMapList.size();
     }
 

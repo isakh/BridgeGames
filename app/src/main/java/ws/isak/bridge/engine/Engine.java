@@ -388,7 +388,7 @@ public class Engine extends EventObserverAdapter {
                             " | Shared.swapCardDataList.get(i).getCardIDKey(): < " +
                             Shared.swapCardDataList.get(l).getCardID().getSwapCardSpeciesID() + " , " +
                             Shared.swapCardDataList.get(l).getCardID().getSwapCardSegmentID() +
-                            " > | targetSpeciesID.get(m): " + targetSpeciesIDs.get(m) + "| Adding card to active list...");
+                            " > | targetSpeciesID.get(m): " + targetSpeciesIDs.get(m) + " | Adding card to active list...");
                     activeCardList.add(Shared.swapCardDataList.get(l));
                     Log.d (TAG, "... building activeCardList: activeCardList.size(): " + activeCardList.size());
                 }
@@ -422,8 +422,7 @@ public class Engine extends EventObserverAdapter {
                     (q % swapBoardConfiguration.swapNumTilesInRow));
             if (tileCoords.getSwapCoordRow() == ((int) Math.floor(q / swapBoardConfiguration.swapNumTilesInRow)) &&
                 tileCoords.getSwapCoordCol() == (q % swapBoardConfiguration.swapNumTilesInRow)) {
-                    Log.d (TAG, "method arrangeSwapboard: tileCoords.getSwapTileCoordsID(): " +
-                            tileCoords.getSwapTileCoordsID());
+                    //Log.d (TAG, "method arrangeSwapboard:  (double) key for database: tileCoords.getSwapTileCoordsID(): " + tileCoords.getSwapTileCoordsID());
             }
             /* //TODO remove code - or move it to debug prior to release
             //having set the Row and Column coordinates print them out

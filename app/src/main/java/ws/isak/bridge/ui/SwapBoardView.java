@@ -249,7 +249,6 @@ public class SwapBoardView extends LinearLayout {
 
                 //[2] else this is a viable turn
                 else {
-                    debugCoordsTileViewsMap ("class SwapBoardView: method addTile: onClick: [2] start of viable turn");
                     //Toast.makeText(Shared.context, "Coordinates: < " + curTileOnBoard.getSwapCoordRow() +
                     //        "," + curTileOnBoard.getSwapCoordCol() + " >", Toast.LENGTH_SHORT).show();  //TODO remove toast?
 
@@ -257,6 +256,7 @@ public class SwapBoardView extends LinearLayout {
                     //change the state of SwapGameData.isGameStarted() and set the SwapGameData.setGameStartTimeStamp()
                     Log.d(TAG, "**** Update SwapGameData with current timing information (and card info) ****");
                     if (!Shared.userData.getCurSwapGameData().isGameStarted()) {     //if this is the first card being flipped
+                        //debugCoordsTileViewsMap ("class SwapBoardView: method addTile: onClick: [2] start of first viable turn");
                         Toast.makeText(Shared.context, "FIRST CARD IN GAME", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "This is the First Tile Selected In SwapGame");
                         Shared.userData.getCurSwapGameData().setGameStarted(true);
@@ -280,6 +280,7 @@ public class SwapBoardView extends LinearLayout {
 
                     //[2.1] If this is the first card in a pair to be selected
                     if (!swapTileView.isSelected() && selectedTiles.size() == 0) {
+                        debugCoordsTileViewsMap ("class SwapBoardView: method addTile: onClick: [2.1] start of viable turn");
                         Toast.makeText(Shared.context, "FIRST CARD IN PAIR", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, " ***** ... FIRST OF PAIR selected: swapTileView: " + swapTileView);
                         swapTileView.select("SwapBoardView: addTile: [2.1] - first card in pair to be selected");
@@ -292,6 +293,7 @@ public class SwapBoardView extends LinearLayout {
                     // and animate swap (call via event for CoordToCard HashMap updates and perform Coord to TileView image
                     // updates here)
                     else {      //FIXME - should this case still be an 'else if' with a final 'else' as catch option?
+                        debugCoordsTileViewsMap ("class SwapBoardView: method addTile: onClick: [2.2] second card of viable turn");
                         Toast.makeText(Shared.context, "SECOND CARD IN PAIR", Toast.LENGTH_SHORT).show();
                         //for now we want to count turns only when pairs are to be swapped
                         Log.d (TAG, " ..... appending [" + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()-1)+
@@ -395,10 +397,7 @@ public class SwapBoardView extends LinearLayout {
             SwapTileView tileView = (SwapTileView) pair.getValue();
             Log.v(TAG, "method debugCoordsTileViewsMap: Searching... coords: < " +
                     coords.getSwapCoordRow() + "," + coords.getSwapCoordCol() +
-                    //FIXME this first bitmap isn't updated on swap
-                    " | Bitmap @ Shared.currentSwapGame.swapBoardArrangement.swapBoardMap.get(coords).getCardBitmap(): " +
-                    Shared.currentSwapGame.swapBoardArrangement.swapBoardMap.get(coords).getCardBitmap() +
-                    //FIXME this second bitmap is updated on swap
+                    "> | Bitmap @ Shared.currentSwapGame.swapBoardArrangement.swapBoardMap.get(coords).getCardBitmap(): " +
                     " | Bitmap @ Shared.userData.getCurSwapGameData().getSwapBoardMap().get(coords).getCardBitmap(): " +
                     Shared.userData.getCurSwapGameData().getSwapBoardMap().get(coords).getCardBitmap() +
                     " | Map.Entry pair: " + pair);

@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         android:gravity="left|center_vertical"
         android:orientation="horizontal"
-        android:layout_marginLeft="5dp">
+        android:layout_marginLeft="5dp">        <!-- FIXME - make 5dp an dimen -->
 
         <ImageView
             android:id="@+id/mix_on_off_image"
@@ -85,6 +85,41 @@
             android:text="@string/swap_popup_settings_mixer_on_text"
             android:textColor="@color/colorText"
             android:textSize="@dimen/swap_popup_settings_mix_text_size" /> <!-- TODO change all constants to dimens/colours/etc -->
+    </LinearLayout>
+
+    <!-- Winning easy/hard button and text -->
+    <LinearLayout
+        android:id="@+id/win_easy_hard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left|center_vertical"
+        android:orientation="horizontal"
+        android:layout_marginLeft="5dp">    <!-- FIXME - make 5dp an dimen -->
+
+        <ImageView
+            android:id="@+id/win_easy_hard_image"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/swap_popup_settings_winning_difficutly_image_size"
+            android:layout_marginLeft="5dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/swap_winning_easy"
+            android:onClick="setWinningDifficulty"/>
+
+        <TextView
+            android:id="@+id/win_easy_hard_text"
+            android:layout_width="175dp"
+            android:layout_height="@dimen/swap_popup_settings_winning_difficutly_text_size"
+            android:layout_marginLeft="8dp"
+            android:gravity="left|center_vertical"
+            android:shadowColor="#2eaed9"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:shadowRadius="4"
+            android:text="@string/swap_popup_settings_winning_easy_text"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/swap_popup_settings_winning_difficutly_text_size" /> <!-- TODO change all constants to dimens/colours/etc -->
+
     </LinearLayout>
 
 </LinearLayout>

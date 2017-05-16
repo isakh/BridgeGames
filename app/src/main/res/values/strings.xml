@@ -29,6 +29,8 @@
     <string name="swap_popup_settings_looper_off_text">Loop OFF</string>
     <string name="swap_popup_settings_mixer_on_text">Mixer ON</string>
     <string name="swap_popup_settings_mixer_off_text">Mixer OFF</string>
+    <string name="swap_popup_settings_winning_easy_text">Win EASY</string>
+    <string name="swap_popup_settings_winning_hard_text">Win HARD</string>
 
     <!-- =============================================================================== -->
     <!-- Layout: pre_survey_fragment -->

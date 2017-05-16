@@ -120,6 +120,7 @@ public class SwapTileView extends FrameLayout{
         mTileText.setText("");
 
         SwapCardData tileData = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(curTileOnBoard);
+        //FIXME - remove: SwapCardData tileData = Shared.currentSwapGame.swapBoardArrangement.swapBoardMap.get(curTileOnBoard);
         SwapTileView tileView = coordsViewsMap.get(curTileOnBoard);
         String tileText =
                 "Coords: <" +

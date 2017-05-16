@@ -151,14 +151,17 @@
     <dimen name="swap_popup_settings_width">300dp</dimen>
     <dimen name="swap_popup_settings_height">200dp</dimen>
     <!-- swap_menu_title section -->
-    <dimen name="swap_popup_settings_title_height">75dp</dimen>
-    <dimen name="swap_popup_won_title_text_size">60.0sp</dimen>
+    <dimen name="swap_popup_settings_title_height">60dp</dimen>
+    <dimen name="swap_popup_won_title_text_size">50.0sp</dimen>
     <!-- sound on/off section -->
-    <dimen name="swap_popup_settings_looper_image_size">50dp</dimen>
-    <dimen name="swap_popup_settings_looper_text_size">40.0sp</dimen>
+    <dimen name="swap_popup_settings_looper_image_size">40dp</dimen>
+    <dimen name="swap_popup_settings_looper_text_size">30.0sp</dimen>
     <!-- mix on/off section -->
-    <dimen name="swap_popup_settings_mix_image_size">50dp</dimen>
-    <dimen name="swap_popup_settings_mix_text_size">40.0sp</dimen>
+    <dimen name="swap_popup_settings_mix_image_size">40dp</dimen>
+    <dimen name="swap_popup_settings_mix_text_size">30.0sp</dimen>
+    <!-- winning difficulty section -->
+    <dimen name= "swap_popup_settings_winning_difficutly_image_size">40dp</dimen>
+    <dimen name= "swap_popup_settings_winning_difficutly_text_size">30.0sp</dimen>
     
     <!-- =============================================================================== -->
     <!-- Layout: popup_won_view-->

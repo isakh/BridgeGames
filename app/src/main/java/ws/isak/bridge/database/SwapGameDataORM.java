@@ -48,6 +48,9 @@ public class SwapGameDataORM {
     private static final String COLUMN_DIFFICULTY_TYPE = "INTEGER";
     private static final String COLUMN_DIFFICULTY = "difficultyLevel";
 
+    private static final String COLUMN_WINNING_DIFFICULTY_TYPE = "INTEGER";
+    private static final String COLUMN_WINNING_DIFFICULTY = "winningDifficulty";
+
     private static final String COLUMN_GAME_DURATION_ALLOCATED_TYPE = "INTEGER";
     private static final String COLUMN_GAME_DURATION_ALLOCATED = "gameDurationAllocated";
 
@@ -63,7 +66,7 @@ public class SwapGameDataORM {
     private static final String COLUMN_TURN_DURATIONS_TYPE = "STRING";
     private static final String COLUMN_TURN_DURATIONS = "turnDurations";
 
-    //FIXME - serialize arraylist of hashmaps to blob?
+    //FIXME - I didn't serialize arraylist of hashmaps to blob - so updated this!
     private static final String COLUMN_SWAP_BOARD_MAP_LIST_TYPE = "BLOB";
     private static final String COLUMN_SWAP_BOARD_MAP_LIST = "swapGameMapList";
 
@@ -73,6 +76,7 @@ public class SwapGameDataORM {
             COLUMN_PLAYER_USERNAME + " " + COLUMN_PLAYER_USERNAME_TYPE + COMMA_SEP +
             COLUMN_GAME_START_TIMESTAMP + " " + COLUMN_GAME_START_TIMESTAMP_TYPE + COMMA_SEP +
             COLUMN_DIFFICULTY + " " + COLUMN_DIFFICULTY_TYPE + COMMA_SEP +
+            COLUMN_WINNING_DIFFICULTY + " " + COLUMN_WINNING_DIFFICULTY_TYPE + COMMA_SEP +
             COLUMN_GAME_DURATION_ALLOCATED + " " + COLUMN_GAME_DURATION_ALLOCATED_TYPE + COMMA_SEP +
             COLUMN_GAME_STARTED + " " + COLUMN_GAME_STARTED_TYPE + COMMA_SEP +
             COLUMN_NUM_TURNS_TAKEN_IN_GAME + " " + COLUMN_NUM_TURNS_TAKEN_IN_GAME_TYPE + COMMA_SEP +
@@ -163,6 +167,7 @@ public class SwapGameDataORM {
                             " | gameStartTimestamp: " + swapGameDataAtCursor.getGameStartTimestamp() +
                             " | playerUserName: " + swapGameDataAtCursor.getUserPlayingName() +
                             " | difficultyLevel: " + swapGameDataAtCursor.getGameDifficulty() +
+                            " | winningDifficulty: " + swapGameDataAtCursor.getWinningDifficulty() +
                             " | gameDurationAllocated: " + swapGameDataAtCursor.getGameDurationAllocated() +
                             " | gameStarted: " + swapGameDataAtCursor.isGameStarted() +
                             " | numTurnsTakenInGame: "+ swapGameDataAtCursor.getNumTurnsTaken());
@@ -236,6 +241,8 @@ public class SwapGameDataORM {
         values.put (COLUMN_GAME_START_TIMESTAMP, swapGameData.getGameStartTimestamp());
         Log.d (TAG, " ... swapGameDataToContentValues: putting Difficulty: " + swapGameData.getGameDifficulty());
         values.put (COLUMN_DIFFICULTY, swapGameData.getGameDifficulty());
+        Log.v (TAG, " ... swapGameDataToContentValues: putting winningDifficulty: " + swapGameData.getWinningDifficulty());
+        values.put (COLUMN_WINNING_DIFFICULTY, swapGameData.getWinningDifficulty());
         Log.d (TAG, " ... swapGameDataToContentValues: putting GameDuration: " + swapGameData.getGameDurationAllocated());
         values.put (COLUMN_GAME_DURATION_ALLOCATED, swapGameData.getGameDurationAllocated());
         Log.d (TAG, " ... swapGameDataToContentValues: putting GameStarted (always 1?): " + swapGameData.isGameStarted());
@@ -304,6 +311,8 @@ public class SwapGameDataORM {
         Log.d (TAG, " ... cursorAtSwapGameData.getGameStartTimestamp(): " + cursorAtSwapGameData.getGameStartTimestamp());
         cursorAtSwapGameData.setGameDifficulty(cursor.getInt(cursor.getColumnIndex(COLUMN_DIFFICULTY)));
         Log.d (TAG, " ... cursorAtSwapGameData.getGameDifficulty(): " + cursorAtSwapGameData.getGameDifficulty());
+        cursorAtSwapGameData.setWinningDifficulty(cursor.getInt(cursor.getColumnIndex(COLUMN_WINNING_DIFFICULTY)));
+        Log.d (TAG, " ... cursorAtSwapGameData.getWinningDifficulty(): " + cursorAtSwapGameData.getWinningDifficulty());
         cursorAtSwapGameData.setGameDurationAllocated((long) cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_DURATION_ALLOCATED)));
         Log.d (TAG, " ... cursorAtSwapGameData.getGameDurationAllocated(): " + cursorAtSwapGameData.getGameDurationAllocated());
         if (cursor.getInt(cursor.getColumnIndex(COLUMN_GAME_STARTED)) == 1) {
