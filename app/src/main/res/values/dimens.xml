@@ -20,7 +20,7 @@
     <!-- Class: SwapControlsView -->
     <!-- *********************** -->
     <dimen name="swap_control_button_margin">5dp</dimen>
-    <dimen name="swap_control_button_width">75dp</dimen>
+    <dimen name="swap_control_button_width">100dp</dimen>   <!-- FIXME was 75dp, is this shift ok?-->
     <dimen name="swap_control_button_height">100dp</dimen>
 
     <!-- DIMENSION RESOURCES REFERENCED IN LAYOUTS -->

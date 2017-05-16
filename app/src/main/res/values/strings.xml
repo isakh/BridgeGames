@@ -175,6 +175,12 @@
 
 
     <!-- =================================================================================== -->
+    <!-- Class: SwapControlsView -->
+    <!-- *********************** -->
+    <string name="swap_controls_button_play">PLAY ROW</string>
+    <string name="swap_controls_button_pause">PAUSE ROW</string>
+
+    <!-- =================================================================================== -->
     <!-- Layout: user_setup_fragment -->
     <!-- *************************** -->
     <string name="user_setup_title">Welcome: Please Login or Sign Up</string>

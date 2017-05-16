@@ -56,14 +56,13 @@ public class SwapBoardView extends LinearLayout {
 
     private LinearLayout.LayoutParams mRowLayoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
     private LinearLayout.LayoutParams mTileLayoutParams;
-    private int mScreenWidth;           //FIXME - for now this is 80% of the board width hard coded, make dynamic? or set in xml
+    private int mScreenWidth;           //FIXME - for now this is 85% of the board width hard coded, make dynamic? or set in xml
     private int mScreenHeight;
     //an instance of the board configuration for the current game
     private SwapBoardConfiguration mSwapBoardConfiguration;
     //an instance of the board arrangement for the current game
     private SwapBoardArrangement mSwapBoardArrangement;
-    //a mapping of each tile ID to a view TileView
-    //TODO verify that this remains unchanged within each game
+    //a mapping of each tile ID to a view TileView, this remains unchanged within the scope of each game
     public HashMap<SwapTileCoordinates, SwapTileView> mTileViewMap;
     //an array list holds the id's of the currently selected cards
     public List<SwapTileCoordinates> selectedTiles = new ArrayList<SwapTileCoordinates>(0);
@@ -83,9 +82,9 @@ public class SwapBoardView extends LinearLayout {
         int margin = getResources().getDimensionPixelSize(R.dimen.swap_game_timer_margin_top);
         int padding = getResources().getDimensionPixelSize(R.dimen.swap_board_padding);
         mScreenHeight = getResources().getDisplayMetrics().heightPixels - margin - padding*2;
-        mScreenWidth = (int) Math.floor((getResources().getDisplayMetrics().widthPixels - padding*2 - ImageScaling.px(20)) * 0.8);    //TODO * proportion of screen for view - make less of a hack
+        mScreenWidth = (int) Math.floor((getResources().getDisplayMetrics().widthPixels - padding*2 - ImageScaling.px(20)) * 0.85);    //TODO * proportion of screen for view - make less of a hack
         Log.d (TAG, " ... mScreenHeight: " + mScreenHeight + " | mScreenWidth: " + mScreenWidth);
-        mTileViewMap = new HashMap<SwapTileCoordinates, SwapTileView>();        //TODO something with this!
+        mTileViewMap = new HashMap<SwapTileCoordinates, SwapTileView>();
         setClipToPadding(false);
     }
 

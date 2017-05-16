@@ -6,6 +6,4 @@
     android:layout_height="match_parent"
     android:padding="@dimen/swap_board_padding">
 
-    <!-- TODO remove/adjust border - was this causing the issues? android:background="@drawable/border_green"-->
-
 </ws.isak.bridge.ui.SwapBoardView>

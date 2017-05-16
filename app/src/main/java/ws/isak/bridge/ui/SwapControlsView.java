@@ -40,12 +40,11 @@ public class SwapControlsView extends LinearLayout implements View.OnClickListen
 
     public static final String TAG = "SwapControlsView";
 
-    private static final int NUM_BUTTONS = 2;
-    private int mScreenWidth;           //TODO make this a function of the 20% of the screen width for the board
+    private int mScreenWidth;           //TODO make this a function of the 15% of the screen width for the board
     private int mScreenHeight;
 
     private Button playPauseButtons [] = new Button[Shared.currentSwapGame.swapBoardConfiguration.numRows];
-    private Button resetPlaybackButtons [] = new Button[Shared.currentSwapGame.swapBoardConfiguration.numRows];
+    //To remove: private Button resetPlaybackButtons [] = new Button[Shared.currentSwapGame.swapBoardConfiguration.numRows];
 
     public SwapControlsView(Context context) {
         this(context, null);
@@ -59,11 +58,11 @@ public class SwapControlsView extends LinearLayout implements View.OnClickListen
         setGravity(Gravity.CENTER);
 
         //TODO - ∆ margin and padding xml references
-        int margin = getResources().getDimensionPixelSize(R.dimen.swap_game_timer_margin_top);
-        int padding = getResources().getDimensionPixelSize(R.dimen.swap_board_padding);
+        int margin = Shared.context.getResources().getDimensionPixelSize(R.dimen.swap_game_timer_margin_top);
+        int padding = Shared.context.getResources().getDimensionPixelSize(R.dimen.swap_board_padding);
 
         mScreenHeight = getResources().getDisplayMetrics().heightPixels - margin - padding*2;
-        mScreenWidth = (int) Math.floor((getResources().getDisplayMetrics().widthPixels - padding*2 - ImageScaling.px(20)) * 0.2);    //TODO * proportion of screen for view - make less of a hack
+        mScreenWidth = (int) Math.floor((getResources().getDisplayMetrics().widthPixels - padding*2 - ImageScaling.px(20)) * 0.15);    //TODO * proportion of screen for view - make less of a hack
         Log.d (TAG, " ... mScreenHeight: " + mScreenHeight + " | mScreenWidth: " + mScreenWidth);
         setClipToPadding(false);
     }
@@ -92,37 +91,7 @@ public class SwapControlsView extends LinearLayout implements View.OnClickListen
                     1.0f));
             table.addView(tableRow);
 
-            final int FINAL_ROW = row;
-
-            //-------------------------
-
-            Button buttonR = new Button(Shared.context);
-            buttonR.setLayoutParams(new TableRow.LayoutParams(
-                    (int) Math.floor(Shared.context.getResources().getDimension(R.dimen.swap_control_button_width)),
-                    (int) Math.floor(Shared.context.getResources().getDimension(R.dimen.swap_control_button_height)),
-                    1.0f));
-
-            Bitmap originalBitmapR = BitmapFactory.decodeResource(getResources(), R.drawable.swap_playback_reset_button);
-            Bitmap scaledBitmapR = Bitmap.createScaledBitmap(originalBitmapR,
-                    (ImageScaling.px ((int) Math.floor(Shared.context.getResources().getDimension(R.dimen.swap_control_button_width)))),
-                    (ImageScaling.px ((int) Math.floor(Shared.context.getResources().getDimension(R.dimen.swap_control_button_height)))),
-                    true);
-            Resources resourceR = getResources();
-            buttonR.setBackground(new BitmapDrawable(resourceR, scaledBitmapR));
-
-            // Make text not clip on small buttons
-            buttonR.setPadding(0, 25, 0, 0);
-
-            buttonR.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    resetSwapRowPlaybackButton(FINAL_ROW);
-                }
-            });
-
-            tableRow.addView(buttonR);
-            resetPlaybackButtons[row] = buttonR;
-
+            final int curRow = row;
             //
             Button buttonPP = new Button(Shared.context);
             buttonPP.setLayoutParams(new TableRow.LayoutParams(
@@ -130,7 +99,8 @@ public class SwapControlsView extends LinearLayout implements View.OnClickListen
                     (int) Math.floor(Shared.context.getResources().getDimension(R.dimen.swap_control_button_height)),
                     1.0f));
 
-            //buttonPP.setText("PLAY " + row);
+            Log.d (TAG, " buttonPP.getCurrentTextColor(): " + buttonPP.getCurrentTextColor());
+            buttonPP.setText(Shared.context.getResources().getText(R.string.swap_controls_button_play));
             Bitmap originalBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.swap_playback_play_button);
             Bitmap scaledBitmap = Bitmap.createScaledBitmap(originalBitmap,
                     (ImageScaling.px ((int) Math.floor(Shared.context.getResources().getDimension(R.dimen.swap_control_button_width)))),
@@ -145,7 +115,7 @@ public class SwapControlsView extends LinearLayout implements View.OnClickListen
             buttonPP.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    pauseSwapRowPlaybackButton(FINAL_ROW);
+                    pauseSwapRowPlaybackButton(curRow);
                 }
             });
 
@@ -166,18 +136,23 @@ public class SwapControlsView extends LinearLayout implements View.OnClickListen
             Toast.makeText(Shared.context, "Please turn on game audio to play in this mode, you can do this under settings", Toast.LENGTH_SHORT).show();
             ScreenController.getInstance().openScreen(ScreenController.Screen.MENU_SWAP);
         }
-        //if audio is allowed, and not currently playing
+        //if audio is allowed, and not currently playing change button to pause and send playAudio event
         else if (!Audio.OFF && !Audio.getIsAudioPlaying()) {
             currentPlayPauseButton.setBackgroundResource(R.drawable.swap_playback_pause_button);
+            currentPlayPauseButton.setText(Shared.context.getResources().getText(R.string.swap_controls_button_pause));
+
             Shared.eventBus.notify(new SwapPlayRowAudioEvent(activeRow));
         }
-        //if audio is allowed, and already playing
+        //if audio is allowed, and already playing change button to play and send pauseAudio event
+        //TODO at the moment this stops the audio but (?)doesn'(?) keep track of playback location
         else {
             currentPlayPauseButton.setBackgroundResource(R.drawable.swap_playback_play_button);
+            currentPlayPauseButton.setText(Shared.context.getResources().getText(R.string.swap_controls_button_play));
             Shared.eventBus.notify(new SwapPauseRowAudioEvent(activeRow));
         }
     }
 
+    /* TODO remove if we decide not to have a Reset button
     public void resetSwapRowPlaybackButton (int activeRow) {
         Log.d (TAG, "method resetSwapRowPlaybackButton");
 
@@ -187,4 +162,5 @@ public class SwapControlsView extends LinearLayout implements View.OnClickListen
         //TODO stop playback and reset cursor if necessary?
         Shared.eventBus.notify(new SwapResetRowAudioEvent(activeRow));
     }
+    */
 }
