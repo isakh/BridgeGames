@@ -8,6 +8,7 @@ import java.util.Iterator;
 
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.common.SwapCardData;
+import ws.isak.bridge.common.SwapPreferences;
 import ws.isak.bridge.utils.SwapTileCoordinates;
 
 /*
@@ -44,7 +45,7 @@ public class SwapGameData {
         setSwapBoardMap(Shared.currentSwapGame.swapBoardArrangement.swapBoardMap);
         setUserPlayingName(Shared.userData.getUserName());
         setGameDifficulty(-1);
-        setWinningDifficulty(0);        //default 0 is winning 'easy' (1 is 'hard')
+        setWinningDifficulty(SwapPreferences.getWinningDifficulty());        //default 0 is winning 'easy' (1 is 'hard')
         setGameDurationAllocated(0);
         //initialize to 0 or null as necessary
         setGameStarted(false);      //initialize to false on setup
@@ -63,7 +64,7 @@ public class SwapGameData {
         setSwapBoardMap (boardMap);
         setUserPlayingName(Shared.userData.getUserName());
         setGameDifficulty(-1);
-        setWinningDifficulty(0);        //default 0 is winning 'easy' (1 is 'hard')
+        setWinningDifficulty(SwapPreferences.getWinningDifficulty());        //default 0 is winning 'easy' (1 is 'hard')
         setGameDurationAllocated(0);
         //initialize to 0 or null as necessary
         setGameStarted(false);      //initialize to false on setup

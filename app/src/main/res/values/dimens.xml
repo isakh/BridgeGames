@@ -149,10 +149,10 @@
     <!-- Layout: swap_popup_settings_view -->
     <!-- ******************************** -->
     <dimen name="swap_popup_settings_width">300dp</dimen>
-    <dimen name="swap_popup_settings_height">200dp</dimen>
+    <dimen name="swap_popup_settings_height">300dp</dimen>
     <!-- swap_menu_title section -->
-    <dimen name="swap_popup_settings_title_height">60dp</dimen>
-    <dimen name="swap_popup_won_title_text_size">50.0sp</dimen>
+    <dimen name="swap_popup_settings_title_height">50dp</dimen>
+    <dimen name="swap_popup_won_title_text_size">40.0sp</dimen>
     <!-- sound on/off section -->
     <dimen name="swap_popup_settings_looper_image_size">40dp</dimen>
     <dimen name="swap_popup_settings_looper_text_size">30.0sp</dimen>

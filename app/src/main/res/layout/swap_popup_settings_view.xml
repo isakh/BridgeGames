@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
+              android:background="#7700ff00"
               android:orientation="vertical"
-              android:gravity="left|top">
+              android:gravity="left|top">       <!-- TODO set colors in colors.xml -->
 
     <!-- Title -->
     <TextView
@@ -24,6 +25,7 @@
         android:id="@+id/looper_on_off"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:gravity="left|center_vertical"
         android:orientation="horizontal"
         android:layout_marginLeft="5dp">
@@ -32,7 +34,7 @@
             android:id="@+id/looper_on_off_image"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/swap_popup_settings_looper_image_size"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="25dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/button_looper_on"
@@ -42,8 +44,8 @@
             android:id="@+id/looper_on_off_text"
             android:layout_width="175dp"
             android:layout_height="@dimen/swap_popup_settings_looper_image_size"
-            android:layout_marginLeft="8dp"
-            android:gravity="left|center_vertical"
+            android:layout_marginRight="25dp"
+            android:gravity="right|center_vertical"
             android:shadowColor="#2eaed9"
             android:shadowDx="4"
             android:shadowDy="4"
@@ -58,6 +60,8 @@
         android:id="@+id/mix_on_off"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+
         android:gravity="left|center_vertical"
         android:orientation="horizontal"
         android:layout_marginLeft="5dp">        <!-- FIXME - make 5dp an dimen -->
@@ -66,7 +70,7 @@
             android:id="@+id/mix_on_off_image"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/swap_popup_settings_mix_image_size"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="25dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/button_mixer_on"
@@ -76,8 +80,8 @@
             android:id="@+id/mix_on_off_text"
             android:layout_width="175dp"
             android:layout_height="@dimen/swap_popup_settings_mix_image_size"
-            android:layout_marginLeft="8dp"
-            android:gravity="left|center_vertical"
+            android:layout_marginRight="25dp"
+            android:gravity="right|center_vertical"
             android:shadowColor="#2eaed9"
             android:shadowDx="4"
             android:shadowDy="4"
@@ -92,6 +96,7 @@
         android:id="@+id/win_easy_hard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:gravity="left|center_vertical"
         android:orientation="horizontal"
         android:layout_marginLeft="5dp">    <!-- FIXME - make 5dp an dimen -->
@@ -100,7 +105,7 @@
             android:id="@+id/win_easy_hard_image"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/swap_popup_settings_winning_difficutly_image_size"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="25dp"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:src="@drawable/swap_winning_easy"
@@ -109,9 +114,9 @@
         <TextView
             android:id="@+id/win_easy_hard_text"
             android:layout_width="175dp"
-            android:layout_height="@dimen/swap_popup_settings_winning_difficutly_text_size"
-            android:layout_marginLeft="8dp"
-            android:gravity="left|center_vertical"
+            android:layout_height="@dimen/swap_popup_settings_winning_difficutly_image_size"
+            android:layout_marginRight="25dp"
+            android:gravity="right|center_vertical"
             android:shadowColor="#2eaed9"
             android:shadowDx="4"
             android:shadowDy="4"

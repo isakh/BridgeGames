@@ -12,6 +12,7 @@ import android.util.Log;
 import ws.isak.bridge.R;
 import ws.isak.bridge.common.Audio;
 import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.common.SwapPreferences;
 import ws.isak.bridge.utils.FontLoader;
 import ws.isak.bridge.utils.FontLoader.Font;
 
@@ -55,7 +56,7 @@ public class SwapPopupSettingsView extends LinearLayout implements View.OnClickL
         mLooperImage = (ImageView) findViewById(R.id.looper_on_off_image);
         mMixImage = (ImageView) findViewById(R.id.mix_on_off_image);
         mWinningDifficultyImage = (ImageView) findViewById(R.id.win_easy_hard_image);
-        FontLoader.setTypeface(context, new TextView[] { mLooperText, mMixText }, Font.ANGRYBIRDS);
+        FontLoader.setTypeface(context, new TextView[] { mLooperText, mMixText, mWinningDifficultyText }, Font.ANGRYBIRDS);
         mLooperImage.setOnClickListener(this);
         mMixImage.setOnClickListener(this);
         mWinningDifficultyImage.setOnClickListener(this);
@@ -76,9 +77,9 @@ public class SwapPopupSettingsView extends LinearLayout implements View.OnClickL
                 setMixerButton();
                 break;
             case R.id.win_easy_hard_image:
-                int winningDifficulty = Shared.userData.getCurSwapGameData().getWinningDifficulty();
+                int winningDifficulty = SwapPreferences.getWinningDifficulty();
                 int newWinningDifficulty = (winningDifficulty + 1) % 2;     //(0+1)%2 = 1; (1+1)%2 = 0
-                Shared.userData.getCurSwapGameData().setWinningDifficulty(newWinningDifficulty);
+                SwapPreferences.setWinningDifficulty(newWinningDifficulty);
                 setWinningDifficultyButton();
         }
     }
@@ -109,7 +110,7 @@ public class SwapPopupSettingsView extends LinearLayout implements View.OnClickL
     }
 
     private void setWinningDifficultyButton() {
-        if (Shared.userData.getCurSwapGameData().getWinningDifficulty() == 0) { //set to easy
+        if (SwapPreferences.getWinningDifficulty() == 0) { //set to easy
             mWinningDifficultyText.setText(Shared.context.getResources().getText(R.string.swap_popup_settings_winning_easy_text));
             mWinningDifficultyImage.setImageResource(R.drawable.swap_winning_easy);
         }
