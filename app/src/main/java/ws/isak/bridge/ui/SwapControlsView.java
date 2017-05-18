@@ -23,8 +23,6 @@ import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.common.Audio;
 import ws.isak.bridge.engine.ScreenController;
 import ws.isak.bridge.events.engine.SwapPlayRowAudioEvent;
-import ws.isak.bridge.events.engine.SwapPauseRowAudioEvent;
-import ws.isak.bridge.events.engine.SwapResetRowAudioEvent;
 import ws.isak.bridge.model.SwapGame;
 import ws.isak.bridge.utils.ImageScaling;
 
@@ -62,7 +60,7 @@ public class SwapControlsView extends LinearLayout implements View.OnClickListen
         int padding = Shared.context.getResources().getDimensionPixelSize(R.dimen.swap_board_padding);
 
         mScreenHeight = getResources().getDisplayMetrics().heightPixels - margin - padding*2;
-        mScreenWidth = (int) Math.floor((getResources().getDisplayMetrics().widthPixels - padding*2 - ImageScaling.px(20)) * 0.15);    //TODO * proportion of screen for view - make less of a hack
+        mScreenWidth = (int) Math.floor((getResources().getDisplayMetrics().widthPixels - padding*2 - ImageScaling.px(20)) * 0.15);    //TODO * proportion (currently 15%) of screen for view - make less of a hack
         Log.d (TAG, " ... mScreenHeight: " + mScreenHeight + " | mScreenWidth: " + mScreenWidth);
         setClipToPadding(false);
     }
@@ -141,26 +139,15 @@ public class SwapControlsView extends LinearLayout implements View.OnClickListen
             currentPlayPauseButton.setBackgroundResource(R.drawable.swap_playback_pause_button);
             currentPlayPauseButton.setText(Shared.context.getResources().getText(R.string.swap_controls_button_pause));
 
-            Shared.eventBus.notify(new SwapPlayRowAudioEvent(activeRow));
+            Shared.eventBus.notify(new SwapPlayRowAudioEvent(activeRow, true));
         }
-        //if audio is allowed, and already playing change button to play and send pauseAudio event
+        //if audio is allowed, and already playing change button to play and update Play Audio Event with
+        //current playback state set to false
         //TODO at the moment this stops the audio but (?)doesn'(?) keep track of playback location
         else {
             currentPlayPauseButton.setBackgroundResource(R.drawable.swap_playback_play_button);
             currentPlayPauseButton.setText(Shared.context.getResources().getText(R.string.swap_controls_button_play));
-            Shared.eventBus.notify(new SwapPauseRowAudioEvent(activeRow));
+            Shared.eventBus.notify(new SwapPlayRowAudioEvent(activeRow, false));
         }
     }
-
-    /* TODO remove if we decide not to have a Reset button
-    public void resetSwapRowPlaybackButton (int activeRow) {
-        Log.d (TAG, "method resetSwapRowPlaybackButton");
-
-        Button currentRestartButton = resetPlaybackButtons[activeRow];
-        Audio.OFF = true;
-        currentRestartButton.setAlpha(0.5f);
-        //TODO stop playback and reset cursor if necessary?
-        Shared.eventBus.notify(new SwapResetRowAudioEvent(activeRow));
-    }
-    */
 }

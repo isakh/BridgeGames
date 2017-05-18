@@ -7,9 +7,7 @@ import ws.isak.bridge.events.engine.MatchGameWonEvent;
 import ws.isak.bridge.events.engine.SwapGameWonEvent;
 import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
 import ws.isak.bridge.events.engine.PlayCardAudioEvent;
-import ws.isak.bridge.events.engine.SwapResetRowAudioEvent;
 import ws.isak.bridge.events.engine.SwapPlayRowAudioEvent;
-import ws.isak.bridge.events.engine.SwapPauseRowAudioEvent;
 
 import ws.isak.bridge.events.ui.MatchBackGameEvent;
 import ws.isak.bridge.events.ui.MatchDifficultySelectedEvent;
@@ -144,18 +142,6 @@ public class EventObserverAdapter implements EventObserver {
 
     @Override
     public void onEvent(SwapPlayRowAudioEvent event) {
-        //Log.d (TAG, "");
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void onEvent(SwapPauseRowAudioEvent event) {
-        //Log.d (TAG, "");
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void onEvent(SwapResetRowAudioEvent event) {
         //Log.d (TAG, "");
         throw new UnsupportedOperationException();
     }

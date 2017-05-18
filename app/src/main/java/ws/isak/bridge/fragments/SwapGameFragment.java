@@ -27,9 +27,7 @@ import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.database.SwapGameDataORM;
 
 import ws.isak.bridge.common.SwapCardData;
-import ws.isak.bridge.events.engine.SwapPauseRowAudioEvent;
 import ws.isak.bridge.events.engine.SwapPlayRowAudioEvent;
-import ws.isak.bridge.events.engine.SwapResetRowAudioEvent;
 import ws.isak.bridge.events.engine.SwapGameWonEvent;
 
 import ws.isak.bridge.events.ui.SwapSelectedCardsEvent;
@@ -59,7 +57,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
 
     public final String TAG = "SwapGameFragment";
     public static String URI_AUDIO = "raw://";
-    
+
     private SwapBoardView mSwapBoardView;
     private SwapControlsView mSwapControlsView;
 
@@ -105,7 +103,6 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         Shared.eventBus.listen(SwapUnselectCardsEvent.TYPE, this);
         Shared.eventBus.listen(SwapGameWonEvent.TYPE, this);
         Shared.eventBus.listen(SwapPlayRowAudioEvent.TYPE, this);
-        Shared.eventBus.listen(SwapResetRowAudioEvent.TYPE, this);
 
         return view;
     }
@@ -145,7 +142,6 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         Shared.eventBus.unlisten(SwapUnselectCardsEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapGameWonEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapPlayRowAudioEvent.TYPE, this);
-        Shared.eventBus.unlisten(SwapResetRowAudioEvent.TYPE, this);
 
         super.onDestroy();
     }
@@ -318,7 +314,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
                 int totalTime = (int) Math.ceil((double) totalTimeInMillis / 1000); //TODO is this enough or should we convert all to long ms
                 GameState gameState = new GameState();
                 Shared.currentSwapGame.gameState = gameState;
-                // remained seconds
+                // remaining seconds on timer
                 gameState.remainingTimeInSeconds = totalTime - passedSeconds;
 
                 // calculate stars and score from the amount of time that has elapsed as a ratio
@@ -355,7 +351,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
                 int totalTime = (int) Math.ceil((double) totalTimeInMillis / 1000); //TODO is this enough or should we convert all to long ms
                 GameState gameState = new GameState();
                 Shared.currentSwapGame.gameState = gameState;
-                // remained seconds
+                // remaining seconds on timer
                 gameState.remainingTimeInSeconds = totalTime - passedSeconds;
 
                 // calculate stars and score from the amount of time that has elapsed as a ratio
@@ -573,16 +569,18 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         //Log.d(TAG, " \n ... \n");
     }
 
+    //event triggered when the Play Button is pressed for a given row in SwapControlsView
     @Override
     public void onEvent (SwapPlayRowAudioEvent event) {
         ArrayList <Integer> audioResourceIdList;
         int row = event.id;
+        boolean playbackState = event.playbackNow;
         Log.d (TAG, "onEvent SwapPlayRowAudioEvent: row to playback: " + row +
                     " | state of Audio.getIsAudioPlaying " + Audio.getIsAudioPlaying());
-        //if no other audio is playing
+        //if no other audio is playing then we can start playback
         if (!Audio.getIsAudioPlaying()) {
             audioResourceIdList = getAudioFilesInOrderByID(row);
-            playAudioFromFileList (audioResourceIdList);
+            playAudioFromFileList (audioResourceIdList, playbackState);
         }
         //if another row of audio is currently playing
         else {
@@ -590,12 +588,6 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    @Override
-    public void onEvent (SwapPauseRowAudioEvent event) {
-        //
-        //TODO
-        //
-    }
 
     private ArrayList <Integer> getAudioFilesInOrderByID(int targetRow) {
         ArrayList <Integer> audioResourceIDs = new ArrayList<Integer>(0);
@@ -638,7 +630,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         return audioResourceIDs;
     }
 
-    public void playAudioFromFileList (ArrayList<Integer> audioResourceIdList) {
+    public void playAudioFromFileList (ArrayList<Integer> audioResourceIdList, boolean playbackState) {
         ArrayList <MediaPlayer> mPlayerList = new ArrayList<MediaPlayer>();
         mPlayerList.clear();
         for (int i = 0; i < audioResourceIdList.size(); i++) {
@@ -654,13 +646,19 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
                 curMediaPlayer.setVolume(1f, 1f);
                 curMediaPlayer.setLooping(false);
                 mPlayerList.add(curMediaPlayer);
-                Log.d(TAG, "mPlayerList.size(): " + mPlayerList.size());
-
+                //Log.d(TAG, "mPlayerList.size(): " + mPlayerList.size());
+                /*if(curMediaPlayer.isPlaying() && !playbackState){
+                    curMediaPlayer.pause();
+                    Audio.setIsAudioPlaying(false);
+                } else {
+                    curMediaPlayer.start();
+                    Audio.setIsAudioPlaying(true);
+                }*/
                 curMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                     @Override
                     public void onCompletion(MediaPlayer mediaPlayer) {
-                        //todo - can we use this to handle pause button
                         curMediaPlayer.release();
+                        Audio.setIsAudioPlaying(false);
                     }
                 });
             }
