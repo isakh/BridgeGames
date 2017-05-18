@@ -163,7 +163,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
 
     /*
      * Method setTime converts the gameplay time in millis to minutes and seconds in order to set
-     * the countdown clock on the screen //TODO CHECK THIS IS TRUE?!
+     * the countdown clock on the screen
      */
     private void setTime(long time) {
         Log.d (TAG, "...method setTime: input time (ms): " + time);
