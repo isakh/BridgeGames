@@ -18,10 +18,13 @@ public class SwapPlayRowAudioEvent extends AbstractEvent {
     public static final String TYPE = SwapPlayRowAudioEvent.class.getName();
 
     public final int id;
+    public final boolean playbackNow;
 
-    public SwapPlayRowAudioEvent(int id) {
+    //playbackState true = play, pause = false
+    public SwapPlayRowAudioEvent(int id, boolean playbackState) {
         Log.d (TAG, "constructor method: SwapPlayRowAudioEvent: param id is: " + id);
         this.id = id;
+        this.playbackNow = playbackState;
     }
 
     @Override

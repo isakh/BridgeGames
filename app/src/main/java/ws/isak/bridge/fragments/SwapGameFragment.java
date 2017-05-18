@@ -166,13 +166,13 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
      * the countdown clock on the screen //TODO CHECK THIS IS TRUE?!
      */
     private void setTime(long time) {
-        //Log.d (TAG, "method setTime: input time (ms): " + time);
+        Log.d (TAG, "...method setTime: input time (ms): " + time);
         int timeInSeconds = (int) Math.ceil((double) time / 1000);
-        //Log.d (TAG, "              : timeInSeconds: " + timeInSeconds);
+        Log.d (TAG, "...              : timeInSeconds: " + timeInSeconds);
         int min = timeInSeconds / 60;
-        //Log.d (TAG, "              : min: " + min);
+        Log.d (TAG, "...              : min: " + min);
         int sec = timeInSeconds - min * 60;
-        //Log.d (TAG, "              : sec: " + sec + " | calling mTime.setText");
+        Log.d (TAG, " ...             : sec: " + sec + " | calling mTime.setText");
         mTime.setText(" " + String.format(Locale.ENGLISH, "%02d", min) + ":" + String.format(Locale.ENGLISH, "%02d", sec));
     }
 
@@ -582,9 +582,66 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
             audioResourceIdList = getAudioFilesInOrderByID(row);
             playAudioFromFileList (audioResourceIdList, playbackState);
         }
-        //if another row of audio is currently playing
+        //if another row of audio is currently playing (i.e. getIsAudioPlaying is true)
         else {
             Toast.makeText(Shared.context, "please pause playing audio or wait for it to finish", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void playAudioFromFileList (ArrayList<Integer> audioResourceIdList, boolean playbackState) {
+        ArrayList <MediaPlayer> mPlayerList = new ArrayList<MediaPlayer>();
+        mPlayerList.clear();
+        for (int i = 0; i < audioResourceIdList.size(); i++) {
+            try {
+                final MediaPlayer curMediaPlayer = new MediaPlayer();
+
+                AssetFileDescriptor afd = Shared.context.getResources().openRawResourceFd(audioResourceIdList.get(i));
+                if (afd == null) return;
+                curMediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                afd.close();
+
+                curMediaPlayer.prepare();
+                curMediaPlayer.setVolume(1f, 1f);
+                curMediaPlayer.setLooping(false);
+                mPlayerList.add(curMediaPlayer);
+                //FIXME - does this correctly check between segments? how to pause within segment?
+                curMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                    @Override
+                    public void onPrepared(MediaPlayer mediaPlayer) {
+                        if (!Audio.getIsAudioPlaying()) {
+                            curMediaPlayer.pause();
+                        }
+                    }
+                });
+
+                curMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        curMediaPlayer.release();
+                        Audio.setIsAudioPlaying(false);
+                        Log.d (TAG, "method playAudioFromFileList: onCompletion: isAudioPlaying: " + Audio.getIsAudioPlaying());
+                    }
+                });
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        for (int i = 0; i < (mPlayerList.size() - 1); i++) {
+            mPlayerList.get(i).setNextMediaPlayer(mPlayerList.get(i+1));
+        }
+        if (playbackState == true) {
+            mPlayerList.get(0).start();
+            Audio.setIsAudioPlaying(true);
+            Log.d (TAG, "method playAudioFromFileList: playbackState: " + playbackState +
+                    " | isAudioPlaying: " + Audio.getIsAudioPlaying());
+
+        }
+        else if (playbackState == false) {
+            mPlayerList.get(0).pause();
+            Audio.setIsAudioPlaying(false);
+            Log.d (TAG, "method playAudioFromFileList: playbackState: " + playbackState +
+                    " | isAudioPlaying: " + Audio.getIsAudioPlaying());
         }
     }
 
@@ -628,47 +685,5 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
             Log.d (TAG, "..... resource @ i: " + i + " : " + audioResourceNames.get(i));
         }
         return audioResourceIDs;
-    }
-
-    public void playAudioFromFileList (ArrayList<Integer> audioResourceIdList, boolean playbackState) {
-        ArrayList <MediaPlayer> mPlayerList = new ArrayList<MediaPlayer>();
-        mPlayerList.clear();
-        for (int i = 0; i < audioResourceIdList.size(); i++) {
-            try {
-                final MediaPlayer curMediaPlayer = new MediaPlayer();
-
-                AssetFileDescriptor afd = Shared.context.getResources().openRawResourceFd(audioResourceIdList.get(i));
-                if (afd == null) return;
-                curMediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                afd.close();
-
-                curMediaPlayer.prepare();
-                curMediaPlayer.setVolume(1f, 1f);
-                curMediaPlayer.setLooping(false);
-                mPlayerList.add(curMediaPlayer);
-                //Log.d(TAG, "mPlayerList.size(): " + mPlayerList.size());
-                /*if(curMediaPlayer.isPlaying() && !playbackState){
-                    curMediaPlayer.pause();
-                    Audio.setIsAudioPlaying(false);
-                } else {
-                    curMediaPlayer.start();
-                    Audio.setIsAudioPlaying(true);
-                }*/
-                curMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mediaPlayer) {
-                        curMediaPlayer.release();
-                        Audio.setIsAudioPlaying(false);
-                    }
-                });
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        for (int i = 0; i < (mPlayerList.size() - 1); i++) {
-            mPlayerList.get(i).setNextMediaPlayer(mPlayerList.get(i+1));
-        }
-        mPlayerList.get(0).start();
     }
 }

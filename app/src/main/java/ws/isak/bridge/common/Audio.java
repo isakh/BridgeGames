@@ -27,10 +27,10 @@ import ws.isak.bridge.R;
 public class Audio {
 
 	public static final String TAG = "Audio";
-	public static boolean OFF = false;      //match game on start defaults to setting where audio is enabled
-    public static boolean MIX = true;       //both match and swap games on start defaults to setting where mixing is enabled
+	public static boolean OFF = false;      //games on start default to setting where audio is enabled in preferences
+    public static boolean MIX = true;       //games on start default to setting where mixing is enabled in preferences
     public static boolean LOOPER = false;   //swap game on start defaults to looping being off
-    public static boolean isPlaying;
+    public static boolean isPlaying;        //a boolean to keep track of whether audio is currently playing or not
 
 	public static void playCorrect() {
 		if (!OFF) {

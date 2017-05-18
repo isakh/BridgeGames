@@ -129,24 +129,24 @@ public class SwapControlsView extends LinearLayout implements View.OnClickListen
         Log.d (TAG, "method pauseSwapRowPlaybackButton");
 
         Button currentPlayPauseButton = playPauseButtons[activeRow];
-        //if the audio setting is turned off, direct the user to turn it back on
+        //if the audio setting is turned off in preferences, direct the user to turn it back on
         if (Audio.OFF) {
             Toast.makeText(Shared.context, "Please turn on game audio to play in this mode, you can do this under settings", Toast.LENGTH_SHORT).show();
             ScreenController.getInstance().openScreen(ScreenController.Screen.MENU_SWAP);
         }
-        //if audio is allowed, and not currently playing change button to pause and send playAudio event
+        // if audio is allowed, and not there is no audio currently playing, change button to pause
+        // and send playAudio event with playbackNow true
         else if (!Audio.OFF && !Audio.getIsAudioPlaying()) {
             currentPlayPauseButton.setBackgroundResource(R.drawable.swap_playback_pause_button);
             currentPlayPauseButton.setText(Shared.context.getResources().getText(R.string.swap_controls_button_pause));
-
             Shared.eventBus.notify(new SwapPlayRowAudioEvent(activeRow, true));
         }
-        //if audio is allowed, and already playing change button to play and update Play Audio Event with
-        //current playback state set to false
-        //TODO at the moment this stops the audio but (?)doesn'(?) keep track of playback location
+        // if audio is allowed, and there is already audio playing, change button from PAUSE to PLAY
+        // and update Play Audio Event with current playback state set to false
         else {
             currentPlayPauseButton.setBackgroundResource(R.drawable.swap_playback_play_button);
             currentPlayPauseButton.setText(Shared.context.getResources().getText(R.string.swap_controls_button_play));
+            Audio.setIsAudioPlaying(false);                 //FIXME this is a hack
             Shared.eventBus.notify(new SwapPlayRowAudioEvent(activeRow, false));
         }
     }

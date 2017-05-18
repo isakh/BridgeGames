@@ -22,22 +22,6 @@
 
             <!-- starting right to left - the locations are set by dp offsets -->
 
-            <TextView
-                android:id="@+id/time_bar_text_view"
-                android:layout_width="@dimen/match_clock_width"
-                android:layout_height="@dimen/match_clock_height"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/swap_clock_text_margin_right"
-                android:gravity="center"
-                android:shadowColor="#2eaed9"
-                android:shadowDx="4"
-                android:shadowDy="4"
-                android:shadowRadius="4"
-                android:text="@string/swap_game_timebar_text_init"
-                android:textColor="@color/colorText"
-                android:textSize="@dimen/swap_clock_text_size" /> <!-- TODO set numbers in xml -->
-
             <ImageView
                 android:id="@+id/time_bar_play_pause_button"
                 android:layout_width="@dimen/swap_timer_button_width"
@@ -66,6 +50,22 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/swap_clock_margin_right"
                 android:src="@drawable/time_bar" />
+
+            <TextView
+                android:id="@+id/time_bar_text_view"
+                android:layout_width="@dimen/match_clock_width"
+                android:layout_height="@dimen/match_clock_height"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/swap_clock_text_margin_right"
+                android:gravity="center"
+                android:shadowColor="#2eaed9"
+                android:shadowDx="4"
+                android:shadowDy="4"
+                android:shadowRadius="4"
+                android:text="@string/swap_game_timebar_text_init"
+                android:textColor="@color/colorText"
+                android:textSize="@dimen/swap_clock_text_size" /> <!-- TODO set numbers in xml -->
 
         </RelativeLayout>
 
