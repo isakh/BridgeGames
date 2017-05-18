@@ -91,7 +91,7 @@ public class SwapTileView extends FrameLayout{
                 BitmapDrawable bitmapDrawable = new BitmapDrawable(Shared.context.getResources(), bitmap);
 
                 mTileImage.setImageDrawable(bitmapDrawable);
-                //mTileImage.setBackground(bitmapDrawable);
+                mTileImage.setBackgroundColor(0xFF000000);
                 mTileImage.invalidate();                //FIXME - testing
                 mTileImage.setVisibility(VISIBLE);
 
@@ -122,6 +122,7 @@ public class SwapTileView extends FrameLayout{
         SwapCardData tileData = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(curTileOnBoard);
         //FIXME - remove: SwapCardData tileData = Shared.currentSwapGame.swapBoardArrangement.swapBoardMap.get(curTileOnBoard);
         SwapTileView tileView = coordsViewsMap.get(curTileOnBoard);
+        /*  //FIXME - this version of tileText contains more information that necessary
         String tileText =
                 "Coords: <" +
                 curTileOnBoard.getSwapCoordRow() +
@@ -135,6 +136,9 @@ public class SwapTileView extends FrameLayout{
                 ">" +
                 "\nBitmap @: " + tileData.getCardBitmap() +
                 "\nTileView @: " + tileView;
+        */
+        String tileText = "CardID: <" + tileData.getCardID().getSwapCardSpeciesID() +
+                "," + tileData.getCardID().getSwapCardSegmentID() + ">";
         //Log.d (TAG, "Tile Debug Text: " + tileText + " | location of bitmap: " + loc);
         Log.v (TAG, "Tile Debug Text: " + tileText);
         mTileText.setText(tileText);

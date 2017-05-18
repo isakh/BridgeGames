@@ -9,6 +9,7 @@ import java.util.Map;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 
+import android.graphics.drawable.GradientDrawable;
 import android.os.AsyncTask;
 
 import android.util.Log;
@@ -147,6 +148,10 @@ public class SwapBoardView extends LinearLayout {
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER);
+        GradientDrawable border = new GradientDrawable();
+        border.setColor(0xFF000000);
+        border.setStroke(1, 0xFF000000); //black border with full opacity
+        linearLayout.setBackground(border);
 
         Log.d (TAG, "method addBoardRow: Shared.userData.getCurSwapGameData.getSwapBoardMap @: " + Shared.userData.getCurSwapGameData().getSwapBoardMap());
         for (int curTileInRow = 0; curTileInRow < SwapBoardConfiguration.swapNumTilesInRow; curTileInRow++) {

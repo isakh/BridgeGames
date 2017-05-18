@@ -570,7 +570,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
                     " > | bitmap on card: " + cardData.getCardBitmap() +
                     " | address of Map.entry: " + pair);
         }
-        Log.d(TAG, " \n ... \n");
+        //Log.d(TAG, " \n ... \n");
     }
 
     @Override
@@ -592,13 +592,6 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void onEvent (SwapPauseRowAudioEvent event) {
-        //
-        //TODO
-        //
-    }
-
-    @Override
-    public void onEvent (SwapResetRowAudioEvent event) {
         //
         //TODO
         //
