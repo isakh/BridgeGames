@@ -117,7 +117,7 @@ public class MatchPopupWonView extends RelativeLayout implements View.OnClickLis
     public void continueToPostSurvey () {
         Log.d (TAG, "method continueToPostSurvey");
         PopupManager.closePopup();
-        ScreenController.getInstance().openScreen(ScreenController.Screen.POST_SURVEY);
+        ScreenController.getInstance().openScreen(ScreenController.Screen.FINISHED);    //FIXME was POST_SURVEY but moving that to paper
 
     }
 

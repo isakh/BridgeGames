@@ -114,8 +114,7 @@ public class SwapPopupWonView extends RelativeLayout implements View.OnClickList
     public void continueToPostSurvey () {
         Log.d (TAG, "method continueToPostSurvey");
         PopupManager.closePopup();
-        ScreenController.getInstance().openScreen(ScreenController.Screen.POST_SURVEY);
-
+        ScreenController.getInstance().openScreen(ScreenController.Screen.FINISHED);  //FIXME was POST_SURVEY but bypassing that now
     }
 
     public void continueToSelectGameFragment() {

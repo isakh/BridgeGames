@@ -50,15 +50,8 @@ public class FontLoader {
 		fontsLoaded = true;
 	}
 
-	/**
+	/*
 	 * Returns a loaded custom font based on it's identifier.
-	 * 
-	 * @param context
-	 *            - the current context
-	 * @param fontIdentifier
-	 *            = the identifier of the requested font
-	 * 
-	 * @return Typeface object of the requested font.
 	 */
 	public static Typeface getTypeface(Context context, Font font) {
 		if (!fontsLoaded) {
@@ -106,5 +99,4 @@ public class FontLoader {
 				textViews[i].setTypeface(currentFont, fontStyle);
 		}
 	}
-
 }

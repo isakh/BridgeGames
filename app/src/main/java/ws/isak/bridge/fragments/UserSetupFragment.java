@@ -94,8 +94,8 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
             //get a new instance of UserData and set the Shared userData to that instance
             Shared.userData = UserData.getInstance();
             Shared.userData.setUserName(newUserName);
-            Log.d (TAG, "                   : next screen is PRE_SURVEY to populate new curUserData");
-            ScreenController.getInstance().openScreen(Screen.PRE_SURVEY);
+            Log.d (TAG, "                   : next screen is SELECT_GAME- we no longer want to populate new curUserData");
+            ScreenController.getInstance().openScreen(Screen.SELECT_GAME);  //FIXME was PRE_SURVEY but bypassing that now
         } else {
             Log.d (TAG, "                   : userName not unique: ***** ");
             Toast.makeText(Shared.context, "Please choose a name that is not already registered", Toast.LENGTH_LONG).show();
