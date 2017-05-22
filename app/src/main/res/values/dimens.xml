@@ -4,6 +4,24 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <!-- =============================================================================== -->
+    <!-- Layout: game_select_fragment -->
+    <!-- **************************** -->
+    <dimen name="game_select_padding">40dp</dimen>
+    <dimen name="game_select_margin">20dp</dimen>
+    <dimen name="game_compose_title_text_size">40sp</dimen>
+    <dimen name="game_swap_title_text_size">40sp</dimen>
+    <dimen name="game_match_title_text_size">40sp</dimen>
+
+
+    <!-- =============================================================================== -->
+    <!-- Layout: match_theme_select_fragment -->
+    <!-- *********************************** -->
+    <dimen name="theme_padding">40dp</dimen>
+    <dimen name="theme_margin">20dp</dimen>
+
+
+
     <!-- DIMENSION RESOURCES ONLY REFERENCED IN CLASSES -->
 
     <!-- ================================================================================ -->
@@ -86,13 +104,6 @@
     <dimen name="swap_timer_pause_margin_right">195dp</dimen>  <!-- 50 + 120 + 25 -->
     <dimen name="swap_timer_play_margin_right">195dp</dimen>   <!-- 50 + 120 + 25 this will replace pauseClock on click-->
     <dimen name="swap_timer_restart_margin_right">270dp</dimen>  <!-- 50 + 120 + 25 + 50 + 25 -->
-    
-    <!-- =============================================================================== -->
-    <!-- Layout: game_select_fragment && Layout: match_theme_select_fragment -->
-    <!-- ******************************************************************* -->
-    <dimen name="theme_padding">40dp</dimen>
-    <dimen name="theme_margin">20dp</dimen>
-
 
     <!-- ================================================================================ -->
     <!-- Layout: match_menu_fragment -->

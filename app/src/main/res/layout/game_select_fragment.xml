@@ -3,24 +3,45 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/game_select_padding"
+    android:layout_marginBottom="@dimen/game_select_padding"
     android:gravity="center"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/theme_padding"
-    android:paddingRight="@dimen/theme_padding" >
+    android:paddingLeft="@dimen/game_select_padding"
+    android:paddingRight="@dimen/game_select_padding" >
 
     <RelativeLayout
         android:id="@+id/game_match_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginRight="@dimen/theme_margin"
+        android:layout_marginLeft="@dimen/game_select_margin"
+        android:layout_marginRight="@dimen/game_select_margin"
+        android:background="@drawable/game_container_border"
         android:layout_weight="1" >
 
-        <ImageView
-            android:id="@+id/game_match"
+        <TextView
+            android:id="@+id/game_match_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:shadowColor="#2eaed9"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:shadowRadius="4"
+            android:text="@string/game_match_title_text"
+            android:textSize="@dimen/game_match_title_text_size"
+            android:textColor="#0e0e0e" />
+
+        <ImageView
+            android:id="@+id/game_match_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/game_select_padding"
+            android:paddingRight="@dimen/game_select_padding"
             android:adjustViewBounds="true"
-            android:src="@drawable/memory_game_launch" />
+            android:src="@drawable/match_game_icon" />
+
 
     </RelativeLayout>
 
@@ -28,15 +49,67 @@
         android:id="@+id/game_swap_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/theme_margin"
+        android:layout_marginLeft="@dimen/game_select_margin"
+        android:layout_marginRight="@dimen/game_select_margin"
+        android:background="@drawable/game_container_border"
         android:layout_weight="1" >
 
-        <ImageView
-            android:id="@+id/game_swap"
+        <TextView
+            android:id="@+id/game_swap_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:shadowColor="#2eaed9"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:shadowRadius="4"
+            android:text="@string/game_swap_title_text"
+            android:textSize="@dimen/game_swap_title_text_size"
+            android:textColor="#0e0e0e" />
+
+        <ImageView
+            android:id="@+id/game_swap_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/game_select_padding"
+            android:paddingRight="@dimen/game_select_padding"
             android:adjustViewBounds="true"
-            android:src="@drawable/swap_game_launch" />
+            android:src="@drawable/swap_game_icon" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/game_compose_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/game_select_margin"
+        android:layout_marginRight="@dimen/game_select_margin"
+        android:background="@drawable/game_container_border"
+        android:layout_weight="1" >
+
+        <TextView
+            android:id="@+id/game_compose_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:shadowColor="#2eaed9"
+            android:shadowDx="4"
+            android:shadowDy="4"
+            android:shadowRadius="4"
+            android:text="@string/game_compose_title_text"
+            android:textSize="@dimen/game_compose_title_text_size"
+            android:textColor="#0e0e0e" />
+
+        <ImageView
+            android:id="@+id/game_compose_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/game_select_padding"
+            android:paddingRight="@dimen/game_select_padding"
+            android:adjustViewBounds="true"
+            android:src="@drawable/compose_game_icon" />
+
     </RelativeLayout>
 
 </LinearLayout>

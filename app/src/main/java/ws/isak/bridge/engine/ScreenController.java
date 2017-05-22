@@ -12,18 +12,25 @@ import android.support.v4.app.FragmentTransaction;
 import ws.isak.bridge.R;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.events.ui.MatchResetBackgroundEvent;
-import ws.isak.bridge.fragments.MatchDifficultySelectFragment;
-import ws.isak.bridge.fragments.SwapDifficultySelectFragment;
-import ws.isak.bridge.fragments.MatchGameFragment;
-import ws.isak.bridge.fragments.MatchMenuFragment;
-import ws.isak.bridge.fragments.SwapGameFragment;
-import ws.isak.bridge.fragments.SwapMenuFragment;
-import ws.isak.bridge.fragments.MatchThemeSelectFragment;
+
 import ws.isak.bridge.fragments.UserSetupFragment;
 import ws.isak.bridge.fragments.PreSurveyFragment;
-import ws.isak.bridge.fragments.GameSelectFragment;
 import ws.isak.bridge.fragments.PostSurveyFragment;
 import ws.isak.bridge.fragments.FinishedFragment;
+
+import ws.isak.bridge.fragments.GameSelectFragment;
+
+import ws.isak.bridge.fragments.MatchMenuFragment;
+import ws.isak.bridge.fragments.MatchThemeSelectFragment;
+import ws.isak.bridge.fragments.MatchDifficultySelectFragment;
+import ws.isak.bridge.fragments.MatchGameFragment;
+
+import ws.isak.bridge.fragments.SwapMenuFragment;
+import ws.isak.bridge.fragments.SwapDifficultySelectFragment;
+import ws.isak.bridge.fragments.SwapGameFragment;
+
+import ws.isak.bridge.fragments.ComposeGameFragment;
+
 
 /*
  * Class ScreenController instantiates a list of currently openedScreens and a fragmentManager
@@ -56,7 +63,7 @@ public class ScreenController {
 	public enum Screen {
         USER_SETUP,
         PRE_SURVEY,
-        SELECT_GAME,            //choose between match game and swap game
+        SELECT_GAME,            //choose between match game, swap game, and compose game
         MENU_MATCH,               //menu allows choices of audio playback
         MENU_SWAP,              //audio playback is required - mixer & looper for now: TODO maybe some resolution parameters?
         THEME_SELECT_MATCH,
@@ -64,6 +71,7 @@ public class ScreenController {
         DIFFICULTY_SWAP,        //three levels 2x4, 3x4, 4x4 [species x chunks in sample]
         GAME_MATCH,
         GAME_SWAP,              //
+        GAME_COMPOSE,
         POST_SURVEY,             //FIXME should we have different ones for each game? and/or one for all?
         FINISHED
     }
@@ -149,6 +157,9 @@ public class ScreenController {
             case GAME_SWAP:
                 Log.d (TAG, "method getFragment: case GAME_SWAP");
                 return new SwapGameFragment();
+            case GAME_COMPOSE:
+                Log.d (TAG, "method getFragment: case GAME_COMPOSE");
+                //FIXME return new ComposeGameFragment(); //TODO - write fragment!
             case POST_SURVEY:
                 return new PostSurveyFragment();
             case FINISHED:

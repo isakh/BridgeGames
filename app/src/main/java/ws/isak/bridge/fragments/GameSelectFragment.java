@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.TextView;
 
 import ws.isak.bridge.R;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.engine.ScreenController;
 import ws.isak.bridge.engine.ScreenController.Screen;
+import ws.isak.bridge.utils.FontLoader;
 
 /*
  * Class GameSelectFragment provides the view for the fragment where the user decides which of
@@ -28,6 +30,10 @@ public class GameSelectFragment extends Fragment implements  View.OnClickListene
 
     public static final String TAG="GameSelectFragment";
 
+    private TextView matchTitle;
+    private TextView swapTitle;
+    private TextView composeTitle;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "overriding method onCreateView");
@@ -37,11 +43,18 @@ public class GameSelectFragment extends Fragment implements  View.OnClickListene
         Log.d (TAG, "       : creating views for matchGameLaunch and swapGameLaunch");
         View matchGameLaunch = view.findViewById(R.id.game_match_container);
         View swapGameLaunch = view.findViewById(R.id.game_swap_container);
+        View composeGameLaunch = view.findViewById(R.id.game_compose_container);
 
+        matchTitle = (TextView) view.findViewById(R.id.game_match_title);
+        swapTitle = (TextView) view.findViewById(R.id.game_swap_title);
+        composeTitle = (TextView) view.findViewById(R.id.game_compose_title);
+
+        FontLoader.setTypeface(Shared.context, new TextView[] { matchTitle, swapTitle, composeTitle }, FontLoader.Font.ANGRYBIRDS);
         //setting click listeners for game launch views
         Log.d (TAG, "setting click listeners for game launch views");
         matchGameLaunch.setOnClickListener(this);
         swapGameLaunch.setOnClickListener(this);
+        composeGameLaunch.setOnClickListener(this);
 
         return view;
     }
@@ -60,6 +73,11 @@ public class GameSelectFragment extends Fragment implements  View.OnClickListene
                 Log.d(TAG, "overridden method onClick: case game_swap: switch to MENU_SWAP screen");
                 animateShow(view);
                 ScreenController.getInstance().openScreen(Screen.MENU_SWAP);
+                break;
+            case R.id.game_compose_container:
+                Log.d(TAG, "overridden method onClick: case game_compose: switch to MENU_COMPOSE screen"); //TODO do we want a menu screen?
+                animateShow(view);
+                ScreenController.getInstance().openScreen(Screen.GAME_COMPOSE); //FIXME for now this goes straight to the game
                 break;
         }
     }

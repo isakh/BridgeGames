@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorText">#130126</color>
+
+
+    <color name="game_container_border_color">#FF000000</color>
 </resources>

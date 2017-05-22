@@ -1,36 +1,23 @@
 <resources>
 
     <!-- ============================================================================== -->
-    <!-- PACKAGE TITLE ON DEVICE-->
-    <!-- *********************** -->
+    <!-- ********** PACKAGE TITLE ON DEVICE  ********** -->
+    <!-- ============================================================================== -->
     <string name="app_name">BRIDGE</string>
     <string name="database_name">bridge.db</string>
 
-    <!-- ============================================================================== -->
-    <!-- Layout: finished_fragment -->
-    <!-- ************************* -->
-    <string name="finished_fragment_next_player_button_text">Next Player</string>
-    <string name="finished_fragment_close_app_button_text">Exit Game</string>
-
-    <!-- ============================================================================== -->
-    <!-- Layout: match_popup_settings_view -->
+    <!-- =================================================================================== -->
+    <!-- ********** SETUP & SURVEYS ********** -->
+    <!-- =================================================================================== -->
+    <!-- Layout: user_setup_fragment -->
     <!-- *************************** -->
-    <string name="match_popup_settings_title_text">Settings</string>
-    <string name="match_popup_settings_sound_on_text">Sound ON</string>
-    <string name="match_popup_settings_sound_off_text">Sound OFF</string>
-    <string name="match_popup_settings_mixer_on_text">Mixer ON</string>
-    <string name="match_popup_settings_mixer_off_text">Mixer OFF</string>
-
-    <!-- ============================================================================== -->
-    <!-- Layout: swap_popup_settings_view -->
-    <!-- *************************** -->
-    <string name="swap_popup_settings_title_text">Settings</string>
-    <string name="swap_popup_settings_looper_on_text">Loop ON</string>    <!-- the looper will replay a track until pause/stop is pressed -->
-    <string name="swap_popup_settings_looper_off_text">Loop OFF</string>
-    <string name="swap_popup_settings_mixer_on_text">Mixer ON</string>
-    <string name="swap_popup_settings_mixer_off_text">Mixer OFF</string>
-    <string name="swap_popup_settings_winning_easy_text">Win EASY</string>
-    <string name="swap_popup_settings_winning_hard_text">Win HARD</string>
+    <string name="user_setup_title">Welcome: Please Login or Sign Up</string>
+    <string name="user_setup_login_text">LOGIN BELOW</string>
+    <string name="user_setup_login_hint">Login Name</string>
+    <string name="user_setup_login_button">LOGIN</string>
+    <string name="user_setup_register_text">REGISTER BELOW</string>
+    <string name="user_setup_register_hint">New User Name</string>
+    <string name="user_setup_register_button">REGISTER</string>
 
     <!-- =============================================================================== -->
     <!-- Layout: pre_survey_fragment -->
@@ -98,22 +85,6 @@
     <!-- Submit Button -->
     <string name="pre_survey_submit_button">Submit Survey And Continue To Games</string>
 
-
-    <!-- =================================================================================== -->
-    <!-- Layout: popup_won_view -->
-    <!-- ********************** -->
-    <!-- title -->
-    <string name="popup_won_view_title">Level Complete</string>
-    <!-- time information -->
-    <string name="popup_won_time_text">Time</string>
-    <string name="popup_won_game_time_at_start">00:00</string>     <!-- TODO fix this and make dynamic -->
-    <!-- score information -->
-    <string name="popup_won_score_text">Score</string>
-    <string name="popup_won_score_at_start">240</string>           <!-- TODO fix this and make dynamic -->
-    <!-- post survey button -->
-    <string name="popup_won_view_post_survey_button_text">Done Playing? Please Answer A Few Questions</string>
-
-
     <!-- ======================================================================================-->
     <!-- Layout: post_survey_fragment -->
     <!-- **************************** -->
@@ -150,47 +121,79 @@
     closer to the solution? [LIKERT] rarely - sometimes not - half the time - sometimes yes - frequently) -->
     <string name="post_survey_solution_progress_query_text">TODO</string>
 
+    <!-- ============================================================================== -->
+    <!-- Layout: finished_fragment -->
+    <!-- ************************* -->
+    <string name="finished_fragment_next_player_button_text">Next Player</string>
+    <string name="finished_fragment_close_app_button_text">Exit Game</string>
+
+    <!-- ============================================================================== -->
+    <!-- ********** POPUPS: SETTINGS & WINNING ********** -->
+    <!-- =================================================================================== -->
+    <!-- ============================================================================== -->
+    <!-- Layout: match_popup_settings_view -->
+    <!-- *************************** -->
+    <string name="match_popup_settings_title_text">Settings</string>
+    <string name="match_popup_settings_sound_on_text">Sound ON</string>
+    <string name="match_popup_settings_sound_off_text">Sound OFF</string>
+    <string name="match_popup_settings_mixer_on_text">Mixer ON</string>
+    <string name="match_popup_settings_mixer_off_text">Mixer OFF</string>
+
+    <!-- ============================================================================== -->
+    <!-- Layout: swap_popup_settings_view -->
+    <!-- *************************** -->
+    <string name="swap_popup_settings_title_text">Settings</string>
+    <string name="swap_popup_settings_looper_on_text">Loop ON</string>    <!-- the looper will replay a track until pause/stop is pressed -->
+    <string name="swap_popup_settings_looper_off_text">Loop OFF</string>
+    <string name="swap_popup_settings_mixer_on_text">Mixer ON</string>
+    <string name="swap_popup_settings_mixer_off_text">Mixer OFF</string>
+    <string name="swap_popup_settings_winning_easy_text">Win EASY</string>
+    <string name="swap_popup_settings_winning_hard_text">Win HARD</string>
 
     <!-- =================================================================================== -->
-    <!-- Class: SpeciesList -->
-    <!-- ****************** -->
-    <string name="species_bird_1">House Sparrow	- Passer domesticus</string>
-    <string name="species_bird_2">Blue tit - Cyanistes caeruleus</string>
-    <string name="species_bird_3">Starling - Sturnus vulgaris</string>
-    <string name="species_bird_4">Blackbird - Turdus merula</string>
-    <string name="species_bird_5">Woodpigeon - Columba palumbus</string>
-    <string name="species_bird_6">Chaffinch - Fringilla coelebs</string>
-    <string name="species_bird_7">Goldfinch - Carduelis carduelis</string>
-    <string name="species_bird_8">Great Tit - Parus major</string>
-    <string name="species_bird_9">Collared Dove	- Streptopelia decaocto</string>
-    <string name="species_bird_10">Robin - Erithacus rubecula</string>
+    <!-- Layout: popup_won_view -->
+    <!-- ********************** -->
+    <!-- title -->
+    <string name="popup_won_view_title">Level Complete</string>
+    <!-- time information -->
+    <string name="popup_won_time_text">Time</string>
+    <string name="popup_won_game_time_at_start">00:00</string>     <!-- TODO fix this and make dynamic -->
+    <!-- score information -->
+    <string name="popup_won_score_text">Score</string>
+    <string name="popup_won_score_at_start">240</string>           <!-- TODO fix this and make dynamic -->
+    <!-- post survey button -->
+    <string name="popup_won_view_post_survey_button_text">Done Playing? Please Answer A Few Questions</string>
 
+
+    <!-- =================================================================================== -->
+    <!-- ********** GAME & THEME TITLES ********** -->
+    <!-- =================================================================================== -->
+    <!-- Class: GameSelectFragment -->
+    <!-- ************************* -->
+    <string name="game_match_title_text">MATCH</string>
+    <string name="game_swap_title_text">SWAP</string>
+    <string name="game_compose_title_text">PLAY</string>
 
     <!-- =================================================================================== -->
     <!-- Class: MatchThemes -->
-    <!-- ************* -->
+    <!-- ****************** -->
     <string name="match_themes_blank_name">Blank</string>
     <string name="match_themes_birds_name">Birds</string>
     <string name="match_themes_spectrograms_name">Spectrograms</string>
 
+    <!-- =================================================================================== -->
+    <!-- Class: Difficulty -->
+    <!-- ***************** -->
+    <!-- TODO -->
 
+
+    <!-- =================================================================================== -->
+    <!-- ********** BOARD VIEW CONTROLS & TIMERS ********** -->
     <!-- =================================================================================== -->
     <!-- Class: SwapControlsView -->
     <!-- *********************** -->
     <string name="swap_controls_button_play">PLAY ROW</string>
     <string name="swap_controls_button_pause">PAUSE ROW</string>
-
-    <!-- =================================================================================== -->
-    <!-- Layout: user_setup_fragment -->
-    <!-- *************************** -->
-    <string name="user_setup_title">Welcome: Please Login or Sign Up</string>
-    <string name="user_setup_login_text">LOGIN BELOW</string>
-    <string name="user_setup_login_hint">Login Name</string>
-    <string name="user_setup_login_button">LOGIN</string>
-    <string name="user_setup_register_text">REGISTER BELOW</string>
-    <string name="user_setup_register_hint">New User Name</string>
-    <string name="user_setup_register_button">REGISTER</string>
-
 
     <!-- =================================================================================== -->
     <!-- Layout: match_board_fragment -->
@@ -202,5 +205,32 @@
     <!-- *************************** -->
     <string name="swap_game_timebar_text_init">88:88</string>
 
+
+
+    <!-- =================================================================================== -->
+    <!-- ********** SPECIES LISTS ********** -->
+    <!-- =================================================================================== -->
+    <!-- Class: SpeciesList BGBW -->
+    <!-- *********************** -->
+    <string name="species_bird_1">House Sparrow	- Passer domesticus</string>
+    <string name="species_bird_2">Blue tit - Cyanistes caeruleus</string>
+    <string name="species_bird_3">Starling - Sturnus vulgaris</string>
+    <string name="species_bird_4">Blackbird - Turdus merula</string>
+    <string name="species_bird_5">Woodpigeon - Columba palumbus</string>
+    <string name="species_bird_6">Chaffinch - Fringilla coelebs</string>
+    <string name="species_bird_7">Goldfinch - Carduelis carduelis</string>
+    <string name="species_bird_8">Great Tit - Parus major</string>
+    <string name="species_bird_9">Collared Dove	- Streptopelia decaocto</string>
+    <string name="species_bird_10">Robin - Erithacus rubecula</string>
+
+    <!-- =================================================================================== -->
+    <!-- Class: SpeciesList Nidderdale -->
+    <!-- ***************************** -->
+    <!-- TODO -->
+
+    <!-- =================================================================================== -->
+    <!-- Class: SpeciesList Colorado -->
+    <!-- *************************** -->
+    <!-- TODO -->
 
 </resources>

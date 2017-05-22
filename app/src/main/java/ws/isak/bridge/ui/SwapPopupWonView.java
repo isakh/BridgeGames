@@ -81,7 +81,7 @@ public class SwapPopupWonView extends RelativeLayout implements View.OnClickList
         gotoPostSurveyBtn = (Button) findViewById(R.id.popup_won_goto_post_survey_button);
 
         //FIXME! fix FontLoader so all text is in same font at defined sizes
-        FontLoader.setTypeface(context, new TextView[] { mTime, mScore }, Font.ANGRYBIRDS);
+        FontLoader.setTypeface(Shared.context, new TextView[] { mTime, mScore }, Font.ANGRYBIRDS);  //FIXME!? was just 'context'
         mHandler = new Handler();
         //set button (and image button) onClick listeners
         mTryAgainButton.setOnClickListener(this);
