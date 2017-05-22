@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ws.isak.bridge.ui.ScrollingImagesView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/compose_game_scrolling_images_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/compose_game_scrolling_images_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</ws.isak.bridge.ui.ScrollingImagesView>

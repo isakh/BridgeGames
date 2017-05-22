@@ -5,6 +5,34 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <!-- =============================================================================== -->
+    <!-- SETUP & SURVEYS -->
+    <!-- =============================================================================== -->
+    <!-- =============================================================================== -->
+    <!-- Layout: user_setup_fragment -->
+    <!-- *************************** -->
+    <!-- title -->
+    <dimen name="user_setup_frag_title_text_size">20.0sp</dimen>
+    <dimen name="user_setup_frag_title_margin_bottom">20dp</dimen>
+    <!-- login section -->
+    <dimen name="user_setup_frag_login_text_size">16.0sp</dimen>
+    <dimen name="user_setup_frag_login_text_margin_bottom">10dp</dimen>
+    <dimen name="user_setup_frag_login_button_margin_bottom">20dp</dimen>
+    <!-- register section -->
+    <dimen name="user_setup_frag_register_text_size">16.0sp</dimen>
+    <dimen name="user_setup_frag_register_text_margin_bottom">10dp</dimen>
+    <dimen name="user_setup_frag_register_button_margin_bottom">20dp</dimen>
+
+    <!-- =============================================================================== -->
+    <!-- Layout: finished_fragment -->
+    <!-- ************************* -->
+    <dimen name="finished_fragment_next_player_button_text_size">100sp</dimen>
+    <dimen name="finished_fragment_close_app_button_text_size">100sp</dimen>
+
+
+    <!-- =============================================================================== -->
+    <!-- GAME / THEME / DIFFICULTY SELECTION -->
+    <!-- =============================================================================== -->
+    <!-- =============================================================================== -->
     <!-- Layout: game_select_fragment -->
     <!-- **************************** -->
     <dimen name="game_select_padding">40dp</dimen>
@@ -13,45 +41,11 @@
     <dimen name="game_swap_title_text_size">40sp</dimen>
     <dimen name="game_match_title_text_size">40sp</dimen>
 
-
     <!-- =============================================================================== -->
     <!-- Layout: match_theme_select_fragment -->
     <!-- *********************************** -->
     <dimen name="theme_padding">40dp</dimen>
     <dimen name="theme_margin">20dp</dimen>
-
-
-
-    <!-- DIMENSION RESOURCES ONLY REFERENCED IN CLASSES -->
-
-    <!-- ================================================================================ -->
-    <!-- Class: MatchBoardView -->
-    <!-- ********************* -->
-    <dimen name="match_card_margin">10dp</dimen>
-
-    <!-- ================================================================================ -->
-    <!-- Class: SwapBoardView -->
-    <!-- ********************* -->
-    <dimen name="swap_card_margin">1dp</dimen>
-
-    <!-- ================================================================================ -->
-    <!-- Class: SwapControlsView -->
-    <!-- *********************** -->
-    <dimen name="swap_control_button_margin">5dp</dimen>
-    <dimen name="swap_control_button_width">100dp</dimen>   <!-- FIXME was 75dp, is this shift ok?-->
-    <dimen name="swap_control_button_height">100dp</dimen>
-
-    <!-- DIMENSION RESOURCES REFERENCED IN LAYOUTS -->
-
-    <!-- =============================================================================== -->
-    <!-- Layout: match_board_view -->
-    <!-- ************************ -->
-    <dimen name="match_board_padding">10dp</dimen>
-
-    <!-- =============================================================================== -->
-    <!-- Layout: swap_board_view -->
-    <!-- *********************** -->
-    <dimen name="swap_board_padding">10dp</dimen>
 
     <!-- ================================================================================-->
     <!-- Layout: match_difficulty_select_fragment -->
@@ -69,78 +63,9 @@
 
 
     <!-- =============================================================================== -->
-    <!-- Layout: finished_fragment -->
-    <!-- ************************* -->
-    <dimen name="finished_fragment_next_player_button_text_size">100sp</dimen>
-    <dimen name="finished_fragment_close_app_button_text_size">100sp</dimen>
-
+    <!-- POPUP DIMENSIONS-->
     <!-- =============================================================================== -->
-    <!-- Layout: match_game_fragment -->
-    <!-- *************************** -->
-    <dimen name="match_margin_top_timer">70dp</dimen>
-    <dimen name="match_clock_width">120dp</dimen>
-    <dimen name="match_clock_height">50dp</dimen>
-    <dimen name="match_clock_margin_right">50dp</dimen>
-    <dimen name="match_clock_text_margin_right">35dp</dimen>
-    <dimen name="match_clock_text_size">20dp</dimen>
-    <dimen name="match_timer_button_width">50dp</dimen>
-    <dimen name="match_timer_button_height">50dp</dimen>
-    <dimen name="match_timer_pause_margin_right">195dp</dimen>  <!-- 50 + 120 + 25 -->
-    <dimen name="match_timer_play_margin_right">195dp</dimen>   <!-- 50 + 120 + 25 this will replace pauseClock on click-->
-    <dimen name="match_timer_restart_margin_right">270dp</dimen>  <!-- 50 + 120 + 25 + 50 + 25 -->
 
-    <!-- =============================================================================== -->
-    <!-- Layout: swap_game_fragment -->
-    <!-- ************************** -->
-    <dimen name="swap_game_timer_margin_top">70dp</dimen>
-    <dimen name="swap_clock_width">120dp</dimen>
-    <dimen name="swap_clock_height">50dp</dimen>
-    <dimen name="swap_clock_margin_right">50dp</dimen>
-    <dimen name="swap_clock_text_margin_right">35dp</dimen>
-    <dimen name="swap_clock_text_size">20dp</dimen>
-    <dimen name="swap_game_controls_container_width">100dp</dimen>
-    <dimen name="swap_timer_button_width">50dp</dimen>
-    <dimen name="swap_timer_button_height">50dp</dimen>
-    <dimen name="swap_timer_pause_margin_right">195dp</dimen>  <!-- 50 + 120 + 25 -->
-    <dimen name="swap_timer_play_margin_right">195dp</dimen>   <!-- 50 + 120 + 25 this will replace pauseClock on click-->
-    <dimen name="swap_timer_restart_margin_right">270dp</dimen>  <!-- 50 + 120 + 25 + 50 + 25 -->
-
-    <!-- ================================================================================ -->
-    <!-- Layout: match_menu_fragment -->
-    <!-- *************************** -->
-    <!-- match_menu_title -->
-    <dimen name="match_menu_fragment_title_width">400dp</dimen>
-    <dimen name="match_menu_fragment_title_height">120dp</dimen>
-    <dimen name="match_menu_fragment_title_margin_top">50dp</dimen>
-    <!-- menu buttons -->
-    <dimen name="match_menu_fragment_start_game_button">100dp</dimen>
-    <dimen name="match_menu_fragment_start_game_button_margin">20dp</dimen>
-    <dimen name="match_menu_fragment_start_game_button_lights">150dp</dimen>
-    <dimen name="match_menu_fragment_settings_game_button">80dp</dimen>
-    <dimen name="match_menu_fragment_settings_game_button_margin">30dp</dimen>
-    <dimen name="match_menu_fragment_tooltip_width">80dp</dimen>
-    <dimen name="match_menu_fragment_tooltip_height">80dp</dimen>
-    <dimen name="match_menu_fragment_tooltip_margin_left">120dp</dimen>
-    <dimen name="match_menu_fragment_tooltip_margin_bottom">105dp</dimen>
-
-    <!-- ================================================================================ -->
-    <!-- Layout: swap_menu_fragment -->
-    <!-- ************************** -->
-    <!-- swap_menu_title -->
-    <dimen name="swap_menu_fragment_title_width">400dp</dimen>
-    <dimen name="swap_menu_fragment_title_height">120dp</dimen>
-    <dimen name="swap_menu_fragment_title_margin_top">50dp</dimen>
-    <!-- menu buttons -->
-    <dimen name="swap_menu_fragment_start_game_button">100dp</dimen>
-    <dimen name="swap_menu_fragment_start_game_button_margin">20dp</dimen>
-    <dimen name="swap_menu_fragment_start_game_button_lights">150dp</dimen>
-    <dimen name="swap_menu_fragment_settings_game_button">80dp</dimen>
-    <dimen name="swap_menu_fragment_settings_game_button_margin">30dp</dimen>
-    <dimen name="swap_menu_fragment_tooltip_width">80dp</dimen>
-    <dimen name="swap_menu_fragment_tooltip_height">80dp</dimen>
-    <dimen name="swap_menu_fragment_tooltip_margin_left">120dp</dimen>
-    <dimen name="swap_menu_fragment_tooltip_margin_bottom">105dp</dimen>
-    
     <!-- =============================================================================== -->
     <!-- Layout: match_popup_settings_view -->
     <!-- ********************************* -->
@@ -173,7 +98,7 @@
     <!-- winning difficulty section -->
     <dimen name= "swap_popup_settings_winning_difficutly_image_size">40dp</dimen>
     <dimen name= "swap_popup_settings_winning_difficutly_text_size">30.0sp</dimen>
-    
+
     <!-- =============================================================================== -->
     <!-- Layout: popup_won_view-->
     <!-- ********************* -->
@@ -197,24 +122,123 @@
     <!-- -->
     <dimen name="popup_won_goto_survey_button_section_height">50dp</dimen>
 
+
     <!-- =============================================================================== -->
-    <!-- Layout: user_setup_fragment -->
+    <!-- MATCH GAME DIMENSIONS -->
+    <!-- =============================================================================== -->
+    <!-- ================================================================================ -->
+    <!-- Layout: match_menu_fragment -->
     <!-- *************************** -->
-    <!-- title -->
-    <dimen name="user_setup_frag_title_text_size">20.0sp</dimen>
-    <dimen name="user_setup_frag_title_margin_bottom">20dp</dimen>
-    <!-- login section -->
-    <dimen name="user_setup_frag_login_text_size">16.0sp</dimen>
-    <dimen name="user_setup_frag_login_text_margin_bottom">10dp</dimen>
-    <dimen name="user_setup_frag_login_button_margin_bottom">20dp</dimen>
-    <!-- register section -->
-    <dimen name="user_setup_frag_register_text_size">16.0sp</dimen>
-    <dimen name="user_setup_frag_register_text_margin_bottom">10dp</dimen>
-    <dimen name="user_setup_frag_register_button_margin_bottom">20dp</dimen>
+    <!-- match_menu_title -->
+    <dimen name="match_menu_fragment_title_width">400dp</dimen>
+    <dimen name="match_menu_fragment_title_height">120dp</dimen>
+    <dimen name="match_menu_fragment_title_margin_top">50dp</dimen>
+    <!-- menu buttons -->
+    <dimen name="match_menu_fragment_start_game_button">100dp</dimen>
+    <dimen name="match_menu_fragment_start_game_button_margin">20dp</dimen>
+    <dimen name="match_menu_fragment_start_game_button_lights">150dp</dimen>
+    <dimen name="match_menu_fragment_settings_game_button">80dp</dimen>
+    <dimen name="match_menu_fragment_settings_game_button_margin">30dp</dimen>
+    <dimen name="match_menu_fragment_tooltip_width">80dp</dimen>
+    <dimen name="match_menu_fragment_tooltip_height">80dp</dimen>
+    <dimen name="match_menu_fragment_tooltip_margin_left">120dp</dimen>
+    <dimen name="match_menu_fragment_tooltip_margin_bottom">105dp</dimen>
+
+    <!-- =============================================================================== -->
+    <!-- Layout: match_board_view -->
+    <!-- ************************ -->
+    <dimen name="match_board_padding">10dp</dimen>
+
+    <!-- =============================================================================== -->
+    <!-- Layout: match_game_fragment -->
+    <!-- *************************** -->
+    <dimen name="match_margin_top_timer">70dp</dimen>
+    <dimen name="match_clock_width">120dp</dimen>
+    <dimen name="match_clock_height">50dp</dimen>
+    <dimen name="match_clock_margin_right">50dp</dimen>
+    <dimen name="match_clock_text_margin_right">35dp</dimen>
+    <dimen name="match_clock_text_size">20dp</dimen>
+    <dimen name="match_timer_button_width">50dp</dimen>
+    <dimen name="match_timer_button_height">50dp</dimen>
+    <dimen name="match_timer_pause_margin_right">195dp</dimen>  <!-- 50 + 120 + 25 -->
+    <dimen name="match_timer_play_margin_right">195dp</dimen>   <!-- 50 + 120 + 25 this will replace pauseClock on click-->
+    <dimen name="match_timer_restart_margin_right">270dp</dimen>  <!-- 50 + 120 + 25 + 50 + 25 -->
+
+    <!-- =============================================================================== -->
+    <!-- SWAP GAME DIMENSIONS -->
+    <!-- =============================================================================== -->
+    <!-- ================================================================================ -->
+    <!-- Layout: swap_menu_fragment -->
+    <!-- ************************** -->
+    <!-- swap_menu_title -->
+    <dimen name="swap_menu_fragment_title_width">400dp</dimen>
+    <dimen name="swap_menu_fragment_title_height">120dp</dimen>
+    <dimen name="swap_menu_fragment_title_margin_top">50dp</dimen>
+    <!-- menu buttons -->
+    <dimen name="swap_menu_fragment_start_game_button">100dp</dimen>
+    <dimen name="swap_menu_fragment_start_game_button_margin">20dp</dimen>
+    <dimen name="swap_menu_fragment_start_game_button_lights">150dp</dimen>
+    <dimen name="swap_menu_fragment_settings_game_button">80dp</dimen>
+    <dimen name="swap_menu_fragment_settings_game_button_margin">30dp</dimen>
+    <dimen name="swap_menu_fragment_tooltip_width">80dp</dimen>
+    <dimen name="swap_menu_fragment_tooltip_height">80dp</dimen>
+    <dimen name="swap_menu_fragment_tooltip_margin_left">120dp</dimen>
+    <dimen name="swap_menu_fragment_tooltip_margin_bottom">105dp</dimen>
+
+    <!-- =============================================================================== -->
+    <!-- Layout: swap_game_fragment -->
+    <!-- ************************** -->
+    <dimen name="swap_game_timer_margin_top">70dp</dimen>
+    <dimen name="swap_board_padding">10dp</dimen>
+    <dimen name="swap_clock_width">120dp</dimen>
+    <dimen name="swap_clock_height">50dp</dimen>
+    <dimen name="swap_clock_margin_right">50dp</dimen>
+    <dimen name="swap_clock_text_margin_right">35dp</dimen>
+    <dimen name="swap_clock_text_size">20dp</dimen>
+    <dimen name="swap_game_controls_container_width">100dp</dimen>
+    <dimen name="swap_timer_button_width">50dp</dimen>
+    <dimen name="swap_timer_button_height">50dp</dimen>
+    <dimen name="swap_timer_pause_margin_right">195dp</dimen>  <!-- 50 + 120 + 25 -->
+    <dimen name="swap_timer_play_margin_right">195dp</dimen>   <!-- 50 + 120 + 25 this will replace pauseClock on click-->
+    <dimen name="swap_timer_restart_margin_right">270dp</dimen>  <!-- 50 + 120 + 25 + 50 + 25 -->
+
 
     <!-- ================================================================================ -->
-    <!-- Border Resources -->
-    <!-- **************** -->
+    <!-- Class: SwapControlsView -->
+    <!-- *********************** -->
+    <dimen name="swap_control_button_margin">5dp</dimen>
+    <dimen name="swap_control_button_width">100dp</dimen>   <!-- FIXME was 75dp, is this shift ok?-->
+    <dimen name="swap_control_button_height">100dp</dimen>
+
+    <!-- =============================================================================== -->
+    <!-- COMPOSE GAME DIMENSIONS -->
+    <!-- =============================================================================== -->
+    <!-- Layout: compose_game_fragment -->
+    <!-- ***************************** -->
+    <dimen name="compose_game_playback_controls_height">100dp</dimen>
+    <dimen name="compose_game_playback_buttons_height">80dp</dimen>
+    <dimen name="compose_game_playback_buttons_margin_top">10dp</dimen>
+    <dimen name="compose_game_playback_buttons_margin_left">10dp</dimen>
+    <dimen name="compose_game_controls_margin_top">100dp</dimen>
+    <dimen name="compose_board_padding">10dp</dimen>
+
+
+    <!-- ================================================================================ -->
+    <!-- Tile Border Resources -->
+    <!-- ********************** -->
     <dimen name="swap_game_tile_border">5dp</dimen>
+
+    <!-- =============================================================================== -->
+    <!-- DIMENSION RESOURCES ONLY REFERENCED IN CLASSES -->
+    <!-- =============================================================================== -->
+    <!-- ================================================================================ -->
+    <!-- Class: MatchBoardView -->
+    <!-- ********************* -->
+    <dimen name="match_card_margin">10dp</dimen>
+
+    <!-- ================================================================================ -->
+    <!-- Class: SwapBoardView -->
+    <!-- ********************* -->
+    <dimen name="swap_card_margin">1dp</dimen>
 
 </resources>
