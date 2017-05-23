@@ -9,7 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import ws.isak.bridge.R;
-import ws.isak.bridge.ui.ComposeScrollingImagesView;
+import ws.isak.bridge.ui.ComposeLibraryView;
 import ws.isak.bridge.ui.ComposeTrackerBoardView;
 
 /*
@@ -28,7 +28,7 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
     private ImageButton mComposePauseButton;
     private ImageButton mComposePlayButton;
 
-    private ComposeScrollingImagesView mComposeScrollingImagesView;
+    private ComposeLibraryView mComposeLibraryView;
     private ComposeTrackerBoardView mComposeTrackerView;
 
     @Override
@@ -48,9 +48,9 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
         mComposePlayButton.setOnClickListener(this);
 
         //the scrolling images view: the library of sample images
-        mComposeScrollingImagesView = ComposeScrollingImagesView.fromXml(getActivity().getApplicationContext(), view);
+        mComposeLibraryView = ComposeLibraryView.fromXml(getActivity().getApplicationContext(), view);
         FrameLayout composeScrollingImagesFrameLayout = (FrameLayout) view.findViewById(R.id.compose_game_scrolling_images);
-        composeScrollingImagesFrameLayout.addView(mComposeScrollingImagesView);
+        composeScrollingImagesFrameLayout.addView(mComposeLibraryView);
         composeScrollingImagesFrameLayout.setClipChildren(false);
 
         //the swap game board: the tracker layout //TODO build a draggable grid view?
@@ -60,12 +60,13 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
         composeTrackerFrameLayout.setClipChildren(false);
 
         //build the library frame
-
+        mComposeLibraryView.populateSampleLibrary();
 
         //build the tracker frame
-
+        //TODO
 
         //instantiate all of the event listeners
+        //TODO
 
         return view;
     }

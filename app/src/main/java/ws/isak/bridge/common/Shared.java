@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ws.isak.bridge.R;
@@ -16,6 +17,7 @@ import ws.isak.bridge.model.MatchGame;
 import ws.isak.bridge.model.SwapGame;
 import ws.isak.bridge.model.MatchGameData;
 import ws.isak.bridge.model.SwapGameData;
+import ws.isak.bridge.model.ComposeGameData;
 
 /*
  * Class Shared
@@ -38,18 +40,19 @@ public class Shared {
     public static final String DATABASE_NAME = "bridge.db";  //FIXME context.getResources().getString(R.string.database_name);
     public static DatabaseWrapper databaseWrapper;
 
-    //data classes / methods    FIXME - must these be static?
-    public static UserData userData;        //This holds the current active UserData
-    public static List <UserData> userDataList;
-    public static MatchGameData matchGameData;  //FIXME - is this necessary? can access current matchGameData from userData.getCurMatchGameData()
-    public static List <MatchGameData> matchGameDataList;
-    public static MatchCardData matchCardData;        //placeholder matchCardData for return from database call
-    public static List <MatchCardData> matchCardDataList;
-    public static SwapCardData swapCardData;
-    public static List <SwapCardData> swapCardDataList;
-    public static SwapGameData swapGameData;
-    public static List <SwapGameData> swapGameDataList;
-    
+    //data classes / methods
+    public static UserData userData;                        //This holds the current active UserData for the current playing user
+    public static ArrayList<UserData> userDataList;         //a list of all data about all users who have login credentials
+
+    public static ArrayList <MatchGameData> matchGameDataList;   //holds a list of the match games played by the (TODO?? -current user ??)
+    public static ArrayList <MatchCardData> matchCardDataList;   //holds a list of the match cards currently loaded on the device
+
+    public static ArrayList <SwapGameData> swapGameDataList;     //holds a list of the swap games played by the (TODO?? -current user ??)
+    public static ArrayList <SwapCardData> swapCardDataList;     //holds a list of the swap cards currently loaded on the device
+
+    public static ArrayList <ComposeGameData> composeGameDataList;      //holds a list of the compose games played by the (TODO?? -current user ??)
+    public static ArrayList <ComposeSampleData> composeSampleDataList;  //holds a list of the samples available for the compose game
+
     public static void setUserData (UserData user) {
         Log.d (TAG, "method setUserData");
         userData = user;

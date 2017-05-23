@@ -64,10 +64,12 @@ public class SwapCardData
     }
 
     public void setCardIDKey (double key) {
+        //
         cardIDKey = key;
     }
 
     public double getCardIDKey () {
+        //
         return cardIDKey;
     }
 

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
+import ws.isak.bridge.common.ComposeSampleData;
 import ws.isak.bridge.common.MatchCardData;
 import ws.isak.bridge.common.Audio;
 import ws.isak.bridge.common.Shared;
@@ -100,6 +101,15 @@ public class  MainActivity extends FragmentActivity {
         Log.w (TAG, ".....=====***** SWAP CARD DECK BUILT *****=====.....");
         Log.w (TAG, "....................................................");
         Log.w (TAG, "----------------------------------------------------");
+
+        //build the list of SwapCardData objects based on resources
+        buildComposeSampeDataList();
+
+        Log.w (TAG, "---------------------------------------------------------");
+        Log.w (TAG, ".........................................................");
+        Log.w (TAG, ".....=====***** COMPOSE SAMPLE LIST BUILT *****=====.....");
+        Log.w (TAG, ".........................................................");
+        Log.w (TAG, "---------------------------------------------------------");
 
         //load the database after we have built the CardData Lists
         loadDatabase();
@@ -280,6 +290,29 @@ public class  MainActivity extends FragmentActivity {
             }
         }
         Log.d(TAG, "method buildSwapCardDataList: Shared.swapCardDataList.size(): " + Shared.swapCardDataList.size());
+    }
+
+    //build the composeSampleData list in for access by Compose Game Library and reuse in Tracker
+    private void buildComposeSampeDataList() {
+        //create the local list to hold the samples in the compose sample library
+        Shared.composeSampleDataList = new ArrayList<ComposeSampleData>();
+        //iterate over the number of samples to put in the library
+        for (int i = 1; i <= 10; i++) {                             //FIXME - make this constant into a variable
+            ComposeSampleData curSample = new ComposeSampleData();
+            curSample.setSpeciesName(i);
+
+            curSample.setSpectroURI(URI_DRAWABLE + String.format(Locale.ENGLISH, "compose_sample_image_%d", i));
+            curSample.setAudioURI(URI_AUDIO + String.format(Locale.ENGLISH, "compose_sample_audio_%d", i));
+            curSample.setSampleDuration(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curSample.getAudioURI().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
+            //insert matchCardData object into local storage and if not already in database add it to the database
+            Shared.composeSampleDataList.add(curSample);
+            Log.d (TAG, "method buildComposeSampeDataList: added curSample: " + Shared.composeSampleDataList);
+            /* FIXME ADD ComposeSampleDataORM
+            if (!MatchCardDataORM.isMatchCardDataInDB(curCard)) {
+                Log.i (TAG, "method buildMatchCardDataList: card not previously in database: adding...");
+                MatchCardDataORM.insertMatchCardData(curCard);
+            } */
+        }
     }
 
     private void setBackgroundImage() {

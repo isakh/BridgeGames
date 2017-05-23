@@ -35,14 +35,14 @@ public class ImageScaling {
 	}
 
 	public static Bitmap crop(Bitmap source, int newHeight, int newWidth) {
-		int sourceWidth = source.getWidth();
+
+        int sourceWidth = source.getWidth();
 		int sourceHeight = source.getHeight();
+
         Log.d (TAG, "method crop: source width: " + source.getWidth() + " | height: " + source.getHeight());
 
-		// Compute the scaling factors to fit the new height and width,
-		// respectively.
-		// To cover the final image, the final scaling will be the bigger
-		// of these two.
+		// Compute the scaling factors to fit the new height and width, respectively.
+		// To cover the final image, the final scaling will be the bigger of these two.
 		float xScale = (float) newWidth / sourceWidth;
 		float yScale = (float) newHeight / sourceHeight;
 		float scale = Math.max(xScale, yScale);
@@ -71,7 +71,9 @@ public class ImageScaling {
 		return dest;
 	}
 
+	// downscale a bitmap to a target width and height
 	public static Bitmap scaleDown(int resource, int reqWidth, int reqHeight) {
+        Log.d (TAG, "method scaleDown: resource: " + resource + " | reqWidth: " + reqWidth + " | reqHeight: " + reqHeight);
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
 		BitmapFactory.decodeResource(Shared.context.getResources(), resource);
@@ -84,9 +86,7 @@ public class ImageScaling {
 		return BitmapFactory.decodeResource(Shared.context.getResources(), resource, options);
 	}
 
-	/**
-	 * Downscales a bitmap by the specified factor
-	 */
+	// downscales a bitmap by the specified factor
 	public static Bitmap downscaleBitmap(Bitmap wallpaper, int factor) {
 		// convert to bitmap and get the center
 		int widthPixels = wallpaper.getWidth() / factor;

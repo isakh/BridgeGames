@@ -6,6 +6,7 @@ import android.util.Log;
 
 import ws.isak.bridge.model.MatchGameData;
 import ws.isak.bridge.model.SwapGameData;
+import ws.isak.bridge.model.ComposeGameData;
 
 /*
  * The UserData class contains creation and accessor methods for the data collected about a particular
@@ -42,12 +43,16 @@ public class UserData {
     private static int hearIsPredictLikert;
 
     //data from match game/s played
-    private MatchGameData curMemGame;
-    private ArrayList<MatchGameData> matchGameDataList;
+    private MatchGameData curMemGame;                       //current game being played
+    private ArrayList<MatchGameData> matchGameDataList;     //list of all games user has played
 
     //data from swap game/s played
-    private SwapGameData curSwapGameData;
-    private ArrayList<SwapGameData> swapGameDataList;  
+    private SwapGameData curSwapGameData;                   //current game being played
+    private ArrayList<SwapGameData> swapGameDataList;       //list of all games user has played
+
+    //data from compose game/s played
+    private ComposeGameData curComposeGameData;             //current game being played
+    private ArrayList<ComposeGameData> composeGameDataList; //list of all games user has played
 
 
     // Constructor - this should be called once when a userData object instance needs to be instantiated
@@ -55,7 +60,7 @@ public class UserData {
     public UserData() {
         //Log.d(TAG, "***** CONSTRUCTOR *****");
         //set strings to null
-            //pre
+        //pre
         setUserName(null);
         setAgeRange(null);
         setYearsTwitchingRange(null);
@@ -75,6 +80,7 @@ public class UserData {
         //set game data lists
         initMatchGameDataList();
         initSwapGameDataList();
+        initComposeGameDataList();
     }
 
     /*
@@ -290,5 +296,43 @@ public class UserData {
     public int sizeOfSwapGameDataList () {
         //
         return swapGameDataList.size();
+    }
+
+    //***** COMPOSE GAME DATA *****
+
+    /*
+     * ComposeGameData constructor, accessor, mutator follow:
+     */
+    public void initComposeGameDataList() {
+        Log.d(TAG, "method initComposeGameDataList");
+        composeGameDataList = new ArrayList<ComposeGameData>();
+    }
+
+    public void appendComposeGameData(ComposeGameData game) {
+        Log.d(TAG, "method addToGameDataList: adding game data to list");
+        composeGameDataList.add(game);        //TODO add try/catch block here
+    }
+
+    /*
+     * Method queryComposeGameDataList returns a ComposeGameData object at position in the list gameDataRecord.
+     */
+    public ComposeGameData queryComposeGameDataList(int gameDataRecord) {
+        Log.d(TAG, "method queryComposeGameDataList");
+        return composeGameDataList.get(gameDataRecord);
+    }
+
+    public void setCurComposeGameData(ComposeGameData gameData) {
+        Log.d(TAG, "method setCurComposeGameData");
+        curComposeGameData = gameData;
+    }
+
+    public ComposeGameData getCurComposeGameData() {
+        //Log.d(TAG, "method getCurComposeGameData");
+        return curComposeGameData;
+    }
+
+    public int sizeOfComposeGameDataList () {
+        //
+        return composeGameDataList.size();
     }
 }

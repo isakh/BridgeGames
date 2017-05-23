@@ -1,8 +1,12 @@
 package ws.isak.bridge.model;
 
-/**
- * Created by isakherman on 5/23/17.
+/*
+ *
+ *
+ * @author isak
  */
 
 public class ComposeGame {
+
+    //public ComposeGameConfiguration composeGameBoardConfiguration;
 }

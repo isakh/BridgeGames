@@ -223,6 +223,7 @@
     <dimen name="compose_game_controls_margin_top">100dp</dimen>
     <dimen name="compose_board_padding">10dp</dimen>
     <dimen name="game_compose_finished_button_text_size">35sp</dimen>
+    <dimen name="compose_game_library_image_padding">20dp</dimen>
 
 
     <!-- ================================================================================ -->

@@ -159,7 +159,7 @@ public class ScreenController {
                 return new SwapGameFragment();
             case GAME_COMPOSE:
                 Log.d (TAG, "method getFragment: case GAME_COMPOSE");
-                //FIXME return new ComposeGameFragment(); //TODO - write fragment!
+                return new ComposeGameFragment();
             case POST_SURVEY:
                 return new PostSurveyFragment();
             case FINISHED:
