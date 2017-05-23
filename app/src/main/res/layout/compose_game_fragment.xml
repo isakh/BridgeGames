@@ -42,12 +42,29 @@
             <ImageButton
                 android:id="@+id/compose_game_pause_button"
                 android:layout_width="wrap_content"
+                android:layout_height="@dimen/compose_game_playback_buttons_height"
                 android:layout_marginTop="@dimen/compose_game_playback_buttons_margin_top"
                 android:layout_marginLeft="@dimen/compose_game_playback_buttons_margin_left"
-                android:layout_height="@dimen/compose_game_playback_buttons_height"
                 android:src="@drawable/compose_pause_button"
                 android:onClick="composeGamePausePlayback"/>
 
+            <View android:layout_width="0dp"
+                  android:layout_height="match_parent"
+                  android:layout_weight="1" />          <!-- this view is empty but pushes the Finished button flush right -->
+
+            <Button
+                android:id="@+id/game_compose_finished_button"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/compose_game_playback_buttons_height"
+                android:layout_marginTop="@dimen/compose_game_playback_buttons_margin_top"
+                android:layout_marginRight="@dimen/compose_game_playback_buttons_margin_right"
+                android:shadowColor="#2eaed9"
+                android:shadowDx="4"
+                android:shadowDy="4"
+                android:shadowRadius="4"
+                android:textColor="#0e0e0e"
+                android:textSize="@dimen/game_compose_finished_button_text_size"
+                android:text="@string/compose_game_done_playing"/>
 
         </LinearLayout>
 
