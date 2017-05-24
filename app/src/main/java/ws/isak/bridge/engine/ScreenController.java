@@ -29,6 +29,7 @@ import ws.isak.bridge.fragments.SwapMenuFragment;
 import ws.isak.bridge.fragments.SwapDifficultySelectFragment;
 import ws.isak.bridge.fragments.SwapGameFragment;
 
+import ws.isak.bridge.fragments.ComposeDifficultySelectFragment;
 import ws.isak.bridge.fragments.ComposeGameFragment;
 
 
@@ -71,6 +72,7 @@ public class ScreenController {
         DIFFICULTY_SWAP,        //three levels 2x4, 3x4, 4x4 [species x chunks in sample]
         GAME_MATCH,
         GAME_SWAP,              //
+        DIFFICULTY_COMPOSE,
         GAME_COMPOSE,
         POST_SURVEY,             //FIXME should we have different ones for each game? and/or one for all?
         FINISHED
@@ -157,6 +159,9 @@ public class ScreenController {
             case GAME_SWAP:
                 Log.d (TAG, "method getFragment: case GAME_SWAP");
                 return new SwapGameFragment();
+            case DIFFICULTY_COMPOSE:
+                Log.d (TAG, "method getFragment: case DIFFICULTY_COMPOSE");
+                return new ComposeDifficultySelectFragment();
             case GAME_COMPOSE:
                 Log.d (TAG, "method getFragment: case GAME_COMPOSE");
                 return new ComposeGameFragment();

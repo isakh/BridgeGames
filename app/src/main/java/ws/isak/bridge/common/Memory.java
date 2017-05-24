@@ -27,8 +27,10 @@ public class Memory {
 	private static final String SHARED_PREFERENCES_NAME = "ws.isak.bridge";
 	private static String matchHighStarKey = "theme_%d_difficulty_%d";
     private static String swapHighStarKey = "difficulty_%d";
+    private static String composeHighStarKey = "difficulty_%d";
 
-	public static void saveMatch (int theme, int difficulty, int stars) {
+
+    public static void saveMatch (int theme, int difficulty, int stars) {
 		int matchHighStars = getMatchHighStars(theme, difficulty);
 		if (stars > matchHighStars) {
 			SharedPreferences sharedPreferences = Shared.context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
@@ -57,6 +59,12 @@ public class Memory {
 	public static int getSwapHighStars (int difficulty) {
         SharedPreferences sharedPreferences = Shared.context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
         String key = String.format(swapHighStarKey, difficulty);
+        return sharedPreferences.getInt(key, 0);
+    }
+
+    public static int getComposeHighStars (int difficulty) {
+        SharedPreferences sharedPreferences = Shared.context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
+        String key = String.format(composeHighStarKey, difficulty);
         return sharedPreferences.getInt(key, 0);
     }
 }

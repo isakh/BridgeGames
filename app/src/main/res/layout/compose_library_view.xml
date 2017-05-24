@@ -4,6 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- The Library View is designed around a scroll view with a linear layout inside it.  ImageButtons
+     with spectrograms drawn on them from the library are programmatically added to the LinearLayout -->
+
     <ScrollView
         android:id="@+id/compose_game_scrolling_images_container"
         android:layout_width="match_parent"

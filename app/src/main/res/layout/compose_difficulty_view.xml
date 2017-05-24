@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/difficulty_container_border">
+
+    <TextView
+        android:id="@+id/compose_difficulty_level_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/compose_difficulty_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside" />
+
+    <RelativeLayout
+        android:id="@+id/compose_difficulty_stars"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/compose_difficulty_star_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_80px"
+            android:weight="0.33"/>
+
+        <ImageView
+            android:id="@+id/compose_difficulty_star_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_80px"
+            android:weight="0.34"/>
+
+        <ImageView
+            android:id="@+id/compose_difficulty_star_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/circle_80px"
+            android:weight="0.33"/>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

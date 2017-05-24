@@ -25,6 +25,7 @@ public class ComposeGameData {
     //setup parameters
     private long gameStartTimestamp;            //keep track of the timestamp for the start of the game - database primary key
     private boolean gameStarted;                //Set to Boolean false, becomes true when first card is placed - triggers gameStarTimeStamp
+    private int gameDifficulty;                 //a misnomer, but it defines the number of steps in the loops
     //the following respond to user input during the game
     private int numTurnsTakenInGame;            //Initialize number of turns in game to 0 and increment on each event.
     private ArrayList<Long> gamePlayDurations;  //Time the player spent on the game so far (sum of turnDurations) at each turn (can it be greater than allocated time?)
@@ -36,12 +37,13 @@ public class ComposeGameData {
         //initialize to 0 or null as necessary
         setGameStarted(false);      //initialize to false on setup
         setGameStartTimestamp(0);
+        setGameDifficulty(0);       //initialize to 0 and reset to actual value on selection
         setNumTurnsTaken(0);
         initTurnDurationsArray();       //null array at start
         initGamePlayDurationsArray();   //null array at start
     }
 
-    //[1]
+    //[0]
     public void setUserPlayingName (String userName) {
         //Log.d (TAG, "");
         userPlayingName = userName;
@@ -53,7 +55,7 @@ public class ComposeGameData {
     }
 
 
-    //[2] set/get gameStartTimestamp - this is unique and useful for sorting
+    //[1] set/get gameStartTimestamp - this is unique and useful for sorting
     public void setGameStartTimestamp (long gameStartTime) {
         //Log.d (TAG, "method setGameStartTimestamp");
         gameStartTimestamp = gameStartTime;
@@ -63,7 +65,7 @@ public class ComposeGameData {
         //Log.d (TAG, "method getGameStartTimestamp");
         return gameStartTimestamp;
     }
-    //[3] set/get gameStarted
+    //[2] set/get gameStarted
     public void setGameStarted (boolean startedYet) {
         //Log.d (TAG, "method setGameStarted");
         gameStarted = startedYet;
@@ -72,6 +74,17 @@ public class ComposeGameData {
     public boolean isGameStarted () {
         //Log.d (TAG, "method isGameStarted");
         return gameStarted;
+    }
+
+    //[3] set/get gameDifficulty
+    public void setGameDifficulty (int diff) {
+        //
+        gameDifficulty = diff;
+    }
+
+    public int getGameDifficulty () {
+        //
+        return gameDifficulty;
     }
 
     //[4] control methods for  gamePlayDurations

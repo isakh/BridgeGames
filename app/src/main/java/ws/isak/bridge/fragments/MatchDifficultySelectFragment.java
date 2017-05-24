@@ -27,7 +27,7 @@ import ws.isak.bridge.ui.MatchDifficultyView;
 
 public class MatchDifficultySelectFragment extends Fragment {
 
-    public static final String TAG="DifficultySelect";
+    public static final String TAG="MatchDifficultySelect";
     MatchDifficultyView matchDifficulty1;
     MatchDifficultyView matchDifficulty2;
     MatchDifficultyView matchDifficulty3;

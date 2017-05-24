@@ -18,20 +18,21 @@ import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.utils.ImageScaling;
 
 /*
- *
+ * The Compose Library View class inflates the frame in the Compose Game Fragment where the library
+ * is drawn (left hand side, currently 15% of screen width).  It is represented as a scrolling list
+ * of images of spectrograms of the the audio samples in the library.
  *
  * @author isak
  */
 
-public class ComposeLibraryView extends LinearLayout implements View.OnClickListener { //FIXME do we need OnClickListener?
+public class ComposeLibraryView extends LinearLayout implements View.OnClickListener {
 
     public static final String TAG = "ComposeLibraryView";
+
     public static String URI_DRAWABLE = "drawable://";
 
-    private int mScreenWidth;           //TODO make this a function (20%) of the screen width for the board
+    private int mScreenWidth;
     private int mScreenHeight;
-
-    //TODO array list for sample images?
 
 
     public ComposeLibraryView(Context context) {
@@ -80,7 +81,7 @@ public class ComposeLibraryView extends LinearLayout implements View.OnClickList
 
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
         params.setMargins(5, 5, 5, 5);
 
         //iterate over the samples loaded in the library
@@ -130,9 +131,24 @@ public class ComposeLibraryView extends LinearLayout implements View.OnClickList
             }
         }.execute();
 
-        //TODO add: libraryEntry.setOnClickListener();
-        //TODO add border and buffer between buttons
+        libraryEntry.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                //[-1] If another Sample is Active, cancel that before doing anything with this one
+
+                //[0] This is the first time a sample is selected
+                //TODO set game timestamp
+                //TODO set isPlaying boolean true
+                //TODO proceed to [1]
+
+                //[1] If no other sample is active and game is already started...
+                //TODO make current selected ComposeSampleData active
+                //await next press coming from ComposeTrackerBoardView
+                //on that press, place a copy of the active ComposeSampleData on the TrackerBoard at touched location
+                //and make sure that this one is no longer active
+            }
+        });
     }
 
 }

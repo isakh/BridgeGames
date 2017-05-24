@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/swap_difficulty_padding"
+    android:paddingRight="@dimen/swap_difficulty_padding" >
+
+    <TextView
+        android:id="@+id/compose_select_difficulty_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/compose_difficulty_title"/>
+
+    <LinearLayout
+        android:id="@+id/compose_select_difficulty_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ws.isak.bridge.ui.ComposeDifficultyView
+            android:id="@+id/select_compose_difficulty_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ws.isak.bridge.ui.ComposeDifficultyView
+            android:id="@+id/select_compose_difficulty_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ws.isak.bridge.ui.ComposeDifficultyView
+            android:id="@+id/select_compose_difficulty_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+</LinearLayout>

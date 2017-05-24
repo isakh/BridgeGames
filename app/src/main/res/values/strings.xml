@@ -182,28 +182,30 @@
     <string name="match_themes_spectrograms_name">Spectrograms</string>
 
     <!-- =================================================================================== -->
-    <!-- Class: Difficulty -->
-    <!-- ***************** -->
-    <!-- TODO -->
-
+    <!-- Layout: ComposeDifficulty -->
+    <!-- ************************* -->
+    <string name="compose_difficulty_title">Higher Levels Offer Longer Loops</string>
+    <string name="compose_difficulty_level_1">Loop 8</string>
+    <string name="compose_difficulty_level_2">Loop 16</string>
+    <string name="compose_difficulty_level_3">Loop 32</string>
 
     <!-- =================================================================================== -->
     <!-- ********** BOARD VIEW CONTROLS & TIMERS ********** -->
     <!-- =================================================================================== -->
-    <!-- Class: SwapControlsView -->
-    <!-- *********************** -->
-    <string name="swap_controls_button_play">PLAY ROW</string>
-    <string name="swap_controls_button_pause">PAUSE ROW</string>
-
     <!-- =================================================================================== -->
     <!-- Layout: match_board_fragment -->
     <!-- **************************** -->
-    <string name="match_game_timebar_text_init">99:99</string>
+    <string name="match_game_timebar_text_init">88:88</string>
 
     <!-- =================================================================================== -->
     <!-- Layout: swap_game_fragment -->
     <!-- ************************** -->
     <string name="swap_game_timebar_text_init">88:88</string>
+
+    <!-- Class: SwapControlsView -->
+    <!-- *********************** -->
+    <string name="swap_controls_button_play">PLAY ROW</string>
+    <string name="swap_controls_button_pause">PAUSE ROW</string>
 
     <!-- =================================================================================== -->
     <!-- Layout: compose_game_fragment -->

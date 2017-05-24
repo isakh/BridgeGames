@@ -18,8 +18,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/compose_game_playback_controls_height"
-            android:orientation="horizontal"
-            android:background="@drawable/border_blue">
+            android:background="@drawable/border_blue"
+            android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/compose_game_stop_button"
@@ -27,8 +27,8 @@
                 android:layout_height="@dimen/compose_game_playback_buttons_height"
                 android:layout_marginLeft="@dimen/compose_game_playback_buttons_margin_left"
                 android:layout_marginTop="@dimen/compose_game_playback_buttons_margin_top"
-                android:src="@drawable/compose_stop_button"
-                android:onClick="composeGameStopPlayback"/>
+                android:onClick="composeGameStopPlayback"
+                android:src="@drawable/compose_stop_button"/>
 
             <ImageButton
                 android:id="@+id/compose_game_play_button"
@@ -36,35 +36,36 @@
                 android:layout_height="@dimen/compose_game_playback_buttons_height"
                 android:layout_marginLeft="@dimen/compose_game_playback_buttons_margin_left"
                 android:layout_marginTop="@dimen/compose_game_playback_buttons_margin_top"
-                android:src="@drawable/compose_play_button"
-                android:onClick="composeGameStartPlayback"/>
+                android:onClick="composeGameStartPlayback"
+                android:src="@drawable/compose_play_button"/>
 
             <ImageButton
                 android:id="@+id/compose_game_pause_button"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/compose_game_playback_buttons_height"
-                android:layout_marginTop="@dimen/compose_game_playback_buttons_margin_top"
                 android:layout_marginLeft="@dimen/compose_game_playback_buttons_margin_left"
-                android:src="@drawable/compose_pause_button"
-                android:onClick="composeGamePausePlayback"/>
+                android:layout_marginTop="@dimen/compose_game_playback_buttons_margin_top"
+                android:onClick="composeGamePausePlayback"
+                android:src="@drawable/compose_pause_button"/>
 
-            <View android:layout_width="0dp"
-                  android:layout_height="match_parent"
-                  android:layout_weight="1" />          <!-- this view is empty (0dp width) but pushes the Finished button flush right -->
+            <View
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>          <!-- this view is empty (0dp width) but pushes the Finished button flush right -->
 
             <Button
                 android:id="@+id/game_compose_finished_button"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/compose_game_playback_buttons_height"
-                android:layout_marginTop="@dimen/compose_game_playback_buttons_margin_top"
                 android:layout_marginRight="@dimen/compose_game_playback_buttons_margin_right"
+                android:layout_marginTop="@dimen/compose_game_playback_buttons_margin_top"
                 android:shadowColor="@color/colorTextShadow"
                 android:shadowDx="4"
                 android:shadowDy="4"
                 android:shadowRadius="4"
+                android:text="@string/compose_game_done_playing"
                 android:textColor="@color/colorText"
-                android:textSize="@dimen/game_compose_finished_button_text_size"
-                android:text="@string/compose_game_done_playing"/>
+                android:textSize="@dimen/game_compose_finished_button_text_size"/>
 
         </LinearLayout>
 
@@ -78,31 +79,20 @@
 
 
             <FrameLayout
-                android:id="@+id/compose_game_scrolling_images"
+                android:id="@+id/compose_game_library"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.2"
+                android:layout_weight="0.13"
                 android:background="@drawable/border_red"
                 android:orientation="vertical"> <!-- TODO remove/adjust border-->
-
-
-
             </FrameLayout>
 
             <FrameLayout
-                android:id="@+id/compose_game_tracker_board"
+                android:id="@+id/compose_game_tracker"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.8"
+                android:layout_weight="0.85"
                 android:background="@drawable/border_green"> <!-- TODO remove/adjust border-->
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="TEST_BOARD"/>
-
-
             </FrameLayout>
 
         </LinearLayout>

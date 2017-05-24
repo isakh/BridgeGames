@@ -41,7 +41,7 @@ public class ComposeTrackerBoardView extends GridLayout {
         int padding = Shared.context.getResources().getDimensionPixelSize(R.dimen.compose_board_padding);
 
         mScreenHeight = getResources().getDisplayMetrics().heightPixels - margin - padding * 2;
-        mScreenWidth = (int) Math.floor((getResources().getDisplayMetrics().widthPixels - padding*2 - ImageScaling.px(20)) * 0.2);    //TODO * proportion (currently 20%) of screen for view - make less of a hack
+        mScreenWidth = (int) Math.floor((getResources().getDisplayMetrics().widthPixels - padding*2 - ImageScaling.px(20)) * 0.85);    //TODO * proportion (currently 20%) of screen for view - make less of a hack
         Log.d (TAG, " ... mScreenHeight: " + mScreenHeight + " | mScreenWidth: " + mScreenWidth);
         setClipToPadding(false);
     }
@@ -58,4 +58,10 @@ public class ComposeTrackerBoardView extends GridLayout {
         return (ComposeTrackerBoardView) LayoutInflater.from(context).inflate(R.layout.compose_tracker_board_view, parent, false);
     }
 
+    public void constructTrackerBoard () {
+        Log.i(TAG, "method constructTrackerBoard: board dimensions to load: TODO - difficulty maps to differing lengths");
+        //load the linear layout defined in xml
+        GridLayout trackerLayout = (GridLayout) findViewById(R.id.compose_game_tracker_board);
+        trackerLayout.setBackgroundColor(0xAA00FFFF);       //FIXME set in xml
+    }
 }

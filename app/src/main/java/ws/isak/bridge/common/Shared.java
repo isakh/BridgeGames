@@ -13,6 +13,7 @@ import ws.isak.bridge.engine.Engine;
 import ws.isak.bridge.events.EventBus;
 import ws.isak.bridge.database.DatabaseWrapper;
 
+import ws.isak.bridge.model.ComposeGame;
 import ws.isak.bridge.model.MatchGame;
 import ws.isak.bridge.model.SwapGame;
 import ws.isak.bridge.model.MatchGameData;
@@ -33,8 +34,10 @@ public class Shared {
 	public static FragmentActivity activity; // TODO: move to weak reference
 	public static Engine engine;
 	public static EventBus eventBus;
+
     public static MatchGame currentMatchGame;
     public static SwapGame currentSwapGame;
+    public static ComposeGame currentComposeGame;
 
     //database
     public static final String DATABASE_NAME = "bridge.db";  //FIXME context.getResources().getString(R.string.database_name);

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -44,6 +43,8 @@ import ws.isak.bridge.events.ui.SwapStartEvent;
 
 import ws.isak.bridge.events.ui.MatchDifficultySelectedEvent;
 import ws.isak.bridge.events.ui.SwapDifficultySelectedEvent;
+import ws.isak.bridge.events.ui.ComposeDifficultySelectEvent;
+
 import ws.isak.bridge.events.ui.SwapBackGameEvent;
 import ws.isak.bridge.events.ui.SwapNextGameEvent;
 import ws.isak.bridge.events.ui.MatchNextGameEvent;
@@ -52,6 +53,7 @@ import ws.isak.bridge.events.ui.MatchThemeSelectedEvent;
 import ws.isak.bridge.events.ui.MatchBackGameEvent;
 import ws.isak.bridge.events.ui.MatchFlipCardEvent;
 
+import ws.isak.bridge.model.ComposeGame;
 import ws.isak.bridge.themes.MatchTheme;
 import ws.isak.bridge.themes.MatchThemes;
 import ws.isak.bridge.ui.PopupManager;
@@ -80,8 +82,11 @@ public class Engine extends EventObserverAdapter {
 
 	private static final String TAG = "Engine";
 	private static Engine mInstance = null;			//instance of Engine for current use of app
-	private MatchGame mPlayingMatchGame = null;		//instance of MatchGame for current game being played
+
+    private MatchGame mPlayingMatchGame = null;		//instances for current game being played
     private SwapGame mPlayingSwapGame = null;
+    private ComposeGame mPlayingComposeGame = null;
+
     private MatchGameData currentMatchGameData;
 	private SwapGameData currentSwapGameData;
     private int mFlippedId = -1;					//id of the tile (? or event?) with the card being flipped
@@ -128,6 +133,8 @@ public class Engine extends EventObserverAdapter {
         //difficultyLevel select event listeners
 		Shared.eventBus.listen(MatchDifficultySelectedEvent.TYPE, this);
 		Shared.eventBus.listen(SwapDifficultySelectedEvent.TYPE, this);
+        Shared.eventBus.listen(ComposeDifficultySelectEvent.TYPE, this);
+
         Shared.eventBus.listen(SwapNextGameEvent.TYPE, this);
         Shared.eventBus.listen(SwapBackGameEvent.TYPE, this);
         Shared.eventBus.listen(MatchFlipCardEvent.TYPE, this);
@@ -151,6 +158,8 @@ public class Engine extends EventObserverAdapter {
         //difficultyLevel select event unlisten
         Shared.eventBus.unlisten(MatchDifficultySelectedEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapDifficultySelectedEvent.TYPE, this);
+        Shared.eventBus.unlisten(ComposeDifficultySelectEvent.TYPE, this);
+
         Shared.eventBus.unlisten(SwapNextGameEvent.TYPE, this);
         Shared.eventBus.unlisten(SwapBackGameEvent.TYPE, this);
 		Shared.eventBus.unlisten(MatchFlipCardEvent.TYPE, this);
@@ -473,6 +482,20 @@ public class Engine extends EventObserverAdapter {
                         "," + cardData.getCardIDKey().getSwapCardSegmentID());
         }
         */
+    }
+
+    @Override
+    public void onEvent(ComposeDifficultySelectEvent event) {
+        Log.d (TAG, "onEvent ComposeDifficultySelectEvent ...");
+        mPlayingComposeGame = new ComposeGame();
+
+        //set and share the current swap game
+        Shared.currentComposeGame = mPlayingComposeGame;
+        Shared.currentComposeGame.gameClock = Clock.getInstance();
+
+        Shared.userData.getCurComposeGameData().setGameDifficulty(event.difficulty);
+
+        mScreenController.openScreen(Screen.GAME_COMPOSE);
     }
 
 	// Override method onEvent when the event being passed is a MatchFlipCardEvent.
