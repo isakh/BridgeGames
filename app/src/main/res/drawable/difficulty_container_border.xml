@@ -2,7 +2,7 @@
        android:shape="rectangle" >
     <!-- border stroke width-->
     <stroke android:width="5dp"
-            android:color="@color/game_container_border_color"/>
+            android:color="@color/difficulty_container_border_color"/>
 
     <!-- rounded corners -->
     <corners android:bottomLeftRadius="0dp"

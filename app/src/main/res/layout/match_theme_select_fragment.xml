@@ -1,59 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/compose_difficulty_margin"
+    android:layout_marginBottom="@dimen/compose_difficulty_margin"
     android:gravity="center"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:paddingLeft="@dimen/theme_padding"
     android:paddingRight="@dimen/theme_padding" >
 
-    <!-- TODO rewrite layout to eliminate need for multiple @drawables -->
-
-    <RelativeLayout
-        android:id="@+id/theme_blank_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginRight="@dimen/theme_margin"
-        android:layout_weight="1" >
-
-        <ImageView
-            android:id="@+id/theme_blank"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:src="@drawable/blank_theme_star_0" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/theme_birds_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginRight="@dimen/theme_margin"
-        android:layout_weight="1" >
-
-        <ImageView
-            android:id="@+id/theme_birds"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:src="@drawable/birds_theme_star_0" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/theme_spectrograms_container"
+    <TextView
+        android:id="@+id/match_theme_select_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/theme_margin"
-        android:layout_weight="1" >
+        android:gravity="center"
+        android:text="@string/match_theme_select_title"
+        android:textSize="@dimen/match_theme_select_title_size"/>
 
-        <ImageView
-            android:id="@+id/theme_spectrograms"
+    <LinearLayout
+        android:id="@+id/compose_select_difficulty_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ws.isak.bridge.ui.MatchThemeView
+            android:id="@+id/select_match_theme_1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:src="@drawable/spectrogram_theme_star_0" />
-    </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <ws.isak.bridge.ui.MatchThemeView
+            android:id="@+id/select_match_theme_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <ws.isak.bridge.ui.MatchThemeView
+            android:id="@+id/select_match_theme_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
 
 </LinearLayout>

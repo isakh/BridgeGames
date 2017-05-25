@@ -8,4 +8,11 @@
     <color name="colorText">#0e0e0e</color>
     <color name="colorTextShadow">#2eaed9</color>
     <color name="game_container_border_color">#FF000000</color>
+    <color name="theme_container_border_color">#020a43</color>
+    <color name="difficulty_container_border_color">#210483</color>
+
+    <color name="match_difficulty_easy_color">#64dd17</color>
+    <color name="match_difficulty_medium_color">#ffea00</color>
+    <color name="match_difficulty_hard_color">#d50000</color>
+
 </resources>

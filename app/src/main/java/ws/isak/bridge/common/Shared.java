@@ -19,6 +19,7 @@ import ws.isak.bridge.model.SwapGame;
 import ws.isak.bridge.model.MatchGameData;
 import ws.isak.bridge.model.SwapGameData;
 import ws.isak.bridge.model.ComposeGameData;
+import ws.isak.bridge.themes.MatchTheme;
 
 /*
  * Class Shared
@@ -36,6 +37,7 @@ public class Shared {
 	public static EventBus eventBus;
 
     public static MatchGame currentMatchGame;
+    public static MatchTheme currentMatchTheme;
     public static SwapGame currentSwapGame;
     public static ComposeGame currentComposeGame;
 

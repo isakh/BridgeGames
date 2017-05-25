@@ -45,15 +45,20 @@
     <!-- =============================================================================== -->
     <!-- Layout: match_theme_select_fragment -->
     <!-- *********************************** -->
+    <dimen name="match_theme_select_title_size">40sp</dimen>
+    <dimen name="match_theme_select_level_title_size">30sp</dimen>
     <dimen name="theme_padding">40dp</dimen>
     <dimen name="theme_margin">20dp</dimen>
 
     <!-- ================================================================================-->
     <!-- Layout: match_difficulty_select_fragment -->
     <!-- **************************************** -->
+    <dimen name="match_difficulty_title_size">40sp</dimen>
+    <dimen name="match_difficulty_level_title_size">30sp</dimen>
     <dimen name="match_difficulty_padding">40dp</dimen>
     <dimen name="match_difficulty_margin">10dp</dimen>
     <dimen name="match_difficulty_margin_top">20dp</dimen>
+    <dimen name="match_difficulty_square_buttons_side">180dp</dimen>
 
     <!-- ================================================================================-->
     <!-- Layout: swap_difficulty_select_fragment -->

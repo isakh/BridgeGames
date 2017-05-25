@@ -178,17 +178,18 @@
     <!-- =================================================================================== -->
     <!-- Class: MatchThemes -->
     <!-- ****************** -->
-    <string name="match_themes_blank_name">Blank</string>
-    <string name="match_themes_birds_name">Birds</string>
-    <string name="match_themes_spectrograms_name">Spectrograms</string>
+    <string name="match_theme_select_title">CHOOSE A THEME</string>
+    <string name="match_themes_blank_name">BLANK</string>
+    <string name="match_themes_birds_name">BIRDS</string>
+    <string name="match_themes_spectrograms_name">SPECTRO</string>
 
     <!-- =================================================================================== -->
-    <!-- Layout: ComposeDifficulty -->
+    <!-- Layout: MatchDifficulty -->
     <!-- ************************* -->
-    <string name="compose_difficulty_title">Higher Levels Offer Longer Loops</string>
-    <string name="compose_difficulty_level_1">Loop 8</string>
-    <string name="compose_difficulty_level_2">Loop 16</string>
-    <string name="compose_difficulty_level_3">Loop 32</string>
+    <string name="match_difficulty_title">MATCH THE TILES</string>
+    <string name="match_difficulty_level_1">EASY</string>
+    <string name="match_difficulty_level_2">MEDIUM</string>
+    <string name="match_difficulty_level_3">HARD</string>
 
     <!-- =================================================================================== -->
     <!-- Layout: SwapDifficulty -->
@@ -197,6 +198,16 @@
     <string name="swap_difficulty_level_1">EASY</string>
     <string name="swap_difficulty_level_2">MEDIUM</string>
     <string name="swap_difficulty_level_3">HARD</string>
+
+    <!-- =================================================================================== -->
+    <!-- Layout: ComposeDifficulty -->
+    <!-- ************************* -->
+    <string name="compose_difficulty_title">WRITE A SONG</string>
+    <string name="compose_difficulty_level_1">Loop 8</string>
+    <string name="compose_difficulty_level_2">Loop 16</string>
+    <string name="compose_difficulty_level_3">Loop 32</string>
+
+
 
     <!-- =================================================================================== -->
     <!-- ********** BOARD VIEW CONTROLS & TIMERS ********** -->

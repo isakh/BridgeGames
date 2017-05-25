@@ -166,13 +166,13 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
      * the countdown clock on the screen
      */
     private void setTime(long time) {
-        Log.d (TAG, "...method setTime: input time (ms): " + time);
+        Log.v (TAG, "...method setTime: input time (ms): " + time);
         int timeInSeconds = (int) Math.ceil((double) time / 1000);
-        Log.d (TAG, "...              : timeInSeconds: " + timeInSeconds);
+        Log.v (TAG, "...              : timeInSeconds: " + timeInSeconds);
         int min = timeInSeconds / 60;
-        Log.d (TAG, "...              : min: " + min);
+        Log.v (TAG, "...              : min: " + min);
         int sec = timeInSeconds - min * 60;
-        Log.d (TAG, " ...             : sec: " + sec + " | calling mTime.setText");
+        Log.v (TAG, " ...             : sec: " + sec + " | calling mTime.setText");
         mTime.setText(" " + String.format(Locale.ENGLISH, "%02d", min) + ":" + String.format(Locale.ENGLISH, "%02d", sec));
     }
 

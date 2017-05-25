@@ -217,6 +217,7 @@ public class Engine extends EventObserverAdapter {
 
 	@Override
 	public void onEvent(MatchThemeSelectedEvent event) {
+        Log.d (TAG, "method onEvent MatchThemeSelectedEvent: event.matchTheme: " + event.matchTheme);
 		mSelectedMatchTheme = event.matchTheme;
 		AsyncTask<Void, Void, TransitionDrawable> task = new AsyncTask<Void, Void, TransitionDrawable>() {
 
@@ -229,6 +230,7 @@ public class Engine extends EventObserverAdapter {
 				backgrounds[0] = new BitmapDrawable(Shared.context.getResources(), bitmap);
 				backgrounds[1] = new BitmapDrawable(Shared.context.getResources(), backgroundImage);
 				TransitionDrawable imageCrossFader = new TransitionDrawable(backgrounds);
+                Log.v(TAG, "method onEvent MatchThemeSelectedEvent: TransitionDrawable doInBackground finishing");
 				return imageCrossFader;
 			}
 
@@ -240,7 +242,8 @@ public class Engine extends EventObserverAdapter {
                 animation1.setDuration(250);
                 mBackgroundImage.setAlpha(0f);
                 mBackgroundImage.startAnimation(animation1);
-				result.startTransition(1000);                   //FIXME - make this a const in xml
+				result.startTransition(1000);                   //FIXME - make this a const time in xml
+                Log.v(TAG, "method onEvent MatchThemeSelectedEvent: TransitionDrawable onPostExecute finishing");
 			}
 		};
 		task.execute();

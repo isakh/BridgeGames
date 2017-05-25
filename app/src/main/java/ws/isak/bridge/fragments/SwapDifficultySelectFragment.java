@@ -12,7 +12,6 @@ import android.view.animation.BounceInterpolator;
 import android.widget.TextView;
 
 import ws.isak.bridge.R;
-import ws.isak.bridge.common.Memory;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.events.ui.SwapDifficultySelectedEvent;
 import ws.isak.bridge.ui.SwapDifficultyView;

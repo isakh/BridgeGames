@@ -29,25 +29,12 @@ public class MatchThemes {
     public static String URI_DRAWABLE = "drawable://";
     public static String URI_AUDIO = "raw://";
 
-    public static MatchTheme createBlankTheme() {
-        MatchTheme matchTheme = new MatchTheme();
-        matchTheme.themeID = 0;
-        matchTheme.name = Shared.context.getString(R.string.match_themes_blank_name);
-        matchTheme.pairedImagesDiffer = false;
-        matchTheme.backgroundImageUrl = URI_DRAWABLE + "background_match_blank";
-        //matchTheme.cardObjs = new ArrayList<MatchCardData>();
-        //Collections.copy(Shared.matchCardDataList, matchTheme.cardObjs);      //FIXME this isn't necessary - can replace all instances of matchTheme.swapBoardMap with Shared.matchCardDataList
-        return matchTheme;
-    }
-
 	public static MatchTheme createBirdsTheme() {
 		MatchTheme matchTheme = new MatchTheme();
 		matchTheme.themeID = 1;
 		matchTheme.name = Shared.context.getString(R.string.match_themes_birds_name);
 		matchTheme.pairedImagesDiffer = true;
 		matchTheme.backgroundImageUrl = URI_DRAWABLE + "background_match_birds";
-		//matchTheme.cardObjs = new ArrayList<MatchCardData>();		//ArrayList of type MatchCardData
-        //Collections.copy(Shared.matchCardDataList, matchTheme.cardObjs);
 		return matchTheme;
 	}
 
@@ -57,10 +44,17 @@ public class MatchThemes {
 		matchTheme.name = Shared.context.getString(R.string.match_themes_spectrograms_name);
 		matchTheme.pairedImagesDiffer = false;
 		matchTheme.backgroundImageUrl = URI_DRAWABLE + "background_match_spectrograms";
-		//matchTheme.cardObjs = new ArrayList<MatchCardData>();		//ArrayList of MatchCardData objects
-        //Collections.copy(Shared.matchCardDataList, matchTheme.cardObjs);
 		return matchTheme;
 	}
+
+    public static MatchTheme createBlankTheme() {
+        MatchTheme matchTheme = new MatchTheme();
+        matchTheme.themeID = 0;
+        matchTheme.name = Shared.context.getString(R.string.match_themes_blank_name);
+        matchTheme.pairedImagesDiffer = false;
+        matchTheme.backgroundImageUrl = URI_DRAWABLE + "background_match_blank";
+        return matchTheme;
+    }
 	
 	public static Bitmap getBackgroundImage(MatchTheme matchTheme) {
 		String drawableResourceName = matchTheme.backgroundImageUrl.substring(MatchThemes.URI_DRAWABLE.length());
