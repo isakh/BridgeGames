@@ -32,11 +32,11 @@ public class MatchCardDataORM {
     private static final String COLUMN_SPECIES_NAME = "speciesName";
 
     //sqlite cannot deal with booleans, pairedImagesDiffer and firstImageUsed become INTEGERS
-    private static final String COLUMN_PAIRED_IMAGES_DIFFER_TYPE = "INTEGER";
-    private static final String COLUMN_PAIRED_IMAGES_DIFFER = "pairedImagesDiffer";
+    //private static final String COLUMN_PAIRED_IMAGES_DIFFER_TYPE = "INTEGER";
+    //private static final String COLUMN_PAIRED_IMAGES_DIFFER = "pairedImagesDiffer";
 
-    private static final String COLUMN_FIRST_IMAGE_USED_TYPE = "INTEGER";
-    private static final String COLUMN_FIRST_IMAGE_USED = "firstImageUsed";
+    //private static final String COLUMN_FIRST_IMAGE_USED_TYPE = "INTEGER";
+    //private static final String COLUMN_FIRST_IMAGE_USED = "firstImageUsed";
 
     private static final String COLUMN_IMAGE_URI0_TYPE = "STRING";
     private static final String COLUMN_IMAGE_URI0 = "imageURI0";
@@ -61,8 +61,8 @@ public class MatchCardDataORM {
             " (" +
             COLUMN_CARD_ID + " " + COLUMN_CARD_ID_TYPE + COMMA_SEP +
             COLUMN_SPECIES_NAME + " " + COLUMN_SPECIES_NAME_TYPE + COMMA_SEP +
-            COLUMN_PAIRED_IMAGES_DIFFER + " " + COLUMN_PAIRED_IMAGES_DIFFER_TYPE + COMMA_SEP +
-            COLUMN_FIRST_IMAGE_USED + " " + COLUMN_FIRST_IMAGE_USED_TYPE + COMMA_SEP +
+            //COLUMN_PAIRED_IMAGES_DIFFER + " " + COLUMN_PAIRED_IMAGES_DIFFER_TYPE + COMMA_SEP +
+            //COLUMN_FIRST_IMAGE_USED + " " + COLUMN_FIRST_IMAGE_USED_TYPE + COMMA_SEP +
             COLUMN_IMAGE_URI0 + " " + COLUMN_IMAGE_URI0_TYPE + COMMA_SEP +
             COLUMN_IMAGE_URI1 + " " + COLUMN_IMAGE_URI1_TYPE + COMMA_SEP +
             COLUMN_IMAGE_URI2 + " " + COLUMN_IMAGE_URI2_TYPE + COMMA_SEP +
@@ -227,10 +227,10 @@ public class MatchCardDataORM {
         values.put (COLUMN_CARD_ID, matchCardData.getCardID());
         values.put (COLUMN_SPECIES_NAME, matchCardData.getSpeciesName());
 
-        if (!matchCardData.getPairedImageDiffer()) { values.put (COLUMN_PAIRED_IMAGES_DIFFER, 0);}       //TODO Check logic
-        else{ values.put (COLUMN_PAIRED_IMAGES_DIFFER, 1); }
-        if (!matchCardData.getFirstImageUsed()) { values.put (COLUMN_FIRST_IMAGE_USED, 0); }             //TODO Check logic
-        else { values.put (COLUMN_FIRST_IMAGE_USED, 1); }
+        //if (!matchCardData.getPairedImageDiffer()) { values.put (COLUMN_PAIRED_IMAGES_DIFFER, 0);}       //TODO Check logic
+        //else{ values.put (COLUMN_PAIRED_IMAGES_DIFFER, 1); }
+        //if (!matchCardData.getFirstImageUsed()) { values.put (COLUMN_FIRST_IMAGE_USED, 0); }             //TODO Check logic
+        //else { values.put (COLUMN_FIRST_IMAGE_USED, 1); }
 
         values.put (COLUMN_IMAGE_URI0, matchCardData.getImageURI0());
         values.put (COLUMN_IMAGE_URI1, matchCardData.getImageURI1());
@@ -250,6 +250,7 @@ public class MatchCardDataORM {
         cursorAtMatchCardData.setCardID (cursor.getInt(cursor.getColumnIndex(COLUMN_CARD_ID)));
         cursorAtMatchCardData.setSpeciesName(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIES_NAME)));      //FIXME solve string approach to species loading - currently overloading constructor
 
+        /* REMOVE PAIRED IMAGES DIFFER AND COLUMN FIRST IMAGE USED
         if (cursor.getInt(cursor.getColumnIndex(COLUMN_PAIRED_IMAGES_DIFFER)) == 1) { cursorAtMatchCardData.setPairedImageDiffer(true); }
         else if (cursor.getInt(cursor.getColumnIndex(COLUMN_PAIRED_IMAGES_DIFFER)) == 0) { cursorAtMatchCardData.setPairedImageDiffer(false); }
         else {
@@ -260,7 +261,7 @@ public class MatchCardDataORM {
         else {
             Log.d (TAG, "ERROR: method cursorAtMatchCardData: isFirstImageUsed: " + cursor.getInt(cursor.getColumnIndex(COLUMN_FIRST_IMAGE_USED)));
         }
-
+        */
         cursorAtMatchCardData.setImageURI0(cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI0)));
         cursorAtMatchCardData.setImageURI1(cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI1)));
         cursorAtMatchCardData.setImageURI2(cursor.getString(cursor.getColumnIndex(COLUMN_IMAGE_URI2)));

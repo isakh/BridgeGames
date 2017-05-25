@@ -49,7 +49,7 @@ public class MatchThemes {
 
     public static MatchTheme createBlankTheme() {
         MatchTheme matchTheme = new MatchTheme();
-        matchTheme.themeID = 0;
+        matchTheme.themeID = 3;
         matchTheme.name = Shared.context.getString(R.string.match_themes_blank_name);
         matchTheme.pairedImagesDiffer = false;
         matchTheme.backgroundImageUrl = URI_DRAWABLE + "background_match_blank";

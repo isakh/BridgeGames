@@ -179,8 +179,8 @@ public class  MainActivity extends FragmentActivity {
             MatchCardData curCard = new MatchCardData();
             curCard.setCardID(i);
             curCard.setSpeciesName(curCard.getCardID());
-            curCard.setPairedImageDiffer(false);
-            curCard.setFirstImageUsed(false);
+            //curCard.setPairedImageDiffer(false);
+            //curCard.setFirstImageUsed(false);
             curCard.setImageURI0(URI_DRAWABLE + "blank_card");
             curCard.setImageURI1(URI_DRAWABLE + String.format(Locale.ENGLISH, "match_bird_%d", i) + "_a");
             curCard.setImageURI2(URI_DRAWABLE + String.format(Locale.ENGLISH, "match_bird_%d", i) + "_b");

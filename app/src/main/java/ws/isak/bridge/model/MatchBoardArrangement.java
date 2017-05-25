@@ -44,18 +44,15 @@ public class MatchBoardArrangement {
 		String imageUri = null;		//string to store image uri, varies depending on whether first or second if necessary
 
         MatchCardData cardOnTile = cardObjs.get(curTileID);
+
         Log.d (TAG, "method getMatchTileBitmap: ADDING NEW BITMAP: curTileID: " + curTileID +
                 " | tile image size: " + size + " | cardOnTile id: " + cardOnTile.getCardID() +
-		        " | cardOnTile.getPairedImagedDiffer: " + cardOnTile.getPairedImageDiffer() +
+		        " | cardOnTile.getPairedImageDiffer: " + cardOnTile.getPairedImageDiffer() +
                 " | cardOnTile.getFirstImageUsed: " + cardOnTile.getFirstImageUsed());
 
         switch (Shared.userData.getCurMatchGame().getThemeID()) {
-            case 0:                                                                         //MatchTheme is blank
-                Log.d (TAG, "method getMatchTileBitmap: switch themeID: " + Shared.userData.getCurMatchGame().getThemeID());
-                imageUri = cardOnTile.getImageURI0();
-                break;
             case 1:                                                                         //MatchTheme is birds
-                if (cardOnTile.getPairedImageDiffer() && cardOnTile.getFirstImageUsed()) {  //first card used
+                if (cardOnTile.getFirstImageUsed()) {  //first card used is true
                     Log.d (TAG, "method getMatchTileBitmap: switch themeID: " + Shared.userData.getCurMatchGame().getThemeID() +
                             " pairedImagesDiffer: " + cardOnTile.getPairedImageDiffer() +
                             " firstImageUsed: " + cardOnTile.getFirstImageUsed());
@@ -72,6 +69,10 @@ public class MatchBoardArrangement {
             case 2:                                                                         //MatchTheme is spectrograms
                 Log.d (TAG, "method getMatchTileBitmap: switch themeID: " + Shared.userData.getCurMatchGame().getThemeID());
                 imageUri = cardOnTile.getImageURI3();
+                break;
+            case 3:                                                                         //MatchTheme is blank
+                Log.d (TAG, "method getMatchTileBitmap: switch themeID: " + Shared.userData.getCurMatchGame().getThemeID());
+                imageUri = cardOnTile.getImageURI0();
                 break;
         }
 		Log.d (TAG, "					 : imageURI: " + imageUri);
