@@ -37,6 +37,7 @@
     <!-- **************************** -->
     <dimen name="game_select_padding">40dp</dimen>
     <dimen name="game_select_margin">20dp</dimen>
+    <dimen name="game_select_fragment_title_size">50sp</dimen>
     <dimen name="game_compose_title_text_size">40sp</dimen>
     <dimen name="game_swap_title_text_size">40sp</dimen>
     <dimen name="game_match_title_text_size">40sp</dimen>
@@ -57,9 +58,19 @@
     <!-- ================================================================================-->
     <!-- Layout: swap_difficulty_select_fragment -->
     <!-- *************************************** -->
+    <dimen name="swap_difficulty_title_size">40sp</dimen>
+    <dimen name="swap_difficulty_level_title_size">30sp</dimen>
     <dimen name="swap_difficulty_padding">40dp</dimen>
     <dimen name="swap_difficulty_margin">10dp</dimen>
     <dimen name="swap_difficulty_margin_top">20dp</dimen>
+
+    <!-- =============================================================================== -->
+    <!-- Layout: compose_difficulty_select/ compose_difficulty_view -->
+    <!-- ********************************************************** -->
+    <dimen name="compose_difficulty_title_size">40sp</dimen>
+    <dimen name="compose_difficulty_level_title_size">30sp</dimen>
+    <dimen name="compose_difficulty_margin">10dp</dimen>
+    <dimen name="compose_difficulty_padding">40dp</dimen>
 
 
     <!-- =============================================================================== -->
@@ -213,10 +224,6 @@
     <!-- =============================================================================== -->
     <!-- COMPOSE GAME DIMENSIONS -->
     <!-- =============================================================================== -->
-    <!-- =============================================================================== -->
-    <!-- Layout: compose_difficulty_select/ compose_difficulty_view -->
-    <!-- ********************************************************** -->
-    <dimen name="compose_difficulty_title_size">40sp</dimen>
 
 
     <!-- =============================================================================== -->

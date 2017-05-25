@@ -332,7 +332,17 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
                 // calculate the score
                 gameState.achievedScore = Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty() * gameState.remainingTimeInSeconds;     //FIXME - was difficultyLevel, now getSwapDifficulty() , check consistency
                 // save to memory
-                Memory.saveSwap(Shared.currentSwapGame.swapBoardConfiguration.difficultyLevel, gameState.achievedStars);
+                switch (Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty()) {
+                    case 1:
+                        Shared.userData.setSwapHighStarsDifficulty1(gameState.achievedStars);
+                        break;
+                    case 2:
+                        Shared.userData.setSwapHighStarsDifficulty2(gameState.achievedStars);
+                        break;
+                    case 3:
+                        Shared.userData.setSwapHighStarsDifficulty3(gameState.achievedStars);
+                        break;
+                }
                 //trigger the SwapGameWonEvent
                 Shared.eventBus.notify(new SwapGameWonEvent(gameState), 1000);      //TODO convert delay to xml
             }
@@ -370,8 +380,17 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
                 // calculate the score
                 gameState.achievedScore = Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty() * gameState.remainingTimeInSeconds;     //FIXME - was difficultyLevel, now getSwapDifficulty() , check consistency
                 // save to memory
-                Memory.saveSwap(Shared.currentSwapGame.swapBoardConfiguration.difficultyLevel, gameState.achievedStars);
-                //trigger the SwapGameWonEvent
+                switch (Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty()) {
+                    case 1:
+                        Shared.userData.setSwapHighStarsDifficulty1(gameState.achievedStars);
+                        break;
+                    case 2:
+                        Shared.userData.setSwapHighStarsDifficulty2(gameState.achievedStars);
+                        break;
+                    case 3:
+                        Shared.userData.setSwapHighStarsDifficulty3(gameState.achievedStars);
+                        break;
+                }                //trigger the SwapGameWonEvent
                 Shared.eventBus.notify(new SwapGameWonEvent(gameState), 1000);      //TODO convert delay to xml
             }
         }

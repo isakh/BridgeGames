@@ -29,6 +29,7 @@ public class GameSelectFragment extends Fragment implements  View.OnClickListene
 
     public static final String TAG="GameSelectFragment";
 
+    private TextView fragmentTitle;
     private TextView matchTitle;
     private TextView swapTitle;
     private TextView composeTitle;
@@ -44,11 +45,14 @@ public class GameSelectFragment extends Fragment implements  View.OnClickListene
         View swapGameLaunch = view.findViewById(R.id.game_swap_container);
         View composeGameLaunch = view.findViewById(R.id.game_compose_container);
 
+        fragmentTitle = (TextView) view.findViewById(R.id.game_select_fragment_title);
         matchTitle = (TextView) view.findViewById(R.id.game_match_title);
         swapTitle = (TextView) view.findViewById(R.id.game_swap_title);
         composeTitle = (TextView) view.findViewById(R.id.game_compose_title);
 
-        FontLoader.setTypeface(Shared.context, new TextView[] { matchTitle, swapTitle, composeTitle }, FontLoader.Font.ANGRYBIRDS);
+        FontLoader.setTypeface(Shared.context, new TextView[] {
+                fragmentTitle, matchTitle, swapTitle, composeTitle
+        }, FontLoader.Font.ANGRYBIRDS);
         //setting click listeners for game launch views
         Log.d (TAG, "setting click listeners for game launch views");
         matchGameLaunch.setOnClickListener(this);
@@ -76,7 +80,7 @@ public class GameSelectFragment extends Fragment implements  View.OnClickListene
             case R.id.game_compose_container:
                 Log.d(TAG, "overridden method onClick: case game_compose: switch to MENU_COMPOSE screen"); //TODO do we want a menu screen?
                 animateShow(view);
-                ScreenController.getInstance().openScreen(Screen.GAME_COMPOSE); //FIXME for now this goes straight to the game
+                ScreenController.getInstance().openScreen(Screen.DIFFICULTY_COMPOSE); //FIXME for now this goes to difficulty select
                 break;
         }
     }

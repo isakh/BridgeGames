@@ -8,16 +8,9 @@ import java.util.Locale;
 
 
 /*
- * The memory class holds data that is stored for each player which can be accessed from their
- * userID (unique name field in UserData)
- * TODO based on a user name setup in a UserSetup Fragment?
- * 			TODO How to organize the user data storage on device
- * 			TODO what information is to be collected for each game played?:
- *				TODO Total time for given game (function of samples selected + difficultyLevel constants)
- *				TODO Total number of moves for completion (e.g. num tiles would be 'perfect' game, any additional of interest
- *				TODO keep track of the sample time for duplicate tiles heard so we can see whether longer or shorter samples are more error prone
- *				TODO ??? WHAT ADDITIONAL INFORMATION NEEDS TO BE STORED
- *			see http://stackoverflow.com/questions/9986734/which-android-data-storage-technique-to-use for more info
+ * The memory class holds data about how each user has performed at each of the games.  If a new user
+ * is playing, then this should be set to zero across all games.  If a user has previously played ,this
+ * should load their current best performances
  */
 
 public class Memory {
@@ -50,6 +43,25 @@ public class Memory {
         }
     }
 
+    public static void saveCompose (int difficulty, int stars) {
+        switch (difficulty) {
+            case 1:
+                if (stars > Shared.userData.getComposeHighStarsDifficulty1()) {
+                    Shared.userData.setComposeHighStarsDifficulty1(stars);
+                }
+                break;
+            case 2:
+                if (stars > Shared.userData.getComposeHighStarsDifficulty2()) {
+                    Shared.userData.setComposeHighStarsDifficulty2(stars);
+                }
+                break;
+            case 3:
+                if (stars > Shared.userData.getComposeHighStarsDifficulty3()) {
+                    Shared.userData.setComposeHighStarsDifficulty3(stars);
+                }
+        }
+    }
+
 	public static int getMatchHighStars(int theme, int difficulty) {
 		SharedPreferences sharedPreferences = Shared.context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
 		String key = String.format(matchHighStarKey, theme, difficulty);
@@ -63,8 +75,15 @@ public class Memory {
     }
 
     public static int getComposeHighStars (int difficulty) {
-        SharedPreferences sharedPreferences = Shared.context.getSharedPreferences(SHARED_PREFERENCES_NAME, Context.MODE_PRIVATE);
-        String key = String.format(composeHighStarKey, difficulty);
-        return sharedPreferences.getInt(key, 0);
+        int starsAcheived = 0;
+        switch (difficulty) {
+            case 1:
+                starsAcheived = Shared.userData.getComposeHighStarsDifficulty1();
+            case 2:
+                starsAcheived = Shared.userData.getComposeHighStarsDifficulty2();
+            case 3:
+                starsAcheived = Shared.userData.getComposeHighStarsDifficulty3();
+        }
+        return starsAcheived;
     }
 }

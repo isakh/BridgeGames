@@ -170,6 +170,7 @@
     <!-- =================================================================================== -->
     <!-- Class: GameSelectFragment -->
     <!-- ************************* -->
+    <string name="game_select_fragment_title">CHOOSE A GAME</string>
     <string name="game_match_title_text">MATCH</string>
     <string name="game_swap_title_text">SWAP</string>
     <string name="game_compose_title_text">PLAY</string>
@@ -188,6 +189,14 @@
     <string name="compose_difficulty_level_1">Loop 8</string>
     <string name="compose_difficulty_level_2">Loop 16</string>
     <string name="compose_difficulty_level_3">Loop 32</string>
+
+    <!-- =================================================================================== -->
+    <!-- Layout: SwapDifficulty -->
+    <!-- ************************* -->
+    <string name="swap_difficulty_title">RECONSTRUCT THE IMAGE</string>
+    <string name="swap_difficulty_level_1">EASY</string>
+    <string name="swap_difficulty_level_2">MEDIUM</string>
+    <string name="swap_difficulty_level_3">HARD</string>
 
     <!-- =================================================================================== -->
     <!-- ********** BOARD VIEW CONTROLS & TIMERS ********** -->

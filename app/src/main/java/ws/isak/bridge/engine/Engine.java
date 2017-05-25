@@ -54,6 +54,7 @@ import ws.isak.bridge.events.ui.MatchBackGameEvent;
 import ws.isak.bridge.events.ui.MatchFlipCardEvent;
 
 import ws.isak.bridge.model.ComposeGame;
+import ws.isak.bridge.model.ComposeGameData;
 import ws.isak.bridge.themes.MatchTheme;
 import ws.isak.bridge.themes.MatchThemes;
 import ws.isak.bridge.ui.PopupManager;
@@ -89,6 +90,8 @@ public class Engine extends EventObserverAdapter {
 
     private MatchGameData currentMatchGameData;
 	private SwapGameData currentSwapGameData;
+    private ComposeGameData currentComposeGameData;
+
     private int mFlippedId = -1;					//id of the tile (? or event?) with the card being flipped
 	private int mToFlip = -1;
 
@@ -493,7 +496,9 @@ public class Engine extends EventObserverAdapter {
         Shared.currentComposeGame = mPlayingComposeGame;
         Shared.currentComposeGame.gameClock = Clock.getInstance();
 
-        Shared.userData.getCurComposeGameData().setGameDifficulty(event.difficulty);
+        currentComposeGameData = new ComposeGameData();
+        currentComposeGameData.setGameDifficulty(event.difficulty);
+        Shared.userData.setCurComposeGameData(currentComposeGameData);
 
         mScreenController.openScreen(Screen.GAME_COMPOSE);
     }
@@ -554,9 +559,49 @@ public class Engine extends EventObserverAdapter {
 					else {gameState.achievedStars = 0;}
 					// calculate the score
 					gameState.achievedScore = mPlayingMatchGame.matchBoardConfiguration.difficulty * gameState.remainingTimeInSeconds * mPlayingMatchGame.matchTheme.themeID; //FIXME - what is themeID doing here??
-					// save to memory
-					Memory.saveMatch(mPlayingMatchGame.matchTheme.themeID, mPlayingMatchGame.matchBoardConfiguration.difficulty, gameState.achievedStars);
-					//trigger the MatchGameWonEvent
+					// save the number of stars achieved for the user at the given game, theme, and difficulty
+					switch (mPlayingMatchGame.matchTheme.themeID) {
+                        case 1:
+                            switch (mPlayingMatchGame.matchBoardConfiguration.difficulty) {
+                                case 1:
+                                    Shared.userData.setMatchHighStarsTheme1Difficulty1(gameState.achievedStars);
+                                    break;
+                                case 2:
+                                    Shared.userData.setMatchHighStarsTheme1Difficulty2(gameState.achievedStars);
+                                    break;
+                                case 3:
+                                    Shared.userData.setMatchHighStarsTheme1Difficulty3(gameState.achievedStars);
+                                    break;
+                            }
+                            break;
+                        case 2:
+                            switch (mPlayingMatchGame.matchBoardConfiguration.difficulty) {
+                                case 1:
+                                    Shared.userData.setMatchHighStarsTheme2Difficulty1(gameState.achievedStars);
+                                    break;
+                                case 2:
+                                    Shared.userData.setMatchHighStarsTheme2Difficulty2(gameState.achievedStars);
+                                    break;
+                                case 3:
+                                    Shared.userData.setMatchHighStarsTheme2Difficulty3(gameState.achievedStars);
+                                    break;
+                            }
+                            break;
+                        case 3:
+                            switch (mPlayingMatchGame.matchBoardConfiguration.difficulty) {
+                                case 1:
+                                    Shared.userData.setMatchHighStarsTheme3Difficulty1(gameState.achievedStars);
+                                    break;
+                                case 2:
+                                    Shared.userData.setMatchHighStarsTheme3Difficulty2(gameState.achievedStars);
+                                    break;
+                                case 3:
+                                    Shared.userData.setMatchHighStarsTheme3Difficulty3(gameState.achievedStars);
+                                    break;
+                            }
+                            break;
+                    }
+                    //trigger the MatchGameWonEvent
 					Shared.eventBus.notify(new MatchGameWonEvent(gameState), 1200);     //TODO what is 1200 doing here? convert to xml
 				}
 			} else {

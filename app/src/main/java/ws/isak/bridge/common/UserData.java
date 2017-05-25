@@ -54,6 +54,25 @@ public class UserData {
     private ComposeGameData curComposeGameData;             //current game being played
     private ArrayList<ComposeGameData> composeGameDataList; //list of all games user has played
 
+    //TODO data about user's prior performance at the games
+    private int matchGameTheme1Difficulty1HighStars;
+    private int matchGameTheme1Difficulty2HighStars;
+    private int matchGameTheme1Difficulty3HighStars;
+    private int matchGameTheme2Difficulty1HighStars;
+    private int matchGameTheme2Difficulty2HighStars;
+    private int matchGameTheme2Difficulty3HighStars;
+    private int matchGameTheme3Difficulty1HighStars;
+    private int matchGameTheme3Difficulty2HighStars;
+    private int matchGameTheme3Difficulty3HighStars;
+
+    private int swapGameDifficulty1HighStars;
+    private int swapGameDifficulty2HighStars;
+    private int swapGameDifficulty3HighStars;
+
+    private int composeGameDifficulty1HighStars;
+    private int composeGameDifficulty2HighStars;
+    private int composeGameDifficulty3HighStars;
+
 
     // Constructor - this should be called once when a userData object instance needs to be instantiated
     // the instantiator will pass all relevant nulled values
@@ -81,6 +100,11 @@ public class UserData {
         initMatchGameDataList();
         initSwapGameDataList();
         initComposeGameDataList();
+
+        //TODO set game performance results (game-difficulty-stars)?
+        initMatchHighStars();
+        initSwapHighStars();
+        initComposeHighStars();
     }
 
     /*
@@ -335,4 +359,108 @@ public class UserData {
         //
         return composeGameDataList.size();
     }
+
+    //==============================================================================================
+    //Methods to initialize the number of stars a user has achieved for each game/difficulty
+
+    //When a new UserData is created, they haven't played so all high stars are at zero
+
+    //MATCH GAME RESULTS
+    //==================
+    public void initMatchHighStars () {
+        setMatchHighStarsTheme1();
+        setMatchHighStarsTheme2();
+        setMatchHighStarsTheme3();
+    }
+
+    public void setMatchHighStarsTheme1 () {
+        setMatchHighStarsTheme1Difficulty1(0);
+        setMatchHighStarsTheme1Difficulty2(0);
+        setMatchHighStarsTheme1Difficulty3(0);
+    }
+
+    public void setMatchHighStarsTheme1Difficulty1 (int diff) { matchGameTheme1Difficulty1HighStars = diff; }
+    public int getMatchTheme1Difficulty1HighStars() { return matchGameTheme1Difficulty1HighStars; }
+
+    public void setMatchHighStarsTheme1Difficulty2 (int diff) { matchGameTheme1Difficulty2HighStars = diff; }
+    public int getMatchTheme1Difficulty2HighStars() { return matchGameTheme1Difficulty2HighStars; }
+
+    public void setMatchHighStarsTheme1Difficulty3 (int diff) { matchGameTheme1Difficulty3HighStars = diff; }
+    public int getMatchTheme1Difficulty3HighStars() { return matchGameTheme1Difficulty3HighStars; }
+
+    public void setMatchHighStarsTheme2 () {
+        setMatchHighStarsTheme2Difficulty1(0);
+        setMatchHighStarsTheme2Difficulty2(0);
+        setMatchHighStarsTheme2Difficulty3(0);
+    }
+
+    public void setMatchHighStarsTheme2Difficulty1 (int diff) { matchGameTheme2Difficulty1HighStars = diff; }
+    public int getMatchTheme2Difficulty1HighStars() { return matchGameTheme2Difficulty1HighStars; }
+
+    public void setMatchHighStarsTheme2Difficulty2 (int diff) { matchGameTheme2Difficulty2HighStars = diff; }
+    public int getMatchTheme2Difficulty2HighStars() { return matchGameTheme2Difficulty2HighStars; }
+
+    public void setMatchHighStarsTheme2Difficulty3 (int diff) { matchGameTheme2Difficulty3HighStars = diff; }
+    public int getMatchTheme2Difficulty3HighStars() { return matchGameTheme2Difficulty3HighStars; }
+
+    public void setMatchHighStarsTheme3 () {
+        setMatchHighStarsTheme3Difficulty1(0);
+        setMatchHighStarsTheme3Difficulty2(0);
+        setMatchHighStarsTheme3Difficulty3(0);
+    }
+
+    public void setMatchHighStarsTheme3Difficulty1 (int diff) { matchGameTheme3Difficulty1HighStars = diff; }
+    public int getMatchTheme3Difficulty1HighStars() { return matchGameTheme3Difficulty1HighStars; }
+
+    public void setMatchHighStarsTheme3Difficulty2 (int diff) { matchGameTheme3Difficulty2HighStars = diff; }
+    public int getMatchTheme3Difficulty2HighStars() { return matchGameTheme3Difficulty2HighStars; }
+
+    public void setMatchHighStarsTheme3Difficulty3 (int diff) { matchGameTheme3Difficulty3HighStars = diff; }
+    public int getMatchTheme3Difficulty3HighStars() { return matchGameTheme3Difficulty3HighStars; }
+
+    //SWAP GAME RESULTS
+    //=================
+    public void initSwapHighStars() {
+        setSwapHighStarsDifficulty1(0);
+        setSwapHighStarsDifficulty2(0);
+        setSwapHighStarsDifficulty3(0);
+    }
+
+    public void setSwapHighStarsDifficulty1(int diff) { swapGameDifficulty1HighStars = diff; }
+    public int getSwapHighStarsDifficulty1() { return swapGameDifficulty1HighStars; }
+
+    public void setSwapHighStarsDifficulty2(int diff) { swapGameDifficulty2HighStars = diff; }
+    public int getSwapHighStarsDifficulty2() { return swapGameDifficulty2HighStars; }
+
+    public void setSwapHighStarsDifficulty3(int diff) { swapGameDifficulty3HighStars = diff; }
+    public int getSwapHighStarsDifficulty3() { return swapGameDifficulty3HighStars; }
+
+    //COMPOSE GAME RESULTS
+    //====================
+    public void initComposeHighStars () {
+        setComposeHighStarsDifficulty1(3);  //FIXME - this is just for debugging - stars have no meaning?
+        setComposeHighStarsDifficulty2(3);  //FIXME - this is just for debugging
+        setComposeHighStarsDifficulty3(3);  //FIXME - this is just for debugging
+    }
+
+    public void setComposeHighStarsDifficulty1 (int stars) {
+        Log.d (TAG, "method setComposeHighStarsDifficulty1: setting stars: " + stars);
+        composeGameDifficulty1HighStars = stars;
+    }
+
+    public int getComposeHighStarsDifficulty1 () { return composeGameDifficulty1HighStars; }
+
+    public void setComposeHighStarsDifficulty2 (int stars) {
+        Log.d (TAG, "method setComposeHighStarsDifficulty2: setting stars: " + stars);
+        composeGameDifficulty2HighStars = stars;
+    }
+
+    public int getComposeHighStarsDifficulty2 () { return composeGameDifficulty2HighStars; }
+
+    public void setComposeHighStarsDifficulty3 (int stars) {
+        Log.d (TAG, "method setComposeHighStarsDifficulty3: setting stars: " + stars);
+        composeGameDifficulty3HighStars = stars;
+    }
+
+    public int getComposeHighStarsDifficulty3 () { return composeGameDifficulty3HighStars; }
 }

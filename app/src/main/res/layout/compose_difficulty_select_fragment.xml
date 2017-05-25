@@ -3,16 +3,20 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/compose_difficulty_margin"
+    android:layout_marginBottom="@dimen/compose_difficulty_margin"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingLeft="@dimen/swap_difficulty_padding"
-    android:paddingRight="@dimen/swap_difficulty_padding" >
+    android:paddingLeft="@dimen/compose_difficulty_padding"
+    android:paddingRight="@dimen/compose_difficulty_padding" >
 
     <TextView
         android:id="@+id/compose_select_difficulty_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/compose_difficulty_title"/>
+        android:gravity="center"
+        android:text="@string/compose_difficulty_title"
+        android:textSize="@dimen/compose_difficulty_title_size"/>
 
     <LinearLayout
         android:id="@+id/compose_select_difficulty_container"
@@ -23,17 +27,20 @@
         <ws.isak.bridge.ui.ComposeDifficultyView
             android:id="@+id/select_compose_difficulty_1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
         <ws.isak.bridge.ui.ComposeDifficultyView
             android:id="@+id/select_compose_difficulty_2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
         <ws.isak.bridge.ui.ComposeDifficultyView
             android:id="@+id/select_compose_difficulty_3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 
