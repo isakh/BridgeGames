@@ -54,15 +54,79 @@ public class UserDataORM {
     private static final String COLUMN_HAS_USED_SMARTPHONE_TYPE = " INTEGER";
     private static final String COLUMN_HAS_USED_SMARTPHONE = "hasUsedSmartPhone";
 
+    //store all of the state for the games previous scores
+    //MATCH GAME STARS
+    private static final String COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_1_HIGH_STARS_TYPE = " INTEGER";
+    private static final String COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_1_HIGH_STARS = "matchGameTheme1Difficulty1HighStars";
+
+    private static final String COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_2_HIGH_STARS_TYPE = " INTEGER";
+    private static final String COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_2_HIGH_STARS = "matchGameTheme1Difficulty2HighStars";
+
+    private static final String COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_3_HIGH_STARS_TYPE = " INTEGER";
+    private static final String COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_3_HIGH_STARS = "matchGameTheme1Difficulty3HighStars";
+
+    private static final String COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_1_HIGH_STARS_TYPE = " INTEGER";
+    private static final String COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_1_HIGH_STARS = "matchGameTheme2Difficulty1HighStars";
+
+    private static final String COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_2_HIGH_STARS_TYPE = " INTEGER";
+    private static final String COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_2_HIGH_STARS = "matchGameTheme2Difficulty2HighStars";
+
+    private static final String COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_3_HIGH_STARS_TYPE = " INTEGER";
+    private static final String COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_3_HIGH_STARS = "matchGameTheme2Difficulty3HighStars";
+
+    private static final String COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_1_HIGH_STARS_TYPE = " INTEGER";
+    private static final String COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_1_HIGH_STARS = "matchGameTheme3Difficulty1HighStars";
+
+    private static final String COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_2_HIGH_STARS_TYPE = " INTEGER";
+    private static final String COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_2_HIGH_STARS = "matchGameTheme3Difficulty2HighStars";
+
+    private static final String COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_3_HIGH_STARS_TYPE = " INTEGER";
+    private static final String COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_3_HIGH_STARS = "matchGameTheme3Difficulty3HighStars";
+
+    //SWAP GAME STARS
+    private static final String COLUMN_SWAP_GAME_DIFFICULTY_1_HIGH_STARS_TYPE = " INTEGER";
+    private static final String COLUMN_SWAP_GAME_DIFFICULTY_1_HIGH_STARS = "swapGameDifficulty1HighStars";
+
+    private static final String COLUMN_SWAP_GAME_DIFFICULTY_2_HIGH_STARS_TYPE = " INTEGER";
+    private static final String COLUMN_SWAP_GAME_DIFFICULTY_2_HIGH_STARS = "swapGameDifficulty2HighStars";
+
+    private static final String COLUMN_SWAP_GAME_DIFFICULTY_3_HIGH_STARS_TYPE = " INTEGER";
+    private static final String COLUMN_SWAP_GAME_DIFFICULTY_3_HIGH_STARS = "swapGameDifficulty3HighStars";
+
+    private static final String COLUMN_COMPOSE_GAME_DIFFICULTY_1_HIGH_STARS_TYPE = " INTEGER";
+    private static final String COLUMN_COMPOSE_GAME_DIFFICULTY_1_HIGH_STARS = "composeGameDifficulty1HighStars";
+
+    private static final String COLUMN_COMPOSE_GAME_DIFFICULTY_2_HIGH_STARS_TYPE = " INTEGER";
+    private static final String COLUMN_COMPOSE_GAME_DIFFICULTY_2_HIGH_STARS = "composeGameDifficulty2HighStars";
+
+    private static final String COLUMN_COMPOSE_GAME_DIFFICULTY_3_HIGH_STARS_TYPE = " INTEGER";
+    private static final String COLUMN_COMPOSE_GAME_DIFFICULTY_3_HIGH_STARS = "composeGameDifficulty3HighStars";
+
+
     public static final String SQL_CREATE_TABLE = "CREATE TABLE " + TABLE_NAME + " (" +
             COLUMN_USER_NAME_ID + " " + COLUMN_USER_NAME_ID_TYPE + COMMA_SEP +
-            COLUMN_AGE_RANGE + " " + COLUMN_AGE_RANGE_TYPE + COMMA_SEP +
-            COLUMN_YEARS_TWITCHING_RANGE + " " + COLUMN_YEARS_TWITCHING_RANGE_TYPE + COMMA_SEP +
-            COLUMN_SPECIES_KNOWN_RANGE + " " + COLUMN_SPECIES_KNOWN_RANGE_TYPE + COMMA_SEP +
-            COLUMN_AUDIBLE_RECOGNIZED_RANGE + " " + COLUMN_AUDIBLE_RECOGNIZED_RANGE_TYPE + COMMA_SEP +
-            COLUMN_INTERFACE_EXPERIENCE_RANGE + " " + COLUMN_INTERFACE_EXPERIENCE_RANGE_TYPE + COMMA_SEP +
-            COLUMN_HEARING_EQUALS_SEEING + " " + COLUMN_HEARING_EQUALS_SEEING_TYPE + COMMA_SEP +
-            COLUMN_HAS_USED_SMARTPHONE + " " + COLUMN_HAS_USED_SMARTPHONE_TYPE +
+            //COLUMN_AGE_RANGE + " " + COLUMN_AGE_RANGE_TYPE + COMMA_SEP +
+            //COLUMN_YEARS_TWITCHING_RANGE + " " + COLUMN_YEARS_TWITCHING_RANGE_TYPE + COMMA_SEP +
+            //COLUMN_SPECIES_KNOWN_RANGE + " " + COLUMN_SPECIES_KNOWN_RANGE_TYPE + COMMA_SEP +
+            //COLUMN_AUDIBLE_RECOGNIZED_RANGE + " " + COLUMN_AUDIBLE_RECOGNIZED_RANGE_TYPE + COMMA_SEP +
+            //COLUMN_INTERFACE_EXPERIENCE_RANGE + " " + COLUMN_INTERFACE_EXPERIENCE_RANGE_TYPE + COMMA_SEP +
+            //COLUMN_HEARING_EQUALS_SEEING + " " + COLUMN_HEARING_EQUALS_SEEING_TYPE + COMMA_SEP +
+            //COLUMN_HAS_USED_SMARTPHONE + " " + COLUMN_HAS_USED_SMARTPHONE_TYPE + COMMA_SEP +
+            COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_1_HIGH_STARS + " " + COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_1_HIGH_STARS_TYPE + COMMA_SEP +
+            COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_2_HIGH_STARS + " " + COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_2_HIGH_STARS_TYPE + COMMA_SEP +
+            COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_3_HIGH_STARS + " " + COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_3_HIGH_STARS_TYPE + COMMA_SEP +
+            COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_1_HIGH_STARS + " " + COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_1_HIGH_STARS_TYPE + COMMA_SEP +
+            COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_2_HIGH_STARS + " " + COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_2_HIGH_STARS_TYPE + COMMA_SEP +
+            COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_3_HIGH_STARS + " " + COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_3_HIGH_STARS_TYPE + COMMA_SEP +
+            COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_1_HIGH_STARS + " " + COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_1_HIGH_STARS_TYPE + COMMA_SEP +
+            COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_2_HIGH_STARS + " " + COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_2_HIGH_STARS_TYPE + COMMA_SEP +
+            COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_3_HIGH_STARS + " " + COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_3_HIGH_STARS_TYPE + COMMA_SEP +
+            COLUMN_SWAP_GAME_DIFFICULTY_1_HIGH_STARS + " " + COLUMN_SWAP_GAME_DIFFICULTY_1_HIGH_STARS_TYPE + COMMA_SEP +
+            COLUMN_SWAP_GAME_DIFFICULTY_2_HIGH_STARS + " " + COLUMN_SWAP_GAME_DIFFICULTY_2_HIGH_STARS_TYPE + COMMA_SEP +
+            COLUMN_SWAP_GAME_DIFFICULTY_3_HIGH_STARS + " " + COLUMN_SWAP_GAME_DIFFICULTY_3_HIGH_STARS_TYPE + COMMA_SEP +
+            COLUMN_COMPOSE_GAME_DIFFICULTY_1_HIGH_STARS + " " + COLUMN_COMPOSE_GAME_DIFFICULTY_1_HIGH_STARS_TYPE + COMMA_SEP +
+            COLUMN_COMPOSE_GAME_DIFFICULTY_2_HIGH_STARS + " " + COLUMN_COMPOSE_GAME_DIFFICULTY_2_HIGH_STARS_TYPE + COMMA_SEP +
+            COLUMN_COMPOSE_GAME_DIFFICULTY_3_HIGH_STARS + " " + COLUMN_COMPOSE_GAME_DIFFICULTY_3_HIGH_STARS_TYPE +
             ")";
 
     public static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -326,15 +390,30 @@ public class UserDataORM {
         Log.d (TAG, "values.put... userData.getUserName(): " + userData.getUserName() + " to COLUMN_USER_NAME_ID: " + COLUMN_USER_NAME_ID);
         values.put (COLUMN_USER_NAME_ID, userData.getUserName());
         Log.d (TAG, "values.put... userData.getAgeRange(): " + userData.getAgeRange() + " to COLUMN_AGE_RANGE: " + COLUMN_AGE_RANGE);
-        values.put (COLUMN_AGE_RANGE, userData.getAgeRange());
-        values.put (COLUMN_YEARS_TWITCHING_RANGE, userData.getYearsTwitchingRange());
-        values.put (COLUMN_SPECIES_KNOWN_RANGE, userData.getSpeciesKnownRange());
-        values.put (COLUMN_AUDIBLE_RECOGNIZED_RANGE, userData.getAudibleRecognizedRange());
-        values.put (COLUMN_INTERFACE_EXPERIENCE_RANGE, userData.getInterfaceExperienceRange());
-        if (!userData.getHearingEqualsSeeing()) { values.put (COLUMN_HEARING_EQUALS_SEEING, 0);}
-        else{ values.put (COLUMN_HEARING_EQUALS_SEEING, 1); }
-        if (!userData.getHasUsedSmartphone()) { values.put (COLUMN_HAS_USED_SMARTPHONE, 0); }
-        else { values.put (COLUMN_HAS_USED_SMARTPHONE, 1); }
+        //values.put (COLUMN_AGE_RANGE, userData.getAgeRange());
+        //values.put (COLUMN_YEARS_TWITCHING_RANGE, userData.getYearsTwitchingRange());
+        //values.put (COLUMN_SPECIES_KNOWN_RANGE, userData.getSpeciesKnownRange());
+        //values.put (COLUMN_AUDIBLE_RECOGNIZED_RANGE, userData.getAudibleRecognizedRange());
+        //values.put (COLUMN_INTERFACE_EXPERIENCE_RANGE, userData.getInterfaceExperienceRange());
+        //if (!userData.getHearingEqualsSeeing()) { values.put (COLUMN_HEARING_EQUALS_SEEING, 0);}
+        //else{ values.put (COLUMN_HEARING_EQUALS_SEEING, 1); }
+        //if (!userData.getHasUsedSmartphone()) { values.put (COLUMN_HAS_USED_SMARTPHONE, 0); }
+        //else { values.put (COLUMN_HAS_USED_SMARTPHONE, 1); }
+        values.put (COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_1_HIGH_STARS, userData.getMatchTheme1Difficulty1HighStars());
+        values.put (COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_2_HIGH_STARS, userData.getMatchTheme1Difficulty2HighStars());
+        values.put (COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_3_HIGH_STARS, userData.getMatchTheme1Difficulty3HighStars());
+        values.put (COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_1_HIGH_STARS, userData.getMatchTheme2Difficulty1HighStars());
+        values.put (COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_2_HIGH_STARS, userData.getMatchTheme2Difficulty2HighStars());
+        values.put (COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_3_HIGH_STARS, userData.getMatchTheme2Difficulty3HighStars());
+        values.put (COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_1_HIGH_STARS, userData.getMatchTheme3Difficulty1HighStars());
+        values.put (COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_2_HIGH_STARS, userData.getMatchTheme3Difficulty2HighStars());
+        values.put (COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_3_HIGH_STARS, userData.getMatchTheme3Difficulty3HighStars());
+        values.put (COLUMN_SWAP_GAME_DIFFICULTY_1_HIGH_STARS, userData.getSwapHighStarsDifficulty1());
+        values.put (COLUMN_SWAP_GAME_DIFFICULTY_2_HIGH_STARS, userData.getSwapHighStarsDifficulty2());
+        values.put (COLUMN_SWAP_GAME_DIFFICULTY_3_HIGH_STARS, userData.getSwapHighStarsDifficulty3());
+        values.put (COLUMN_COMPOSE_GAME_DIFFICULTY_1_HIGH_STARS, userData.getComposeHighStarsDifficulty1());
+        values.put (COLUMN_COMPOSE_GAME_DIFFICULTY_2_HIGH_STARS, userData.getComposeHighStarsDifficulty2());
+        values.put (COLUMN_COMPOSE_GAME_DIFFICULTY_3_HIGH_STARS, userData.getComposeHighStarsDifficulty3());
         return values;
     }
 
@@ -345,22 +424,36 @@ public class UserDataORM {
         Log.d (TAG, "!!!!! cursorAtUserData @: " + cursorAtUserData);
 
         cursorAtUserData.setUserName(cursor.getString(cursor.getColumnIndex(COLUMN_USER_NAME_ID)));
-        cursorAtUserData.setAgeRange(cursor.getString(cursor.getColumnIndex(COLUMN_AGE_RANGE)));
-        cursorAtUserData.setYearsTwitchingRange(cursor.getString(cursor.getColumnIndex(COLUMN_YEARS_TWITCHING_RANGE)));
-        cursorAtUserData.setSpeciesKnownRange(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIES_KNOWN_RANGE)));
-        cursorAtUserData.setAudibleRecognizedRange(cursor.getString(cursor.getColumnIndex(COLUMN_AUDIBLE_RECOGNIZED_RANGE)));
-        cursorAtUserData.setInterfaceExperienceRange(cursor.getString(cursor.getColumnIndex(COLUMN_INTERFACE_EXPERIENCE_RANGE)));
-        if (cursor.getInt(cursor.getColumnIndex(COLUMN_HEARING_EQUALS_SEEING)) == 1) { cursorAtUserData.setHearingEqualsSeeing(true); }
-        else if (cursor.getInt(cursor.getColumnIndex(COLUMN_HEARING_EQUALS_SEEING)) == 0) { cursorAtUserData.setHearingEqualsSeeing(false); }
-        else {
-            Log.d (TAG, "ERROR: method cursorToUserData: hearingEqualsSeeing: " + cursor.getInt(cursor.getColumnIndex(COLUMN_HEARING_EQUALS_SEEING)));
-        }
-        if (cursor.getInt(cursor.getColumnIndex(COLUMN_HAS_USED_SMARTPHONE)) == 1) { cursorAtUserData.setHasUsedSmartPhone(true); }
-        else if (cursor.getInt(cursor.getColumnIndex(COLUMN_HAS_USED_SMARTPHONE)) == 0) { cursorAtUserData.setHasUsedSmartPhone(false); }
-        else {
-            Log.d (TAG, "ERROR: method cursorToUserData: hasUsedSmartphone: " + cursor.getInt(cursor.getColumnIndex(COLUMN_HAS_USED_SMARTPHONE)));
-        }
-
+        //cursorAtUserData.setAgeRange(cursor.getString(cursor.getColumnIndex(COLUMN_AGE_RANGE)));
+        //cursorAtUserData.setYearsTwitchingRange(cursor.getString(cursor.getColumnIndex(COLUMN_YEARS_TWITCHING_RANGE)));
+        //cursorAtUserData.setSpeciesKnownRange(cursor.getString(cursor.getColumnIndex(COLUMN_SPECIES_KNOWN_RANGE)));
+        //cursorAtUserData.setAudibleRecognizedRange(cursor.getString(cursor.getColumnIndex(COLUMN_AUDIBLE_RECOGNIZED_RANGE)));
+        //cursorAtUserData.setInterfaceExperienceRange(cursor.getString(cursor.getColumnIndex(COLUMN_INTERFACE_EXPERIENCE_RANGE)));
+        //if (cursor.getInt(cursor.getColumnIndex(COLUMN_HEARING_EQUALS_SEEING)) == 1) { cursorAtUserData.setHearingEqualsSeeing(true); }
+        //else if (cursor.getInt(cursor.getColumnIndex(COLUMN_HEARING_EQUALS_SEEING)) == 0) { cursorAtUserData.setHearingEqualsSeeing(false); }
+        //else {
+        //    Log.d (TAG, "ERROR: method cursorToUserData: hearingEqualsSeeing: " + cursor.getInt(cursor.getColumnIndex(COLUMN_HEARING_EQUALS_SEEING)));
+        //}
+        //if (cursor.getInt(cursor.getColumnIndex(COLUMN_HAS_USED_SMARTPHONE)) == 1) { cursorAtUserData.setHasUsedSmartPhone(true); }
+        //else if (cursor.getInt(cursor.getColumnIndex(COLUMN_HAS_USED_SMARTPHONE)) == 0) { cursorAtUserData.setHasUsedSmartPhone(false); }
+        //else {
+        //    Log.d (TAG, "ERROR: method cursorToUserData: hasUsedSmartphone: " + cursor.getInt(cursor.getColumnIndex(COLUMN_HAS_USED_SMARTPHONE)));
+        //}
+        cursorAtUserData.setMatchHighStarsTheme1Difficulty1(cursor.getInt(cursor.getColumnIndex(COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_1_HIGH_STARS)));
+        cursorAtUserData.setMatchHighStarsTheme1Difficulty2(cursor.getInt(cursor.getColumnIndex(COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_2_HIGH_STARS)));
+        cursorAtUserData.setMatchHighStarsTheme1Difficulty3(cursor.getInt(cursor.getColumnIndex(COLUMN_MATCH_GAME_THEME_1_DIFFICULTY_3_HIGH_STARS)));
+        cursorAtUserData.setMatchHighStarsTheme2Difficulty1(cursor.getInt(cursor.getColumnIndex(COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_1_HIGH_STARS)));
+        cursorAtUserData.setMatchHighStarsTheme2Difficulty2(cursor.getInt(cursor.getColumnIndex(COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_2_HIGH_STARS)));
+        cursorAtUserData.setMatchHighStarsTheme2Difficulty3(cursor.getInt(cursor.getColumnIndex(COLUMN_MATCH_GAME_THEME_2_DIFFICULTY_3_HIGH_STARS)));
+        cursorAtUserData.setMatchHighStarsTheme3Difficulty1(cursor.getInt(cursor.getColumnIndex(COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_1_HIGH_STARS)));
+        cursorAtUserData.setMatchHighStarsTheme3Difficulty2(cursor.getInt(cursor.getColumnIndex(COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_2_HIGH_STARS)));
+        cursorAtUserData.setMatchHighStarsTheme3Difficulty3(cursor.getInt(cursor.getColumnIndex(COLUMN_MATCH_GAME_THEME_3_DIFFICULTY_3_HIGH_STARS)));
+        cursorAtUserData.setSwapHighStarsDifficulty1(cursor.getInt(cursor.getColumnIndex(COLUMN_SWAP_GAME_DIFFICULTY_1_HIGH_STARS)));
+        cursorAtUserData.setSwapHighStarsDifficulty2(cursor.getInt(cursor.getColumnIndex(COLUMN_SWAP_GAME_DIFFICULTY_2_HIGH_STARS)));
+        cursorAtUserData.setSwapHighStarsDifficulty3(cursor.getInt(cursor.getColumnIndex(COLUMN_SWAP_GAME_DIFFICULTY_3_HIGH_STARS)));
+        cursorAtUserData.setComposeHighStarsDifficulty1(cursor.getInt(cursor.getColumnIndex(COLUMN_COMPOSE_GAME_DIFFICULTY_1_HIGH_STARS)));
+        cursorAtUserData.setComposeHighStarsDifficulty2(cursor.getInt(cursor.getColumnIndex(COLUMN_COMPOSE_GAME_DIFFICULTY_2_HIGH_STARS)));
+        cursorAtUserData.setComposeHighStarsDifficulty3(cursor.getInt(cursor.getColumnIndex(COLUMN_COMPOSE_GAME_DIFFICULTY_3_HIGH_STARS)));
         return  cursorAtUserData;
     }
 }

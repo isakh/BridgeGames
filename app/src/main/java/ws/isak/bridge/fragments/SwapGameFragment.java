@@ -22,7 +22,6 @@ import java.util.ArrayList;
 
 import ws.isak.bridge.R;
 import ws.isak.bridge.common.Audio;
-import ws.isak.bridge.common.Memory;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.database.SwapGameDataORM;
 

@@ -26,7 +26,6 @@ import ws.isak.bridge.R;
 import ws.isak.bridge.common.Audio;
 import ws.isak.bridge.common.MatchCardData;
 import ws.isak.bridge.common.SwapCardData;
-import ws.isak.bridge.common.Memory;
 import ws.isak.bridge.common.Shared;
 
 import ws.isak.bridge.engine.ScreenController.Screen;

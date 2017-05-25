@@ -1,30 +1,22 @@
 package ws.isak.bridge.fragments;
 
-import java.util.Locale;
-
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.BounceInterpolator;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.ImageView;
 import android.util.Log;
 import android.widget.TextView;
 
 import ws.isak.bridge.R;
-import ws.isak.bridge.common.Memory;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.events.ui.MatchThemeSelectedEvent;
-import ws.isak.bridge.events.ui.SwapDifficultySelectedEvent;
 import ws.isak.bridge.themes.MatchTheme;
 import ws.isak.bridge.themes.MatchThemes;
 import ws.isak.bridge.ui.MatchThemeView;
-import ws.isak.bridge.ui.SwapDifficultyView;
 import ws.isak.bridge.utils.FontLoader;
 
 /*

@@ -14,8 +14,8 @@ import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.events.ui.MatchResetBackgroundEvent;
 
 import ws.isak.bridge.fragments.UserSetupFragment;
-import ws.isak.bridge.fragments.PreSurveyFragment;
-import ws.isak.bridge.fragments.PostSurveyFragment;
+//import ws.isak.bridge.fragments.PreSurveyFragment;
+//import ws.isak.bridge.fragments.PostSurveyFragment;
 import ws.isak.bridge.fragments.FinishedFragment;
 
 import ws.isak.bridge.fragments.GameSelectFragment;
@@ -63,7 +63,7 @@ public class ScreenController {
 
 	public enum Screen {
         USER_SETUP,
-        PRE_SURVEY,
+        //PRE_SURVEY,
         SELECT_GAME,            //choose between match game, swap game, and compose game
         MENU_MATCH,               //menu allows choices of audio playback
         MENU_SWAP,              //audio playback is required - mixer & looper for now: TODO maybe some resolution parameters?
@@ -74,7 +74,7 @@ public class ScreenController {
         GAME_SWAP,              //
         DIFFICULTY_COMPOSE,
         GAME_COMPOSE,
-        POST_SURVEY,             //FIXME should we have different ones for each game? and/or one for all?
+        //POST_SURVEY,             //FIXME should we have different ones for each game? and/or one for all?
         FINISHED
     }
 	
@@ -115,10 +115,10 @@ public class ScreenController {
 				Shared.eventBus.notify(new MatchResetBackgroundEvent());
             }
             //back from SelectGame should be limited?
-            if (screen == Screen.SELECT_GAME) {
-                //allow user to change pre survey data
-                openScreen(Screen.PRE_SURVEY);
-            }
+            //if (screen == Screen.SELECT_GAME) {
+            //    //allow user to change pre survey data
+            //    openScreen(Screen.PRE_SURVEY);
+            //}
             if (screen == Screen.MENU_SWAP) {       //TODO || Screen.MENU_MATCH?
                 openScreen(Screen.SELECT_GAME);
             }
@@ -132,9 +132,9 @@ public class ScreenController {
             case USER_SETUP:
                 Log.d (TAG, "method getFragment: case USER_SETUP");
                 return new UserSetupFragment();
-            case PRE_SURVEY:
-                Log.d (TAG, "method getFragment: case PRE_SURVEY");
-                return new PreSurveyFragment();
+            //case PRE_SURVEY:
+            //    Log.d (TAG, "method getFragment: case PRE_SURVEY");
+            //    return new PreSurveyFragment();
             case SELECT_GAME:
                 Log.d (TAG, "method getFragment: case SELECT_GAME");
                 return new GameSelectFragment();
@@ -165,8 +165,8 @@ public class ScreenController {
             case GAME_COMPOSE:
                 Log.d (TAG, "method getFragment: case GAME_COMPOSE");
                 return new ComposeGameFragment();
-            case POST_SURVEY:
-                return new PostSurveyFragment();
+            //case POST_SURVEY:
+            //    return new PostSurveyFragment();
             case FINISHED:
                 return new FinishedFragment();
 		    default:

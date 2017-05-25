@@ -30,6 +30,8 @@ public class UserData {
 
     //data from pre game survey
     private String ageRange;
+
+    //SURVEY RELATED DATA - NO LONGER KEPT for children, may bring back for adults
     private String yearsTwitchingRange;
     private String speciesKnownRange;
     private String audibleRecognizedRange;
@@ -41,6 +43,7 @@ public class UserData {
     private static boolean spectrogramFamiliar;
     private static int hearIsSeeLikert;
     private static int hearIsPredictLikert;
+
 
     //data from match game/s played
     private MatchGameData curMemGame;                       //current game being played

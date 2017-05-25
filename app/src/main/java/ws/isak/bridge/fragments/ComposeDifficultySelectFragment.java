@@ -12,7 +12,6 @@ import android.view.animation.BounceInterpolator;
 import android.widget.TextView;
 
 import ws.isak.bridge.R;
-import ws.isak.bridge.common.Memory;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.events.ui.ComposeDifficultySelectEvent;
 import ws.isak.bridge.ui.ComposeDifficultyView;
@@ -47,7 +46,6 @@ public class ComposeDifficultySelectFragment extends Fragment {
         composeDifficulty1 = (ComposeDifficultyView) view.findViewById(R.id.select_compose_difficulty_1);
         composeDifficulty1.setComposeDifficultyLevelTitle(1);                           //set title
         composeDifficulty1.setmComposeDifficultyLevelImage(1);                          //set image
-        Log.d (TAG, "method onCreateView: calling Memory.getComposeHighStars(1): " + Memory.getComposeHighStars(1));
         composeDifficulty1.setComposeDifficultyStars(1, Shared.userData.getComposeHighStarsDifficulty1()); //set achieved stars - FIXME - this has no meaning for this game
         setOnClick(composeDifficulty1, 1);
         Log.d (TAG, "method onCreateView: composeDifficulty1 set");
@@ -56,7 +54,6 @@ public class ComposeDifficultySelectFragment extends Fragment {
         composeDifficulty2 = (ComposeDifficultyView) view.findViewById(R.id.select_compose_difficulty_2);
         composeDifficulty2.setComposeDifficultyLevelTitle(2);                           //set title
         composeDifficulty2.setmComposeDifficultyLevelImage(2);                          //set image
-        Log.d (TAG, "method onCreateView: calling Memory.getComposeHighStars(1): " + Memory.getComposeHighStars(2));
         composeDifficulty2.setComposeDifficultyStars(2, Shared.userData.getComposeHighStarsDifficulty2()); //set achieved stars - FIXME - this has no meaning for this game
         setOnClick(composeDifficulty2, 2);
         Log.d (TAG, "method onCreateView: composeDifficulty2 set");
@@ -65,7 +62,6 @@ public class ComposeDifficultySelectFragment extends Fragment {
         composeDifficulty3 = (ComposeDifficultyView) view.findViewById(R.id.select_compose_difficulty_3);
         composeDifficulty3.setComposeDifficultyLevelTitle(3);                           //set title
         composeDifficulty3.setmComposeDifficultyLevelImage(3);                          //set image
-        Log.d (TAG, "method onCreateView: calling Memory.getComposeHighStars(1): " + Memory.getComposeHighStars(3));
         composeDifficulty3.setComposeDifficultyStars(3, Shared.userData.getComposeHighStarsDifficulty3()); //set achieved stars - FIXME - this has no meaning for this game
         setOnClick(composeDifficulty3, 3);
         Log.d (TAG, "method onCreateView: composeDifficulty3 set");
