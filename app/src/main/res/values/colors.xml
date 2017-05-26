@@ -15,4 +15,6 @@
     <color name="match_difficulty_medium_color">#ffea00</color>
     <color name="match_difficulty_hard_color">#d50000</color>
 
+    <color name="blank_tracker_cell_color">#bdbdbd</color>
+
 </resources>

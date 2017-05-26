@@ -498,8 +498,7 @@ public class Engine extends EventObserverAdapter {
         Shared.currentComposeGame = mPlayingComposeGame;
         Shared.currentComposeGame.gameClock = Clock.getInstance();
 
-        currentComposeGameData = new ComposeGameData();
-        currentComposeGameData.setGameDifficulty(event.difficulty);
+        currentComposeGameData = new ComposeGameData((event.difficulty + 2), (event.difficulty * 8));
         Shared.userData.setCurComposeGameData(currentComposeGameData);
 
         mScreenController.openScreen(Screen.GAME_COMPOSE);

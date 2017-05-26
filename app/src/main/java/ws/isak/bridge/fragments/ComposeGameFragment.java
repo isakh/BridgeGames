@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 
 import ws.isak.bridge.R;
+import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.ui.ComposeLibraryView;
 import ws.isak.bridge.ui.ComposeTrackerBoardView;
 
@@ -53,7 +54,7 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
         composeScrollingImagesFrameLayout.addView(mComposeLibraryView);
         composeScrollingImagesFrameLayout.setClipChildren(false);
 
-        //the swap game board: the tracker layout //TODO build a draggable grid view?
+        //the swap game board: the tracker layout //
         mComposeTrackerView = ComposeTrackerBoardView.fromXml(getActivity().getApplicationContext(), view);
         FrameLayout composeTrackerFrameLayout = (FrameLayout) view.findViewById(R.id.compose_game_tracker);
         composeTrackerFrameLayout.addView(mComposeTrackerView);
@@ -66,7 +67,9 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
         mComposeTrackerView.constructTrackerBoard();
 
         //instantiate all of the event listeners
-        //TODO
+        //TODO LibrarySampleSelectedEvent
+        //TODO SamplePlacedOnTrackerEvent
+        //TODO SampleRemovedFromTrackerEvent
 
         return view;
     }

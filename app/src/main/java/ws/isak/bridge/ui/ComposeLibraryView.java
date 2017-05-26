@@ -50,7 +50,7 @@ public class ComposeLibraryView extends LinearLayout implements View.OnClickList
         int padding = Shared.context.getResources().getDimensionPixelSize(R.dimen.compose_board_padding);
 
         mScreenHeight = getResources().getDisplayMetrics().heightPixels - margin - padding * 2;
-        mScreenWidth = (int) Math.floor((getResources().getDisplayMetrics().widthPixels - padding*2 - ImageScaling.px(20)) * 0.15);    //TODO * proportion (currently 20%) of screen for view - make less of a hack
+        mScreenWidth = (int) Math.floor((getResources().getDisplayMetrics().widthPixels - padding*2 - ImageScaling.px(20)) * 0.2);    //TODO * proportion (currently 20%) of screen for view - make less of a hack
         Log.d (TAG, " ... mScreenHeight: " + mScreenHeight + " | mScreenWidth: " + mScreenWidth);
         setClipToPadding(false);
     }

@@ -82,7 +82,7 @@
                 android:id="@+id/compose_game_library"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.13"
+                android:layout_weight="0.2"
                 android:background="@drawable/border_red"
                 android:orientation="vertical"> <!-- TODO remove/adjust border-->
             </FrameLayout>
@@ -91,7 +91,7 @@
                 android:id="@+id/compose_game_tracker"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.85"
+                android:layout_weight="0.8"
                 android:background="@drawable/border_green"> <!-- TODO remove/adjust border-->
             </FrameLayout>
 
