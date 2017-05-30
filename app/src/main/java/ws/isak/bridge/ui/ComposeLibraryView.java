@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import ws.isak.bridge.R;
 import ws.isak.bridge.common.Shared;
@@ -120,6 +121,7 @@ public class ComposeLibraryView extends LinearLayout implements View.OnClickList
                 int h = scaledLibEntryBitmap.getHeight();
                 Log.i (TAG, "method addSample: AsyncTask doInBackground:: libEntryResourceName: " + libEntryResourceName +
                         " | bitmap width: " + w + " | bitmap height: " + h);
+                //End debug code
                 return scaledLibEntryBitmap;
             }
 
@@ -136,19 +138,28 @@ public class ComposeLibraryView extends LinearLayout implements View.OnClickList
             @Override
             public void onClick(View v) {
                 //[-1] If another Sample is Active, cancel that before doing anything with this one
-
+                // As another sample is explicitly already active, this cannot be the first sample
+                if (Shared.userData.getCurComposeGameData().getActiveSample() != null) {
+                    Toast.makeText(Shared.context, "Switching Active Sample", Toast.LENGTH_SHORT).show();
+                    Shared.userData.getCurComposeGameData().setActiveSample(Shared.composeSampleDataList.get(sampleNum));
+                }
                 //[0] This is the first time a sample is selected
-                //TODO set game timestamp
-                //TODO set isPlaying boolean true
-                //TODO proceed to [1]
-
+                if (!Shared.userData.getCurComposeGameData().isGameStarted()) {
+                    //set game timestamp
+                    Shared.userData.getCurComposeGameData().setGameStartTimestamp(System.currentTimeMillis());
+                    //set setGameStarted boolean true
+                    Shared.userData.getCurComposeGameData().setGameStarted(true);
+                }
                 //[1] If no other sample is active and game is already started...
-                //TODO make current selected ComposeSampleData active
-                //await next press coming from ComposeTrackerBoardView
-                //on that press, place a copy of the active ComposeSampleData on the TrackerBoard at touched location
-                //and make sure that this one is no longer active
+                else if (Shared.userData.getCurComposeGameData().isGameStarted() &&
+                        Shared.userData.getCurComposeGameData().getActiveSample() == null) {
+                    //make current selected ComposeSampleData active
+                    Shared.userData.getCurComposeGameData().setActiveSample(Shared.composeSampleDataList.get(sampleNum));
+
+                    //we now await the next press coming from ComposeTrackerBoardView, subsequent clicks
+                    //in LibraryView will just hit step [-1] and keep switching the active sample.
+                }
             }
         });
     }
-
 }

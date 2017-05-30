@@ -38,6 +38,8 @@ public class ComposeGameData {
     private ArrayList<Long> turnDurations;      //a list of durations of each turn - a turn is defined as a single click, implemented as ArrayList //TODO should we also have a measure of paired click turns?
     //the following keeps track of the state of the tracker board - DO NOT STORE TO DATABASE
     private ComposeTrackerCellData[][] trackerCellsArray;
+    //the following keeps track of an active sample, between selection and placement on board - DO NOT STORE IN DATABASE
+    private ComposeSampleData activeSample;
 
 
     public ComposeGameData(int rows, int cols) {
@@ -52,6 +54,7 @@ public class ComposeGameData {
         initTurnDurationsArray();       //null array at start
         initGamePlayDurationsArray();   //null array at start
         initTrackerCellsArray(getGameRows(), getGameCols());
+        setActiveSample(null);
     }
 
     //[0]
@@ -201,4 +204,10 @@ public class ComposeGameData {
             }
         }
     }
+
+    //[8] set/get the active sample - this is a sample that has been selected from the library and
+    //needs to be placed on the tracker board
+    public void setActiveSample (ComposeSampleData csd) { activeSample = csd; }
+
+    public ComposeSampleData getActiveSample () { return  activeSample; }
 }

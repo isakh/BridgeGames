@@ -67,9 +67,10 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
         mComposeTrackerView.constructTrackerBoard();
 
         //instantiate all of the event listeners
-        //TODO LibrarySampleSelectedEvent
-        //TODO SamplePlacedOnTrackerEvent
-        //TODO SampleRemovedFromTrackerEvent
+        //TODO LibrarySampleSelectedEvent - do we need this since it is handled by the onClick of Library ImageView
+        //TODO SamplePlacedOnTrackerEvent - do we need this since it is handled by onCLick of Tracker cell ImageView
+        //TODO SampleRemovedFromTrackerEvent    - handled by onLongClick on Tracker cell ImageView
+        //TODO ComposePlaybackAudioEvent    - do this as an event? which is called by the onClicksListeners overriden below
 
         return view;
     }
