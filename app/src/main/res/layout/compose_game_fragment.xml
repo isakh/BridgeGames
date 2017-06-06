@@ -54,7 +54,7 @@
                 android:layout_weight="1"/>          <!-- this view is empty (0dp width) but pushes the Finished button flush right -->
 
             <Button
-                android:id="@+id/game_compose_finished_button"
+                android:id="@+id/compose_game_finished_button"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/compose_game_playback_buttons_height"
                 android:layout_marginRight="@dimen/compose_game_playback_buttons_margin_right"

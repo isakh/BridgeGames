@@ -40,6 +40,9 @@ public class ComposeGameData {
     private ComposeTrackerCellData[][] trackerCellsArray;
     //the following keeps track of an active sample, between selection and placement on board - DO NOT STORE IN DATABASE
     private ComposeSampleData activeSample;
+    //the following keeps track of the current column to be played back - DO NOT STORE IN DATABASE
+    private int curPlayBackCol;
+    private int numCellsInColLeftToPlayBack;
 
 
     public ComposeGameData(int rows, int cols) {
@@ -55,6 +58,8 @@ public class ComposeGameData {
         initGamePlayDurationsArray();   //null array at start
         initTrackerCellsArray(getGameRows(), getGameCols());
         setActiveSample(null);
+        setCurPlayBackCol(0);           //initialize to 0, then keep track during playback/pause and reset on stop
+        setNumCellsInColLeftToPlayBack(0);
     }
 
     //[0]
@@ -210,4 +215,20 @@ public class ComposeGameData {
     public void setActiveSample (ComposeSampleData csd) { activeSample = csd; }
 
     public ComposeSampleData getActiveSample () { return  activeSample; }
+
+    //[9] set/get the current playback column
+    public void setCurPlayBackCol (int curCol) {
+        Log.d (TAG, "method setCurPlayBackCol: curCul: " + curCol);
+        curPlayBackCol = curCol;
+    }
+
+    public int getCurPlayBackCol () { return curPlayBackCol; }
+
+    //[10] set/get numCellsInColLeftToPlayback
+    public void setNumCellsInColLeftToPlayBack (int numActiveCells) {
+        Log.d (TAG, "method setNumCellsInColLeftToPlayBack: numActiveCells: " + numActiveCells);
+        numCellsInColLeftToPlayBack = numActiveCells;
+    }
+
+    public int getNumCellsInColLeftToPlayBack () { return numCellsInColLeftToPlayBack; }
 }

@@ -17,9 +17,9 @@ public class MatchBoardConfiguration {
 
     private static final String TAG = "MatchBoardConfiguration";
 
-    private static final int easy = Shared.context.getResources().getInteger(R.integer.match_board_size_easy);
+    private static final int easy = Shared.context.getResources().getInteger(R.integer.match_board_size_easy);      //Stored in Dimens, we start with 6 species' pairs
 	private static final int medium = Shared.context.getResources().getInteger(R.integer.match_board_size_intermediate);
-	private static final int hard = Shared.context.getResources().getInteger(R.integer.match_board_size_hard);
+	private static final int hard = Shared.context.getResources().getInteger(R.integer.match_board_size_hard);      //and build up to 10 species' pairs FIXME - what is the upper bound on pairs?
 
     public long time;
     public final int difficulty;
