@@ -126,7 +126,7 @@ public class ComposeTrackerBoardView extends GridLayout {
                             }.execute();
 
                             //FIXME and null the activeSample so a new one can be selected. do we want this?
-                            //FIXME what if a user wants to place multiple copies of the selected sample?
+                            //FIXME what if a user wants to place multiple copies of the selected sample? currently this is the implementation
 
                             Log.v (TAG, "methodConstructTrackerBoard: onClick: post ∆ calling debugDataInTrackerCellsArray");
                             Shared.userData.getCurComposeGameData().debugDataInTrackerCellsArray();

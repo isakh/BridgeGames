@@ -674,6 +674,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
             switch (segmentID) {
                 case 0:
                     String audioResourceName0 = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(targetTileCoords).getAudioURI0().substring(URI_AUDIO.length());
+                    //FIXME - should second parameter of getIdentifier by return type (i.e. "id") rather than data type? see https://stackoverflow.com/a/26346885/1443674
                     int audioResourceId0 = Shared.context.getResources().getIdentifier(audioResourceName0, "raw", Shared.context.getPackageName());
                     audioResourceNames.add(audioResourceName0);
                     audioResourceIDs.add(audioResourceId0);

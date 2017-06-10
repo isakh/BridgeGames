@@ -23,25 +23,33 @@ import ws.isak.bridge.common.Shared;
 
 public class ComposeGameData {
 
-    private static final String TAG = "SwapGameData";
+    private static final String TAG = "ComposeGameData";
 
     //Parameters to be saved for database matching game to user
     private String userPlayingName;
+
     //setup parameters
     private long gameStartTimestamp;            //keep track of the timestamp for the start of the game - database primary key
     private boolean gameStarted;                //Set to Boolean false, becomes true when first card is placed - triggers gameStarTimeStamp
     private int gameRows;                       //the number of simultaneous rows available (e.g. voices)
     private int gameColumns;                    //a misnomer, but it defines the number of steps in the loops
+
     //the following respond to user input during the game
     private int numTurnsTakenInGame;            //Initialize number of turns in game to 0 and increment on each event.
     private ArrayList<Long> gamePlayDurations;  //Time the player spent on the game so far (sum of turnDurations) at each turn (can it be greater than allocated time?)
     private ArrayList<Long> turnDurations;      //a list of durations of each turn - a turn is defined as a single click, implemented as ArrayList //TODO should we also have a measure of paired click turns?
+
     //the following keeps track of the state of the tracker board - DO NOT STORE TO DATABASE
     private ComposeTrackerCellData[][] trackerCellsArray;
+
     //the following keeps track of an active sample, between selection and placement on board - DO NOT STORE IN DATABASE
     private ComposeSampleData activeSample;
-    //the following keeps track of the current column to be played back - DO NOT STORE IN DATABASE
+
+    //the following keeps track of the current column, and samples prepared and played in the current
+    //column to be played back - DO NOT STORE IN DATABASE
     private int curPlayBackCol;
+    private int nextPlayBackCol;
+    private int numCellsInColPreparedForPlayback;
     private int numCellsInColLeftToPlayBack;
 
 
@@ -59,7 +67,9 @@ public class ComposeGameData {
         initTrackerCellsArray(getGameRows(), getGameCols());
         setActiveSample(null);
         setCurPlayBackCol(0);           //initialize to 0, then keep track during playback/pause and reset on stop
-        setNumCellsInColLeftToPlayBack(0);
+        setNextPlayBackCol(0);          //initialize to 0, thereafter this will be ((curPlaybackCol + 1) % numCols)
+        setNumCellsInColPreparedForPlayback(0);     //initialize to 0, then increments as onPreparedListener completes
+        setNumCellsInColLeftToPlayBack(0);          //initialize to 0, set to num cells active in column, then decrement onCompletion of playback
     }
 
     //[0]
@@ -210,6 +220,19 @@ public class ComposeGameData {
         }
     }
 
+    //overloaded version adds info about where it has been called from
+    public void debugDataInTrackerCellsArray(String callingMethod) {
+        for (int c = 0; c < getGameCols(); c++) {
+            for (int r = 0; r < getGameRows(); r++) {
+                Log.v(TAG, "method debugDataInTrackerCellsArray: called from: " + callingMethod +
+                        " | col: " + c +
+                        " | row: " + r +
+                        " | ImageView: " + trackerCellsArray[r][c].getCellImageView() +
+                        " | SampleData: " + trackerCellsArray[r][c].getCellSampleData());
+            }
+        }
+    }
+
     //[8] set/get the active sample - this is a sample that has been selected from the library and
     //needs to be placed on the tracker board
     public void setActiveSample (ComposeSampleData csd) { activeSample = csd; }
@@ -218,17 +241,49 @@ public class ComposeGameData {
 
     //[9] set/get the current playback column
     public void setCurPlayBackCol (int curCol) {
-        Log.d (TAG, "method setCurPlayBackCol: curCul: " + curCol);
+        Log.d (TAG, "method setCurPlayBackCol: curCol: " + curCol);
         curPlayBackCol = curCol;
     }
 
+    public void incrementCurPlayBackCol () {
+        curPlayBackCol = ((curPlayBackCol + 1) % getGameCols());
+    }
+
+
     public int getCurPlayBackCol () { return curPlayBackCol; }
 
-    //[10] set/get numCellsInColLeftToPlayback
+    //[10] set/get the next playback column
+    public void setNextPlayBackCol () {
+        nextPlayBackCol = ((getCurPlayBackCol() + 1) % getGameCols());
+    }
+
+    //overloaded method used only in class constructor
+    public void setNextPlayBackCol (int nextCol) { nextPlayBackCol = nextCol; }
+
+    public int getNextPlayBackCol () { return nextPlayBackCol; }
+
+    //[11] set/get numCellsInColPreparedForPlayback - this increments as the cells are prepared before sending to threads
+    public void setNumCellsInColPreparedForPlayback (int numCellsPrepared) {
+        numCellsInColPreparedForPlayback = numCellsPrepared;
+    }
+
+    public int getNumCellsInColPreparedForPlayback () { return numCellsInColPreparedForPlayback; }
+
+    public void incrementNumCellsInColPreparedForPlayback () { numCellsInColPreparedForPlayback++; }
+
+    public void decrementNumCellsInColPreparedForPlayback () { numCellsInColPreparedForPlayback--; }
+
+
+    //[12] set/get numCellsInColLeftToPlayback - this decrements as the cells audio completes playback
     public void setNumCellsInColLeftToPlayBack (int numActiveCells) {
-        Log.d (TAG, "method setNumCellsInColLeftToPlayBack: numActiveCells: " + numActiveCells);
+        //Log.d (TAG, "method setNumCellsInColLeftToPlayBack: numActiveCells: " + numActiveCells);
         numCellsInColLeftToPlayBack = numActiveCells;
     }
 
     public int getNumCellsInColLeftToPlayBack () { return numCellsInColLeftToPlayBack; }
+
+    public void incrementNumCellsInColLeftToPlayback () { numCellsInColLeftToPlayBack++; }
+
+    public void decrementNumCellsInColLeftToPlayback () { numCellsInColLeftToPlayBack--; }
+
 }

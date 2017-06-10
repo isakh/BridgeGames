@@ -125,7 +125,7 @@ public class  MainActivity extends FragmentActivity {
 
         // open to User setup screen
         //Log.d(TAG, "               : get instance of user setup screen");
-        ScreenController.getInstance().openScreen(Screen.USER_SETUP);
+        ScreenController.getInstance().openScreen(Screen.DIFFICULTY_COMPOSE);
     }
 
     @Override
