@@ -218,7 +218,7 @@ public class MatchCardDataORM {
     }
 
 
-        //method matchCardDataToContentValues packs a UserData object into a ContentValues map for
+    //method matchCardDataToContentValues packs a matchCardData object into a ContentValues map for
     //use with SQL inserts
     private static ContentValues matchCardDataToContentValues(MatchCardData matchCardData) {
         Log.d (TAG, "private method matchCardDataToContentValues");
@@ -242,7 +242,7 @@ public class MatchCardDataORM {
     }
 
 
-    //method cursorToUserData populates a UserData object with data from the cursor
+    //method cursorToMatchCardData populates a MatchCardData object with data from the cursor
     private static MatchCardData cursorToMatchCardData(Cursor cursor) {
         Log.d (TAG, "method cursorToMatchCardData");
         MatchCardData cursorAtMatchCardData = new MatchCardData();

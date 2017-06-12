@@ -147,7 +147,7 @@ public class MatchGameDataORM {
         Cursor cursor = database.rawQuery("SELECT * FROM " + MatchGameDataORM.TABLE_NAME + " WHERE " + MatchGameDataORM.COLUMN_PLAYER_USERNAME + " ='" + targetUser + "'", null);
             //FIXME - this prevent's SQL injection: Cursor cursor = database.rawQuery("SELECT * FROM " + UserDataORM.TABLE_NAME + " WHERE " + UserDataORM.COLUMN_USER_NAME_ID + " =?", userName);
 
-            Log.d (TAG, "method getUserData: Loaded " + cursor.getCount() + " UserData records...");
+            Log.d (TAG, "method getMatchGameData: Loaded " + cursor.getCount() + " MatchGameData records...");
             if (matchGameRecordsInDatabase(Shared.context)) {
                 matchGameDataList = new ArrayList<MatchGameData>(numMatchGameRecordsInDatabase(Shared.context));
                 cursor.moveToFirst();
