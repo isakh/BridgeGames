@@ -18,6 +18,8 @@ import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.common.SwapCardData;
 import ws.isak.bridge.common.UserData;
 
+import ws.isak.bridge.database.ComposeGameDataORM;
+import ws.isak.bridge.database.ComposeSampleDataORM;
 import ws.isak.bridge.engine.Engine;
 import ws.isak.bridge.engine.ScreenController;
 import ws.isak.bridge.engine.ScreenController.Screen;
@@ -25,6 +27,7 @@ import ws.isak.bridge.engine.ScreenController.Screen;
 import ws.isak.bridge.events.EventBus;
 import ws.isak.bridge.events.ui.MatchBackGameEvent;
 
+import ws.isak.bridge.model.ComposeGameData;
 import ws.isak.bridge.model.MatchGameData;
 import ws.isak.bridge.model.SwapGameData;
 
@@ -102,7 +105,7 @@ public class  MainActivity extends FragmentActivity {
         Log.w (TAG, "....................................................");
         Log.w (TAG, "----------------------------------------------------");
 
-        //build the list of SwapCardData objects based on resources
+        //build the list of ComposeSampleData objects based on resources
         buildComposeSampeDataList();
 
         Log.w (TAG, "---------------------------------------------------------");
@@ -111,7 +114,8 @@ public class  MainActivity extends FragmentActivity {
         Log.w (TAG, ".........................................................");
         Log.w (TAG, "---------------------------------------------------------");
 
-        //load the database after we have built the CardData Lists
+
+        //load the database after we have built the (Card/Sample)Data Lists
         loadDatabase();
 
         // set background
@@ -307,11 +311,11 @@ public class  MainActivity extends FragmentActivity {
             //insert matchCardData object into local storage and if not already in database add it to the database
             Shared.composeSampleDataList.add(curSample);
             Log.d (TAG, "method buildComposeSampeDataList: added curSample: " + Shared.composeSampleDataList);
-            /* FIXME ADD ComposeSampleDataORM
-            if (!MatchCardDataORM.isMatchCardDataInDB(curCard)) {
-                Log.i (TAG, "method buildMatchCardDataList: card not previously in database: adding...");
-                MatchCardDataORM.insertMatchCardData(curCard);
-            } */
+            //ADD ComposeSampleDataORM
+            if (!ComposeSampleDataORM.isComposeSampleDataInDB(curSample)) {
+                Log.i (TAG, "method buildComposeSampleDataList: sample not previously in database: adding...");
+                ComposeSampleDataORM.insertComposeSampleData(curSample);
+            }
         }
     }
 
@@ -357,6 +361,7 @@ public class  MainActivity extends FragmentActivity {
                             " | usedSmartPhone: " + Shared.userDataList.get(i).getHasUsedSmartphone());
                     loadUsersMatchGameDataRecords(Shared.userDataList.get(i));
                     loadUsersSwapGameDataRecords(Shared.userDataList.get(i));
+                    loadUsersComposeGameDataRecords(Shared.userDataList.get(i));
                 }
             }
         } else if (UserDataORM.getUserData(Shared.context) == null) {
@@ -520,4 +525,49 @@ public class  MainActivity extends FragmentActivity {
         }
     }
     */
+
+    private void loadUsersComposeGameDataRecords (UserData userData) {
+        //if there are records of previous compose games in the database for the given user
+        if (ComposeGameDataORM.composeGameRecordsInDatabase(Shared.context)) {
+
+            //dbLength will hold the number of swap games played by the user
+            int dbLength = ComposeGameDataORM.numComposeGameRecordsInDatabase(Shared.context);
+
+            //create a list of size dbLength to hold the ComposeGameData objects for each game played
+            Shared.composeGameDataList = new ArrayList<ComposeGameData>(dbLength);
+
+            //check that the sizes correspond
+            Log.d(TAG, "**** Shared.composeGameDataList.size(): " + Shared.composeGameDataList.size() +
+                    " | ComposeGameDataORM.getComposeGameData(Shared.context).size(): " + dbLength);
+
+            //copy the collection of SwapGameData objects returned from the ORM to the Shared list
+            Shared.swapGameDataList = SwapGameDataORM.getSwapGameData(userData.getUserName());
+
+            //check the size and memory location for the list: THE REST IS FOR DEBUGGING
+            Log.d(TAG, "... Shared.composeGameDataList.size(): " + Shared.composeGameDataList.size() + " | @: " + Shared.composeGameDataList);
+            //iterate over the list to verify contents
+            if (Shared.composeGameDataList != null) {
+                for (int i = 0; i < Shared.composeGameDataList.size(); i++) {
+                    Log.d(TAG, "... MAIN: ComposeGameData table: Database row: " + i +
+                            " | gameStartTimestamp: " + Shared.composeGameDataList.get(i).getGameStartTimestamp() +
+                            " | playerUserName: " + Shared.composeGameDataList.get(i).getUserPlayingName() +
+                            " | numTurnsTakenInGame: " + Shared.composeGameDataList.get(i).getNumTurnsTaken());
+                    if (Shared.composeGameDataList.get(i).sizeOfPlayDurationsArray() == Shared.composeGameDataList.get(i).sizeOfTurnDurationsArray()) {
+                        for (int j = 0; j < Shared.composeGameDataList.get(i).sizeOfPlayDurationsArray(); j++) {
+                            Log.d(TAG, " ... MAIN: GAME ARRAYS in ComposeGameData Table, " + j +
+                                    " | current array element i: " + j +
+                                    " | gamePlayDuration(i): " + Shared.composeGameDataList.get(i).queryGamePlayDurations(j) +
+                                    " | turnDurations(i): " + Shared.composeGameDataList.get(i).queryTurnDurationsArray(j));
+                        }
+                    } else {
+                        Log.d(TAG, " ***** ERROR! Size of play durations and turn durations not returned as equal");
+                    }
+                    Shared.userData.appendComposeGameData(Shared.composeGameDataList.get(i));
+                }
+            } else if (ComposeGameDataORM.getComposeGameData(userData.getUserName()) == null) {
+                //
+                Log.e(TAG, "*!*!* no ComposeGameData objects for userData.getUserName: " + userData.getUserName());
+            }
+        }
+    }
 }
