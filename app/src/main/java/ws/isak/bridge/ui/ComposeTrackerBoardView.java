@@ -131,6 +131,14 @@ public class ComposeTrackerBoardView extends GridLayout {
                             Log.v (TAG, "methodConstructTrackerBoard: onClick: post ∆ calling debugDataInTrackerCellsArray");
                             Shared.userData.getCurComposeGameData().debugDataInTrackerCellsArray();
                         }
+
+                        //Store Turn Timing Information
+                        Shared.userData.getCurComposeGameData().incrementNumTurnsTaken();
+                        long now = System.currentTimeMillis();
+                        Shared.userData.getCurComposeGameData().appendToGamePlayDurations(now - Shared.userData.getCurComposeGameData().getGameStartTimestamp());
+                        Shared.userData.getCurComposeGameData().appendToTurnDurations
+                                (now - Shared.userData.getCurComposeGameData().queryGamePlayDurations
+                                        (Shared.userData.getCurComposeGameData().sizeOfPlayDurationsArray() - 1));
                     }
                 });
                 sampleCell.setOnLongClickListener(new View.OnLongClickListener() {
@@ -156,6 +164,14 @@ public class ComposeTrackerBoardView extends GridLayout {
                             return true;
                         }
                         Log.v (TAG, "methodConstructTrackerBoard: calling return true");
+
+                        //Store Turn Timing Information
+                        Shared.userData.getCurComposeGameData().incrementNumTurnsTaken();
+                        long now = System.currentTimeMillis();
+                        Shared.userData.getCurComposeGameData().appendToGamePlayDurations(now - Shared.userData.getCurComposeGameData().getGameStartTimestamp());
+                        Shared.userData.getCurComposeGameData().appendToTurnDurations
+                                (now - Shared.userData.getCurComposeGameData().queryGamePlayDurations
+                                        (Shared.userData.getCurComposeGameData().sizeOfPlayDurationsArray() - 1));
                         return false;
                     }
                 });

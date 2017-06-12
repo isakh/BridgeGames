@@ -127,7 +127,7 @@ public class ComposeGameData {
         return gameColumns;
     }
 
-    //[4] control methods for  gamePlayDurations
+    //[4] control methods for  gamePlayDurations - this is running sum of the time spent playing the game
     public void initGamePlayDurationsArray() {
         //Log.d (TAG, "method initGamePlayDurationsArray");
         gamePlayDurations = new ArrayList<Long>();
@@ -154,6 +154,7 @@ public class ComposeGameData {
     }
 
     //[5] control methods for the turnsDurationArray
+    // a turn is defined by either placing or removing a sample on/from the board
     private void initTurnDurationsArray() {
         //Log.d (TAG, "method initTurnDurations array list");
         turnDurations = new ArrayList<Long>();

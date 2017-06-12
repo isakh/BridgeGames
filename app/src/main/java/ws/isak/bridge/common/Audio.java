@@ -120,4 +120,10 @@ public class Audio {
         return isPlaying;
     }
 
+    public static boolean getIsAudioPlaying (String calledBy) {
+        Log.d (TAG, "method getIsAudioPlaying: returns isPlaying: " + isPlaying +
+            " | CALLED BY: " + calledBy);
+        return isPlaying;
+    }
+
 }

@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.CyclicBarrier;
 
 import ws.isak.bridge.R;
 import ws.isak.bridge.common.Audio;
@@ -50,8 +52,6 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
     private ArrayList<MediaPlayer> preppedColumnAudio;
     private ArrayList<Integer> prepColAudioIDs;
     private ArrayList<MediaPlayer> playingColumnAudio;
-
-    private long cellDurMillis = 2120;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -165,15 +165,14 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
                 }
             case R.id.compose_game_finished_button:
                 //TODO Finished button pressed - end game, store data as needed to database - go to game select screen?
+                
                 break;
         }
     }
 
     //Method PlayBackTrackerAudio plays the audio files currently on the tracker board.  This is done
     //as a set of numRow threads that concurrently play the files in a given column.  First a column
-    //is processed, then as it plays back, the next column is prepped.  Between each column, a check
-    //is sent to see the current state of the Playback buttons.
-    //
+    //is processed.  Between each column, a check is sent to see the current state of the Playback buttons.
     private void PlayBackTrackerAudio(mediaPlayerCommands curCommand) {
         switch (curCommand) {
             case START:
@@ -182,92 +181,45 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
                 //iterate on this until another button is pressed
                 while (playButtonPressed) {
 
-                    Log.i (TAG, "method PlayBackTrackerAudio: playButtonPressed: " + playButtonPressed +
-                            " | ITERATING OVER COLUMNS: curCol: " + Shared.userData.getCurComposeGameData().getCurPlayBackCol());
+                    //[0] if audio is playing back, wait for it to finish
+                    if (Audio.getIsAudioPlaying("PlayBackTrackerAudio: play - skip Thread.sleep and continue")) {
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-                    //[1] if this is the first column on the board (either game start or after STOP has reset)
-                    if (Shared.userData.getCurComposeGameData().getCurPlayBackCol() == 0 &&
-                            Shared.userData.getCurComposeGameData().getNextPlayBackCol() == 0 &&
-                            !Audio.isPlaying) {
+                    //[1] else, if no audio is playing, process the current column on the board
+                    else {
+                        int cCNumSamps = GetNumActiveSamplesInCurColumn();
+                        Log.d(TAG, "method PlayBackTrackerAudio: playButtonPressed: " + playButtonPressed +
+                                " | getIsAudioPlaying: " + Audio.isPlaying +
+                                " SHOULD BE FALSE | ITERATING OVER COLUMNS: curCol: " +
+                                Shared.userData.getCurComposeGameData().getCurPlayBackCol() +
+                                " | num active samples in curCol: " + cCNumSamps);
 
                         //DebugState(" START [1] ");
 
-                        //[1.1] if there are no samples in the first column
-                        if (GetNumActiveSamplesInCurColumn() == 0) {
-                            //increment to and process nextCol - from cold start only
-                            Shared.userData.getCurComposeGameData().setNextPlayBackCol();
-                            preppedColumnAudio = PrepNextColumnAudio();
+                        //[1.1] if there are no samples in the  column
+                        if (cCNumSamps == 0) {
 
                             DebugState(" PLAYING [1.1] SILENCE ");
                             PlaySilentColumn();
+                            Shared.userData.getCurComposeGameData().incrementCurPlayBackCol();
 
-                            Shared.userData.getCurComposeGameData().setCurPlayBackCol (Shared.userData.getCurComposeGameData().getNextPlayBackCol());
-                            playingColumnAudio = preppedColumnAudio;
-                            Shared.userData.getCurComposeGameData().setNextPlayBackCol();
-                            preppedColumnAudio = null;
+                            DebugState("*** FINISHED [1.1] - waiting for silence to complete playback");
                         }
-                        //[1.2] if there are samples in the first column to play
+                        //[1.2] if there are samples in the column to play
                         else {
-                            preppedColumnAudio = PrepNextColumnAudio();                     //next column is still curColumn
-                            Shared.userData.getCurComposeGameData().setNextPlayBackCol();   //update nextPlaybackCol so it leads curCol
-                            playingColumnAudio = preppedColumnAudio;
+                            playingColumnAudio = PrepColumnAudio();
 
                             DebugState(" PLAYING [1.2] ");
                             PlayPreppedColAudio();
+                            Shared.userData.getCurComposeGameData().incrementCurPlayBackCol();
 
-                            preppedColumnAudio = PrepNextColumnAudio();
-                            Shared.userData.getCurComposeGameData().setCurPlayBackCol (Shared.userData.getCurComposeGameData().getNextPlayBackCol());
-                            playingColumnAudio = preppedColumnAudio;
-                            Shared.userData.getCurComposeGameData().setNextPlayBackCol();
-                            preppedColumnAudio = null;
-                        }
-                    }
-                    //[2] else this is not the first column - either playback continues, or starting from PAUSE
-                    else if (!Audio.isPlaying) {
+                            DebugState("*** FINISHED [1.2] - waiting for sample(s) to complete playback");
 
-                        DebugState(" CHECK [2] - UPDATE playingColumnAudio && UPDATE preppedColumnAudio");
-
-                        //[2.1] if a the next playback column has been prepared
-                        if (PlaybackColReady()) {
-
-                            //DebugState(" START [2.1] ");
-
-                            // [2.1.1] if when the next column has been prepared there are no samples to play in the current column
-                            if (GetNumActiveSamplesInCurColumn() == 0) {
-                                preppedColumnAudio = PrepNextColumnAudio();
-                                DebugState(" PLAYING [2.1.1] ");
-
-                                PlaySilentColumn();
-
-
-                                Shared.userData.getCurComposeGameData().setCurPlayBackCol (Shared.userData.getCurComposeGameData().getNextPlayBackCol());
-                                playingColumnAudio = preppedColumnAudio;
-                                Shared.userData.getCurComposeGameData().setNextPlayBackCol();
-                                preppedColumnAudio = null;
-                            }
-                            // [2.1.2] if there are samples to playback
-                            else {
-                                preppedColumnAudio = PrepNextColumnAudio();
-
-                                DebugState(" PLAYING [2.1.2] ");
-
-                                Log.d(TAG, "method PlayBackTrackerAudio: Ready to PlayPreppedColAudio");
-                                PlayPreppedColAudio();
-
-                                Shared.userData.getCurComposeGameData().setCurPlayBackCol (Shared.userData.getCurComposeGameData().getNextPlayBackCol());
-                                playingColumnAudio = preppedColumnAudio;
-                                Shared.userData.getCurComposeGameData().setNextPlayBackCol();
-                                preppedColumnAudio = null;
-                            }
-                        }
-                        // [2.2] THIS SHOULD NEVER TRIGGER
-                        else {
-
-                            DebugState (" ERROR [2.2] ");
-
-                            Log.e (TAG, "[2.2] ERROR");
-                            try { Thread.sleep (2500); }            //Debug delay
-                            catch (InterruptedException e) { e.printStackTrace(); }
                         }
                     }
                 }
@@ -280,26 +232,24 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
             case STOP:
                 Log.d (TAG, "method PlayBackTrackerAudio: case curCommand: " + curCommand);
                 Shared.userData.getCurComposeGameData().setCurPlayBackCol(0);
-                Shared.userData.getCurComposeGameData().setNextPlayBackCol(0);
+                //Shared.userData.getCurComposeGameData().setNextPlayBackCol(0);
                 preppedColumnAudio = null;
                 break;
         }
-
     }
 
     private void PlaySilentColumn () {
+        Audio.setIsAudioPlaying(true);
         Log.d (TAG, "method PlaySilentColumn: column <" + Shared.userData.getCurComposeGameData().getCurPlayBackCol() +
                 "> has no samples, playing silence...");
         //play silence
-        final MediaPlayer playSilence = new MediaPlayer();
-        playSilence.create(Shared.context, R.raw.silence2);     //FIXME revert to R.raw.silence post debug
+        MediaPlayer playSilence = MediaPlayer.create(Shared.context, R.raw.silence2);     //FIXME revert to R.raw.silence post debug
 
         playSilence.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
-                Audio.setIsAudioPlaying(true);
-                Log.d (TAG, "method PlaySilentColumn: onPrepared: isAudioPlaying: " + Audio.getIsAudioPlaying());
-                playSilence.start();
+                Log.d (TAG, "method PlaySilentColumn: onPrepared: isAudioPlaying: " + Audio.getIsAudioPlaying("PlaySilentColumn: onPrepared"));
+                mediaPlayer.start();
 
             }
         });
@@ -309,40 +259,66 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
             public void onCompletion(MediaPlayer mediaPlayer) {
                 //notify the completion of playback here
                 Audio.setIsAudioPlaying(false);
-                Log.d (TAG, "method PlaySilentColumn: onCompletion: isAudioPlaying: " + Audio.getIsAudioPlaying());
-                playSilence.release();
-                playSilence.reset();
+                Log.d (TAG, "method PlaySilentColumn: onCompletion: isAudioPlaying: " + Audio.getIsAudioPlaying("PlaySilentColumn: onCompletion"));
+                mediaPlayer.reset();
+                mediaPlayer.release();
             }
         });
     }
 
     private void PlayPreppedColAudio () {
-        Log.d(TAG, "method PlayPreppedColAudio: MediaPlayers in playingColumnAudio: " + playingColumnAudio);
-        //TODO all the playback code goes here
-        //
-        //
+        Log.d(TAG, "***** method PlayPreppedColAudio: MediaPlayers in playingColumnAudio: " + playingColumnAudio);
+        Log.d(TAG, "***** method PlayPreppedColAudio: getNumCellsInColPreparedForPlayback: " +
+                Shared.userData.getCurComposeGameData().getNumCellsInColPreparedForPlayback());
 
-        playingColumnAudio = null;
-        try { Thread.sleep (1000); }
-        catch (InterruptedException e) {e.printStackTrace(); }
+        Shared.userData.getCurComposeGameData().setNumCellsInColLeftToPlayBack
+                (Shared.userData.getCurComposeGameData().getNumCellsInColPreparedForPlayback());
+
+        Log.w(TAG, "***** method PlayPreppedColAudio: just setNumCellsInColLeftToPlayback to getNumCellsPreparedForPlayback: "+
+                + Shared.userData.getCurComposeGameData().getNumCellsInColPreparedForPlayback() +
+                " | getNumCellsInColLeftForPlayback: " +
+                Shared.userData.getCurComposeGameData().getNumCellsInColLeftToPlayBack());
+
+        SyncPlaybackColumnAudio(playingColumnAudio);
     }
 
-    //this method will return true when the call to PrepNextColumnAudio has processed the same number
+    //threads execute synced commands launching all of the samples' MediaPlayers
+    public void SyncPlaybackColumnAudio(ArrayList<MediaPlayer> colPlayers) {
+        final CyclicBarrier playbackBarrier = new CyclicBarrier(colPlayers.size());
+        for (int i = 0; i < colPlayers.size(); i++) {
+            Log.d (TAG, "method SyncPlaybackColumnAudio: current MediaPlayer: " + colPlayers.get(i) +
+                    " | calling new Thread... ");
+            new Thread(new SyncPlaybackCommand(playbackBarrier, colPlayers.get(i))).start();
+        }
+    }
+
+    /* FIXME - remove, only useful if we are looking ahead to prep the next column
+    //this method will return true when the call to PrepColumnAudio has processed the same number
     //of samples as returned by GetNumActiveSamplesInCurColumn (because by the time it is called,
-    //nextCol has been set to curCol
+    //nextCol has been set to curCol; it will also return true if playingColumnAudio is null because
+    //there are no samples to be played back
     private boolean PlaybackColReady() {
 
         boolean ready = false;
+        int cCNumSamps = GetNumActiveSamplesInCurColumn();
 
-        Log.i (TAG, "method PlaybackColReady: playingColumnAudio.size(): " + playingColumnAudio.size() +
-                " | GetNumActiveSamplesInCurColumn: " + GetNumActiveSamplesInCurColumn());
+        if (playingColumnAudio != null) {
+            Log.i(TAG, "method PlaybackColReady: playingColumnAudio.size(): " + playingColumnAudio.size());
+        }
+        Log.i (TAG, "method PlaybackColReady: GetNumActiveSamplesInCurColumn: " + GetNumActiveSamplesInCurColumn());
         //DebugState(" From PlaybackColReady:...");
-        if (playingColumnAudio.size() == GetNumActiveSamplesInCurColumn()) {
+        if (playingColumnAudio != null) {
+            if (playingColumnAudio.size() == GetNumActiveSamplesInCurColumn()) {
+                ready = true;
+            }
+        }
+        else if (playingColumnAudio == null && cCNumSamps == 0) {
             ready = true;
         }
         Log.i (TAG, "method PlaybackColReady: ready: " + ready);
         return ready;
     }
+    */
 
     private int GetNumActiveSamplesInCurColumn () {
         int numSamps = 0;
@@ -354,11 +330,12 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
                 numSamps++;
             }
         }
-        Log.i (TAG, "method GetNumActiveSamplesInColumn: numSamps: [" + numSamps +
-                "] in targetCol: " + targetCol);
+        Log.d (TAG, "method GetNumActiveSamplesInColumn: RETURNS numSamps: [" + numSamps +
+                "] in targetCol: [" + targetCol + "]");
         return numSamps;
     }
 
+    /* FIXME - remove only useful when pre-processing samples
     private int GetNumActiveSamplesInNextColumn () {
         int numSamps = 0;
         int nextCol = Shared.userData.getCurComposeGameData().getNextPlayBackCol();
@@ -371,22 +348,23 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
         Log.d (TAG, "method GetNumActiveSamplesInNextColumn: numSamps: " + numSamps + " in nextCol: " + nextCol);
         return numSamps;
     }
+    */
 
-    private ArrayList<MediaPlayer> PrepNextColumnAudio() {
+    private ArrayList<MediaPlayer> PrepColumnAudio() {
 
         Shared.userData.getCurComposeGameData().setNumCellsInColPreparedForPlayback(0);
 
-        Log.d (TAG, "method PrepNextColumnAudio: @Start: curCol Being Prepped: " +
-                Shared.userData.getCurComposeGameData().getNextPlayBackCol() +
-                " | reset NumCellsInColPreparedForPlayback to zero: " +
+        Log.d (TAG, "method PrepColumnAudio: @Start: curCol Being Prepped: " +
+                Shared.userData.getCurComposeGameData().getCurPlayBackCol() +
+                " | reset NumCellsInColPreparedForPlayback to zero: CHECK: " +
                 Shared.userData.getCurComposeGameData().getNumCellsInColPreparedForPlayback() + " = 0 ");
 
-        prepColAudioIDs = getColAudioFileIDs(Shared.userData.getCurComposeGameData().getNextPlayBackCol());
-        Log.d (TAG, "method PrepNextColumnAudio: prepColAudioIDs: " + prepColAudioIDs);
+        prepColAudioIDs = getColAudioFileIDs(Shared.userData.getCurComposeGameData().getCurPlayBackCol());
+        Log.d (TAG, "method PrepColumnAudio: prepColAudioIDs: " + prepColAudioIDs);
         ArrayList <MediaPlayer> prepColumnAudio = new ArrayList<MediaPlayer>(0);
         for (int i = 0; i < prepColAudioIDs.size(); i++) {
             MediaPlayer mp = new MediaPlayer();
-            Log.d (TAG, "method PrepNextColumnAudio: instantiated new MediaPlayer: " + mp);
+            Log.d (TAG, "method PrepColumnAudio: instantiated new MediaPlayer: " + mp);
             mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
             AssetFileDescriptor afd = Shared.context.getResources().openRawResourceFd(prepColAudioIDs.get(i));
             if (afd == null) {
@@ -403,26 +381,36 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
                 @Override
                 public void onPrepared(MediaPlayer mediaPlayer) {
                     Shared.userData.getCurComposeGameData().incrementNumCellsInColPreparedForPlayback();
-                    Log.d (TAG, "method PrepNextColumnAudio: onPrepared: numCellsInColPreparedForPlayback: " +
+                    Log.w (TAG, "***** method PrepColumnAudio: onPrepared: just incremented numCellsInColPreparedForPlayback: " +
                         Shared.userData.getCurComposeGameData().getNumCellsInColPreparedForPlayback() +
                         " | FINISHED PREPARING MediaPlayer: " + mediaPlayer);
                 }
             });
 
-            //mp.prepareAsync(); //FIXME - since raw files on device is using prepare ok?
-            try { mp.prepare(); }
+            try { mp.prepare(); }       //FIXME - if we implement look-forward planning, can use prepareAsync
             catch (IOException e) { e.printStackTrace(); }
 
-            Log.d (TAG, "method PrepNextColumnAudio: called prepare on mp: " + mp);
+            Log.d (TAG, "method PrepColumnAudio: called prepare on mp: " + mp);
             ///*
             mp.setOnCompletionListener(new OnCompletionListener() {
 
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    Log.d (TAG, "method PrepNextColumnAudio: onCompletion: mp: " + mp);
+                    Log.d (TAG, "*** method PrepColumnAudio: onCompletion: mp: " + mp);
+                    Shared.userData.getCurComposeGameData().decrementNumCellsInColLeftToPlayback();
+                    Log.w (TAG, "***** method PrepColumnAudio: onCompletion: just decremented: getNumCellsInColLeftToPlayBack: " +
+                            Shared.userData.getCurComposeGameData().getNumCellsInColLeftToPlayBack());
                     mp.reset();
                     mp.release();
-                    Log.d (TAG, "method PrepNextColumnAudio: onCompletion: mp RELEASE and RESET");
+                    Log.d (TAG, "method PrepColumnAudio: onCompletion: mp RELEASE and RESET");
+
+                    //check if this is the final sample to complete
+                    if (Shared.userData.getCurComposeGameData().getNumCellsInColLeftToPlayBack() == 0) {
+                        Audio.setIsAudioPlaying(false);
+                        Log.d (TAG, "method PrepColumnAudio: onCompletion: isAudioPlaying: " + Audio.getIsAudioPlaying("PrepColumnAudio: onCompletion"));
+                        playingColumnAudio = null;
+                    }
+
                 }
             });
             //*/
@@ -436,8 +424,8 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
             catch (InterruptedException e) { e.printStackTrace(); }
         }
 
-        Log.i (TAG, "method PrepNextColumnAudio: RETURNING prepColumnAudio: " + prepColumnAudio +
-            " | PREPARED: [" + GetNumActiveSamplesInNextColumn() + "] SAMPLES" +
+        Log.i (TAG, "method PrepColumnAudio: RETURNING prepColumnAudio: " + prepColumnAudio +
+            //" | PREPARED: [" + GetNumActiveSamplesInNextColumn() + "] SAMPLES" +
             " | getNumCellsInColPreparedForPlayback: " + Shared.userData.getCurComposeGameData().getNumCellsInColPreparedForPlayback() );
         return prepColumnAudio;
     }
@@ -494,14 +482,14 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
         //debug: review state at end of loop
         Log.i(TAG, "method DebugState: " + opt +
                 " \n| curCol: " + Shared.userData.getCurComposeGameData().getCurPlayBackCol() +
-                " | nextCol: " + Shared.userData.getCurComposeGameData().getNextPlayBackCol() +
+                //" | nextCol: " + Shared.userData.getCurComposeGameData().getNextPlayBackCol() +
                 " | curCol numSamps: " + GetNumActiveSamplesInCurColumn() +
-                " | nextCol numSamps: " + GetNumActiveSamplesInNextColumn() +
-                " \n| cur column playingColumnAudio: " + playingColumnAudio +
-                " | next column preppedColumnAudio: " + preppedColumnAudio + "\n");
+                //" | nextCol numSamps: " + GetNumActiveSamplesInNextColumn() +
+                " \n| cur column playingColumnAudio: " + playingColumnAudio );
+                //" | next column preppedColumnAudio: " + preppedColumnAudio + "\n");
     }
 
-    /*
+    /* FIXME - removed, doesn't work as MediaPlayer is not Serializable
     public static MediaPlayer deepCloneMediaPlayer (MediaPlayer mp) {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -517,4 +505,50 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
         }
     }
     */
+
+    /* ========================================================================================== */
+
+    // Inner class sends command to each media player synchronously with others utilizing SyncedStartService
+
+    private class SyncPlaybackCommand implements Runnable {
+
+        public final String TAG2 = "SyncPlaybackCommand";
+
+
+        private final CyclicBarrier curCommandBarrier;
+        private mediaPlayerCommands curCommand;
+        private MediaPlayer curMP;
+
+        public SyncPlaybackCommand(CyclicBarrier barrier, MediaPlayer player) {
+            Log.d (TAG2, "method SyncPlaybackCommand: MediaPlayer: " + player + " | CyclicBarrier: " + barrier);
+            curCommandBarrier = barrier;
+            curMP = player;
+            if (!Audio.isPlaying) Audio.setIsAudioPlaying(true);
+            Log.d (TAG2, "method SyncPlaybackCommand: SET isAudioPlaying TRUE: " + Audio.getIsAudioPlaying("SyncPlaybackCommand"));
+        }
+
+        @Override
+        public void run() {
+            try {
+                curCommandBarrier.await();
+            } catch (InterruptedException | BrokenBarrierException e) {
+                e.printStackTrace();
+            }
+            curMP.start();
+
+            /*  FIXME - do we want to decrement here? or in the onCompletion Listener
+            Shared.userData.getCurComposeGameData().decrementNumCellsInColLeftToPlayback();
+            Log.d(TAG, "method run: case START: post decrement: num cells to play in col remaining: " +
+                    Shared.userData.getCurComposeGameData().getNumCellsInColLeftToPlayBack());
+            */
+
+            //if this is the last concurrent track to spawn
+            if (Shared.userData.getCurComposeGameData().getNumCellsInColLeftToPlayBack() == 0) {
+                //reset the number of cells prepared
+                Shared.userData.getCurComposeGameData().setNumCellsInColPreparedForPlayback(0);
+                Log.d (TAG2, "method run: last concurrent track in column spawned, setNumCellsInColPreparedForPlayback(0): check: getNumCellsInColPreparedForPlayback: " +
+                    Shared.userData.getCurComposeGameData().getNumCellsInColPreparedForPlayback());
+            }
+        }
+    }
 }

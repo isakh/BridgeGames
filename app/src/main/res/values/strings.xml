@@ -202,7 +202,7 @@
     <!-- =================================================================================== -->
     <!-- Layout: ComposeDifficulty -->
     <!-- ************************* -->
-    <string name="compose_difficulty_title">WRITE A SONG</string>
+    <string name="compose_difficulty_title">BUILD A CHORUS</string>
     <string name="compose_difficulty_level_1">Loop 8</string>
     <string name="compose_difficulty_level_2">Loop 16</string>
     <string name="compose_difficulty_level_3">Loop 24</string>
