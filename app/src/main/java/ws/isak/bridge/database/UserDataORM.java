@@ -282,6 +282,7 @@ public class UserDataORM {
         } catch (NullPointerException npe) {
             npe.printStackTrace();
         }
+        /*
         try {
             Log.d(TAG, "** method findUserDataById: userData.getAgeRange: " + userData.getAgeRange());
         } catch (NullPointerException npe) {
@@ -314,6 +315,82 @@ public class UserDataORM {
         }
         try {
             Log.d(TAG, "** method findUserDataById: userData.getHasUsedSmartphone: " + userData.getHasUsedSmartphone());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        */
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getMatchTheme1Difficulty1HighStars: " + userData.getMatchTheme1Difficulty1HighStars());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getMatchTheme1Difficulty2HighStars: " + userData.getMatchTheme1Difficulty2HighStars());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getMatchTheme1Difficulty3HighStars: " + userData.getMatchTheme1Difficulty3HighStars());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getMatchTheme2Difficulty1HighStars: " + userData.getMatchTheme2Difficulty1HighStars());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getMatchTheme2Difficulty2HighStars: " + userData.getMatchTheme2Difficulty2HighStars());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getMatchTheme2Difficulty3HighStars: " + userData.getMatchTheme2Difficulty3HighStars());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getMatchTheme3Difficulty1HighStars: " + userData.getMatchTheme3Difficulty1HighStars());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getMatchTheme3Difficulty2HighStars: " + userData.getMatchTheme3Difficulty2HighStars());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getMatchTheme3Difficulty3HighStars: " + userData.getMatchTheme3Difficulty3HighStars());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getSwapHighStarsDifficulty1: " + userData.getSwapHighStarsDifficulty1());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getSwapHighStarsDifficulty2: " + userData.getSwapHighStarsDifficulty2());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getSwapHighStarsDifficulty3: " + userData.getSwapHighStarsDifficulty3());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getComposeHighStarsDifficulty1: " + userData.getComposeHighStarsDifficulty1());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getComposeHighStarsDifficulty2: " + userData.getComposeHighStarsDifficulty2());
+        } catch (NullPointerException npe) {
+            npe.printStackTrace();
+        }
+        try {
+            Log.d(TAG, "** method findUserDataById: userData.getComposeHighStarsDifficulty3: " + userData.getComposeHighStarsDifficulty3());
         } catch (NullPointerException npe) {
             npe.printStackTrace();
         }
@@ -352,12 +429,12 @@ public class UserDataORM {
 
         else {
             Log.d (TAG, "userData already exists in database, instead of inserting, updating");
-            return updateUserData (context , userData);
+            return updateUserData (userData);
         }
     }
 
     //method updateUserData updates an existing UserData in the database
-    public static boolean updateUserData (Context context, UserData userData) {
+    public static boolean updateUserData (UserData userData) {
         Log.d (TAG, "method updateUserData: creating ContentValues");
         ContentValues values = userDataToContentValues (userData);
         DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
@@ -367,7 +444,7 @@ public class UserDataORM {
         try {
             if (database != null) {
                 Log.d (TAG, "method updateUserData: Updating UserData[" + userData.getUserName() + "]...");
-                database.update(UserDataORM.TABLE_NAME, values, UserDataORM.COLUMN_USER_NAME_ID + " = " + userData.getUserName(), null);
+                database.update(UserDataORM.TABLE_NAME, values, UserDataORM.COLUMN_USER_NAME_ID + " = '" + userData.getUserName() + "'", null);
                 // TODO iterate over GameDataORM.insertGames to set new Games in UserData? or only on update
                 success = true;
             }
@@ -389,7 +466,7 @@ public class UserDataORM {
 
         Log.d (TAG, "values.put... userData.getUserName(): " + userData.getUserName() + " to COLUMN_USER_NAME_ID: " + COLUMN_USER_NAME_ID);
         values.put (COLUMN_USER_NAME_ID, userData.getUserName());
-        Log.d (TAG, "values.put... userData.getAgeRange(): " + userData.getAgeRange() + " to COLUMN_AGE_RANGE: " + COLUMN_AGE_RANGE);
+        //Log.d (TAG, "values.put... userData.getAgeRange(): " + userData.getAgeRange() + " to COLUMN_AGE_RANGE: " + COLUMN_AGE_RANGE);
         //values.put (COLUMN_AGE_RANGE, userData.getAgeRange());
         //values.put (COLUMN_YEARS_TWITCHING_RANGE, userData.getYearsTwitchingRange());
         //values.put (COLUMN_SPECIES_KNOWN_RANGE, userData.getSpeciesKnownRange());

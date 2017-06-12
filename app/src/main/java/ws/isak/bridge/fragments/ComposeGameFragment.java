@@ -554,6 +554,16 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
     }
 
     public void FinishComposeGame () {
+        //wait for current tracks to finish playing
+        while (Audio.getIsAudioPlaying("FinishComposeGame")) {
+            try {
+                Thread.sleep (100);
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
         // insert current swapGameData into database
         ComposeGameDataORM.insertComposeGameData(Shared.userData.getCurComposeGameData());
 

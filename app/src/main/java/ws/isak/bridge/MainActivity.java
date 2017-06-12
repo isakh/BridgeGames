@@ -118,6 +118,12 @@ public class  MainActivity extends FragmentActivity {
         //load the database after we have built the (Card/Sample)Data Lists
         loadDatabase();
 
+        Log.w (TAG, "---------------------------------------------");
+        Log.w (TAG, ".............................................");
+        Log.w (TAG, ".....=====***** LOAD DATABASE *****=====.....");
+        Log.w (TAG, ".............................................");
+        Log.w (TAG, "---------------------------------------------");
+
         // set background
         setBackgroundImage();
 
@@ -352,13 +358,28 @@ public class  MainActivity extends FragmentActivity {
                 for (int i = 0; i < Shared.userDataList.size(); i++) {
                     Log.d(TAG, "... MAIN: UserData table: Database row: " + i +
                             " | userName: " + Shared.userDataList.get(i).getUserName() +
-                            " | userAge: " + Shared.userDataList.get(i).getAgeRange() +
-                            " | yearsTwitching: " + Shared.userDataList.get(i).getYearsTwitchingRange() +
-                            " | speciesKnown: " + Shared.userDataList.get(i).getSpeciesKnownRange() +
-                            " | audibleRecognized: " + Shared.userDataList.get(i).getAudibleRecognizedRange() +
-                            " | interfaceExperience: " + Shared.userDataList.get(i).getInterfaceExperienceRange() +
-                            " | hearingIsSeeing: " + Shared.userDataList.get(i).getHearingEqualsSeeing() +
-                            " | usedSmartPhone: " + Shared.userDataList.get(i).getHasUsedSmartphone());
+                            //" | userAge: " + Shared.userDataList.get(i).getAgeRange() +
+                            //" | yearsTwitching: " + Shared.userDataList.get(i).getYearsTwitchingRange() +
+                            //" | speciesKnown: " + Shared.userDataList.get(i).getSpeciesKnownRange() +
+                            //" | audibleRecognized: " + Shared.userDataList.get(i).getAudibleRecognizedRange() +
+                            //" | interfaceExperience: " + Shared.userDataList.get(i).getInterfaceExperienceRange() +
+                            //" | hearingIsSeeing: " + Shared.userDataList.get(i).getHearingEqualsSeeing() +
+                            //" | usedSmartPhone: " + Shared.userDataList.get(i).getHasUsedSmartphone());
+                            " \n| getMatchTheme1Difficulty1HighStars: " + Shared.userDataList.get(i).getMatchTheme1Difficulty1HighStars() +
+                            " | getMatchTheme1Difficulty2HighStars: " + Shared.userDataList.get(i).getMatchTheme1Difficulty2HighStars() +
+                            " | getMatchTheme1Difficulty3HighStars: " + Shared.userDataList.get(i).getMatchTheme1Difficulty3HighStars() +
+                            " \n| getMatchTheme2Difficulty1HighStars: " + Shared.userDataList.get(i).getMatchTheme2Difficulty1HighStars() +
+                            " | getMatchTheme2Difficulty2HighStars: " + Shared.userDataList.get(i).getMatchTheme2Difficulty2HighStars() +
+                            " | getMatchTheme2Difficulty3HighStars: " + Shared.userDataList.get(i).getMatchTheme2Difficulty3HighStars() +
+                            " \n| getMatchTheme3Difficulty1HighStars: " + Shared.userDataList.get(i).getMatchTheme3Difficulty1HighStars() +
+                            " | getMatchTheme3Difficulty2HighStars: " + Shared.userDataList.get(i).getMatchTheme3Difficulty2HighStars() +
+                            " | getMatchTheme3Difficulty3HighStars: " + Shared.userDataList.get(i).getMatchTheme3Difficulty3HighStars() +
+                            " \n| getSwapHighStarsDifficulty1: " + Shared.userDataList.get(i).getSwapHighStarsDifficulty1() +
+                            " | getSwapHighStarsDifficulty2: " + Shared.userDataList.get(i).getSwapHighStarsDifficulty2() +
+                            " | getSwapHighStarsDifficulty3: " + Shared.userDataList.get(i).getSwapHighStarsDifficulty3() +
+                            " \n| getComposeHighStarsDifficulty1: " + Shared.userDataList.get(i).getComposeHighStarsDifficulty1() +
+                            " | getComposeHighStarsDifficulty2: " + Shared.userDataList.get(i).getComposeHighStarsDifficulty2() +
+                            " | getComposeHighStarsDifficulty3: " + Shared.userDataList.get(i).getComposeHighStarsDifficulty3());
                     loadUsersMatchGameDataRecords(Shared.userDataList.get(i));
                     loadUsersSwapGameDataRecords(Shared.userDataList.get(i));
                     loadUsersComposeGameDataRecords(Shared.userDataList.get(i));

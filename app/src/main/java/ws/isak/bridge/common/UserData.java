@@ -466,4 +466,24 @@ public class UserData {
     }
 
     public int getComposeHighStarsDifficulty3 () { return composeGameDifficulty3HighStars; }
+
+    public void DebugUserData (String callingFunction) {
+        Log.v (TAG, "method DebugUserData: callingFunction: " + callingFunction +
+                " | userName: " + userName +
+                " | match Theme 1 Difficulty 1: " + getMatchTheme1Difficulty1HighStars() +
+                " | match Theme 1 Difficulty 2: " + getMatchTheme1Difficulty2HighStars() +
+                " | match Theme 1 Difficulty 3: " + getMatchTheme1Difficulty3HighStars());
+        Log.v (TAG, " ..... match Theme 2 Difficulty 1: " + getMatchTheme2Difficulty1HighStars() +
+                " | match Theme 2 Difficulty 2: " + getMatchTheme2Difficulty2HighStars() +
+                " | match Theme 2 Difficulty 3: " + getMatchTheme2Difficulty3HighStars());
+        Log.v (TAG, " ..... match Theme 3 Difficulty 1: " + getMatchTheme3Difficulty1HighStars() +
+                " | match Theme 3 Difficulty 2: " + getMatchTheme3Difficulty2HighStars() +
+                " | match Theme 3 Difficulty 3: " + getMatchTheme3Difficulty3HighStars());
+        Log.v (TAG, " ..... swap Difficulty 1: " + getSwapHighStarsDifficulty1() +
+                " | swap Difficulty 2: " + getSwapHighStarsDifficulty2() +
+                " | swap Difficulty 3: " + getSwapHighStarsDifficulty3());
+        Log.v (TAG, " ..... compose Difficulty 1: " + getComposeHighStarsDifficulty1() +
+                " | compose Difficulty 2: " + getComposeHighStarsDifficulty2() +
+                " | compose Difficulty 3: " + getComposeHighStarsDifficulty3());
+    }
 }

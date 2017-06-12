@@ -522,6 +522,8 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         }
         //end validation block
 
+        //debug state of UserData before updating Database
+        Shared.userData.DebugUserData("SwapGameWonEvent");
         //update userData in array - this makes sure that stars remain up to date
         UserDataORM.updateUserData(Shared.userData);
 

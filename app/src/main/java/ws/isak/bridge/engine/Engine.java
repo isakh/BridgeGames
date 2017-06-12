@@ -565,39 +565,57 @@ public class Engine extends EventObserverAdapter {
                         case 1:
                             switch (mPlayingMatchGame.matchBoardConfiguration.difficulty) {
                                 case 1:
-                                    Shared.userData.setMatchHighStarsTheme1Difficulty1(gameState.achievedStars);
+                                    if (gameState.achievedStars > Shared.userData.getMatchTheme1Difficulty1HighStars()) {
+                                        Shared.userData.setMatchHighStarsTheme1Difficulty1(gameState.achievedStars);
+                                    }
                                     break;
                                 case 2:
-                                    Shared.userData.setMatchHighStarsTheme1Difficulty2(gameState.achievedStars);
+                                    if (gameState.achievedStars > Shared.userData.getMatchTheme1Difficulty2HighStars()) {
+                                        Shared.userData.setMatchHighStarsTheme1Difficulty2(gameState.achievedStars);
+                                    }
                                     break;
                                 case 3:
-                                    Shared.userData.setMatchHighStarsTheme1Difficulty3(gameState.achievedStars);
+                                    if (gameState.achievedStars > Shared.userData.getMatchTheme1Difficulty3HighStars()) {
+                                        Shared.userData.setMatchHighStarsTheme1Difficulty3(gameState.achievedStars);
+                                    }
                                     break;
                             }
                             break;
                         case 2:
                             switch (mPlayingMatchGame.matchBoardConfiguration.difficulty) {
                                 case 1:
-                                    Shared.userData.setMatchHighStarsTheme2Difficulty1(gameState.achievedStars);
+                                    if (gameState.achievedStars > Shared.userData.getMatchTheme2Difficulty1HighStars()) {
+                                        Shared.userData.setMatchHighStarsTheme2Difficulty1(gameState.achievedStars);
+                                    }
                                     break;
                                 case 2:
-                                    Shared.userData.setMatchHighStarsTheme2Difficulty2(gameState.achievedStars);
+                                    if (gameState.achievedStars > Shared.userData.getMatchTheme2Difficulty2HighStars()) {
+                                        Shared.userData.setMatchHighStarsTheme2Difficulty2(gameState.achievedStars);
+                                    }
                                     break;
                                 case 3:
-                                    Shared.userData.setMatchHighStarsTheme2Difficulty3(gameState.achievedStars);
+                                    if (gameState.achievedStars > Shared.userData.getMatchTheme2Difficulty3HighStars()) {
+                                        Shared.userData.setMatchHighStarsTheme2Difficulty3(gameState.achievedStars);
+                                    }
                                     break;
                             }
                             break;
                         case 3:
                             switch (mPlayingMatchGame.matchBoardConfiguration.difficulty) {
                                 case 1:
-                                    Shared.userData.setMatchHighStarsTheme3Difficulty1(gameState.achievedStars);
+                                    if (gameState.achievedStars > Shared.userData.getMatchTheme3Difficulty1HighStars()) {
+                                        Shared.userData.setMatchHighStarsTheme3Difficulty1(gameState.achievedStars);
+                                    }
                                     break;
                                 case 2:
-                                    Shared.userData.setMatchHighStarsTheme3Difficulty2(gameState.achievedStars);
+                                    if (gameState.achievedStars > Shared.userData.getMatchTheme3Difficulty2HighStars()) {
+                                        Shared.userData.setMatchHighStarsTheme3Difficulty2(gameState.achievedStars);
+                                    }
                                     break;
                                 case 3:
-                                    Shared.userData.setMatchHighStarsTheme3Difficulty3(gameState.achievedStars);
+                                    if (gameState.achievedStars > Shared.userData.getMatchTheme3Difficulty3HighStars()) {
+                                        Shared.userData.setMatchHighStarsTheme3Difficulty3(gameState.achievedStars);
+                                    }
                                     break;
                             }
                             break;

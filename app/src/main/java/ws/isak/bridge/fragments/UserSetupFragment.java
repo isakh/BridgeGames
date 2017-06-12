@@ -1,6 +1,5 @@
 package ws.isak.bridge.fragments;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -96,11 +95,13 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
             Shared.userData.setUserName(newUserName);
             Log.d (TAG, "                   : next screen is SELECT_GAME- we no longer want to populate new curUserData");
 
+            Shared.userData.DebugUserData("Called From RegisterNewUser");
+
             //insert the new UserData into the database - then when games are finished and we are updating stars achieved use update instead of insert
             UserDataORM.insertUserData(Shared.context, Shared.userData);
 
             //move to the SELECT_GAME screen
-            ScreenController.getInstance().openScreen(Screen.SELECT_GAME);  //FIXME was PRE_SURVEY but bypassing that now
+            ScreenController.getInstance().openScreen(Screen.SELECT_GAME);  //was PRE_SURVEY but bypassing that now
         } else {
             Log.d (TAG, "                   : userName not unique: ***** ");
             Toast.makeText(Shared.context, "Please choose a name that is not already registered", Toast.LENGTH_LONG).show();
@@ -121,6 +122,9 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
             Log.d (TAG, "                   : preexistingUserName is true, setting current UserData to user's UserData");
             Shared.userData = UserDataORM.findUserDataByID(Shared.context, loginName);
             Log.d (TAG, " ******* Shared.userData @: " + Shared.userData);
+
+            Shared.userData.DebugUserData("Called From LoginExistingUser");
+
             //load screen for next step
             Log.d (TAG, "                   : existing user: next screen is SELECT_GAME");
             ScreenController.getInstance().openScreen(Screen.SELECT_GAME);

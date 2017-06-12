@@ -201,6 +201,8 @@ public class MatchGameFragment extends BaseFragment implements View.OnClickListe
         //append MatchGameData to userData array
         Shared.userData.appendMatchGameData(Shared.userData.getCurMatchGame());     //append the MatchGameData for completed game to
 
+        //debug state of UserData before updating Database
+        Shared.userData.DebugUserData("MatchGameWonEvent");
         //update userData in array - this makes sure that stars remain up to date
         UserDataORM.updateUserData(Shared.userData);
 
