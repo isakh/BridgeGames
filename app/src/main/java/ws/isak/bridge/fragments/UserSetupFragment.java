@@ -95,6 +95,11 @@ public class UserSetupFragment extends Fragment implements View.OnClickListener 
             Shared.userData = UserData.getInstance();
             Shared.userData.setUserName(newUserName);
             Log.d (TAG, "                   : next screen is SELECT_GAME- we no longer want to populate new curUserData");
+
+            //insert the new UserData into the database - then when games are finished and we are updating stars achieved use update instead of insert
+            UserDataORM.insertUserData(Shared.context, Shared.userData);
+
+            //move to the SELECT_GAME screen
             ScreenController.getInstance().openScreen(Screen.SELECT_GAME);  //FIXME was PRE_SURVEY but bypassing that now
         } else {
             Log.d (TAG, "                   : userName not unique: ***** ");

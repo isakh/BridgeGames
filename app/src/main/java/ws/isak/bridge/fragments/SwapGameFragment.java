@@ -26,6 +26,7 @@ import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.database.SwapGameDataORM;
 
 import ws.isak.bridge.common.SwapCardData;
+import ws.isak.bridge.database.UserDataORM;
 import ws.isak.bridge.events.engine.SwapPlayRowAudioEvent;
 import ws.isak.bridge.events.engine.SwapGameWonEvent;
 
@@ -334,13 +335,19 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
                 // save to memory
                 switch (Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty()) {
                     case 1:
-                        Shared.userData.setSwapHighStarsDifficulty1(gameState.achievedStars);
+                        if (gameState.achievedStars > Shared.userData.getSwapHighStarsDifficulty1()) {
+                            Shared.userData.setSwapHighStarsDifficulty1(gameState.achievedStars);
+                        }
                         break;
                     case 2:
-                        Shared.userData.setSwapHighStarsDifficulty2(gameState.achievedStars);
+                        if (gameState.achievedStars > Shared.userData.getSwapHighStarsDifficulty2()) {
+                            Shared.userData.setSwapHighStarsDifficulty2(gameState.achievedStars);
+                        }
                         break;
                     case 3:
-                        Shared.userData.setSwapHighStarsDifficulty3(gameState.achievedStars);
+                        if (gameState.achievedStars > Shared.userData.getSwapHighStarsDifficulty3()) {
+                            Shared.userData.setSwapHighStarsDifficulty3(gameState.achievedStars);
+                        }
                         break;
                 }
                 //trigger the SwapGameWonEvent
@@ -382,15 +389,22 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
                 // save to memory
                 switch (Shared.currentSwapGame.swapBoardConfiguration.getSwapDifficulty()) {
                     case 1:
-                        Shared.userData.setSwapHighStarsDifficulty1(gameState.achievedStars);
+                        if (gameState.achievedStars > Shared.userData.getSwapHighStarsDifficulty1()) {
+                            Shared.userData.setSwapHighStarsDifficulty1(gameState.achievedStars);
+                        }
                         break;
                     case 2:
-                        Shared.userData.setSwapHighStarsDifficulty2(gameState.achievedStars);
+                        if (gameState.achievedStars > Shared.userData.getSwapHighStarsDifficulty2()) {
+                            Shared.userData.setSwapHighStarsDifficulty2(gameState.achievedStars);
+                        }
                         break;
                     case 3:
-                        Shared.userData.setSwapHighStarsDifficulty3(gameState.achievedStars);
+                        if (gameState.achievedStars > Shared.userData.getSwapHighStarsDifficulty3()) {
+                            Shared.userData.setSwapHighStarsDifficulty3(gameState.achievedStars);
+                        }
                         break;
-                }                //trigger the SwapGameWonEvent
+                }
+                //trigger the SwapGameWonEvent
                 Shared.eventBus.notify(new SwapGameWonEvent(gameState), 1000);      //TODO convert delay to xml
             }
         }
@@ -507,6 +521,9 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
             debugCoordsDataMap(Shared.userData.getCurSwapGameData().querySwapGameMapList(i), "STATE OF MAP" + i + " IN GAMEDATA LIST");
         }
         //end validation block
+
+        //update userData in array - this makes sure that stars remain up to date
+        UserDataORM.updateUserData(Shared.userData);
 
         // insert current swapGameData into database
         SwapGameDataORM.insertSwapGameData(Shared.userData.getCurSwapGameData());

@@ -14,6 +14,7 @@ import java.util.Locale;
 import ws.isak.bridge.R;
 import ws.isak.bridge.common.Shared;
 import ws.isak.bridge.database.MatchGameDataORM;
+import ws.isak.bridge.database.UserDataORM;
 import ws.isak.bridge.events.engine.MatchFlipDownCardsEvent;
 import ws.isak.bridge.events.engine.MatchGameWonEvent;
 import ws.isak.bridge.events.engine.MatchHidePairCardsEvent;
@@ -196,8 +197,12 @@ public class MatchGameFragment extends BaseFragment implements View.OnClickListe
         //end validation block
         */
 
+
         //append MatchGameData to userData array
         Shared.userData.appendMatchGameData(Shared.userData.getCurMatchGame());     //append the MatchGameData for completed game to
+
+        //update userData in array - this makes sure that stars remain up to date
+        UserDataORM.updateUserData(Shared.userData);
 
         //insert current matchGameData into database
         MatchGameDataORM.insertMatchGameData(Shared.userData.getCurMatchGame());

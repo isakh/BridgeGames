@@ -1,5 +1,6 @@
 package ws.isak.bridge.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -71,8 +72,8 @@ public class FinishedComposeFragment extends BaseFragment implements View.OnClic
     }
 
     public void closeAppButton () {
-        //FIXME how to fully close the app
+        //FIXME how to fully close the app - does this work??
+        ((Activity) Shared.context).finish();
+        android.os.Process.killProcess(android.os.Process.myPid());
     }
-}
-
 }
