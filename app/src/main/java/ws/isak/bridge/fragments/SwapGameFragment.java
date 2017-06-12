@@ -319,11 +319,12 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
                 // calculate stars and score from the amount of time that has elapsed as a ratio
                 // of total time allotted for the game.  When calculating this we still have incorporated
                 // the time based on the difficultyLevel as well as the time to play back the samples
-                if (passedSeconds <= totalTime / 2) {
+
+                if (passedSeconds <= totalTime * Shared.context.getResources().getInteger(R.integer.winning_three_star_percent_of_allotted_time)/100) {
                     gameState.achievedStars = 3;
-                } else if (passedSeconds <= totalTime - totalTime / 5) {
+                } else if (passedSeconds <= totalTime * Shared.context.getResources().getInteger(R.integer.winning_two_star_percent_of_allotted_time)/100) {
                     gameState.achievedStars = 2;
-                } else if (passedSeconds < totalTime) {
+                } else if (passedSeconds < totalTime * Shared.context.getResources().getInteger(R.integer.winning_one_star_percent_of_allotted_time)/100) {
                     gameState.achievedStars = 1;
                 } else {
                     gameState.achievedStars = 0;
@@ -367,11 +368,11 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
                 // of total time allotted for the game.
                 // TODO calculate from time based on the difficultyLevel, time to play back samples, & and winningDifficulty level
 
-                if (passedSeconds <= totalTime / 2) {
+                if (passedSeconds <= totalTime * Shared.context.getResources().getInteger(R.integer.winning_three_star_percent_of_allotted_time)/100) {
                     gameState.achievedStars = 3;
-                } else if (passedSeconds <= totalTime - totalTime / 5) {
+                } else if (passedSeconds <= totalTime * Shared.context.getResources().getInteger(R.integer.winning_two_star_percent_of_allotted_time)/100) {
                     gameState.achievedStars = 2;
-                } else if (passedSeconds < totalTime) {
+                } else if (passedSeconds < totalTime * Shared.context.getResources().getInteger(R.integer.winning_one_star_percent_of_allotted_time)/100) {
                     gameState.achievedStars = 1;
                 } else {
                     gameState.achievedStars = 0;

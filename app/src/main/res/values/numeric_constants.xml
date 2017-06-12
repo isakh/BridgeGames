@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="match_num_tiles_to_load">10</integer> <!-- TODO can this become dynamic? -->
+    <integer name="winning_three_star_percent_of_allotted_time">50</integer>
+    <integer name="winning_two_star_percent_of_allotted_time">75</integer>
+    <integer name="winning_one_star_percent_of_allotted_time">90</integer>
 </resources>

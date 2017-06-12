@@ -31,6 +31,7 @@ import ws.isak.bridge.fragments.SwapGameFragment;
 
 import ws.isak.bridge.fragments.ComposeDifficultySelectFragment;
 import ws.isak.bridge.fragments.ComposeGameFragment;
+import ws.isak.bridge.fragments.FinishedComposeFragment;
 
 
 /*
@@ -74,6 +75,7 @@ public class ScreenController {
         GAME_SWAP,              //
         DIFFICULTY_COMPOSE,
         GAME_COMPOSE,
+        FINISHED_COMPOSE,
         //POST_SURVEY,             //FIXME should we have different ones for each game? and/or one for all?
         FINISHED
     }
@@ -165,6 +167,9 @@ public class ScreenController {
             case GAME_COMPOSE:
                 Log.d (TAG, "method getFragment: case GAME_COMPOSE");
                 return new ComposeGameFragment();
+            case FINISHED_COMPOSE:
+                Log.d (TAG, "method getFragment: case FINISHED_COMPOSE");
+                return new FinishedComposeFragment();
             //case POST_SURVEY:
             //    return new PostSurveyFragment();
             case FINISHED:

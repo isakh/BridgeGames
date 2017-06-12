@@ -22,6 +22,7 @@ import java.util.concurrent.CyclicBarrier;
 import ws.isak.bridge.R;
 import ws.isak.bridge.common.Audio;
 import ws.isak.bridge.common.Shared;
+import ws.isak.bridge.database.ComposeGameDataORM;
 import ws.isak.bridge.ui.ComposeLibraryView;
 import ws.isak.bridge.ui.ComposeTrackerBoardView;
 
@@ -164,8 +165,8 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
                     break;
                 }
             case R.id.compose_game_finished_button:
-                //TODO Finished button pressed - end game, store data as needed to database - go to game select screen?
-                
+                //Finished button pressed - end game, store data as needed to database - go to game select screen?
+                FinishComposeGame();
                 break;
         }
     }
@@ -550,5 +551,17 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
                     Shared.userData.getCurComposeGameData().getNumCellsInColPreparedForPlayback());
             }
         }
+    }
+
+    public void FinishComposeGame () {
+        // insert current swapGameData into database
+        ComposeGameDataORM.insertComposeGameData(Shared.userData.getCurComposeGameData());
+
+        //reset flags
+        Shared.userData.getCurComposeGameData().setGameStarted(false);         //reset the gameStarted boolean to false
+        //null the pointer to curComposeGameData once it has been appended to the UserData array of SwapGameData objects
+        Shared.userData.setCurComposeGameData(null);
+
+        //TODO - where do we want the screen controller to send us next?
     }
 }

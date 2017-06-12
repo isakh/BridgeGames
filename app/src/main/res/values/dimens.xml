@@ -28,6 +28,12 @@
     <dimen name="finished_fragment_next_player_button_text_size">100sp</dimen>
     <dimen name="finished_fragment_close_app_button_text_size">100sp</dimen>
 
+    !-- =============================================================================== -->
+    <!-- Layout: finished_compose_fragment -->
+    <!-- ************************* -->
+    <dimen name="finished_compose_fragment_game_select_button_text_size">100sp</dimen>
+    <dimen name="finished_compose_fragment_next_player_button_text_size">100sp</dimen>
+    <dimen name="finished_compose_fragment_close_app_button_text_size">100sp</dimen>
 
     <!-- =============================================================================== -->
     <!-- GAME / THEME / DIFFICULTY SELECTION -->

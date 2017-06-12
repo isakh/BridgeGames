@@ -232,6 +232,13 @@
     <!-- ***************************** -->
     <string name="compose_game_done_playing">FINISHED</string>
 
+    <!-- ============================================================================== -->
+    <!-- Layout: finished_compose_fragment -->
+    <!-- ************************* -->
+    <string name="finished_compose_fragment_game_select_button_text">Change Game</string>
+    <string name="finished_compose_fragment_next_player_button_text">Next Player</string>
+    <string name="finished_compose_fragment_close_app_button_text">Exit Games</string>
+
 
     <!-- =================================================================================== -->
     <!-- ********** SPECIES LISTS ********** -->
