@@ -87,15 +87,15 @@ public class SwapGameDataORM {
 
     public static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
-    //===============================================================================
 
+    //===============================================================================
     //public methods for interacting with tables in the database:
 
     // method recordsInDatabase returns true if there are records of type SwapGameData
     // in the DB, otherwise, false
 
     public static boolean swapGameRecordsInDatabase(Context context) {
-        //Log.d (TAG, "method matchGameRecordsInDatabase");
+        //Log.d (TAG, "method composeGameRecordsInDatabase");
 
         DatabaseWrapper databaseWrapper = Shared.databaseWrapper;
         SQLiteDatabase database = databaseWrapper.getReadableDatabase();
