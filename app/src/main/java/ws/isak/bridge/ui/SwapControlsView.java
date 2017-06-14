@@ -134,7 +134,7 @@ public class SwapControlsView extends LinearLayout implements View.OnClickListen
             Toast.makeText(Shared.context, "Please turn on game audio to play in this mode, you can do this under settings", Toast.LENGTH_SHORT).show();
             ScreenController.getInstance().openScreen(ScreenController.Screen.MENU_SWAP);
         }
-        // if audio is allowed, and not there is no audio currently playing, change button to pause
+        // if audio is allowed, and there is no audio currently playing, change button to pause
         // and send playAudio event with playbackNow true
         else if (!Audio.OFF && !Audio.getIsAudioPlaying()) {
             currentPlayPauseButton.setBackgroundResource(R.drawable.swap_playback_pause_button);

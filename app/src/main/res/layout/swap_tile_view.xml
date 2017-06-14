@@ -21,7 +21,6 @@
         android:layout_alignBottom="@+id/swap_tile_image"
         android:layout_margin="1dp"
         android:gravity="center"
-        android:text="DEBUG"
-        android:textColor="#000000" />
+        android:textColor="#000000" /> <!-- TODO removed         android:text="DEBUG" -->
 
 </ws.isak.bridge.ui.SwapTileView>

@@ -68,29 +68,27 @@ public class SwapTileView extends FrameLayout{
     public void setTileImage(final Bitmap bitmap, final String calledFrom) {
         Log.d (TAG, "method setTileImage: bitmap: " + bitmap +
                 " | mTileImage: " + mTileImage + " | calling new AsyncTask");
-        new AsyncTask<Void, Void, Bitmap>() {
+        new AsyncTask<Void, Void, BitmapDrawable>() {
 
             @Override
             protected void onPreExecute () {
                 if (calledFrom == "[class SwapGameFragment: SwapSelectedCardsEvent: setting tile1View to bitmap from old tile0View]") {
-                    Toast.makeText(Shared.context, "swapping tiles", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Shared.context, "swapping tiles", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            protected Bitmap doInBackground(Void... params) {
+            protected BitmapDrawable doInBackground(Void... params) {
                 Log.v (TAG, "method setTileImage: AsyncTask: doInBackground: returning bitmap: " + bitmap);
-                return bitmap;
+                BitmapDrawable bitmapDrawable = new BitmapDrawable(Shared.context.getResources(), bitmap);
+
+                return bitmapDrawable;
             }
 
             @Override
-            protected void onPostExecute(Bitmap result) {
-                //mTileImage.setImageDrawable(null);      //FIXME - testing - seems to do nothing, remove later?
-                //mTileImage.invalidate();                //FIXME - testing
+            protected void onPostExecute(BitmapDrawable result) {
 
-                BitmapDrawable bitmapDrawable = new BitmapDrawable(Shared.context.getResources(), bitmap);
-
-                mTileImage.setImageDrawable(bitmapDrawable);
+                mTileImage.setImageDrawable(result);
                 mTileImage.setBackgroundColor(0xFF000000);
                 mTileImage.invalidate();                //FIXME - testing
                 mTileImage.setVisibility(VISIBLE);

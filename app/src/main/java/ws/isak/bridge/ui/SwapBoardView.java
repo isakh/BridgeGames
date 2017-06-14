@@ -208,141 +208,141 @@ public class SwapBoardView extends LinearLayout {
                         swapTileView.getVisibility() + " | swapTileView.isShown: " + swapTileView.isShown());
                 swapTileView.invalidate();
                 //TODO - remove this debugging code when all is functional
-                swapTileView.setTileDebugText(mTileViewMap, curTileOnBoard);
+                //FIXME - swapTileView.setTileDebugText(mTileViewMap, curTileOnBoard);
                 debugCoordsTileViewsMap("class SwapBoardView: method addTile: onPostExecute completion");
+
+                //set the onClickListener for the view - this will respond to various interactions from clicking the tile
+                swapTileView.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+
+                        //keep local track of click time
+                        long now = System.currentTimeMillis();
+
+                        //debug at start of onClick
+                        Log.d(TAG, "*** tile onClick: tile being clicked is swapTileView @: " + swapTileView +
+                                " | swapTileView.isSelected (if true the second click is unselect): " + swapTileView.isSelected() +
+                                " | Audio.getIsAudioPlaying: " + Audio.getIsAudioPlaying() +
+                                " | selectedTiles.size: " + selectedTiles.size() +
+                                " | now: " + now);
+
+
+                        //[0] if MIX is OFF and audio is playing - Toast and break out - user needs to click again
+                        if (!Audio.MIX && Audio.getIsAudioPlaying()) {
+                            Toast.makeText(Shared.context, "PLEASE WAIT FOR SOUND TO FINISH PLAYING", Toast.LENGTH_SHORT).show();
+                            return;     //TODO check does return here break all the way out?
+                        }
+
+                        //[1] if the view for the tile has already been selected, the second click unSelects it
+                        // FIXME - In the case where the first tile to be selected is then unselected, do we count this as a game not yet started?
+                        if (swapTileView.isSelected()) {
+                            Toast.makeText(Shared.context, "SECOND CLICK DE-SELECTS THE TILE", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "***** ... DOUBLE CLICKING: un-select tile: <" +
+                                    curTileOnBoard.getSwapCoordRow() + "," + curTileOnBoard.getSwapCoordCol() + ">");
+                            //FIXME - try this with event instead - see next line instead - swapTileView.unSelect();
+                            Shared.eventBus.notify(new SwapUnselectCardsEvent(selectedTiles));
+                            swapTileView.invalidate();
+                            Log.d(TAG, " ... unSelecting tile: swapTileView: " + swapTileView);
+                            selectedTiles.clear();
+                            Log.d(TAG, " ... clearing selectedTiles: selectedTiles @: " + selectedTiles +
+                                    " | selectedTiles.size(): " + selectedTiles.size());
+                        }
+
+                        //[2] else this is a viable turn
+                        else {
+                            //Toast.makeText(Shared.context, "Coordinates: < " + curTileOnBoard.getSwapCoordRow() +
+                            //        "," + curTileOnBoard.getSwapCoordCol() + " >", Toast.LENGTH_SHORT).show();  //TODO remove toast?
+
+                            //[2.0] if this tile being clicked is the first tile to be clicked on the board we
+                            //change the state of SwapGameData.isGameStarted() and set the SwapGameData.setGameStartTimeStamp()
+                            Log.d(TAG, "**** Update SwapGameData with current timing information (and card info) ****");
+                            if (!Shared.userData.getCurSwapGameData().isGameStarted()) {     //if this is the first card being flipped
+                                //debugCoordsTileViewsMap ("class SwapBoardView: method addTile: onClick: [2] start of first viable turn");
+                                //Toast.makeText(Shared.context, "FIRST CARD IN GAME", Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, "This is the First Tile Selected In SwapGame");
+                                Shared.userData.getCurSwapGameData().setGameStarted(true);
+                                Log.d(TAG, "   ***: getGameStarted: " + Shared.userData.getCurSwapGameData().isGameStarted());
+                                Shared.userData.getCurSwapGameData().setGameStartTimestamp(now);
+                                Log.d(TAG, "   ***: getGameStartTimestamp: " + Shared.userData.getCurSwapGameData().getGameStartTimestamp());
+                                Log.d (TAG, " ..... appending 0 to initialize gamePlayDurations");
+                                Shared.userData.getCurSwapGameData().appendToGamePlayDurations(now - Shared.userData.getCurSwapGameData().getGameStartTimestamp());
+                                Log.d (TAG, " ..... appending 0 to initialize turnDurations");
+                                Shared.userData.getCurSwapGameData().appendToTurnDurations(0);
+                                //output log of current SwapGameData State
+                                Log.d(TAG, " *****: | System time: " + now +
+                                        " | gameStartTimeStamp: " + Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
+                                        " | numTurnsTaken: " + Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
+                                        " | gamePlayDuration @ numTurnsTaken: " + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()) +
+                                        " | elapsed turn time: " + (Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken())));
+                                //  - update the number of turns taken
+                                Shared.userData.getCurSwapGameData().incrementNumTurnsTaken();
+                                Log.d(TAG, "   ***: numTurnsTaken postIncrement: " + Shared.userData.getCurSwapGameData().getNumTurnsTaken());
+                            }
+
+                            //[2.1] If this is the first card in a pair to be selected
+                            if (!swapTileView.isSelected() && selectedTiles.size() == 0) {
+                                debugCoordsTileViewsMap ("class SwapBoardView: method addTile: onClick: [2.1] start of viable turn");
+                                //Toast.makeText(Shared.context, "FIRST CARD IN PAIR", Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, " ***** ... FIRST OF PAIR selected: swapTileView: " + swapTileView);
+                                swapTileView.select("SwapBoardView: addTile: [2.1] - first card in pair to be selected");
+                                Log.d(TAG, " ... post select() - swapTileView.isSelected: " + swapTileView.isSelected());
+                                selectedTiles.add(curTileOnBoard);
+                                Log.d(TAG, " ... curTileOnBoard added to selectedTiles: selectedTiles.size(): " + selectedTiles.size());
+                            }
+
+                            //[2.2] If this is the second card in any subsequent pair to be selected - highlight second tile
+                            // and animate swap (call via event for CoordToCard HashMap updates and perform Coord to TileView image
+                            // updates here)
+                            else {      //FIXME - should this case still be an 'else if' with a final 'else' as catch option?
+                                debugCoordsTileViewsMap ("class SwapBoardView: method addTile: onClick: [2.2] second card of viable turn");
+                                //Toast.makeText(Shared.context, "SECOND CARD IN PAIR", Toast.LENGTH_SHORT).show();
+                                //for now we want to count turns only when pairs are to be swapped
+                                Log.d (TAG, " ..... appending [" + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()-1)+
+                                        "]to PlayDurations: turn: [" +
+                                        Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
+                                        "] | now: " + now + " | startTimeStamp: " +
+                                        Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
+                                        " | now - startTimeStamp: " + (now - Shared.userData.getCurSwapGameData().getGameStartTimestamp()));
+                                Shared.userData.getCurSwapGameData().appendToGamePlayDurations(now - Shared.userData.getCurSwapGameData().getGameStartTimestamp());
+                                Log.d (TAG, " ..... appending [" + Shared.userData.getCurSwapGameData().queryTurnDurationsArray(Shared.userData.getCurSwapGameData().getNumTurnsTaken()-1)+
+                                        "]to TurnDurations: turn: [" +
+                                        Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
+                                        "] | now: " + now + " | startTimeStamp: " +
+                                        Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
+                                        " | queryGamePlayDurations[turn - 1]: " +
+                                        Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken() - 1));
+                                Shared.userData.getCurSwapGameData().appendToTurnDurations(now - (Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
+                                        Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken() - 1)));
+                                Log.d(TAG, "***** ... SECOND OF PAIR selected: swapTileView@: " + swapTileView);
+                                swapTileView.select("SwapBoardView: addTile: [2.2] - second card in pair to be selected");
+                                swapTileView.postInvalidate();
+                                swapTileView.invalidate();      //Fixme - only one of these should be necessary?
+                                Log.d(TAG, " ... post select() - swapTileView.isSelected: " + swapTileView.isSelected());
+                                selectedTiles.add(curTileOnBoard);
+                                Log.d(TAG, " ... curTileOnBoard added to selectedTiles: selectedTiles.size(): " + selectedTiles.size());
+                                Log.d(TAG, "\n ... \n");
+
+                                //call swap event - //TODO ∆ wait 1 sec to xml - this should allow us one second to observe the selection before unselect both happens?
+                                Shared.eventBus.notify(new SwapSelectedCardsEvent(selectedTiles.get(0), selectedTiles.get(1)), 1000);
+
+                                //display current game stats
+                                Log.d(TAG, " *****: | System time: " + now +
+                                        " | gameStartTimeStamp: " + Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
+                                        " | numTurnsTaken: " + Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
+                                        " | gamePlayDuration @ numTurnsTaken: " + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()) +
+                                        " | elapsed turn time: " + (Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()) -
+                                        Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken() - 1)));
+
+                                //  - update the number of turns taken
+                                Shared.userData.getCurSwapGameData().incrementNumTurnsTaken();
+                                Log.d(TAG, "   ***: numTurnsTaken postIncrement: " + Shared.userData.getCurSwapGameData().getNumTurnsTaken());
+                            }
+                        }
+                    }
+                });
             }
         }.execute();
-
-        //set the onClickListener for the view - this will respond to various interactions from clicking the tile
-        swapTileView.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                //keep local track of click time
-                long now = System.currentTimeMillis();
-
-                //debug at start of onClick
-                Log.d(TAG, "*** tile onClick: tile being clicked is swapTileView @: " + swapTileView +
-                        " | swapTileView.isSelected (if true the second click is unselect): " + swapTileView.isSelected() +
-                        " | Audio.getIsAudioPlaying: " + Audio.getIsAudioPlaying() +
-                        " | selectedTiles.size: " + selectedTiles.size() +
-                        " | now: " + now);
-
-
-                //[0] if MIX is OFF and audio is playing - Toast and break out - user needs to click again
-                if (!Audio.MIX && Audio.getIsAudioPlaying()) {
-                    Toast.makeText(Shared.context, "PLEASE WAIT FOR SOUND TO FINISH PLAYING", Toast.LENGTH_SHORT).show();
-                    return;     //TODO check does return here break all the way out?
-                }
-
-                //[1] if the view for the tile has already been selected, the second click unSelects it
-                // FIXME - In the case where the first tile to be selected is then unselected, do we count this as a game not yet started?
-                if (swapTileView.isSelected()) {
-                    Toast.makeText(Shared.context, "DOUBLE CLICK UN-SELECTS TILE", Toast.LENGTH_SHORT).show();
-                    Log.d(TAG, "***** ... DOUBLE CLICKING: un-select tile: <" +
-                        curTileOnBoard.getSwapCoordRow() + "," + curTileOnBoard.getSwapCoordCol() + ">");
-                    //FIXME - try this with event instead - see next line instead - swapTileView.unSelect();
-                    Shared.eventBus.notify(new SwapUnselectCardsEvent(selectedTiles));
-                    swapTileView.invalidate();
-                    Log.d(TAG, " ... unSelecting tile: swapTileView: " + swapTileView);
-                    selectedTiles.clear();
-                    Log.d(TAG, " ... clearing selectedTiles: selectedTiles @: " + selectedTiles +
-                            " | selectedTiles.size(): " + selectedTiles.size());
-                }
-
-                //[2] else this is a viable turn
-                else {
-                    //Toast.makeText(Shared.context, "Coordinates: < " + curTileOnBoard.getSwapCoordRow() +
-                    //        "," + curTileOnBoard.getSwapCoordCol() + " >", Toast.LENGTH_SHORT).show();  //TODO remove toast?
-
-                    //[2.0] if this tile being clicked is the first tile to be clicked on the board we
-                    //change the state of SwapGameData.isGameStarted() and set the SwapGameData.setGameStartTimeStamp()
-                    Log.d(TAG, "**** Update SwapGameData with current timing information (and card info) ****");
-                    if (!Shared.userData.getCurSwapGameData().isGameStarted()) {     //if this is the first card being flipped
-                        //debugCoordsTileViewsMap ("class SwapBoardView: method addTile: onClick: [2] start of first viable turn");
-                        Toast.makeText(Shared.context, "FIRST CARD IN GAME", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "This is the First Tile Selected In SwapGame");
-                        Shared.userData.getCurSwapGameData().setGameStarted(true);
-                        Log.d(TAG, "   ***: getGameStarted: " + Shared.userData.getCurSwapGameData().isGameStarted());
-                        Shared.userData.getCurSwapGameData().setGameStartTimestamp(now);
-                        Log.d(TAG, "   ***: getGameStartTimestamp: " + Shared.userData.getCurSwapGameData().getGameStartTimestamp());
-                        Log.d (TAG, " ..... appending 0 to initialize gamePlayDurations");
-                        Shared.userData.getCurSwapGameData().appendToGamePlayDurations(now - Shared.userData.getCurSwapGameData().getGameStartTimestamp());
-                        Log.d (TAG, " ..... appending 0 to initialize turnDurations");
-                        Shared.userData.getCurSwapGameData().appendToTurnDurations(0);
-                        //output log of current SwapGameData State
-                        Log.d(TAG, " *****: | System time: " + now +
-                                " | gameStartTimeStamp: " + Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
-                                " | numTurnsTaken: " + Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
-                                " | gamePlayDuration @ numTurnsTaken: " + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()) +
-                                " | elapsed turn time: " + (Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken())));
-                        //  - update the number of turns taken
-                        Shared.userData.getCurSwapGameData().incrementNumTurnsTaken();
-                        Log.d(TAG, "   ***: numTurnsTaken postIncrement: " + Shared.userData.getCurSwapGameData().getNumTurnsTaken());
-                    }
-
-                    //[2.1] If this is the first card in a pair to be selected
-                    if (!swapTileView.isSelected() && selectedTiles.size() == 0) {
-                        debugCoordsTileViewsMap ("class SwapBoardView: method addTile: onClick: [2.1] start of viable turn");
-                        Toast.makeText(Shared.context, "FIRST CARD IN PAIR", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, " ***** ... FIRST OF PAIR selected: swapTileView: " + swapTileView);
-                        swapTileView.select("SwapBoardView: addTile: [2.1] - first card in pair to be selected");
-                        Log.d(TAG, " ... post select() - swapTileView.isSelected: " + swapTileView.isSelected());
-                        selectedTiles.add(curTileOnBoard);
-                        Log.d(TAG, " ... curTileOnBoard added to selectedTiles: selectedTiles.size(): " + selectedTiles.size());
-                    }
-
-                    //[2.2] If this is the second card in any subsequent pair to be selected - highlight second tile
-                    // and animate swap (call via event for CoordToCard HashMap updates and perform Coord to TileView image
-                    // updates here)
-                    else {      //FIXME - should this case still be an 'else if' with a final 'else' as catch option?
-                        debugCoordsTileViewsMap ("class SwapBoardView: method addTile: onClick: [2.2] second card of viable turn");
-                        Toast.makeText(Shared.context, "SECOND CARD IN PAIR", Toast.LENGTH_SHORT).show();
-                        //for now we want to count turns only when pairs are to be swapped
-                        Log.d (TAG, " ..... appending [" + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()-1)+
-                                "]to PlayDurations: turn: [" +
-                                Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
-                                "] | now: " + now + " | startTimeStamp: " +
-                                Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
-                                " | now - startTimeStamp: " + (now - Shared.userData.getCurSwapGameData().getGameStartTimestamp()));
-                        Shared.userData.getCurSwapGameData().appendToGamePlayDurations(now - Shared.userData.getCurSwapGameData().getGameStartTimestamp());
-                        Log.d (TAG, " ..... appending [" + Shared.userData.getCurSwapGameData().queryTurnDurationsArray(Shared.userData.getCurSwapGameData().getNumTurnsTaken()-1)+
-                                "]to TurnDurations: turn: [" +
-                                    Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
-                                    "] | now: " + now + " | startTimeStamp: " +
-                                    Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
-                                    " | queryGamePlayDurations[turn - 1]: " +
-                                    Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken() - 1));
-                        Shared.userData.getCurSwapGameData().appendToTurnDurations(now - (Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
-                                Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken() - 1)));
-                        Log.d(TAG, "***** ... SECOND OF PAIR selected: swapTileView@: " + swapTileView);
-                        swapTileView.select("SwapBoardView: addTile: [2.2] - second card in pair to be selected");
-                        swapTileView.postInvalidate();
-                        swapTileView.invalidate();      //Fixme - only one of these should be necessary?
-                        Log.d(TAG, " ... post select() - swapTileView.isSelected: " + swapTileView.isSelected());
-                        selectedTiles.add(curTileOnBoard);
-                        Log.d(TAG, " ... curTileOnBoard added to selectedTiles: selectedTiles.size(): " + selectedTiles.size());
-                        Log.d(TAG, "\n ... \n");
-
-                        //call swap event - //TODO ∆ wait 1 sec to xml - this should allow us one second to observe the selection before unselect both happens?
-                        Shared.eventBus.notify(new SwapSelectedCardsEvent(selectedTiles.get(0), selectedTiles.get(1)), 1000);
-
-                        //display current game stats
-                        Log.d(TAG, " *****: | System time: " + now +
-                                " | gameStartTimeStamp: " + Shared.userData.getCurSwapGameData().getGameStartTimestamp() +
-                                " | numTurnsTaken: " + Shared.userData.getCurSwapGameData().getNumTurnsTaken() +
-                                " | gamePlayDuration @ numTurnsTaken: " + Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()) +
-                                " | elapsed turn time: " + (Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken()) -
-                                Shared.userData.getCurSwapGameData().queryGamePlayDurations(Shared.userData.getCurSwapGameData().getNumTurnsTaken() - 1)));
-
-                        //  - update the number of turns taken
-                        Shared.userData.getCurSwapGameData().incrementNumTurnsTaken();
-                        Log.d(TAG, "   ***: numTurnsTaken postIncrement: " + Shared.userData.getCurSwapGameData().getNumTurnsTaken());
-                    }
-                }
-            }
-        });
 
         //FIXME - what does this do here?
         ObjectAnimator scaleXAnimator = ObjectAnimator.ofFloat(swapTileView, "scaleX", 0.8f, 1f);

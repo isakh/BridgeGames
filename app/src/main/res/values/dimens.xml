@@ -143,7 +143,7 @@
     <dimen name="popup_won_buttons_width_height">100dp</dimen>
     <!-- -->
     <dimen name="popup_won_goto_survey_button_section_height">50dp</dimen>
-
+    <dimen name="popup_won_goto_survey_button_text_size">30sp</dimen>
 
     <!-- =============================================================================== -->
     <!-- MATCH GAME DIMENSIONS -->

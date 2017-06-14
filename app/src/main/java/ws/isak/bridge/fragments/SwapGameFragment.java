@@ -243,24 +243,44 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         debugCoordsDataMap(Shared.userData.getCurSwapGameData().getSwapBoardMap(), "SwapSelectedCardsEvent, check UPDATED Shared.userData.getCurSwapGameData swapBoardMap after REASSIGNMENT");
 
         //call debugHashMaps here repeats the previous call to debugCoordsDataMap and adds debugCoordsTileViewMap
-        Log.v (TAG, "SwapSelectedCardsEvent: CHECK that <card, coords> maps ABOVE and BELOW are IDENTICAL");
+        Log.v(TAG, "SwapSelectedCardsEvent: CHECK that <card, coords> maps ABOVE and BELOW are IDENTICAL");
         //FIXME - the bitmaps shouldn't be swapped yet ?????
-        Log.v (TAG, "SwapSelectedCardsEvent: CHECK that <card, tiles> maps AT START and BELOW are IDENTICAL still - we will ∆ BITMAPS NEXT");
+        Log.v(TAG, "SwapSelectedCardsEvent: CHECK that <card, tiles> maps AT START and BELOW are IDENTICAL still - we will ∆ BITMAPS NEXT");
 
         debugHashMaps("SwapSelectedCardsEvent: <card, coords> hashmap udpated... time to redraw the board");
 
         // redraw the board on the screen - this updates the bitmaps (and debugging text) associated
         // with the tileViews found on the swapBoardViewMap (coords, tileViews)
-        Log.i (TAG, "onEvent SwapSelectedCardsEvent: GET BITMAPS TO SWAP");
+        Log.i(TAG, "onEvent SwapSelectedCardsEvent: GET BITMAPS TO SWAP");
         // store the bitmap associated with the (now new) cardData object on the (original) first selected tile
+        //FIXME - more robust debug check - we are failing to read tile1Bitmap as selectedTiles hasn't updated fast enough
+        if (mSwapBoardView.selectedTiles.size() < 1) {
+            while (mSwapBoardView.selectedTiles.size() < 1) {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        } //FIXME - end debug check
         Bitmap tile0Bitmap = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0)).getCardBitmap();
         //verbose output identifies the <species, segment> on the first tile selected and the bitmap associated with it
-        Log.v (TAG, "onEvent SwapSelectedCardsEvent: CardID for bitmap0: < " +
+        Log.v(TAG, "onEvent SwapSelectedCardsEvent: CardID for bitmap0: < " +
                 Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0)).getCardID().getSwapCardSpeciesID() +
                 "," +
                 Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(0)).getCardID().getSwapCardSegmentID() +
                 " > | bitmap:" + tile0Bitmap);
         // store the bitmap associated with the cardData object on the second selected tile
+        //FIXME - more robust debug check - we are failing to read tile1Bitmap as selectedTiles hasn't updated fast enough
+        if (mSwapBoardView.selectedTiles.size() < 2) {
+            while (mSwapBoardView.selectedTiles.size() < 2) {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        } //FIXME - end debug check
         Bitmap tile1Bitmap = Shared.userData.getCurSwapGameData().getSwapCardDataFromSwapBoardMap(mSwapBoardView.selectedTiles.get(1)).getCardBitmap();
         //verbose output identifies the <species, segment> on the first tile selected and the bitmap associated with it
         Log.v (TAG, "onEvent SwapSelectedCardsEvent: Card for bitmap1: < " +
@@ -285,8 +305,8 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         //TODO - remove debugging text when working
         //and update TextViews with appropriate text
         Log.d (TAG, " onEvent SwapSelectedCardsEvent: ... SWAPPING TEXT");
-        tile0View.setTileDebugText(mSwapBoardView.getSwapTileMap(), mSwapBoardView.selectedTiles.get(0));
-        tile1View.setTileDebugText(mSwapBoardView.getSwapTileMap(), mSwapBoardView.selectedTiles.get(1));
+        //FIXME - removed tile0View.setTileDebugText(mSwapBoardView.getSwapTileMap(), mSwapBoardView.selectedTiles.get(0));
+        //FIXME - removed tile1View.setTileDebugText(mSwapBoardView.getSwapTileMap(), mSwapBoardView.selectedTiles.get(1));
         mSwapBoardView.postInvalidate();
         //TODO end debugging text
 
@@ -434,6 +454,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
             if (winningEasy) {
                 //if a given row is correctly matched, toast the species for the row - FIXME this re-toasts the first one(s) each subsequent time...
                 String speciesName = cardOnTile.getSpeciesName();
+                Log.d (TAG, "method checkWinningEasy: Toasting success for row i: " + i);
                 Toast.makeText(Shared.context, "Row " + (i + 1) + " correct: " + speciesName, Toast.LENGTH_SHORT).show();
             }
         }
@@ -583,7 +604,6 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         Log.d(TAG, " \n ... \n");
     }
 
-
     //overloaded version takes a HashMap as input so we can iterate through List of Board Maps
     private void debugCoordsDataMap(HashMap map, String callingMethod) {
         Log.d (TAG, "###############################################################################");
@@ -607,7 +627,7 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         //Log.d(TAG, " \n ... \n");
     }
 
-    //event triggered when the Play Button is pressed for a given row in SwapControlsView
+    //event triggered when the Play/Pause Button is pressed for a given row in SwapControlsView
     @Override
     public void onEvent (SwapPlayRowAudioEvent event) {
         ArrayList <Integer> audioResourceIdList;
@@ -616,73 +636,79 @@ public class SwapGameFragment extends BaseFragment implements View.OnClickListen
         Log.d (TAG, "onEvent SwapPlayRowAudioEvent: row to playback: " + row +
                     " | state of Audio.getIsAudioPlaying " + Audio.getIsAudioPlaying());
         //if no other audio is playing then we can start playback
+        audioResourceIdList = getAudioFilesInOrderByID(row);
         if (!Audio.getIsAudioPlaying()) {
-            audioResourceIdList = getAudioFilesInOrderByID(row);
             playAudioFromFileList (audioResourceIdList, playbackState);
         }
         //if another row of audio is currently playing (i.e. getIsAudioPlaying is true)
         else {
+            playAudioFromFileList (audioResourceIdList, false);     //hack to force false and stop one row playback if another is requested
             Toast.makeText(Shared.context, "please pause playing audio or wait for it to finish", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void playAudioFromFileList (ArrayList<Integer> audioResourceIdList, boolean playbackState) {
-        ArrayList <MediaPlayer> mPlayerList = new ArrayList<MediaPlayer>();
-        mPlayerList.clear();
-        for (int i = 0; i < audioResourceIdList.size(); i++) {
-            try {
-                final MediaPlayer curMediaPlayer = new MediaPlayer();
 
-                AssetFileDescriptor afd = Shared.context.getResources().openRawResourceFd(audioResourceIdList.get(i));
-                if (afd == null) return;
-                curMediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-                afd.close();
+        ArrayList <MediaPlayer> mPlayerList = new ArrayList<MediaPlayer>(0);
 
-                curMediaPlayer.prepare();
-                curMediaPlayer.setVolume(1f, 1f);
-                curMediaPlayer.setLooping(false);
-                mPlayerList.add(curMediaPlayer);
-                //FIXME - does this correctly check between segments? how to pause within segment?
-                curMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mediaPlayer) {
-                        if (!Audio.getIsAudioPlaying()) {
-                            curMediaPlayer.pause();
-                        }
-                    }
-                });
-
-                curMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mediaPlayer) {
-                        curMediaPlayer.release();
-                        Audio.setIsAudioPlaying(false);
-                        Log.d (TAG, "method playAudioFromFileList: onCompletion: isAudioPlaying: " + Audio.getIsAudioPlaying());
-                    }
-                });
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        for (int i = 0; i < (mPlayerList.size() - 1); i++) {
-            mPlayerList.get(i).setNextMediaPlayer(mPlayerList.get(i+1));
-        }
         if (playbackState == true) {
+
+            mPlayerList.clear();
+            for (int i = 0; i < audioResourceIdList.size(); i++) {
+                try {
+                    final MediaPlayer curMediaPlayer = new MediaPlayer();
+
+                    AssetFileDescriptor afd = Shared.context.getResources().openRawResourceFd(audioResourceIdList.get(i));
+                    if (afd == null) return;
+                    curMediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                    afd.close();
+
+                    curMediaPlayer.prepare();
+                    curMediaPlayer.setVolume(1f, 1f);
+                    curMediaPlayer.setLooping(false);
+                    mPlayerList.add(curMediaPlayer);
+                    //FIXME - does this correctly check between segments? how to pause within segment?
+                    curMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mediaPlayer) {
+                            if (!Audio.getIsAudioPlaying()  ) {
+                                curMediaPlayer.pause();
+                            }
+                        }
+                    });
+
+                    curMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mediaPlayer) {
+                            curMediaPlayer.release();
+                            Audio.setIsAudioPlaying(false);
+                            Log.d (TAG, "method playAudioFromFileList: onCompletion: isAudioPlaying: " + Audio.getIsAudioPlaying());
+                        }
+                    });
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            for (int i = 0; i < (mPlayerList.size() - 1); i++) {
+                mPlayerList.get(i).setNextMediaPlayer(mPlayerList.get(i + 1));
+            }
             mPlayerList.get(0).start();
             Audio.setIsAudioPlaying(true);
-            Log.d (TAG, "method playAudioFromFileList: playbackState: " + playbackState +
+            Log.d(TAG, "method playAudioFromFileList: playbackState: " + playbackState +
                     " | isAudioPlaying: " + Audio.getIsAudioPlaying());
-
         }
-        else if (playbackState == false) {
-            mPlayerList.get(0).pause();
-            Audio.setIsAudioPlaying(false);
-            Log.d (TAG, "method playAudioFromFileList: playbackState: " + playbackState +
-                    " | isAudioPlaying: " + Audio.getIsAudioPlaying());
+        else if (playbackState == false || mPlayerList.size() != audioResourceIdList.size()) {
+            for (int i = 0; i < mPlayerList.size(); i++) {
+               if (mPlayerList.get(i).isPlaying()) {
+                   mPlayerList.get(i).pause();
+                   Audio.setIsAudioPlaying(false);
+                   Log.d(TAG, "method playAudioFromFileList: playbackState: " + playbackState +
+                           " | isAudioPlaying: " + Audio.getIsAudioPlaying());
+               }
+            }
         }
     }
-
 
     private ArrayList <Integer> getAudioFilesInOrderByID(int targetRow) {
         ArrayList <Integer> audioResourceIDs = new ArrayList<Integer>(0);

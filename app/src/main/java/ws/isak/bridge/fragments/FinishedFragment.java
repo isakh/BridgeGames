@@ -68,7 +68,7 @@ public class FinishedFragment extends BaseFragment implements View.OnClickListen
     public void closeAppButton () {
         //FIXME how to fully close the app
         //FIXME how to fully close the app - does this work??
-        ((Activity) Shared.context).finish();
+        //((Activity) Shared.context).finish();
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 }

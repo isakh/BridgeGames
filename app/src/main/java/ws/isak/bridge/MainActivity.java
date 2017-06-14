@@ -194,7 +194,7 @@ public class  MainActivity extends FragmentActivity {
             curCard.setImageURI0(URI_DRAWABLE + "blank_card");
             curCard.setImageURI1(URI_DRAWABLE + String.format(Locale.ENGLISH, "match_bird_%d", i) + "_a");
             curCard.setImageURI2(URI_DRAWABLE + String.format(Locale.ENGLISH, "match_bird_%d", i) + "_b");
-            curCard.setImageURI3(URI_DRAWABLE + String.format(Locale.ENGLISH, "match_spectrogram_%d", i));
+            curCard.setImageURI3(URI_DRAWABLE + String.format(Locale.ENGLISH, "match_spectro_%d", i));
             curCard.setAudioURI(URI_AUDIO + String.format(Locale.ENGLISH, "match_audio_%d", i));
             curCard.setSampleDuration(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curCard.getAudioURI().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
             //insert matchCardData object into local storage and if not already in database add it to the database
@@ -311,8 +311,8 @@ public class  MainActivity extends FragmentActivity {
             ComposeSampleData curSample = new ComposeSampleData();
             curSample.setSpeciesName(i);
 
-            curSample.setSpectroURI(URI_DRAWABLE + String.format(Locale.ENGLISH, "compose_sample_image_%d", i));
-            curSample.setAudioURI(URI_AUDIO + String.format(Locale.ENGLISH, "compose_sample_audio_%d", i));
+            curSample.setSpectroURI(URI_DRAWABLE + String.format(Locale.ENGLISH, "compose_image_%d", i));
+            curSample.setAudioURI(URI_AUDIO + String.format(Locale.ENGLISH, "compose_audio_%d", i));
             curSample.setSampleDuration(Audio.getAudioDuration(Shared.context.getResources().getIdentifier(curSample.getAudioURI().substring(URI_AUDIO.length()), "raw", Shared.context.getPackageName())));
             //insert matchCardData object into local storage and if not already in database add it to the database
             Shared.composeSampleDataList.add(curSample);

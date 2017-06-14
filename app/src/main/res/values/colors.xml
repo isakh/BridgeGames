@@ -17,4 +17,6 @@
 
     <color name="blank_tracker_cell_color">#bdbdbd</color>
 
+    <color name="popup_background_color">#ffab91</color>
+
 </resources>

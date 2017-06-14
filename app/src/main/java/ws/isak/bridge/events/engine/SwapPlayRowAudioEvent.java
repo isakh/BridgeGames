@@ -20,7 +20,7 @@ public class SwapPlayRowAudioEvent extends AbstractEvent {
     public final int id;
     public final boolean playbackNow;
 
-    //playbackState true = play, pause = false
+    //playbackState true = play, false = pause
     public SwapPlayRowAudioEvent(int id, boolean playbackState) {
         Log.d (TAG, "constructor method: SwapPlayRowAudioEvent: param id is: " + id);
         this.id = id;

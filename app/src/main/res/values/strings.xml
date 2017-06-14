@@ -162,7 +162,7 @@
     <string name="popup_won_score_text">Score</string>
     <string name="popup_won_score_at_start">240</string>           <!-- TODO fix this and make dynamic -->
     <!-- post survey button -->
-    <string name="popup_won_view_post_survey_button_text">Done Playing? Please Answer A Few Questions</string>
+    <string name="popup_won_view_post_survey_button_text">Done Playing?</string>
 
 
     <!-- =================================================================================== -->
@@ -171,17 +171,17 @@
     <!-- Class: GameSelectFragment -->
     <!-- ************************* -->
     <string name="game_select_fragment_title">CHOOSE A GAME</string>
-    <string name="game_match_title_text">MATCH</string>
-    <string name="game_swap_title_text">SWAP</string>
-    <string name="game_compose_title_text">PLAY</string>
+    <string name="game_match_title_text">GAME 1</string>
+    <string name="game_swap_title_text">GAME 2</string>
+    <string name="game_compose_title_text">GAME 3</string>
 
     <!-- =================================================================================== -->
     <!-- Class: MatchThemes -->
     <!-- ****************** -->
     <string name="match_theme_select_title">CHOOSE A THEME</string>
-    <string name="match_themes_blank_name">BLANK</string>
-    <string name="match_themes_birds_name">BIRDS</string>
-    <string name="match_themes_spectrograms_name">SPECTRO</string>
+    <string name="match_themes_blank_name">MODE 3</string>
+    <string name="match_themes_birds_name">MODE 1</string>
+    <string name="match_themes_spectrograms_name">MODE 2</string>
 
     <!-- =================================================================================== -->
     <!-- Layout: MatchDifficulty -->
@@ -245,6 +245,7 @@
     <!-- =================================================================================== -->
     <!-- Class: SpeciesList BGBW -->
     <!-- *********************** -->
+    <!-- TODO
     <string name="species_bird_1">House Sparrow	- Passer domesticus</string>
     <string name="species_bird_2">Blue tit - Cyanistes caeruleus</string>
     <string name="species_bird_3">Starling - Sturnus vulgaris</string>
@@ -255,11 +256,25 @@
     <string name="species_bird_8">Great Tit - Parus major</string>
     <string name="species_bird_9">Collared Dove	- Streptopelia decaocto</string>
     <string name="species_bird_10">Robin - Erithacus rubecula</string>
+    -->
 
     <!-- =================================================================================== -->
     <!-- Class: SpeciesList Nidderdale -->
     <!-- ***************************** -->
-    <!-- TODO -->
+
+
+    <string name="species_bird_1">Cuckoo - Cuculus canorus</string>
+    <string name="species_bird_2">Skylark -Alauda arvensis</string>
+    <string name="species_bird_3">Song Thrush - Turdus philomelos</string>
+    <string name="species_bird_4">Linnet - Linaria cannabina</string>
+    <string name="species_bird_5">Lesser Redpoll - Acanthis cabaret</string>
+    <string name="species_bird_6">Lapwing - Vanellus vanellus</string>
+    <string name="species_bird_7">Curlew - Numenius arquata</string>
+    <string name="species_bird_8">Kingfisher - Alcedo atthis</string>
+    <string name="species_bird_9">Dipper - Cinclus cinclus</string>
+    <string name="species_bird_10">Grey Wagtail - Motacilla cinerea</string>
+
+    -->
 
     <!-- =================================================================================== -->
     <!-- Class: SpeciesList Colorado -->

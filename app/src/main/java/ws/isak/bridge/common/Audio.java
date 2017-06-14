@@ -73,6 +73,7 @@ public class Audio {
 	public static void showStar() {
 		if (!OFF) {
 			MediaPlayer mp = MediaPlayer.create(Shared.context, R.raw.star);
+            mp.setVolume(0.7f, 0.7f);
 			mp.setOnCompletionListener(new OnCompletionListener() {
 				@Override
 				public void onCompletion(MediaPlayer mp) {

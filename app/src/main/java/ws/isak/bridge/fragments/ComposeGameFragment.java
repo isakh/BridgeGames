@@ -49,6 +49,7 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
     boolean playButtonPressed;
     boolean pauseButtonPressed;
     boolean stopButtonPressed;
+    boolean finishedButtonPressed = false;
 
     private ArrayList<MediaPlayer> preppedColumnAudio;
     private ArrayList<Integer> prepColAudioIDs;
@@ -165,7 +166,14 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
                     break;
                 }
             case R.id.compose_game_finished_button:
+                finishedButtonPressed = true;
+
                 //Finished button pressed - end game, store data as needed to database - go to game select screen?
+                PlayBackTrackerAudio(mediaPlayerCommands.STOP);
+
+                // insert current swapGameData into database
+                ComposeGameDataORM.insertComposeGameData(Shared.userData.getCurComposeGameData());
+
                 FinishComposeGame();
                 break;
         }
@@ -175,68 +183,73 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
     //as a set of numRow threads that concurrently play the files in a given column.  First a column
     //is processed.  Between each column, a check is sent to see the current state of the Playback buttons.
     private void PlayBackTrackerAudio(mediaPlayerCommands curCommand) {
-        switch (curCommand) {
-            case START:
-                Log.d (TAG, "method PlayBackTrackerAudio: case curCommand: " + curCommand);
+         if (finishedButtonPressed == false) {
+             switch (curCommand) {
+                 case START:
+                     Log.d(TAG, "method PlayBackTrackerAudio: case curCommand: " + curCommand);
 
-                //iterate on this until another button is pressed
-                while (playButtonPressed) {
+                     //iterate on this until another button is pressed
+                     while (playButtonPressed) {
 
-                    //[0] if audio is playing back, wait for it to finish
-                    if (Audio.getIsAudioPlaying("PlayBackTrackerAudio: play - skip Thread.sleep and continue")) {
-                        try {
-                            Thread.sleep(2000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+                         //[0] if audio is playing back, wait for it to finish
+                         if (Audio.getIsAudioPlaying("PlayBackTrackerAudio: play - skip Thread.sleep and continue")) {
+                             try {
+                                 Thread.sleep(2000);
+                             } catch (InterruptedException e) {
+                                 e.printStackTrace();
+                             }
+                         }
 
-                    //[1] else, if no audio is playing, process the current column on the board
-                    else {
-                        int cCNumSamps = GetNumActiveSamplesInCurColumn();
-                        Log.d(TAG, "method PlayBackTrackerAudio: playButtonPressed: " + playButtonPressed +
-                                " | getIsAudioPlaying: " + Audio.isPlaying +
-                                " SHOULD BE FALSE | ITERATING OVER COLUMNS: curCol: " +
-                                Shared.userData.getCurComposeGameData().getCurPlayBackCol() +
-                                " | num active samples in curCol: " + cCNumSamps);
+                         //[1] else, if no audio is playing, process the current column on the board
+                         else {
+                             int cCNumSamps = GetNumActiveSamplesInCurColumn();
+                             Log.d(TAG, "method PlayBackTrackerAudio: playButtonPressed: " + playButtonPressed +
+                                     " | getIsAudioPlaying: " + Audio.isPlaying +
+                                     " SHOULD BE FALSE | ITERATING OVER COLUMNS: curCol: " +
+                                     Shared.userData.getCurComposeGameData().getCurPlayBackCol() +
+                                     " | num active samples in curCol: " + cCNumSamps);
 
-                        //DebugState(" START [1] ");
+                             //DebugState(" START [1] ");
 
-                        //[1.1] if there are no samples in the  column
-                        if (cCNumSamps == 0) {
+                             //[1.1] if there are no samples in the  column
+                             if (cCNumSamps == 0) {
 
-                            DebugState(" PLAYING [1.1] SILENCE ");
-                            PlaySilentColumn();
-                            Shared.userData.getCurComposeGameData().incrementCurPlayBackCol();
+                                 DebugState(" PLAYING [1.1] SILENCE ");
+                                 PlaySilentColumn();
+                                 Shared.userData.getCurComposeGameData().incrementCurPlayBackCol();
 
-                            DebugState("*** FINISHED [1.1] - waiting for silence to complete playback");
-                        }
-                        //[1.2] if there are samples in the column to play
-                        else {
-                            playingColumnAudio = PrepColumnAudio();
+                                 DebugState("*** FINISHED [1.1] - waiting for silence to complete playback");
+                             }
+                             //[1.2] if there are samples in the column to play
+                             else {
+                                 playingColumnAudio = PrepColumnAudio();
 
-                            DebugState(" PLAYING [1.2] ");
-                            PlayPreppedColAudio();
-                            Shared.userData.getCurComposeGameData().incrementCurPlayBackCol();
+                                 DebugState(" PLAYING [1.2] ");
+                                 PlayPreppedColAudio();
+                                 Shared.userData.getCurComposeGameData().incrementCurPlayBackCol();
 
-                            DebugState("*** FINISHED [1.2] - waiting for sample(s) to complete playback");
+                                 DebugState("*** FINISHED [1.2] - waiting for sample(s) to complete playback");
 
-                        }
-                    }
-                }
-                break;
-            case PAUSE:
-                Log.d (TAG, "method PlayBackTrackerAudio: case curCommand: " + curCommand);
+                             }
+                         }
+                     }
+                     break;
+                 case PAUSE:
+                     Log.d(TAG, "method PlayBackTrackerAudio: case curCommand: " + curCommand);
 
 
-                break;
-            case STOP:
-                Log.d (TAG, "method PlayBackTrackerAudio: case curCommand: " + curCommand);
-                Shared.userData.getCurComposeGameData().setCurPlayBackCol(0);
-                //Shared.userData.getCurComposeGameData().setNextPlayBackCol(0);
-                preppedColumnAudio = null;
-                break;
-        }
+                     break;
+                 case STOP:
+                     Log.d(TAG, "method PlayBackTrackerAudio: case curCommand: " + curCommand);
+                     Shared.userData.getCurComposeGameData().setCurPlayBackCol(0);
+                     //Shared.userData.getCurComposeGameData().setNextPlayBackCol(0);
+                     preppedColumnAudio = null;
+                     break;
+             }
+         }
+         else {
+             Log.d (TAG, "method PlayBackTrackerAudio: finishedButtonPressed: " + finishedButtonPressed);
+         }
     }
 
     private void PlaySilentColumn () {
@@ -244,7 +257,7 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
         Log.d (TAG, "method PlaySilentColumn: column <" + Shared.userData.getCurComposeGameData().getCurPlayBackCol() +
                 "> has no samples, playing silence...");
         //play silence
-        MediaPlayer playSilence = MediaPlayer.create(Shared.context, R.raw.silence2);     //FIXME revert to R.raw.silence post debug
+        MediaPlayer playSilence = MediaPlayer.create(Shared.context, R.raw.silence);     //FIXME revert to R.raw.silence post debug
 
         playSilence.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -322,18 +335,23 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
     */
 
     private int GetNumActiveSamplesInCurColumn () {
-        int numSamps = 0;
-        int targetCol = Shared.userData.getCurComposeGameData().getCurPlayBackCol();
+        if (finishedButtonPressed == false) {
+            int numSamps = 0;
+            int targetCol = Shared.userData.getCurComposeGameData().getCurPlayBackCol();
 
-        for (int i = 0; i < Shared.userData.getCurComposeGameData().getGameRows(); i++) {
-            if (Shared.userData.getCurComposeGameData().retrieveDataInTrackerCellsArray(i, targetCol)
-                    .getCellSampleData() != null) {
-                numSamps++;
+            for (int i = 0; i < Shared.userData.getCurComposeGameData().getGameRows(); i++) {
+                if (Shared.userData.getCurComposeGameData().retrieveDataInTrackerCellsArray(i, targetCol)
+                        .getCellSampleData() != null) {
+                    numSamps++;
+                }
             }
+            Log.d(TAG, "method GetNumActiveSamplesInColumn: RETURNS numSamps: [" + numSamps +
+                    "] in targetCol: [" + targetCol + "]");
+            return numSamps;
         }
-        Log.d (TAG, "method GetNumActiveSamplesInColumn: RETURNS numSamps: [" + numSamps +
-                "] in targetCol: [" + targetCol + "]");
-        return numSamps;
+        else {
+            return -1;
+        }
     }
 
     /* FIXME - remove only useful when pre-processing samples
@@ -557,15 +575,12 @@ public class ComposeGameFragment extends BaseFragment implements View.OnClickLis
         //wait for current tracks to finish playing
         while (Audio.getIsAudioPlaying("FinishComposeGame")) {
             try {
-                Thread.sleep (100);
+                Thread.sleep (200);
             }
             catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-
-        // insert current swapGameData into database
-        ComposeGameDataORM.insertComposeGameData(Shared.userData.getCurComposeGameData());
 
         //reset flags
         Shared.userData.getCurComposeGameData().setGameStarted(false);         //reset the gameStarted boolean to false

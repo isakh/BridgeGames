@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@color/popup_background_color">
 
     <!-- Title -->
 
@@ -195,6 +196,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/popup_won_goto_survey_button_section_height"
         android:text="@string/popup_won_view_post_survey_button_text"
+        android:textSize="@dimen/popup_won_goto_survey_button_text_size"
         android:textColor="#0e0e0e"
         android:background="#a9b1ef"
         android:onClick="continueToPostSurvey"
