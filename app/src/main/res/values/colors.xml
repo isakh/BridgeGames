@@ -19,4 +19,6 @@
 
     <color name="popup_background_color">#ffab91</color>
 
+    <color name="generic_text_color">#020a43</color>
+
 </resources>

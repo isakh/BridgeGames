@@ -81,6 +81,7 @@ public class MatchBoardConfiguration {
             //Log.d (TAG, "                            : cumulativeTime: " + cumulativeTime);
         }
         Log.d (TAG, "method CalculateMatchGameDuration: totalGameTime: " + cumulativeTime + "ms");
+        cumulativeTime = (cumulativeTime * (Shared.context.getResources().getInteger(R.integer.match_timer_multiplier_percent) / 100));
         return  cumulativeTime;
     }
 }

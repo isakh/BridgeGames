@@ -132,8 +132,9 @@ public class SwapBoardConfiguration {
     private long CalculateSwapGameDuration(int numTiles, int difficultyBaseline) {
         Log.d(TAG, "method CalculateSwapGameDuration: numTiles: " + numTiles + " | difficultyBaseLine: " + difficultyBaseline);
         long cumulativeTime = (long) difficultyBaseline;
-        cumulativeTime += numTiles * 3814; //FIXME this is a hack for now - each sample should be 3.75seconds? or get from tiles??
+        cumulativeTime += numTiles * 2120; //FIXME this is a hack for now - each sample should be 2.12 seconds? or get from tiles??
         Log.d(TAG, "method CalculateSwapGameDuration: totalGameTime: " + cumulativeTime + "ms");
+        cumulativeTime = (cumulativeTime * (Shared.context.getResources().getInteger(R.integer.swap_timer_multiplier_percent) / 100));
         return cumulativeTime;
     }
 }

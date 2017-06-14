@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <integer name="match_timer_multiplier_percent">133</integer>
     <integer name="baseline_match_time_difficulty_easy">60000</integer>
     <integer name="baseline_match_time_difficulty_medium">90000</integer>
     <integer name="baseline_match_time_difficulty_hard">120000</integer>
     <integer name="match_tile_view_flip_animation_duration">1000</integer>
 
-    <integer name="baseline_swap_time_difficulty_easy">90000</integer>
-    <integer name="baseline_swap_time_difficulty_medium">120000</integer>
-    <integer name="baseline_swap_time_difficulty_hard">150000</integer>
+    <integer name="swap_timer_multiplier_percent">100</integer>
+    <integer name="baseline_swap_time_difficulty_easy">60000</integer>
+    <integer name="baseline_swap_time_difficulty_medium">90000</integer>
+    <integer name="baseline_swap_time_difficulty_hard">120000</integer>
 
 </resources>

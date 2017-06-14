@@ -194,7 +194,7 @@
     <!-- =================================================================================== -->
     <!-- Layout: SwapDifficulty -->
     <!-- ************************* -->
-    <string name="swap_difficulty_title">RECONSTRUCT THE IMAGE</string>
+    <string name="swap_difficulty_title">SOLVE THE PUZZLE</string>
     <string name="swap_difficulty_level_1">EASY</string>
     <string name="swap_difficulty_level_2">MEDIUM</string>
     <string name="swap_difficulty_level_3">HARD</string>

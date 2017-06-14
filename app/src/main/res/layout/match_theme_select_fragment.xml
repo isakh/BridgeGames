@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/match_theme_select_title"
+        android:textColor="@color/generic_text_color"
         android:textSize="@dimen/match_theme_select_title_size"/>
 
     <LinearLayout

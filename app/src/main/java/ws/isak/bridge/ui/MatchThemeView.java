@@ -60,18 +60,21 @@ public class MatchThemeView extends LinearLayout {
                 difficultyEasyTitle = (TextView) findViewById(R.id.match_theme_title);
                 difficultyEasyTitle.setText(R.string.match_themes_birds_name);
                 difficultyEasyTitle.setTextSize(Shared.context.getResources().getDimension(R.dimen.match_theme_select_level_title_size));
+                difficultyEasyTitle.setTextColor(Shared.context.getResources().getColor(R.color.generic_text_color));
                 difficultyEasyTitle.setGravity(Gravity.CENTER);
                 break;
             case 2:
                 difficultyMediumTitle = (TextView) findViewById(R.id.match_theme_title);
                 difficultyMediumTitle.setText(R.string.match_themes_spectrograms_name);
                 difficultyMediumTitle.setTextSize(Shared.context.getResources().getDimension(R.dimen.match_theme_select_level_title_size));
+                difficultyEasyTitle.setTextColor(Shared.context.getResources().getColor(R.color.generic_text_color));
                 difficultyMediumTitle.setGravity(Gravity.CENTER);
                 break;
             case 3:
                 difficultyHardTitle = (TextView) findViewById(R.id.match_theme_title);
                 difficultyHardTitle.setText(R.string.match_themes_blank_name);
                 difficultyHardTitle.setTextSize(Shared.context.getResources().getDimension(R.dimen.match_theme_select_level_title_size));
+                difficultyEasyTitle.setTextColor(Shared.context.getResources().getColor(R.color.generic_text_color));
                 difficultyHardTitle.setGravity(Gravity.CENTER);
                 break;
         }
